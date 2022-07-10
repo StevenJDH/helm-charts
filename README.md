@@ -11,7 +11,7 @@ A collection of Kubernetes applications ready for release using [Helm](https://g
 
 ## Prerequisites
 * Kubernetes 1.19+
-* [Helm](https://github.com/helm/helm) 3.8.0+
+* [Helm](https://github.com/helm/helm/releases) 3.8.0+
 
 ## TL;DR
 
