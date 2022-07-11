@@ -1,5 +1,6 @@
 # Helm Charts
 
+[![Release Charts](https://github.com/StevenJDH/helm-charts/actions/workflows/chart-releaser-workflow.yml/badge.svg?branch=main)](https://github.com/StevenJDH/helm-charts/actions/workflows/chart-releaser-workflow.yml)
 ![Maintenance](https://img.shields.io/maintenance/yes/2022)
 ![GitHub](https://img.shields.io/github/license/StevenJDH/helm-charts)
 
