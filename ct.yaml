@@ -1,8 +1,11 @@
 # See https://github.com/helm/chart-testing#configuration
+# and https://github.com/helm/chart-testing/blob/main/doc/ct_lint.md
 remote: origin
 target-branch: main
 chart-dirs:
   - charts
 chart-repos:
   - stevenjdh=https://StevenJDH.github.io/helm-charts
-helm-extra-args: --timeout 600s
+helm-extra-args: "--timeout 600s"
+validate-maintainers: false
+lint-conf: lintconf.yaml
