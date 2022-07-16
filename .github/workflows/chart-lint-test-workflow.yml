@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'charts/**'
+  workflow_dispatch: # Run workflow manually through the Github Actions Workflow page directly.
 
 jobs:
   lint-test:
@@ -27,7 +28,8 @@ jobs:
           python-version: 3.7
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2
+        # Full version for action needs to be specified.
+        uses: helm/chart-testing-action@v2.2.1
 
       - name: Run chart-testing (list-changed)
         id: list-changed
@@ -38,11 +40,28 @@ jobs:
           fi
 
       - name: Run chart-testing (lint)
-        run: ct lint --config ct.yaml
+        run: ct lint --print-config --config ct.yaml
 
-      - name: Create kind cluster
+      - name: Create kind cluster v1.19.16
         uses: helm/kind-action@v1
         if: steps.list-changed.outputs.changed == 'true'
+        with:
+          # Images: https://github.com/kubernetes-sigs/kind/releases
+          node_image: kindest/node:v1.19.16@sha256:d9c819e8668de8d5030708e484a9fdff44d95ec4675d136ef0a0a584e587f65c
+          kubectl_version: v1.19.16
+          cluster_name: chart-testing-1-19-16
 
-      - name: Run chart-testing (install)
+      - name: Run chart-testing (install) v1.19.16
+        run: ct install --config ct.yaml
+
+      - name: Create kind cluster v1.24.0
+        uses: helm/kind-action@v1
+        if: steps.list-changed.outputs.changed == 'true'
+        with:
+          # Images: https://github.com/kubernetes-sigs/kind/releases
+          node_image: kindest/node:v1.24.0@sha256:406fd86d48eaf4c04c7280cd1d2ca1d61e7d0d61ddef0125cb097bc7b82ed6a1
+          kubectl_version: v1.24.0
+          cluster_name: chart-testing-1-24-0
+
+      - name: Run chart-testing (install) v1.24.0
         run: ct install --config ct.yaml
