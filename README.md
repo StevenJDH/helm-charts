@@ -23,6 +23,29 @@ helm search repo stevenjdh
 helm install my-release stevenjdh/<chart>
 ```
 
+## Pull requests
+Pull requests will trigger automatic chart testing and tests against Kubernetes 1.19.x and 1.24.x before they can be merged into `main`. To avoid issues, run the same tests locally before submitting a PR.
+
+### Manual chart testing
+
+```bash
+docker pull quay.io/helmpack/chart-testing:v3.6.0
+docker run -it --rm --name ct --workdir=/data \
+    --volume $(pwd):/data quay.io/helmpack/chart-testing:v3.6.0 sh \
+    -c "ct lint --print-config --config ct.yaml"
+```
+
+### Manual kind (Kubernetes in Docker) tests
+Install the needed CLI from [here](https://kind.sigs.k8s.io/docs/user/quick-start/#installation), then run the following commands against the needed [Kubernetes versions](https://hub.docker.com/r/kindest/node/tags):
+
+```bash
+kind create cluster --image kindest/node:v1.19.16
+helm install my-release charts/<chart>
+kind delete cluster
+```
+
+**Note:** Run all commands from the root of the repository.
+
 ## Contributing
 Thanks for your interest in contributing! There are many ways to contribute to this project. Get started [here](https://github.com/StevenJDH/.github/blob/main/docs/CONTRIBUTING.md).
 
