@@ -1,0 +1,95 @@
+# This file is part of AKSupport Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2022 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+image:
+  repository: public.ecr.aws/stevenjdh/aksupport
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10101
+  # seccompProfile requires K8s 1.19+, use annotation equivalent for older versions.
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005', so fix using tmp volume mount.
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # requests:
+  #   memory: 256Mi
+  #   cpu: 500m
+  # limits:
+  #   memory: 512Mi
+  #   cpu: 1000m
+
+# testVersion is for providing a specific version like 1.17.0 for testing.
+testVersion: ""
+
+cronjob:
+  # At 08:00 every day
+  schedule: '0 8 * * *'
+  annotations: {}
+  concurrencyPolicy: ""
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  jobRestartPolicy: Never
+  # If startingDeadlineSeconds is set to a value less than 10 seconds, the CronJob may not be scheduled.
+  startingDeadlineSeconds: ""
+
+configMaps:
+  AZURE_SUBSCRIPTION_ID: ""
+  AZURE_APP_TENANT: ""
+  AZURE_APP_ID: ""
+  AZURE_AKS_REGION: ""
+  # Teams and Office Mail configuration.
+  AVATAR_IMAGE_URL: https://raw.githubusercontent.com/StevenJDH/AKSupport/main/Avatars/aksupport-256x256-transparent-bg.png
+  AZURE_AKS_CLUSTER_NAME: ""
+  AZURE_AKS_CLUSTER_URL: ""
+  # Office Mail configuration.
+  MAIL_APP_TENANT: ""
+  MAIL_APP_ID: ""
+  MAIL_SENDER_ID: ""
+  MAIL_RECIPIENT_ADDRESS: ""
+
+secrets:
+  AZURE_APP_PASSWORD: ""
+  # TEAMS_CHANNEL_WEBHOOK_URL is for the Teams configuration.
+  TEAMS_CHANNEL_WEBHOOK_URL: ""
+  # MAIL_APP_PASSWORD is for the Office Mail configuration.
+  MAIL_APP_PASSWORD: ""
+
+nodeSelector: {}
+
+affinity: {}
+
+tolerations: []
