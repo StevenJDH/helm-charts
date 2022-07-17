@@ -70,9 +70,13 @@ cronjob:
   concurrencyPolicy: ""
   failedJobsHistoryLimit: 1
   successfulJobsHistoryLimit: 1
-  jobRestartPolicy: Never
   # If startingDeadlineSeconds is set to a value less than 10 seconds, the CronJob may not be scheduled.
   startingDeadlineSeconds: ""
+  job:
+    restartPolicy: Never
+    completions: 1
+    backoffLimit: 0
+    activeDeadlineSeconds: 120
 
 configMaps:
   AZURE_SUBSCRIPTION_ID: ""

@@ -35,9 +35,19 @@ spec:
       labels:
         {{- include "aksupport.labels" . | nindent 8 }}
     spec:
-      completions: 1
-      backoffLimit: 0
-      activeDeadlineSeconds: 120
+      {{- with .Values.cronjob.job.completions }}
+      completions: {{ . }}
+      {{- end }}
+      {{- /*
+      Workaround to handle 0 properly when it is a number or a string.
+      Reference: https://github.com/helm/helm/issues/3164 
+      */}}
+      {{- if not (kindIs "invalid" .Values.cronjob.job.backoffLimit) }}
+      backoffLimit: {{ .Values.cronjob.job.backoffLimit }}
+      {{- end }}
+      {{- with .Values.cronjob.job.activeDeadlineSeconds }}
+      activeDeadlineSeconds: {{ . }}
+      {{- end }}
       template:
         metadata:
           {{- with .Values.podAnnotations }}
@@ -51,8 +61,10 @@ spec:
           imagePullSecrets:
           - name: {{ template "aksupport.fullname" . }}-github-pull-secret
           {{- end }}
+          {{- with .Values.podSecurityContext }}
           securityContext:
-            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           containers:
           - name: {{ .Chart.Name }}
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -60,7 +72,9 @@ spec:
             args:
             - {{ .Values.testVersion | quote }}
             {{- end }}
-            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- with .Values.image.pullPolicy }}
+            imagePullPolicy: {{ . }}
+            {{- end }}
             env:
             - name: AZMON_COLLECT_ENV # Required to prevent sensitive data leaking to Azure Monitor Logs.
               value: "FALSE"
@@ -76,12 +90,16 @@ spec:
             volumeMounts:
             - mountPath: /tmp
               name: tmp
+            {{- with .Values.securityContext }}
             securityContext:
-              {{- toYaml .Values.securityContext | nindent 14 }}
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
           volumes:
           - emptyDir: {}
             name: tmp
-          restartPolicy: {{ .Values.cronjob.jobRestartPolicy }}
+          {{- with .Values.cronjob.job.restartPolicy }}
+          restartPolicy: {{ . }}
+          {{- end }}
         {{- with .Values.nodeSelector }}
         nodeSelector:
           {{- toYaml . | nindent 10 }}
