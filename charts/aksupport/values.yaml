@@ -14,12 +14,20 @@
 # limitations under the License.
 
 image:
+  # repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret, 
+  # or Docker Hub using "stevenjdh/aksupport".
   repository: public.ecr.aws/stevenjdh/aksupport
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
+  # pullSecret is for pulling images from GitHub container registry.
+  pullSecret:
+    registry: ghcr.io
+    # username is the GitHub username associated with the PAT below, like StevenJDH.
+    username: ""
+    # password is a PAT with at least read:packages permissions.
+    password: ""
 
-imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 

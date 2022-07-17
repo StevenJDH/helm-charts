@@ -47,9 +47,9 @@ spec:
           labels:
             {{- include "aksupport.labels" . | nindent 12 }}
         spec:
-          {{- with .Values.imagePullSecrets }}
+          {{- if and .Values.image.pullSecret.username .Values.image.pullSecret.password }}
           imagePullSecrets:
-            {{- toYaml . | nindent 12 }}
+          - name: {{ template "aksupport.fullname" . }}-github-pull-secret
           {{- end }}
           securityContext:
             {{- toYaml .Values.podSecurityContext | nindent 12 }}
