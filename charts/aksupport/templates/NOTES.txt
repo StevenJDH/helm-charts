@@ -1,0 +1,11 @@
+You have deployed the following release: {{ .Release.Name }}.
+
+To get further information, you can run the commands:
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+
+Every time that AKSupport finishes its checks, it will return and exit code. To view the last exit code, type:
+  $ export POD_NAME=$(kubectl get pods -n {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "aksupport.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  $ kubectl get pod $POD_NAME -o "jsonpath={.status.containerStatuses[].state.terminated.exitCode}" -n {{ .Release.Namespace }}
+
+See https://github.com/StevenJDH/AKSupport#exit-codes for more information.
