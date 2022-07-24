@@ -14,7 +14,7 @@
 # limitations under the License.
 
 image:
-  # repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret, 
+  # repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret,
   # or Docker Hub using "stevenjdh/aksupport".
   repository: public.ecr.aws/stevenjdh/aksupport
   pullPolicy: Always
