@@ -10,7 +10,7 @@ See the [AKSupport](https://github.com/StevenJDH/AKSupport) repository for more 
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm install my-aksupport stevenjdh/aksupport --version 1.0.0 \
+helm upgrade --install my-aksupport stevenjdh/aksupport --version 1.0.0 \
     --set-string configMaps.AZURE_SUBSCRIPTION_ID=<subscriptionId> \
     --set-string configMaps.AZURE_APP_TENANT=<tenant> \
     --set-string configMaps.AZURE_AKS_REGION=<region> \
