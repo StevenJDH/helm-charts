@@ -15,7 +15,7 @@
 
 apiVersion: v2
 name: aksupport
-description: A Helm chart for Kubernetes
+description: An automation tool that regularly checks for the current supported status of an AKS cluster to alert and maintain Microsoft support.
 
 # A chart can be either an 'application' or a 'library' chart.
 #

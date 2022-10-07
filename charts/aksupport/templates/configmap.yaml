@@ -15,6 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
+{{- $azureSubscriptionId := .Values.configMaps.azureSubscriptionId -}}
+{{- $azureAppTenant      := .Values.configMaps.azureAppTenant -}}
+{{- $azureAppId          := .Values.configMaps.azureAppId -}}
+{{- $azureAksRegion      := .Values.configMaps.azureAksRegion -}}
+
+{{- if or $azureSubscriptionId $azureAppTenant $azureAppId $azureAksRegion -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -24,6 +30,7 @@ metadata:
 data:
   {{- range $key, $val := .Values.configMaps }}
   {{- if $val }}
-  {{ $key }}: {{ $val }}
+  {{ $key | snakecase | upper }}: {{ $val }}
   {{- end}}
   {{- end}}
+{{- end }}

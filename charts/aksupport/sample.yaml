@@ -1,31 +1,4 @@
 ---
-# Source: aksupport/templates/secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: aksupport-secret
-  labels:
-    helm.sh/chart: aksupport-0.1.0
-    app.kubernetes.io/name: aksupport
-    app.kubernetes.io/instance: aksupport
-    app.kubernetes.io/version: "1.0.0"
-    app.kubernetes.io/managed-by: Helm
-data:
----
-# Source: aksupport/templates/configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: aksupport-config
-  labels:
-    helm.sh/chart: aksupport-0.1.0
-    app.kubernetes.io/name: aksupport
-    app.kubernetes.io/instance: aksupport
-    app.kubernetes.io/version: "1.0.0"
-    app.kubernetes.io/managed-by: Helm
-data:
-  AVATAR_IMAGE_URL: https://raw.githubusercontent.com/StevenJDH/AKSupport/main/Avatars/aksupport-256x256-transparent-bg.png
----
 # Source: aksupport/templates/cronjob.yaml
 apiVersion: batch/v1
 kind: CronJob
@@ -76,9 +49,6 @@ spec:
                 name: aksupport-config
             - secretRef:
                 name: aksupport-secret
-            resources:
-              requests:
-                memory: 256Mi
             volumeMounts:
             - mountPath: /tmp
               name: tmp
@@ -92,6 +62,8 @@ spec:
           - emptyDir: {}
             name: tmp
           restartPolicy: Never
-  schedule: "0 8 * * *"
+        nodeSelector:
+          kubernetes.io/os: linux
+  schedule: '0 8 * * *'
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
