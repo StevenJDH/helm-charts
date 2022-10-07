@@ -62,8 +62,8 @@ spec:
           - emptyDir: {}
             name: tmp
           restartPolicy: Never
-        nodeSelector:
-          kubernetes.io/os: linux
+          nodeSelector:
+            kubernetes.io/os: linux
   schedule: '0 8 * * *'
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1

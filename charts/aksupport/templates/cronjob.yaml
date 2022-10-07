@@ -100,18 +100,18 @@ spec:
           {{- with .Values.cronjob.job.restartPolicy }}
           restartPolicy: {{ . }}
           {{- end }}
-        {{- with .Values.nodeSelector }}
-        nodeSelector:
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
-        {{- with .Values.affinity }}
-        affinity:
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
-        {{- with .Values.tolerations }}
-        tolerations:
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
   schedule: {{ .Values.cronjob.schedule | squote }}
   {{- with .Values.cronjob.concurrencyPolicy }}
   concurrencyPolicy: {{ . }}
