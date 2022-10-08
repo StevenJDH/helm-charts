@@ -24,7 +24,7 @@ helm install my-release stevenjdh/<chart>
 ```
 
 ## Pull requests
-Pull requests will trigger automatic chart testing and tests against Kubernetes 1.19.x and 1.24.x before they can be merged into `main`. To avoid issues, run the same tests locally before submitting a PR.
+Pull requests will trigger automatic chart testing and tests against Kubernetes 1.19.x, 1.24.x, and 1.25.x before they can be merged into `main`. To avoid issues, run the same tests locally before submitting a PR.
 
 ### Manual chart testing
 
