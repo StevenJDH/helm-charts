@@ -11,6 +11,9 @@ on:
 jobs:
   lint-test:
     runs-on: ubuntu-latest
+    # Map a step output to a job output.
+    outputs:
+      list-changed: ${{ steps.list-changed.outputs.changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,26 +45,49 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --print-config --config ct.yaml
 
-      - name: Create kind cluster v1.19.16
-        uses: helm/kind-action@v1
-        if: steps.list-changed.outputs.changed == 'true'
+  kind-lint-test:
+    if: needs.lint-test.outputs.list-changed == 'true'
+    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }}
+    needs: lint-test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        kubernetesVersion: [v1.19.16, v1.24.6, v1.25.2]
+        include:
+        # Images: https://github.com/kubernetes-sigs/kind/releases
+        - kubernetesVersion: v1.19.16
+          kindImage: kindest/node:v1.19.16@sha256:a146f9819fece706b337d34125bbd5cb8ae4d25558427bf2fa3ee8ad231236f2
+        - kubernetesVersion: v1.24.6
+          kindImage: kindest/node:v1.24.6@sha256:97e8d00bc37a7598a0b32d1fabd155a96355c49fa0d4d4790aab0f161bf31be1
+        - kubernetesVersion: v1.25.2
+          kindImage: kindest/node:v1.25.2@sha256:9be91e9e9cdf116809841fc77ebdb8845443c4c72fe5218f3ae9eb57fdb4bace
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          # Images: https://github.com/kubernetes-sigs/kind/releases
-          node_image: kindest/node:v1.19.16@sha256:d9c819e8668de8d5030708e484a9fdff44d95ec4675d136ef0a0a584e587f65c
-          kubectl_version: v1.19.16
-          cluster_name: chart-testing-1-19-16
-
-      - name: Run chart-testing (install) v1.19.16
-        run: ct install --config ct.yaml
-
-      - name: Create kind cluster v1.24.0
-        uses: helm/kind-action@v1
-        if: steps.list-changed.outputs.changed == 'true'
+          fetch-depth: 0
+      
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
         with:
-          # Images: https://github.com/kubernetes-sigs/kind/releases
-          node_image: kindest/node:v1.24.0@sha256:406fd86d48eaf4c04c7280cd1d2ca1d61e7d0d61ddef0125cb097bc7b82ed6a1
-          kubectl_version: v1.24.0
-          cluster_name: chart-testing-1-24-0
+          version: v3.8.1
 
-      - name: Run chart-testing (install) v1.24.0
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+
+      - name: Set up chart-testing
+        # Full version for action needs to be specified.
+        uses: helm/chart-testing-action@v2.2.1
+        
+      - name: Create kind cluster ${{ matrix.kubernetesVersion }}
+        uses: helm/kind-action@v1
+        with:
+          node_image: ${{ matrix.kindImage }}
+          kubectl_version: ${{ matrix.kubernetesVersion }}
+          cluster_name: chart-testing
+
+      - name: Run chart-testing (install)
         run: ct install --config ct.yaml
