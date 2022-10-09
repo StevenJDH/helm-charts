@@ -6,6 +6,9 @@ on:
       - main
     paths:
       - 'charts/**'
+      - '!charts/**/*.md'
+      - '!charts/**/*.png'
+      - '!charts/**/*.gotmpl'
 
 jobs:
   release:

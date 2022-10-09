@@ -1,0 +1,146 @@
+# This file is part of AKSupport Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2022 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+image:
+  # -- repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret,
+  # or Docker Hub using "stevenjdh/aksupport".
+  repository: public.ecr.aws/stevenjdh/aksupport
+  # -- pullPolicy is the strategy for pulling images from a registry.
+  pullPolicy: Always
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  pullSecret:
+    # @ignored. registry is the GitHub container registry for pulling images.
+    registry: ghcr.io
+    # -- username is the GitHub username associated with the PAT below, like StevenJDH.
+    username: ""
+    # -- password is a PAT with at least read:packages permissions.
+    password: ""
+
+# -- Override for chart name in helm common labels.
+nameOverride: ""
+# -- Override for generated resource names.
+fullnameOverride: ""
+
+# -- podAnnotations are the annotations to be added to the job pods.
+podAnnotations: {}
+
+# @ignored
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10101
+  # seccompProfile requires K8s 1.19+, use annotation equivalent for older versions.
+  seccompProfile:
+    type: RuntimeDefault
+
+# @ignored
+securityContext:
+  # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005', so fix using tmp volume mount.
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+
+# --  Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # requests:
+  #   memory: 256Mi
+  #   cpu: 500m
+  # limits:
+  #   memory: 512Mi
+  #   cpu: 1000m
+
+# -- testVersion is for providing a specific version like 1.17.0 for testing.
+testVersion: ""
+
+cronjob:
+  # -- The Cron schedule to run a support status check. Default is 08:00 every day.
+  schedule: '0 8 * * *'
+  # -- annotations to be added to the CronJob.
+  annotations: {}
+  # @ignored
+  concurrencyPolicy: ""
+  # @ignored
+  failedJobsHistoryLimit: 1
+  # @ignored
+  successfulJobsHistoryLimit: 1
+  # @ignored. If startingDeadlineSeconds is set to a value less than 10 seconds, the CronJob may not be scheduled.
+  startingDeadlineSeconds: ""
+  # @ignored
+  job:
+    restartPolicy: Never
+    completions: 1
+    backoffLimit: 0
+    activeDeadlineSeconds: 120
+
+configMaps:
+  # -- Required. Subscription Id of Azure account.
+  azureSubscriptionId: ""
+  # -- Required. App Tenant Id for application registration.
+  azureAppTenant: ""
+  # -- Required. App (Client) Id for application registration.
+  azureAppId: ""
+  # -- Required. AKS region used for checking support status.
+  azureAksRegion: ""
+  # -- Teams and Office Mail configuration. Avatar image source url for Teams and Mail cards.
+  avatarImageUrl: https://raw.githubusercontent.com/StevenJDH/AKSupport/main/Avatars/aksupport-256x256-transparent-bg.png
+  # -- Teams and Office Mail configuration. AKS cluster name for Teams and Mail cards.
+  azureAksClusterName: ""
+  # -- Teams and Office Mail configuration. Azure Portal URL for the AKS cluster.
+  azureAksClusterUrl: ""
+  # -- Office Mail configuration. Office 365 AD App Directory (Tenant) Id for application registration.
+  mailAppTenant: ""
+  # -- Office Mail configuration. Office 365 AD App (Client) Id for application registration.
+  mailAppId: ""
+  # -- Office Mail configuration. Email address or Object Id of the sender. Object Id is recommended.
+  mailSenderId: ""
+  # -- Office Mail configuration. Email address of the recipient.
+  mailRecipientAddress: ""
+
+secrets:
+  # -- Required. App Password (Client Secret) for application registration.
+  azureAppPassword: ""
+  # -- Teams configuration. Url for the Teams channel incoming webhook.
+  teamsChannelWebhookUrl: ""
+  # -- Office Mail configuration. Office 365 AD App Password (Client Secret) for application registration.
+  mailAppPassword: ""
+
+# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
+nodeSelector:
+  kubernetes.io/os: linux
+
+# -- affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
+affinity: {}
+  # podAntiAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #   - labelSelector:
+  #       matchExpressions:
+  #       - key: app
+  #         operator: In
+  #         values:
+  #         - aksupport
+  #     topologyKey: "kubernetes.io/hostname"
+
+# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
+tolerations: []
+#  - key: "key"
+#    operator: "Equal|Exists"
+#    value: "value"
+#    effect: "NoSchedule|PreferNoSchedule|NoExecute"
