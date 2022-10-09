@@ -34,7 +34,7 @@ nameOverride: ""
 # -- Override for generated resource names.
 fullnameOverride: ""
 
-# -- Annotations to be added to the job pods.
+# -- podAnnotations are the annotations to be added to the job pods.
 podAnnotations: {}
 
 # @ignored
@@ -54,7 +54,7 @@ securityContext:
     drop:
     - ALL
 
-# --  Optionally limit how much CPU and memory (RAM) the container needs.
+# --  Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -73,7 +73,7 @@ testVersion: ""
 cronjob:
   # -- The Cron schedule to run a support status check. Default is 08:00 every day.
   schedule: '0 8 * * *'
-  # -- Annotations to be added to the CronJob.
+  # -- annotations to be added to the CronJob.
   annotations: {}
   # @ignored
   concurrencyPolicy: ""
@@ -122,11 +122,11 @@ secrets:
   # -- Office Mail configuration. Office 365 AD App Password (Client Secret) for application registration.
   mailAppPassword: ""
 
-# -- Node labels for controller pod assignment. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
+# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
 nodeSelector:
   kubernetes.io/os: linux
 
-# -- Affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
+# -- affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
 affinity: {}
   # podAntiAffinity:
   #   requiredDuringSchedulingIgnoredDuringExecution:
@@ -138,7 +138,7 @@ affinity: {}
   #         - aksupport
   #     topologyKey: "kubernetes.io/hostname"
 
-# -- Node tolerations for server scheduling to nodes with taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
+# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
 tolerations: []
 #  - key: "key"
 #    operator: "Equal|Exists"

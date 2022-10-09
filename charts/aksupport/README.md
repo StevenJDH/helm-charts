@@ -31,7 +31,7 @@ helm upgrade --install my-aksupport stevenjdh/aksupport --version 0.1.0 \
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{}` | Affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
+| affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
 | configMaps.avatarImageUrl | string | `"https://raw.githubusercontent.com/StevenJDH/AKSupport/main/Avatars/aksupport-256x256-transparent-bg.png"` | Teams and Office Mail configuration. Avatar image source url for Teams and Mail cards. |
 | configMaps.azureAksClusterName | string | `""` | Teams and Office Mail configuration. AKS cluster name for Teams and Mail cards. |
 | configMaps.azureAksClusterUrl | string | `""` | Teams and Office Mail configuration. Azure Portal URL for the AKS cluster. |
@@ -43,7 +43,7 @@ helm upgrade --install my-aksupport stevenjdh/aksupport --version 0.1.0 \
 | configMaps.mailAppTenant | string | `""` | Office Mail configuration. Office 365 AD App Directory (Tenant) Id for application registration. |
 | configMaps.mailRecipientAddress | string | `""` | Office Mail configuration. Email address of the recipient. |
 | configMaps.mailSenderId | string | `""` | Office Mail configuration. Email address or Object Id of the sender. Object Id is recommended. |
-| cronjob.annotations | object | `{}` | Annotations to be added to the CronJob. |
+| cronjob.annotations | object | `{}` | annotations to be added to the CronJob. |
 | cronjob.schedule | string | `"0 8 * * *"` | The Cron schedule to run a support status check. Default is 08:00 every day. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
 | image.pullPolicy | string | `"Always"` | pullPolicy is the strategy for pulling images from a registry. |
@@ -52,14 +52,14 @@ helm upgrade --install my-aksupport stevenjdh/aksupport --version 0.1.0 \
 | image.repository | string | `"public.ecr.aws/stevenjdh/aksupport"` | repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret, or Docker Hub using "stevenjdh/aksupport". |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
-| nodeSelector | object | `{"kubernetes.io/os":"linux"}` | Node labels for controller pod assignment. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
-| podAnnotations | object | `{}` | Annotations to be added to the job pods. |
-| resources | object | `{}` | Optionally limit how much CPU and memory (RAM) the container needs. |
+| nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
+| podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
+| resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | secrets.azureAppPassword | string | `""` | Required. App Password (Client Secret) for application registration. |
 | secrets.mailAppPassword | string | `""` | Office Mail configuration. Office 365 AD App Password (Client Secret) for application registration. |
 | secrets.teamsChannelWebhookUrl | string | `""` | Teams configuration. Url for the Teams channel incoming webhook. |
 | testVersion | string | `""` | testVersion is for providing a specific version like 1.17.0 for testing. |
-| tolerations | list | `[]` | Node tolerations for server scheduling to nodes with taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
+| tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
 
 
 // Steven Jenkins De Haro ("StevenJDH" on GitHub)
