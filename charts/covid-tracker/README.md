@@ -36,7 +36,7 @@ helm upgrade --install my-covid-tracker stevenjdh/covid-tracker --version 0.1.0 
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | targetCPUUtilizationPercentage represents the percentage of requested CPU over all the pods. |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods. |
 | autoscaling.template | list | `[]` | template provides custom or additional autoscaling metrics that are not built in to Kubernetes  or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics). |
-| configMap.springCronSchedule | string | `"0 0 0/1 1/1 * ?"` | The Spring Cron schedule to cache the latest statistical data. Runs every hour by default. Setting the schedule to a specific time will be handled in UTC. |
+| configMap.springCronSchedule | string | `"0 0 0/6 1/1 * ?"` | springCronSchedule expires cached statistical data every 6 hours by default in UTC time. Use [CronMaker](http://www.cronmaker.com) to generate the desired schedule. Take the result, and remove the last argument to make it valid. For example, `0 0 0/1 1/1 * ? *` is edited to become `0 0 0/1 1/1 * ?` for use in Spring. |
 | containerPorts | object | `{"actuator":8081,"http":8080}` | containerPort is the port or ports that the container listens on. |
 | extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | extraEnvs | list | `[]` | Additional environment variables to set. |
@@ -51,7 +51,7 @@ helm upgrade --install my-covid-tracker stevenjdh/covid-tracker --version 0.1.0 
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | ingress.annotations | object | `{}` | annotations to add to the Ingress resource. |
 | ingress.className | string | `"nginx"` | className is the name of the Ingress class. |
-| ingress.enabled | bool | `false` | Indicates whether or not an Ingress resource is created. |
+| ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created. |
 | ingress.hosts[0] | object | `{"host":"*","paths":[{"path":"/","pathType":"Prefix"}]}` | host is the hostname of a request that must match exactly or use a wildcard as the subdomain. |
 | ingress.hosts[0].paths[0] | object | `{"path":"/","pathType":"Prefix"}` | path is part of a list of one or paths that are associated with a backend service. |
 | ingress.hosts[0].paths[0].pathType | string | `"Prefix"` | pathType is a field that can specify how Ingress paths should be matched. Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types). |

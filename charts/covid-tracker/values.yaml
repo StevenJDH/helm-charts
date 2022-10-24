@@ -235,9 +235,11 @@ resources: {}
 #    cpu: 1000m
 
 configMap:
-  # -- The Spring Cron schedule to cache the latest statistical data. Runs every hour by default.
-  # Setting the schedule to a specific time will be handled in UTC.
-  springCronSchedule: "0 0 0/1 1/1 * ?"
+  # -- springCronSchedule expires cached statistical data every 6 hours by default in UTC time.
+  # Use [CronMaker](http://www.cronmaker.com) to generate the desired schedule. Take the result,
+  # and remove the last argument to make it valid. For example, `0 0 0/1 1/1 * ? *` is edited
+  # to become `0 0 0/1 1/1 * ?` for use in Spring.
+  springCronSchedule: "0 0 0/6 1/1 * ?"
 
 # -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
 nodeSelector:
