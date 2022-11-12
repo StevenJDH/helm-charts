@@ -47,13 +47,13 @@ helm upgrade --install my-covid-tracker stevenjdh/covid-tracker --version 0.1.0 
 | image.pullPolicy | string | `"Always"` | pullPolicy is the strategy for pulling images from a registry. |
 | image.pullSecret.password | string | `""` | password is a PAT with at least read:packages permissions. |
 | image.pullSecret.username | string | `""` | username is the GitHub username associated with the PAT below, like StevenJDH. |
-| image.repository | string | `"public.ecr.aws/stevenjdh/covid-tracker"` | repository can alternatively use "ghcr.io/stevenjdh/covid-tracker", which requires a pull secret, or Docker Hub using "stevenjdh/covid-tracker". |
+| image.repository | string | `"stevenjdh/covid-tracker"` | repository can alternatively use "ghcr.io/stevenjdh/covid-tracker", which requires a pull secret, or "public.ecr.aws/stevenjdh/covid-tracker". |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | ingress.annotations | object | `{}` | annotations to add to the Ingress resource. |
 | ingress.className | string | `"nginx"` | className is the name of the Ingress class. |
 | ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created. |
 | ingress.hosts[0] | object | `{"host":"*","paths":[{"path":"/","pathType":"Prefix"}]}` | host is the hostname of a request that must match exactly or use a wildcard as the subdomain. |
-| ingress.hosts[0].paths[0] | object | `{"path":"/","pathType":"Prefix"}` | path is part of a list of one or paths that are associated with a backend service. |
+| ingress.hosts[0].paths[0] | object | `{"path":"/","pathType":"Prefix"}` | path is part of a list of one or more paths that are associated with a backend service. |
 | ingress.hosts[0].paths[0].pathType | string | `"Prefix"` | pathType is a field that can specify how Ingress paths should be matched. Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types). |
 | ingress.tls | list | `[]` | tls is a list of hosts that needs to explicitly match the host in the rules section. It also contains a secret with references to tls.crt and tls.key to use for TLS. |
 | keda.apiVersion | string | `"keda.sh/v1alpha1"` | apiVersion is the KEDA API to use, which will be either `keda.k8s.io/v1alpha1` or `keda.sh/v1alpha1` depending on whether KEDA is version 1x or 2x respectively. |
@@ -84,7 +84,7 @@ helm upgrade --install my-covid-tracker stevenjdh/covid-tracker --version 0.1.0 
 | service.sessionAffinity | string | `"None"` | sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's IP address. Must be either "None" or "ClientIP" if set. Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace) |
 | service.type | string | `"ClusterIP"` | type specifies what kind of Service resource to create.  |
 | serviceAccount.annotations | object | `{}` | annotations to add to the service account. |
-| serviceAccount.create | bool | `true` | Specifies whether a service account should be created. |
+| serviceAccount.create | bool | `false` | Specifies whether a service account should be created. |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 | tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
 | updateStrategy | object | `{}` | The update strategy to apply to the Deployment resource. |

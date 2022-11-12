@@ -19,8 +19,8 @@ replicaCount: 1
 
 image:
   # -- repository can alternatively use "ghcr.io/stevenjdh/covid-tracker", which requires a pull secret,
-  # or Docker Hub using "stevenjdh/covid-tracker".
-  repository: public.ecr.aws/stevenjdh/covid-tracker
+  # or "public.ecr.aws/stevenjdh/covid-tracker".
+  repository: stevenjdh/covid-tracker
   # -- pullPolicy is the strategy for pulling images from a registry.
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
@@ -40,7 +40,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # -- Specifies whether a service account should be created.
-  create: true
+  create: false
   # -- annotations to add to the service account.
   annotations: {}
   # -- The name of the service account to use.
@@ -84,7 +84,8 @@ podSecurityContext:
 
 # @ignored
 securityContext:
-  # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005', so fix using tmp volume mount.
+  # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005' with C# apps and something
+  # similar with Java apps, so fix using tmp volume mount.
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
@@ -208,7 +209,7 @@ ingress:
     # -- host is the hostname of a request that must match exactly or use a wildcard as the subdomain.
     - host: "*"
       paths:
-          # -- path is part of a list of one or paths that are associated with a backend service.
+          # -- path is part of a list of one or more paths that are associated with a backend service.
         - path: /
           # -- pathType is a field that can specify how Ingress paths should be matched.
           # Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types).
