@@ -149,7 +149,7 @@ extraInitContainers: []
 #    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
 
 service:
-  # -- type specifies what kind of Service resource to create. 
+  # -- type specifies what kind of Service resource to create.
   type: ClusterIP
   # @ignored
   port: 80
@@ -179,7 +179,7 @@ service:
   # -- externalTrafficPolicy is an annotation set on a service resource. It defines how traffic incoming to a node is load balanced.
   # `Cluster` is normally the default policy, but `Local` is often used to preserve the source IP of traffic coming into a cluster
   # node. With Local, requests are load balanced equally across nodes irrespective of how many pods are on each node. When set to
-  # Cluster, both nodes and pods are taken into consideration. Applicable only when service `type` is `NodePort` or `LoadBalancer`.
+  # Cluster, both nodes and pods are taken into consideration. Applicable only when `service.type` is `NodePort` or `LoadBalancer`.
   # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
   externalTrafficPolicy: ""
   # -- sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's
@@ -277,7 +277,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # -- targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods.
   targetMemoryUtilizationPercentage: 80
-  # -- template provides custom or additional autoscaling metrics that are not built in to Kubernetes 
+  # -- template provides custom or additional autoscaling metrics that are not built in to Kubernetes
   # or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics).
   template: []
   # - type: Pods
@@ -287,7 +287,7 @@ autoscaling:
   #     target:
   #       type: AverageValue
   #       averageValue: 10000m
-  
+
   # -- behavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).
   behavior: {}
   # scaleDown:
@@ -327,7 +327,7 @@ keda:
     # -- annotations to add to the ScaledObject resource.
     annotations: {}
     #  key: value
-  
+
   # -- triggers is a list of triggers to activate scaling on for a target resource.
   triggers: []
   #  - type: prometheus
