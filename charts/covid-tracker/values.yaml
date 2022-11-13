@@ -179,9 +179,9 @@ service:
   # -- externalTrafficPolicy is an annotation set on a service resource. It defines how traffic incoming to a node is load balanced.
   # `Cluster` is normally the default policy, but `Local` is often used to preserve the source IP of traffic coming into a cluster
   # node. With Local, requests are load balanced equally across nodes irrespective of how many pods are on each node. When set to
-  # Cluster, both nodes and pods are taken into consideration.
+  # Cluster, both nodes and pods are taken into consideration. Applicable only when service `type` is `NodePort` or `LoadBalancer`.
   # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
-  externalTrafficPolicy: "Local"
+  externalTrafficPolicy: ""
   # -- sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's
   # IP address. Must be either "None" or "ClientIP" if set. Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace)
   sessionAffinity: "None"
@@ -207,7 +207,7 @@ ingress:
   #  kubernetes.io/tls-acme: "true"
   hosts:
     # -- host is the hostname of a request that must match exactly or use a wildcard as the subdomain.
-    - host: "*"
+    - host: ""
       paths:
           # -- path is part of a list of one or more paths that are associated with a backend service.
         - path: /
