@@ -19,14 +19,14 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "{{ include "covid-tracker.fullname" . }}-test-connection"
-  labels:
-    {{- include "covid-tracker.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+  labels:
+    {{- include "covid-tracker.labels" . | nindent 4 }}
 spec:
   containers:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "covid-tracker.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "covid-tracker.fullname" . }}-svc:{{ .Values.service.port }}']
   restartPolicy: Never

@@ -17,8 +17,7 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: covid-tracker
-  annotations:
+  name: covid-tracker-svc
   labels:
     helm.sh/chart: covid-tracker-0.1.0
     app.kubernetes.io/name: covid-tracker
@@ -91,7 +90,7 @@ spec:
           envFrom:
           - configMapRef:
               name: covid-tracker-config
-          livenessProbe: 
+          livenessProbe:
             failureThreshold: 5
             httpGet:
               path: /actuator/health/liveness
@@ -101,7 +100,7 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-          readinessProbe: 
+          readinessProbe:
             failureThreshold: 3
             httpGet:
               path: /actuator/health/readiness
@@ -126,7 +125,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: covid-tracker
+  name: covid-tracker-ingress
   labels:
     helm.sh/chart: covid-tracker-0.1.0
     app.kubernetes.io/name: covid-tracker
@@ -152,18 +151,18 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "covid-tracker-test-connection"
+  annotations:
+    "helm.sh/hook": test
   labels:
     helm.sh/chart: covid-tracker-0.1.0
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/managed-by: Helm
-  annotations:
-    "helm.sh/hook": test
 spec:
   containers:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['covid-tracker:80']
+      args: ['covid-tracker-svc:80']
   restartPolicy: Never

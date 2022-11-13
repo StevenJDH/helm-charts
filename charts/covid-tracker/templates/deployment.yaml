@@ -19,8 +19,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "covid-tracker.fullname" . }}
-  {{- if .Values.annotations }}
-  annotations: {{ toYaml .Values.annotations | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
     {{- include "covid-tracker.labels" . | nindent 4 }}
@@ -29,7 +30,7 @@ spec:
   Workaround to handle 0 properly when it is a number or a string.
   Reference: https://github.com/helm/helm/issues/3164 
   */}}
-  {{- if and (not (.Values.autoscaling.enabled)) (not (kindIs "invalid" .Values.replicaCount)) }}
+  {{- if not (kindIs "invalid" .Values.replicaCount) }}
   replicas: {{ .Values.replicaCount }}
   {{- else }}
   replicas: 1
@@ -37,9 +38,9 @@ spec:
   selector:
     matchLabels:
       {{- include "covid-tracker.selectorLabels" . | nindent 6 }}
-  {{- if .Values.updateStrategy }}
+  {{- with .Values.updateStrategy }}
   strategy:
-    {{ toYaml .Values.updateStrategy | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   template:
     metadata:
@@ -82,28 +83,31 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ template "covid-tracker.fullname" . }}-config
-          {{- if .Values.startupProbe }}
-          startupProbe: {{ toYaml .Values.health.startupProbe | nindent 12 }}
+          {{- with .Values.health.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
           {{- end }}
-          livenessProbe: {{ toYaml .Values.health.livenessProbe | nindent 12 }}
-          readinessProbe: {{ toYaml .Values.health.readinessProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.health.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.health.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
           - mountPath: /tmp
             name: tmp
-          {{- if .Values.extraVolumeMounts }}
-            {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
+          {{- with .Values.extraVolumeMounts }}
+          {{- toYaml . | nindent 10 }}
           {{- end }}
       {{- with .Values.extraInitContainers }}
       initContainers:
-        {{ toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
       - emptyDir: {}
         name: tmp
-      {{- if .Values.extraVolumes }}
-        {{ toYaml .Values.extraVolumes | nindent 8 }}
+      {{- with .Values.extraVolumes }}
+      {{- toYaml . | nindent 6 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

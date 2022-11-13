@@ -277,21 +277,6 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # -- targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods.
   targetMemoryUtilizationPercentage: 80
-  # -- behavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).
-  behavior: {}
-  # scaleDown:
-  #   stabilizationWindowSeconds: 300
-  #  policies:
-  #   - type: Pods
-  #     value: 1
-  #     periodSeconds: 180
-  # scaleUp:
-  #   stabilizationWindowSeconds: 300
-  #   policies:
-  #   - type: Pods
-  #     value: 2
-  #     periodSeconds: 60
-  
   # -- template provides custom or additional autoscaling metrics that are not built in to Kubernetes 
   # or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics).
   template: []
@@ -302,6 +287,21 @@ autoscaling:
   #     target:
   #       type: AverageValue
   #       averageValue: 10000m
+  
+  # -- behavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).
+  behavior: {}
+  # scaleDown:
+  #   stabilizationWindowSeconds: 300
+  #   policies:
+  #   - type: Pods
+  #     value: 1
+  #     periodSeconds: 180
+  # scaleUp:
+  #   stabilizationWindowSeconds: 300
+  #   policies:
+  #   - type: Pods
+  #     value: 2
+  #     periodSeconds: 60
 
 keda:
   # -- apiVersion is the KEDA API to use, which will be either `keda.k8s.io/v1alpha1` or `keda.sh/v1alpha1` depending on
