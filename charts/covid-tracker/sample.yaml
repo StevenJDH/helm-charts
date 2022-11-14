@@ -26,7 +26,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
-  externalTrafficPolicy: Local
   sessionAffinity: None
   ipFamilyPolicy: SingleStack
   ipFamilies: 
@@ -135,14 +134,14 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "*"
+    - host: ""
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: covid-tracker
+                name: covid-tracker-svc
                 port:
                   number: 80
 ---
