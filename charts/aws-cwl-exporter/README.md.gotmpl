@@ -14,6 +14,8 @@
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
 helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
+    --set serviceAccount.aws.irsa.enabled=true \
+    --set-string serviceAccount.aws.irsa.roleArn=arn:aws:iam::000000000000:role/example-irsa-role \
     --set-string configMap.logGroupName=/aws/lambda/hello-world-dev \
     --set-string configMap.s3BucketName=s3-example-log-exports \
     --set-string configMap.exportPrefix=export-task-output \

@@ -102,3 +102,13 @@ Create pull secret credentials for a private registry.
 {{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"auth\":\"%s\"}}}" .registry .username .password (printf "%s:%s" .username .password | b64enc) | b64enc }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create AWS IRSA annotations for the service account.
+*/}}
+{{- define "aws-cwl-exporter.irsaAnnotations" -}}
+eks.amazonaws.com/audience: {{ .Values.serviceAccount.aws.irsa.audience | default "sts.amazonaws.com" | quote }}
+eks.amazonaws.com/role-arn: {{ .Values.serviceAccount.aws.irsa.roleArn | quote }}
+eks.amazonaws.com/sts-regional-endpoints: {{ .Values.serviceAccount.aws.irsa.stsRegionalEndpoints | default "true" | quote }}
+eks.amazonaws.com/token-expiration: {{ .Values.serviceAccount.aws.irsa.tokenExpiration | default "3600" | quote }}
+{{- end }}

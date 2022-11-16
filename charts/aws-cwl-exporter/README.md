@@ -18,6 +18,8 @@ Kubernetes: `>= 1.19.0-0`
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
 helm upgrade --install my-aws-cwl-exporter stevenjdh/aws-cwl-exporter --version 0.1.0 \
+    --set serviceAccount.aws.irsa.enabled=true \
+    --set-string serviceAccount.aws.irsa.roleArn=arn:aws:iam::000000000000:role/example-irsa-role \
     --set-string configMap.logGroupName=/aws/lambda/hello-world-dev \
     --set-string configMap.s3BucketName=s3-example-log-exports \
     --set-string configMap.exportPrefix=export-task-output \
@@ -57,6 +59,11 @@ helm upgrade --install my-aws-cwl-exporter stevenjdh/aws-cwl-exporter --version 
 | secrets.awsAccessKeyId | string | `""` | Optional. The AWS access key associated with an IAM user or role. Not required when using [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa). |
 | secrets.awsSecretAccessKey | string | `""` | Optional. The AWS secret key associated with the access key. Not required when using [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa). |
 | serviceAccount.annotations | object | `{}` | annotations to add to the service account. |
+| serviceAccount.aws.irsa.audience | string | `"sts.amazonaws.com"` | audience sets the intended recipient of the token. |
+| serviceAccount.aws.irsa.enabled | bool | `true` | Specifies whether or not to enable support for AWS IAM Roles for Service Accounts (IRSA). Static credentials will be required if this is set to false. |
+| serviceAccount.aws.irsa.roleArn | string | `""` | roleArn is the ARN of an IAM role with a web identity provider. For example, `arn:aws:iam::000000000000:role/example-irsa-role`. |
+| serviceAccount.aws.irsa.stsRegionalEndpoints | string | `"true"` | stsRegionalEndpoints specifies whether or not to use an STS regional endpoint instead of a global one. It is recommended to use a regional endpoint in almost all cases. |
+| serviceAccount.aws.irsa.tokenExpiration | int | `86400` | tokenExpiration is the token expiration duration in seconds. Default is 1 day. |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created. |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 | tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |

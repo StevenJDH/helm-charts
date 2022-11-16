@@ -42,6 +42,22 @@ serviceAccount:
   # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template.
   name: ""
+  # An IAM OIDC Provider must have been previously set up and associated with the EKS OIDC Issuer Url for this to work.
+  aws:
+    irsa:
+      # -- Specifies whether or not to enable support for AWS IAM Roles for Service Accounts (IRSA).
+      # Static credentials will be required if this is set to false.
+      enabled: true
+      # -- audience sets the intended recipient of the token.
+      audience: "sts.amazonaws.com"
+      # -- roleArn is the ARN of an IAM role with a web identity provider. For example,
+      # `arn:aws:iam::000000000000:role/example-irsa-role`.
+      roleArn: ""
+      # -- stsRegionalEndpoints specifies whether or not to use an STS regional endpoint instead of a global one.
+      # It is recommended to use a regional endpoint in almost all cases.
+      stsRegionalEndpoints: "true"
+      # -- tokenExpiration is the token expiration duration in seconds. Default is 1 day.
+      tokenExpiration: 86400
 
 # @ignored
 podSecurityContext:
