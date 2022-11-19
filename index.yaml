@@ -20,6 +20,26 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/aksupport-0.1.0/aksupport-0.1.0.tgz
     version: 0.1.0
+  aws-cwl-exporter:
+  - apiVersion: v2
+    appVersion: 2.8.7
+    created: "2022-11-19T17:10:39.83574468Z"
+    description: A productivity tool that makes it easy to schedule automated log
+      exports to an AWS S3 Bucket.
+    digest: 4771121c664784e76e2f0d55303204d156aff9b802e4b5819644012b644a4748
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.19.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: aws-cwl-exporter
+    sources:
+    - https://github.com/StevenJDH/aws-cwl-exporter
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/aws-cwl-exporter-0.1.0/aws-cwl-exporter-0.1.0.tgz
+    version: 0.1.0
   covid-tracker:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -39,4 +59,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/covid-tracker-0.1.0/covid-tracker-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-15T00:16:47.570830826Z"
+generated: "2022-11-19T17:10:39.83574988Z"
