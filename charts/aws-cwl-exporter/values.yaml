@@ -62,13 +62,16 @@ serviceAccount:
 # @ignored
 podSecurityContext:
   runAsNonRoot: true
-  runAsUser: 10101
+  # Using UID 999 to run as the 'aws' container user.
+  runAsUser: 999
   # seccompProfile requires K8s 1.19+, use annotation equivalent for older versions.
   seccompProfile:
     type: RuntimeDefault
 
 # @ignored
 securityContext:
+  # readOnlyRootFilesystem: true causes 'cannot create temp file for here-document: Read-only file system', so
+  # fixed using tmp volume mount.
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:

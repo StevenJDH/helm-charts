@@ -83,23 +83,27 @@ spec:
             envFrom:
             - configMapRef:
                 name: {{ template "aws-cwl-exporter.fullname" . }}-config
-            {{- if and .Values.secrets.awsAccessKeyId .Values.secrets.awsSecretAccessKey -}}
+            {{- if and .Values.secrets.awsAccessKeyId .Values.secrets.awsSecretAccessKey }}
             - secretRef:
                 name: {{ template "aws-cwl-exporter.fullname" . }}-secret
             {{- end }}
             resources:
               {{- toYaml .Values.resources | nindent 14 }}
-            {{- with .Values.cronjob.job.extraVolumeMounts }}
             volumeMounts:
-              {{- toYaml . | nindent 14 }}
+            - mountPath: /tmp
+              name: tmp
+            {{- with .Values.cronjob.job.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
           {{- with .Values.cronjob.job.extraInitContainers }}
           initContainers:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.cronjob.job.extraVolumes }}
           volumes:
-            {{- toYaml . | nindent 12 }}
+          - emptyDir: {}
+            name: tmp
+          {{- with .Values.cronjob.job.extraVolumes }}
+          {{- toYaml . | nindent 10 }}
           {{- end }}
           {{- with .Values.cronjob.job.restartPolicy }}
           restartPolicy: {{ . }}

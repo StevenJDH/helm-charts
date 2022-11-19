@@ -67,7 +67,7 @@ spec:
           serviceAccountName: aws-cwl-exporter
           securityContext:
             runAsNonRoot: true
-            runAsUser: 10101
+            runAsUser: 999
             seccompProfile:
               type: RuntimeDefault
           containers:
@@ -85,6 +85,12 @@ spec:
                 name: aws-cwl-exporter-config
             resources:
               {}
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+          volumes:
+          - emptyDir: {}
+            name: tmp
           restartPolicy: Never
           nodeSelector:
             kubernetes.io/os: linux
