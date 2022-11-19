@@ -1,0 +1,192 @@
+# This file is part of AWS CloudWatch Log Exporter Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2022 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+image:
+  # -- repository can alternatively use "ghcr.io/stevenjdh/aws-cwl-exporter", which requires a pull secret,
+  # or "public.ecr.aws/stevenjdh/aws-cwl-exporter".
+  repository: stevenjdh/aws-cwl-exporter
+  # -- pullPolicy is the strategy for pulling images from a registry.
+  pullPolicy: Always
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  pullSecret:
+    # @ignored. registry is the GitHub container registry for pulling images.
+    registry: ghcr.io
+    # -- username is the GitHub username associated with the PAT below, like StevenJDH.
+    username: ""
+    # -- password is a PAT with at least read:packages permissions.
+    password: ""
+
+# -- Override for chart name in helm common labels.
+nameOverride: ""
+# -- Override for generated resource names.
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created.
+  create: true
+  # -- annotations to add to the service account.
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template.
+  name: ""
+  # An IAM OIDC Provider must have been previously set up and associated with the EKS OIDC Issuer Url for this to work.
+  aws:
+    irsa:
+      # -- Specifies whether or not to enable support for AWS IAM Roles for Service Accounts (IRSA).
+      # Static credentials will be required if this is set to false.
+      enabled: true
+      # -- audience sets the intended recipient of the token.
+      audience: "sts.amazonaws.com"
+      # -- roleArn is the ARN of an IAM role with a web identity provider. For example,
+      # `arn:aws:iam::000000000000:role/example-irsa-role`.
+      roleArn: ""
+      # -- stsRegionalEndpoints specifies whether or not to use an STS regional endpoint instead of a global one.
+      # It is recommended to use a regional endpoint in almost all cases.
+      stsRegionalEndpoints: "true"
+      # -- tokenExpiration is the token expiration duration in seconds. Default is 1 day.
+      tokenExpiration: 86400
+
+# @ignored
+podSecurityContext:
+  runAsNonRoot: true
+  # Using UID 999 to run as the 'aws' container user.
+  runAsUser: 999
+  # seccompProfile requires K8s 1.19+, use annotation equivalent for older versions.
+  seccompProfile:
+    type: RuntimeDefault
+
+# @ignored
+securityContext:
+  # readOnlyRootFilesystem: true causes 'cannot create temp file for here-document: Read-only file system', so
+  # fixed using tmp volume mount.
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+
+# --  Optionally request and limit how much CPU and memory (RAM) the container needs.
+# Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+resources: {}
+#  We usually recommend not to specify default resources and to leave this as a conscious
+#  choice for the user. This also increases chances charts run on environments with little
+#  resources, such as Minikube. If you do want to specify resources, uncomment the following
+#  lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+#  requests:
+#    memory: 256Mi
+#    cpu: 500m
+#  limits:
+#    memory: 512Mi
+#    cpu: 1000m
+
+cronjob:
+  # -- The Cron schedule to trigger a CreateExportTask for the previous hour or day based on `configMap.exportPeriod`. Default is every hour at minute 5.
+  schedule: '5 * * * *'
+  # -- annotations to be added to the CronJob.
+  annotations: {}
+  # @ignored
+  concurrencyPolicy: ""
+  # @ignored
+  failedJobsHistoryLimit: 1
+  # @ignored
+  successfulJobsHistoryLimit: 1
+  # @ignored. If startingDeadlineSeconds is set to a value less than 10 seconds, the CronJob may not be scheduled.
+  startingDeadlineSeconds: ""
+  job:
+    # -- podAnnotations are the annotations to be added to the job pods.
+    podAnnotations: {}
+    # @ignored
+    restartPolicy: Never
+    # @ignored
+    completions: 1
+    # @ignored
+    backoffLimit: 0
+    # @ignored
+    activeDeadlineSeconds: 120
+    # -- Additional command line arguments to pass to the container.
+    extraArgs: []
+    #  - --arg1
+    #  - value1
+    #  - --arg2
+    #  - value2
+
+    # -- Additional environment variables to set.
+    extraEnvs: []
+    #  - name: FOO
+    #    valueFrom:
+    #      secretKeyRef:
+    #        key: FOO
+    #        name: secret-resource
+
+    # -- Additional volumeMounts for the main container.
+    extraVolumeMounts: []
+    #  - name: example-volume
+    #    mountPath: /share/example
+
+    # -- Additional volumes for the pod.
+    extraVolumes: []
+    #  - name: example-volume
+    #    emptyDir: {}
+
+    # -- Containers, which are run before the app containers are started.
+    extraInitContainers: []
+    #  - name: init-myservice
+    #    image: busybox
+    #    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+
+configMap:
+  # -- Required. The name of the log group source for exporting logs from.
+  logGroupName: ""
+  # -- Required. The name of S3 bucket storing the exported log data. The bucket must be in the same AWS region.
+  s3BucketName: ""
+  # -- Required. The prefix used as the start of the key for every object exported.
+  exportPrefix: "export-task-output"
+  # -- Optional. The `hourly` or `daily` period used for collecting logs. Not required unless set to `daily`.
+  exportPeriod: "hourly"
+  # -- Optional. The AWS Region to use for requests. Must match log group and S3 bucket region. Not required
+  # when using [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa).
+  awsDefaultRegion: ""
+
+secrets:
+  # -- Optional. The AWS access key associated with an IAM user or role. Not required when using
+  # [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa).
+  awsAccessKeyId: ""
+  # -- Optional. The AWS secret key associated with the access key. Not required when using
+  # [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa).
+  awsSecretAccessKey: ""
+
+# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
+nodeSelector:
+  kubernetes.io/os: linux
+
+# -- affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
+affinity: {}
+#  podAntiAffinity:
+#    requiredDuringSchedulingIgnoredDuringExecution:
+#    - labelSelector:
+#        matchExpressions:
+#        - key: app
+#          operator: In
+#          values:
+#          - covid-tracker
+#      topologyKey: "kubernetes.io/hostname"
+
+# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
+tolerations: []
+#  - key: "key"
+#    operator: "Equal|Exists"
+#    value: "value"
+#    effect: "NoSchedule|PreferNoSchedule|NoExecute"

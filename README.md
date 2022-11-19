@@ -1,6 +1,7 @@
 # Helm Charts
 
 [![Release Charts](https://github.com/StevenJDH/helm-charts/actions/workflows/chart-releaser-workflow.yml/badge.svg?branch=main)](https://github.com/StevenJDH/helm-charts/actions/workflows/chart-releaser-workflow.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/51e4129137284c32a81ec74a8600c63c)](https://www.codacy.com/gh/StevenJDH/helm-charts/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=StevenJDH/helm-charts&amp;utm_campaign=Badge_Grade)
 ![Maintenance](https://img.shields.io/maintenance/yes/2022)
 ![GitHub](https://img.shields.io/github/license/StevenJDH/helm-charts)
 
@@ -29,10 +30,10 @@ Pull requests will trigger automatic chart testing and tests against Kubernetes 
 ### Manual chart testing
 
 ```bash
-docker pull quay.io/helmpack/chart-testing:v3.6.0
+docker pull quay.io/helmpack/chart-testing:v3.7.1
 docker run -it --rm --name ct --workdir=/data \
-    --volume $(pwd):/data quay.io/helmpack/chart-testing:v3.6.0 sh \
-    -c "ct lint --print-config --config ct.yaml"
+    --volume $(pwd):/data quay.io/helmpack/chart-testing:v3.7.1 sh \
+    -c "ct lint --charts charts/<chart> --print-config --config ct.yaml"
 ```
 
 ### Manual kind (Kubernetes in Docker) tests

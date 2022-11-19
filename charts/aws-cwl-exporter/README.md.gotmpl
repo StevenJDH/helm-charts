@@ -1,0 +1,31 @@
+# AWS CloudWatch Log Exporter Helm Chart
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . -}}
+
+## Usage example
+
+```bash
+helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
+helm repo update
+helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
+    --set serviceAccount.aws.irsa.enabled=true \
+    --set-string serviceAccount.aws.irsa.roleArn=arn:aws:iam::000000000000:role/example-irsa-role \
+    --set-string configMap.logGroupName=/aws/lambda/hello-world-dev \
+    --set-string configMap.s3BucketName=s3-example-log-exports \
+    --set-string configMap.exportPrefix=export-task-output \
+    --set-string configMap.exportPeriod=hourly \
+    --namespace example \
+    --create-namespace \
+    --atomic
+```
+
+{{ template "chart.valuesSection" . }}
+
+
+{{ template "footer.signature" . }}
