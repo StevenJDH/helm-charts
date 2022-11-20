@@ -20,7 +20,7 @@ limitations under the License.
 {{- $azureAppId          := .Values.configMap.azureAppId -}}
 {{- $azureAksRegion      := .Values.configMap.azureAksRegion -}}
 
-{{- if or $azureSubscriptionId $azureAppTenant $azureAppId $azureAksRegion -}}
+{{- if and $azureSubscriptionId $azureAppTenant $azureAppId $azureAksRegion -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
