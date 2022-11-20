@@ -68,12 +68,19 @@ Common labels
 */}}
 {{- define "aksupport.labels" -}}
 helm.sh/chart: {{ include "aksupport.chart" . }}
-app.kubernetes.io/name: {{ include "aksupport.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "aksupport.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "aksupport.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "aksupport.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
