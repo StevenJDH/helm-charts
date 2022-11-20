@@ -20,6 +20,7 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
     --set-string configMaps.azureAppId=<appId> \
     --set-string secrets.azureAppPassword=<password> \
     --namespace example \
+    --create-namespace \
     --atomic
 ```
 
