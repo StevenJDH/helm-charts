@@ -90,7 +90,7 @@ cronjob:
     backoffLimit: 0
     activeDeadlineSeconds: 120
 
-configMaps:
+configMap:
   # -- Required. Subscription Id of Azure account.
   azureSubscriptionId: ""
   # -- Required. App Tenant Id for application registration.

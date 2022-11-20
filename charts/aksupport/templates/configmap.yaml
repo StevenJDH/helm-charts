@@ -15,10 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $azureSubscriptionId := .Values.configMaps.azureSubscriptionId -}}
-{{- $azureAppTenant      := .Values.configMaps.azureAppTenant -}}
-{{- $azureAppId          := .Values.configMaps.azureAppId -}}
-{{- $azureAksRegion      := .Values.configMaps.azureAksRegion -}}
+{{- $azureSubscriptionId := .Values.configMap.azureSubscriptionId -}}
+{{- $azureAppTenant      := .Values.configMap.azureAppTenant -}}
+{{- $azureAppId          := .Values.configMap.azureAppId -}}
+{{- $azureAksRegion      := .Values.configMap.azureAksRegion -}}
 
 {{- if or $azureSubscriptionId $azureAppTenant $azureAppId $azureAksRegion -}}
 apiVersion: v1
@@ -28,7 +28,7 @@ metadata:
   labels:
     {{- include "aksupport.labels" . | nindent 4 }}
 data:
-  {{- range $key, $val := .Values.configMaps }}
+  {{- range $key, $val := .Values.configMap }}
   {{- if $val }}
   {{ $key | snakecase | upper }}: {{ $val }}
   {{- end}}
