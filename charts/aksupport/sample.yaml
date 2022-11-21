@@ -5,7 +5,7 @@ kind: CronJob
 metadata:
   name: aksupport
   labels:
-    helm.sh/chart: aksupport-0.1.0
+    helm.sh/chart: aksupport-1.0.0
     app.kubernetes.io/name: aksupport
     app.kubernetes.io/instance: aksupport
     app.kubernetes.io/version: "1.0.0"
@@ -14,7 +14,7 @@ spec:
   jobTemplate:
     metadata:
       labels:
-        helm.sh/chart: aksupport-0.1.0
+        helm.sh/chart: aksupport-1.0.0
         app.kubernetes.io/name: aksupport
         app.kubernetes.io/instance: aksupport
         app.kubernetes.io/version: "1.0.0"
@@ -26,7 +26,7 @@ spec:
       template:
         metadata:
           labels:
-            helm.sh/chart: aksupport-0.1.0
+            helm.sh/chart: aksupport-1.0.0
             app.kubernetes.io/name: aksupport
             app.kubernetes.io/instance: aksupport
             app.kubernetes.io/version: "1.0.0"
@@ -41,6 +41,12 @@ spec:
           - name: aksupport
             image: "public.ecr.aws/stevenjdh/aksupport:1.0.0"
             imagePullPolicy: Always
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              readOnlyRootFilesystem: true
             env:
             - name: AZMON_COLLECT_ENV # Required to prevent sensitive data leaking to Azure Monitor Logs.
               value: "FALSE"
@@ -49,15 +55,11 @@ spec:
                 name: aksupport-config
             - secretRef:
                 name: aksupport-secret
+            resources:
+              {}
             volumeMounts:
             - mountPath: /tmp
               name: tmp
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                - ALL
-              readOnlyRootFilesystem: true
           volumes:
           - emptyDir: {}
             name: tmp
