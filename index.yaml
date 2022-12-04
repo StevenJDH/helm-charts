@@ -3,6 +3,25 @@ entries:
   aksupport:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-12-04T17:07:45.050625511Z"
+    description: An automation tool that regularly checks for the current supported
+      status of an AKS cluster to alert and maintain Microsoft support.
+    digest: 1887615f750d284ba02756278f084f8a4a600317b03b13fa69436013fa194dad
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://raw.githubusercontent.com/StevenJDH/AKSupport/main/Avatars/aksupport-256x256-transparent-bg.png
+    kubeVersion: '>= 1.19.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: aksupport
+    sources:
+    - https://github.com/StevenJDH/AKSupport
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/aksupport-1.0.0/aksupport-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-10-09T19:21:48.865658333Z"
     description: An automation tool that regularly checks for the current supported
       status of an AKS cluster to alert and maintain Microsoft support.
@@ -59,4 +78,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/covid-tracker-0.1.0/covid-tracker-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-19T17:10:39.83574988Z"
+generated: "2022-12-04T17:07:45.05063321Z"
