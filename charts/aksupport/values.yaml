@@ -15,8 +15,8 @@
 
 image:
   # -- repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret,
-  # or Docker Hub using "stevenjdh/aksupport".
-  repository: public.ecr.aws/stevenjdh/aksupport
+  # or "public.ecr.aws/stevenjdh/aksupport".
+  repository: stevenjdh/aksupport
   # -- pullPolicy is the strategy for pulling images from a registry.
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
@@ -34,38 +34,35 @@ nameOverride: ""
 # -- Override for generated resource names.
 fullnameOverride: ""
 
-# -- podAnnotations are the annotations to be added to the job pods.
-podAnnotations: {}
-
 # @ignored
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 10101
-  # seccompProfile requires K8s 1.19+, use annotation equivalent for older versions.
   seccompProfile:
     type: RuntimeDefault
 
 # @ignored
 securityContext:
-  # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005', so fix using tmp volume mount.
+  # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005', so fixed using tmp volume mount.
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
     drop:
     - ALL
 
-# --  Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+# --  Optionally request and limit how much CPU and memory (RAM) the container needs.
+# Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # requests:
-  #   memory: 256Mi
-  #   cpu: 500m
-  # limits:
-  #   memory: 512Mi
-  #   cpu: 1000m
+#  We usually recommend not to specify default resources and to leave this as a conscious
+#  choice for the user. This also increases chances charts run on environments with little
+#  resources, such as Minikube. If you do want to specify resources, uncomment the following
+#  lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+#  requests:
+#    memory: 256Mi
+#    cpu: 500m
+#  limits:
+#    memory: 512Mi
+#    cpu: 1000m
 
 # -- testVersion is for providing a specific version like 1.17.0 for testing.
 testVersion: ""
@@ -83,14 +80,49 @@ cronjob:
   successfulJobsHistoryLimit: 1
   # @ignored. If startingDeadlineSeconds is set to a value less than 10 seconds, the CronJob may not be scheduled.
   startingDeadlineSeconds: ""
-  # @ignored
   job:
+    # -- podAnnotations are the annotations to be added to the job pods.
+    podAnnotations: {}
+    # @ignored
     restartPolicy: Never
+    # @ignored
     completions: 1
+    # @ignored
     backoffLimit: 0
+    # @ignored
     activeDeadlineSeconds: 120
+    # -- Additional command line arguments to pass to the container.
+    extraArgs: []
+    #  - --arg1
+    #  - value1
+    #  - --arg2
+    #  - value2
 
-configMaps:
+    # -- Additional environment variables to set.
+    extraEnvs: []
+    #  - name: FOO
+    #    valueFrom:
+    #      secretKeyRef:
+    #        key: FOO
+    #        name: secret-resource
+
+    # -- Additional volumeMounts for the main container.
+    extraVolumeMounts: []
+    #  - name: example-volume
+    #    mountPath: /share/example
+
+    # -- Additional volumes for the pod.
+    extraVolumes: []
+    #  - name: example-volume
+    #    emptyDir: {}
+
+    # -- Containers, which are run before the app containers are started.
+    extraInitContainers: []
+    #  - name: init-myservice
+    #    image: busybox
+    #    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+
+configMap:
   # -- Required. Subscription Id of Azure account.
   azureSubscriptionId: ""
   # -- Required. App Tenant Id for application registration.
@@ -128,15 +160,15 @@ nodeSelector:
 
 # -- affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
 affinity: {}
-  # podAntiAffinity:
-  #   requiredDuringSchedulingIgnoredDuringExecution:
-  #   - labelSelector:
-  #       matchExpressions:
-  #       - key: app
-  #         operator: In
-  #         values:
-  #         - aksupport
-  #     topologyKey: "kubernetes.io/hostname"
+#  podAntiAffinity:
+#    requiredDuringSchedulingIgnoredDuringExecution:
+#    - labelSelector:
+#        matchExpressions:
+#        - key: app
+#          operator: In
+#          values:
+#          - app-name
+#      topologyKey: "kubernetes.io/hostname"
 
 # -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
 tolerations: []

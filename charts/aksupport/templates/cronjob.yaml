@@ -50,7 +50,7 @@ spec:
       {{- end }}
       template:
         metadata:
-          {{- with .Values.podAnnotations }}
+          {{- with .Values.cronjob.job.podAnnotations }}
           annotations:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -61,42 +61,54 @@ spec:
           imagePullSecrets:
           - name: {{ template "aksupport.fullname" . }}-github-pull-secret
           {{- end }}
-          {{- with .Values.podSecurityContext }}
           securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
           containers:
           - name: {{ .Chart.Name }}
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-            {{- if .Values.testVersion }}
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            securityContext:
+              {{- toYaml .Values.securityContext | nindent 14 }}
+            {{- if or .Values.testVersion .Values.cronjob.job.extraArgs }}
             args:
-            - {{ .Values.testVersion | quote }}
-            {{- end }}
-            {{- with .Values.image.pullPolicy }}
-            imagePullPolicy: {{ . }}
+              {{- if .Values.testVersion }}
+              - {{ .Values.testVersion | quote }}
+              {{- end }}
+              {{- if and .Values.cronjob.job.extraArgs (not .Values.testVersion) }}
+              {{- range .Values.cronjob.job.extraArgs }}
+              - {{ . | quote }}
+              {{- end }}
+              {{- end }}
             {{- end }}
             env:
             - name: AZMON_COLLECT_ENV # Required to prevent sensitive data leaking to Azure Monitor Logs.
               value: "FALSE"
+            {{- with .Values.cronjob.job.extraEnvs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
             envFrom:
             - configMapRef:
                 name: {{ template "aksupport.fullname" . }}-config
             - secretRef:
                 name: {{ template "aksupport.fullname" . }}-secret
-            {{- with .Values.resources }}
             resources:
-              {{- toYaml . | nindent 14 }}
-            {{- end }}
+              {{- toYaml .Values.resources | nindent 14 }}
             volumeMounts:
             - mountPath: /tmp
               name: tmp
-            {{- with .Values.securityContext }}
-            securityContext:
-              {{- toYaml . | nindent 14 }}
+            {{- with .Values.cronjob.job.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
+          {{- with .Values.cronjob.job.extraInitContainers }}
+          initContainers:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumes:
           - emptyDir: {}
             name: tmp
+          {{- with .Values.cronjob.job.extraVolumes }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           {{- with .Values.cronjob.job.restartPolicy }}
           restartPolicy: {{ . }}
           {{- end }}
