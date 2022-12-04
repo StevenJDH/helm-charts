@@ -83,8 +83,7 @@ podSecurityContext:
 
 # @ignored
 securityContext:
-  # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005' with C# apps and something
-  # similar with Java apps, so fix using tmp volume mount.
+  # readOnlyRootFilesystem: true causes 'WebServerException: Unable to create tempDir', so fixed using tmp volume mount.
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
