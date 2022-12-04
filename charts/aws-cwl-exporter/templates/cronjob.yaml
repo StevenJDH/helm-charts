@@ -70,7 +70,7 @@ spec:
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             securityContext:
               {{- toYaml .Values.securityContext | nindent 14 }}
-            {{- if .Values.extraArgs }}
+            {{- if .Values.cronjob.job.extraArgs }}
             args:
               {{- range .Values.cronjob.job.extraArgs }}
               - {{ . | quote }}
