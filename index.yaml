@@ -62,6 +62,24 @@ entries:
   covid-tracker:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-12-04T20:42:15.187694633Z"
+    description: Tracks the number of infected cases with the Covid-19 virus.
+    digest: dce41c5c79c66ee33431e8fc67078f7bb1878e41cd8de9155bd61b22a18729c6
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.19.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: covid-tracker
+    sources:
+    - https://github.com/StevenJDH/covid-tracker
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/covid-tracker-0.1.1/covid-tracker-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-11-15T00:16:47.570822626Z"
     description: Tracks the number of infected cases with the Covid-19 virus.
     digest: 729f6d028e9e987a71fd74e73e25458840e6b28fd65db37f052af291b0c3063f
@@ -78,4 +96,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/covid-tracker-0.1.0/covid-tracker-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-04T17:07:45.05063321Z"
+generated: "2022-12-04T20:42:15.187704933Z"
