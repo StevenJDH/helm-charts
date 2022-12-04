@@ -18,10 +18,10 @@ Kubernetes: `>= 1.19.0-0`
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
 helm upgrade --install my-aksupport stevenjdh/aksupport --version 1.0.0 \
-    --set-string configMaps.azureSubscriptionId=<subscriptionId> \
-    --set-string configMaps.azureAppTenant=<tenant> \
-    --set-string configMaps.azureAksRegion=<region> \
-    --set-string configMaps.azureAppId=<appId> \
+    --set-string configMap.azureSubscriptionId=<subscriptionId> \
+    --set-string configMap.azureAppTenant=<tenant> \
+    --set-string configMap.azureAksRegion=<region> \
+    --set-string configMap.azureAppId=<appId> \
     --set-string secrets.azureAppPassword=<password> \
     --namespace example \
     --create-namespace \
