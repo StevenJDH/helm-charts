@@ -77,7 +77,7 @@ extraEnvs: []
 # @ignored
 podSecurityContext:
   runAsNonRoot: true
-  runAsUser: 10101
+  runAsUser: 100
   seccompProfile:
     type: RuntimeDefault
 
