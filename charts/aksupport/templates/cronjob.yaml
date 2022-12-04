@@ -74,7 +74,7 @@ spec:
               {{- if .Values.testVersion }}
               - {{ .Values.testVersion | quote }}
               {{- end }}
-              {{- if .Values.extraArgs }}
+              {{- if and .Values.cronjob.job.extraArgs (not .Values.testVersion) }}
               {{- range .Values.cronjob.job.extraArgs }}
               - {{ . | quote }}
               {{- end }}
