@@ -64,7 +64,6 @@ podSecurityContext:
   runAsNonRoot: true
   # Using UID 999 to run as the 'aws' container user.
   runAsUser: 999
-  # seccompProfile requires K8s 1.19+, use annotation equivalent for older versions.
   seccompProfile:
     type: RuntimeDefault
 
@@ -181,7 +180,7 @@ affinity: {}
 #        - key: app
 #          operator: In
 #          values:
-#          - covid-tracker
+#          - app-name
 #      topologyKey: "kubernetes.io/hostname"
 
 # -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
