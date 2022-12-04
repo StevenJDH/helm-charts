@@ -56,7 +56,7 @@ helm upgrade --install my-aksupport stevenjdh/aksupport --version 1.0.0 \
 | image.pullPolicy | string | `"Always"` | pullPolicy is the strategy for pulling images from a registry. |
 | image.pullSecret.password | string | `""` | password is a PAT with at least read:packages permissions. |
 | image.pullSecret.username | string | `""` | username is the GitHub username associated with the PAT below, like StevenJDH. |
-| image.repository | string | `"public.ecr.aws/stevenjdh/aksupport"` | repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret, or Docker Hub using "stevenjdh/aksupport". |
+| image.repository | string | `"stevenjdh/aksupport"` | repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret, or "public.ecr.aws/stevenjdh/aksupport". |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |

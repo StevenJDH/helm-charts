@@ -15,8 +15,8 @@
 
 image:
   # -- repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret,
-  # or Docker Hub using "stevenjdh/aksupport".
-  repository: public.ecr.aws/stevenjdh/aksupport
+  # or "public.ecr.aws/stevenjdh/aksupport".
+  repository: stevenjdh/aksupport
   # -- pullPolicy is the strategy for pulling images from a registry.
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
@@ -38,7 +38,6 @@ fullnameOverride: ""
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 10101
-  # seccompProfile requires K8s 1.19+, use annotation equivalent for older versions.
   seccompProfile:
     type: RuntimeDefault
 

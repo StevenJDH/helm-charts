@@ -39,7 +39,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: aksupport
-            image: "public.ecr.aws/stevenjdh/aksupport:1.0.0"
+            image: "stevenjdh/aksupport:1.0.0"
             imagePullPolicy: Always
             securityContext:
               allowPrivilegeEscalation: false
