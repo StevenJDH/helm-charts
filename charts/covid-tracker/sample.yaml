@@ -5,7 +5,7 @@ kind: ConfigMap
 metadata:
   name: covid-tracker-config
   labels:
-    helm.sh/chart: covid-tracker-0.1.0
+    helm.sh/chart: covid-tracker-0.1.1
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"
@@ -19,7 +19,7 @@ kind: Service
 metadata:
   name: covid-tracker-svc
   labels:
-    helm.sh/chart: covid-tracker-0.1.0
+    helm.sh/chart: covid-tracker-0.1.1
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"
@@ -46,7 +46,7 @@ kind: Deployment
 metadata:
   name: covid-tracker
   labels:
-    helm.sh/chart: covid-tracker-0.1.0
+    helm.sh/chart: covid-tracker-0.1.1
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"
@@ -66,7 +66,7 @@ spec:
       serviceAccountName: default
       securityContext:
         runAsNonRoot: true
-        runAsUser: 10101
+        runAsUser: 100
         seccompProfile:
           type: RuntimeDefault
       containers:
@@ -126,7 +126,7 @@ kind: Ingress
 metadata:
   name: covid-tracker-ingress
   labels:
-    helm.sh/chart: covid-tracker-0.1.0
+    helm.sh/chart: covid-tracker-0.1.1
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"
@@ -153,7 +153,7 @@ metadata:
   annotations:
     "helm.sh/hook": test
   labels:
-    helm.sh/chart: covid-tracker-0.1.0
+    helm.sh/chart: covid-tracker-0.1.1
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"

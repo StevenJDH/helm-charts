@@ -1,6 +1,6 @@
 # COVID-19 Tracker Helm Chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square) 
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square) 
 
 Tracks the number of infected cases with the Covid-19 virus.
 
@@ -17,7 +17,7 @@ Kubernetes: `>= 1.19.0-0`
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-covid-tracker stevenjdh/covid-tracker --version 0.1.0 \
+helm upgrade --install my-covid-tracker stevenjdh/covid-tracker --version 0.1.1 \
     --namespace example \
     --create-namespace \
     --atomic
