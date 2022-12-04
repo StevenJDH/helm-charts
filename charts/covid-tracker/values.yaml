@@ -1,4 +1,4 @@
-# This file is part of AKSupport Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# This file is part of COVID-19 Tracker Helm Chart <https://github.com/StevenJDH/helm-charts>.
 # Copyright (C) 2022 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -77,15 +77,13 @@ extraEnvs: []
 # @ignored
 podSecurityContext:
   runAsNonRoot: true
-  runAsUser: 10101
-  # seccompProfile requires K8s 1.19+, use annotation equivalent for older versions.
+  runAsUser: 100
   seccompProfile:
     type: RuntimeDefault
 
 # @ignored
 securityContext:
-  # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005' with C# apps and something
-  # similar with Java apps, so fix using tmp volume mount.
+  # readOnlyRootFilesystem: true causes 'WebServerException: Unable to create tempDir', so fixed using tmp volume mount.
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
@@ -255,7 +253,7 @@ affinity: {}
 #        - key: app
 #          operator: In
 #          values:
-#          - covid-tracker
+#          - app-name
 #      topologyKey: "kubernetes.io/hostname"
 
 # -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
