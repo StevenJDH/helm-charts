@@ -87,10 +87,14 @@ spec:
               {}
             volumeMounts:
             - mountPath: /tmp
-              name: tmp
+              name: workspace-volume
+              subPath: tmp
+            - mountPath: /.aws
+              name: workspace-volume
+              subPath: .aws
           volumes:
           - emptyDir: {}
-            name: tmp
+            name: workspace-volume
           restartPolicy: Never
           nodeSelector:
             kubernetes.io/os: linux
