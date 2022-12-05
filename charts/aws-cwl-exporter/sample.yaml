@@ -10,10 +10,10 @@ metadata:
     eks.amazonaws.com/sts-regional-endpoints: "true"
     eks.amazonaws.com/token-expiration: "86400"
   labels:
-    helm.sh/chart: aws-cwl-exporter-0.1.0
+    helm.sh/chart: aws-cwl-exporter-0.1.1
     app.kubernetes.io/name: aws-cwl-exporter
     app.kubernetes.io/instance: aws-cwl-exporter
-    app.kubernetes.io/version: "2.8.7"
+    app.kubernetes.io/version: "2.9.4"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: aws-cwl-exporter/templates/configmap.yaml
@@ -22,10 +22,10 @@ kind: ConfigMap
 metadata:
   name: aws-cwl-exporter-config
   labels:
-    helm.sh/chart: aws-cwl-exporter-0.1.0
+    helm.sh/chart: aws-cwl-exporter-0.1.1
     app.kubernetes.io/name: aws-cwl-exporter
     app.kubernetes.io/instance: aws-cwl-exporter
-    app.kubernetes.io/version: "2.8.7"
+    app.kubernetes.io/version: "2.9.4"
     app.kubernetes.io/managed-by: Helm
 data:
   EXPORT_PERIOD: hourly
@@ -37,19 +37,19 @@ kind: CronJob
 metadata:
   name: aws-cwl-exporter
   labels:
-    helm.sh/chart: aws-cwl-exporter-0.1.0
+    helm.sh/chart: aws-cwl-exporter-0.1.1
     app.kubernetes.io/name: aws-cwl-exporter
     app.kubernetes.io/instance: aws-cwl-exporter
-    app.kubernetes.io/version: "2.8.7"
+    app.kubernetes.io/version: "2.9.4"
     app.kubernetes.io/managed-by: Helm
 spec:
   jobTemplate:
     metadata:
       labels:
-        helm.sh/chart: aws-cwl-exporter-0.1.0
+        helm.sh/chart: aws-cwl-exporter-0.1.1
         app.kubernetes.io/name: aws-cwl-exporter
         app.kubernetes.io/instance: aws-cwl-exporter
-        app.kubernetes.io/version: "2.8.7"
+        app.kubernetes.io/version: "2.9.4"
         app.kubernetes.io/managed-by: Helm
     spec:
       completions: 1
@@ -58,10 +58,10 @@ spec:
       template:
         metadata:
           labels:
-            helm.sh/chart: aws-cwl-exporter-0.1.0
+            helm.sh/chart: aws-cwl-exporter-0.1.1
             app.kubernetes.io/name: aws-cwl-exporter
             app.kubernetes.io/instance: aws-cwl-exporter
-            app.kubernetes.io/version: "2.8.7"
+            app.kubernetes.io/version: "2.9.4"
             app.kubernetes.io/managed-by: Helm
         spec:
           serviceAccountName: aws-cwl-exporter
@@ -72,7 +72,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: aws-cwl-exporter
-            image: "stevenjdh/aws-cwl-exporter:2.8.7"
+            image: "stevenjdh/aws-cwl-exporter:2.9.4"
             imagePullPolicy: Always
             securityContext:
               allowPrivilegeEscalation: false
