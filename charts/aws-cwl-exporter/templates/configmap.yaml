@@ -19,7 +19,7 @@ limitations under the License.
 {{- $s3BucketName := .Values.configMap.s3BucketName -}}
 {{- $exportPrefix := .Values.configMap.exportPrefix -}}
 
-{{- if or $logGroupName $s3BucketName $exportPrefix -}}
+{{- if and $logGroupName $s3BucketName $exportPrefix -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
