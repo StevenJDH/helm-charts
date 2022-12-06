@@ -69,8 +69,8 @@ podSecurityContext:
 
 # @ignored
 securityContext:
-  # readOnlyRootFilesystem: true causes 'cannot create temp file for here-document: Read-only file system', so
-  # fixed using tmp volume mount.
+  # readOnlyRootFilesystem: true causes 'cannot create temp file for here-document: Read-only file system' and something
+  # similar for the .aws folder, so fixed using tmp and .aws volume mounts.
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
