@@ -70,7 +70,7 @@ spec:
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             securityContext:
               {{- toYaml .Values.securityContext | nindent 14 }}
-            {{- if .Values.extraArgs }}
+            {{- if .Values.cronjob.job.extraArgs }}
             args:
               {{- range .Values.cronjob.job.extraArgs }}
               - {{ . | quote }}
@@ -91,7 +91,11 @@ spec:
               {{- toYaml .Values.resources | nindent 14 }}
             volumeMounts:
             - mountPath: /tmp
-              name: tmp
+              name: workspace-volume
+              subPath: tmp
+            - mountPath: /.aws
+              name: workspace-volume
+              subPath: .aws
             {{- with .Values.cronjob.job.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -101,7 +105,7 @@ spec:
           {{- end }}
           volumes:
           - emptyDir: {}
-            name: tmp
+            name: workspace-volume
           {{- with .Values.cronjob.job.extraVolumes }}
           {{- toYaml . | nindent 10 }}
           {{- end }}

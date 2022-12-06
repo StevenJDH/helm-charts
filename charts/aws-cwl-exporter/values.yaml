@@ -64,14 +64,13 @@ podSecurityContext:
   runAsNonRoot: true
   # Using UID 999 to run as the 'aws' container user.
   runAsUser: 999
-  # seccompProfile requires K8s 1.19+, use annotation equivalent for older versions.
   seccompProfile:
     type: RuntimeDefault
 
 # @ignored
 securityContext:
-  # readOnlyRootFilesystem: true causes 'cannot create temp file for here-document: Read-only file system', so
-  # fixed using tmp volume mount.
+  # readOnlyRootFilesystem: true causes 'cannot create temp file for here-document: Read-only file system' and something
+  # similar for the .aws folder, so fixed using tmp and .aws volume mounts.
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
@@ -93,7 +92,10 @@ resources: {}
 #    cpu: 1000m
 
 cronjob:
-  # -- The Cron schedule to trigger a CreateExportTask for the previous hour or day based on `configMap.exportPeriod`. Default is every hour at minute 5.
+  # -- The Cron schedule to trigger a CreateExportTask for the previous hour or day based on `configMap.exportPeriod`.
+  # Default is every hour at minute 5. Note: There is a limit of "one active (running or pending) export task at a time,
+  # per account. This quota can't be changed." See [CloudWatch Logs quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html)
+  # for more information.
   schedule: '5 * * * *'
   # -- annotations to be added to the CronJob.
   annotations: {}
@@ -181,7 +183,7 @@ affinity: {}
 #        - key: app
 #          operator: In
 #          values:
-#          - covid-tracker
+#          - app-name
 #      topologyKey: "kubernetes.io/hostname"
 
 # -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).

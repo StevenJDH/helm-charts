@@ -1,6 +1,6 @@
 # AWS CloudWatch Log Exporter Helm Chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.8.7](https://img.shields.io/badge/AppVersion-2.8.7-informational?style=flat-square) 
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.9.4](https://img.shields.io/badge/AppVersion-2.9.4-informational?style=flat-square) 
 
 A productivity tool that makes it easy to schedule automated log exports to an AWS S3 Bucket.
 
@@ -17,7 +17,7 @@ Kubernetes: `>= 1.19.0-0`
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-aws-cwl-exporter stevenjdh/aws-cwl-exporter --version 0.1.0 \
+helm upgrade --install my-aws-cwl-exporter stevenjdh/aws-cwl-exporter --version 0.1.1 \
     --set serviceAccount.aws.irsa.enabled=true \
     --set-string serviceAccount.aws.irsa.roleArn=arn:aws:iam::000000000000:role/example-irsa-role \
     --set-string configMap.logGroupName=/aws/lambda/hello-world-dev \
@@ -46,7 +46,7 @@ helm upgrade --install my-aws-cwl-exporter stevenjdh/aws-cwl-exporter --version 
 | cronjob.job.extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
 | cronjob.job.extraVolumes | list | `[]` | Additional volumes for the pod. |
 | cronjob.job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
-| cronjob.schedule | string | `"5 * * * *"` | The Cron schedule to trigger a CreateExportTask for the previous hour or day based on `configMap.exportPeriod`. Default is every hour at minute 5. |
+| cronjob.schedule | string | `"5 * * * *"` | The Cron schedule to trigger a CreateExportTask for the previous hour or day based on `configMap.exportPeriod`. Default is every hour at minute 5. Note: There is a limit of "one active (running or pending) export task at a time, per account. This quota can't be changed." See [CloudWatch Logs quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html) for more information. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
 | image.pullPolicy | string | `"Always"` | pullPolicy is the strategy for pulling images from a registry. |
 | image.pullSecret.password | string | `""` | password is a PAT with at least read:packages permissions. |
