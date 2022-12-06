@@ -16,21 +16,6 @@ metadata:
     app.kubernetes.io/version: "2.9.4"
     app.kubernetes.io/managed-by: Helm
 ---
-# Source: aws-cwl-exporter/templates/configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: aws-cwl-exporter-config
-  labels:
-    helm.sh/chart: aws-cwl-exporter-0.1.1
-    app.kubernetes.io/name: aws-cwl-exporter
-    app.kubernetes.io/instance: aws-cwl-exporter
-    app.kubernetes.io/version: "2.9.4"
-    app.kubernetes.io/managed-by: Helm
-data:
-  EXPORT_PERIOD: hourly
-  EXPORT_PREFIX: export-task-output
----
 # Source: aws-cwl-exporter/templates/cronjob.yaml
 apiVersion: batch/v1
 kind: CronJob
