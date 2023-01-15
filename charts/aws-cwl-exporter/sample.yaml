@@ -10,10 +10,10 @@ metadata:
     eks.amazonaws.com/sts-regional-endpoints: "true"
     eks.amazonaws.com/token-expiration: "86400"
   labels:
-    helm.sh/chart: aws-cwl-exporter-0.1.1
+    helm.sh/chart: aws-cwl-exporter-0.1.2
     app.kubernetes.io/name: aws-cwl-exporter
     app.kubernetes.io/instance: aws-cwl-exporter
-    app.kubernetes.io/version: "2.9.4"
+    app.kubernetes.io/version: "2.9.15"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: aws-cwl-exporter/templates/cronjob.yaml
@@ -22,19 +22,19 @@ kind: CronJob
 metadata:
   name: aws-cwl-exporter
   labels:
-    helm.sh/chart: aws-cwl-exporter-0.1.1
+    helm.sh/chart: aws-cwl-exporter-0.1.2
     app.kubernetes.io/name: aws-cwl-exporter
     app.kubernetes.io/instance: aws-cwl-exporter
-    app.kubernetes.io/version: "2.9.4"
+    app.kubernetes.io/version: "2.9.15"
     app.kubernetes.io/managed-by: Helm
 spec:
   jobTemplate:
     metadata:
       labels:
-        helm.sh/chart: aws-cwl-exporter-0.1.1
+        helm.sh/chart: aws-cwl-exporter-0.1.2
         app.kubernetes.io/name: aws-cwl-exporter
         app.kubernetes.io/instance: aws-cwl-exporter
-        app.kubernetes.io/version: "2.9.4"
+        app.kubernetes.io/version: "2.9.15"
         app.kubernetes.io/managed-by: Helm
     spec:
       completions: 1
@@ -43,10 +43,10 @@ spec:
       template:
         metadata:
           labels:
-            helm.sh/chart: aws-cwl-exporter-0.1.1
+            helm.sh/chart: aws-cwl-exporter-0.1.2
             app.kubernetes.io/name: aws-cwl-exporter
             app.kubernetes.io/instance: aws-cwl-exporter
-            app.kubernetes.io/version: "2.9.4"
+            app.kubernetes.io/version: "2.9.15"
             app.kubernetes.io/managed-by: Helm
         spec:
           serviceAccountName: aws-cwl-exporter
@@ -57,7 +57,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: aws-cwl-exporter
-            image: "stevenjdh/aws-cwl-exporter:2.9.4"
+            image: "stevenjdh/aws-cwl-exporter:2.9.15"
             imagePullPolicy: Always
             securityContext:
               allowPrivilegeEscalation: false
