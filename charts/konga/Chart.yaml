@@ -52,4 +52,8 @@ maintainers:
 
 icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
 
-dependencies: []
+dependencies:
+  - name: kong
+    version: ^9.x
+    repository: https://charts.bitnami.com/bitnami
+    condition: kong.enabled

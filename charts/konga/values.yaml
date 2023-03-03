@@ -275,7 +275,7 @@ configMap:
   dbUri: ""
   # -- If dbUri is not specified, this is the database host. Depends on dbAdapter.
   dbHost: "localhost"
-  # If dbUri is not specified, this is the database port. Depends on dbAdapter.
+  # -- If dbUri is not specified, this is the database port. Depends on dbAdapter.
   dbPort: "5432"
   # -- If dbUri is not specified, this is the database user. Depends on dbAdapter.
   dbUser: ""
@@ -302,16 +302,19 @@ configMap:
   # -- The base DN used to search for users.
   kongaLdapUserSearchBase: "ou=users,dc=com"
   # -- The filter expression used to search for users. Use {{username}} where you expect the username to be.
+  # @default -- (\|(uid={{username}})(sAMAccountName={{username}}))
   kongaLdapUserSearchFilter: "(|(uid={{username}})(sAMAccountName={{username}}))"
   # -- Comma separated list of attributes to pull from the LDAP server for users.
   kongaLdapUserAttrs: "uid,uidNumber,givenName,sn,mail"
   # -- The base DN used to search for groups.
   kongaLdapGroupSearchBase: "ou=groups,dc=com"
   # -- The filter expression used to search for groups. Use {{some-attr}} where you expect a user attribute to be or {{dn}} for the user dn.
+  # @default -- (\|(memberUid={{uid}})(memberUid={{uidNumber}})(sAMAccountName={{uid}}))
   kongaLdapGroupSearchFilter: "(|(memberUid={{uid}})(memberUid={{uidNumber}})(sAMAccountName={{uid}}))"
   # -- Comma separated list of attributes to pull from the LDAP server for groups.
   kongaLdapGroupAttrs: "cn"
   # -- Regular expression used to determine if a group should be considered as an admin user.
+  # @default -- \^(admin\|konga)$
   kongaAdminGroupReg: "^(admin|konga)$"
   # -- LDAP attribute name that should be used as the konga username.
   kongaLdapAttrUsername: "uid"
@@ -440,3 +443,27 @@ keda:
   #    - type: Pods
   #      value: 2
   #      periodSeconds: 60
+
+kong:
+  # -- Indicates whether or not to deploy Kong with Konga.
+  enabled: false
+  # -- Number of Kong replicas.
+  replicaCount: 2
+  # @ignored
+  nameOverride: "kong"
+  # @ignored
+  fullnameOverride: "kong"
+  # @ignored
+  postgresql:
+    nameOverride: "postgresql"
+    fullnameOverride: "kong-postgresql"
+  # @ignored
+  cassandra:
+    nameOverride: "cassandra"
+    fullnameOverride: "kong-cassandra"
+  ingressController:
+    # -- Indicates whether or not to deploy the Kong Ingress Controller
+    enabled: true
+  metrics:
+    # -- Indicates whether or not to enable the export of Prometheus metrics.
+    enabled: false
