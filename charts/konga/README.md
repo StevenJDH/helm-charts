@@ -22,6 +22,7 @@ Kubernetes: `>= 1.19.0-0`
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
 helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
+    --set kong.enabled=true \
     --namespace example \
     --create-namespace \
     --atomic
@@ -42,13 +43,13 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | autoscaling.template | list | `[]` | template provides custom or additional autoscaling metrics that are not built in to Kubernetes or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics). |
 | configMap.baseUrl | string | `""` | Define a base URL or relative path that Konga will be loaded from. Ex: www.example.com/konga. |
 | configMap.dbAdapter | string | `"postgres"` | The database that Konga will use. If not set, the localDisk db will be used. Valid values are `mongo`, `mysql`, and `postgres`. |
-| configMap.dbDatabase | string | `"konga_database"` | If dbUri is not specified, this is the name of Konga's db. Depends on dbAdapter. |
-| configMap.dbHost | string | `"localhost"` | If dbUri is not specified, this is the database host. Depends on dbAdapter. |
-| configMap.dbPgSchema | string | `"public"` | If using postgres as a database, this is the schema that will be used. |
-| configMap.dbPort | string | `"5432"` | If dbUri is not specified, this is the database port. Depends on dbAdapter. |
-| configMap.dbUri | string | `""` | The full db connection string. Depends on dbAdapter. If this is set, no other DB related var is needed. |
-| configMap.dbUser | string | `""` | If dbUri is not specified, this is the database user. Depends on dbAdapter. |
-| configMap.kongaAdminGroupReg | string | \^(admin\|konga)$ | Regular expression used to determine if a group should be considered as an admin user. |
+| configMap.dbDatabase | string | `"konga_database"` | If `dbUri` is not specified, this is the name of Konga's db. Depends on `dbAdapter`. |
+| configMap.dbHost | string | `"localhost"` | If `dbUri` is not specified, this is the database host. Depends on `dbAdapter`. |
+| configMap.dbPgSchema | string | `"public"` | If using `postgres` as a database, `public` is the schema that will be used. |
+| configMap.dbPort | string | `"5432"` | If `dbUri` is not specified, this is the database port. Depends on `dbAdapter`. |
+| configMap.dbUri | string | `""` | The full db connection string. Depends on `dbAdapter`. If this is set, no other DB related var is needed. |
+| configMap.dbUser | string | `""` | If `dbUri` is not specified, this is the database user. Depends on `dbAdapter`. |
+| configMap.kongaAdminGroupReg | string | `^(admin\|konga)$` | Regular expression used to determine if a group should be considered as an admin user. |
 | configMap.kongaAuthProvider | string | `"local"` | Defines what authentication provider to use. Valid values are `local` and `ldap`. |
 | configMap.kongaHookTimeout | string | `"60000"` | The time in ms that Konga will wait for startup tasks to finish before exiting the process. |
 | configMap.kongaLdapAttrEmail | string | `"mail"` | LDAP attribute name that should be used as the konga user's email address. |
@@ -58,19 +59,19 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | configMap.kongaLdapBindDn | string | `""` | The DN that the konga should use to login to LDAP to search users. |
 | configMap.kongaLdapGroupAttrs | string | `"cn"` | Comma separated list of attributes to pull from the LDAP server for groups. |
 | configMap.kongaLdapGroupSearchBase | string | `"ou=groups,dc=com"` | The base DN used to search for groups. |
-| configMap.kongaLdapGroupSearchFilter | string | (\|(memberUid={{uid}})(memberUid={{uidNumber}})(sAMAccountName={{uid}})) | The filter expression used to search for groups. Use {{some-attr}} where you expect a user attribute to be or {{dn}} for the user dn. |
+| configMap.kongaLdapGroupSearchFilter | string | `(\|(memberUid={{uid}})(memberUid={{uidNumber}})(sAMAccountName={{uid}}))` | The filter expression used to search for groups. Use {{some-attr}} where you expect a user attribute to be or {{dn}} for the user dn. |
 | configMap.kongaLdapHost | string | `"ldap://localhost:389"` | The location of the LDAP server. |
 | configMap.kongaLdapUserAttrs | string | `"uid,uidNumber,givenName,sn,mail"` | Comma separated list of attributes to pull from the LDAP server for users. |
 | configMap.kongaLdapUserSearchBase | string | `"ou=users,dc=com"` | The base DN used to search for users. |
-| configMap.kongaLdapUserSearchFilter | string | (\|(uid={{username}})(sAMAccountName={{username}})) | The filter expression used to search for users. Use {{username}} where you expect the username to be. |
-| configMap.kongaLogLevel | string | `"debug"` | The logging level. Valid values are `silly`, `debug`, `info`, `warn`, and `error`. Set as `debug` if nodeEnv is set to `development`, otherwise, set as `warn` for production. |
-| configMap.kongaSeedKongNodeDataSourceFile | string | `""` | Seed default Kong Admin API connections on first run. See [Docs](https://hub.docker.com/r/pantsel/docs/SEED_DEFAULT_DATA.md) for more information. |
-| configMap.kongaSeedUserDataSourceFile | string | `""` | Seed default users on first run. See [Docs](https://hub.docker.com/r/pantsel/docs/SEED_DEFAULT_DATA.md) for more information. |
-| configMap.noAuth | string | `"false"` | Run Konga without Authentication. |
+| configMap.kongaLdapUserSearchFilter | string | `(\|(uid={{username}})(sAMAccountName={{username}}))` | The filter expression used to search for users. Use {{username}} where you expect the username to be. |
+| configMap.kongaLogLevel | string | `"debug"` | The logging level. Valid values are `silly`, `debug`, `info`, `warn`, and `error`. Set as `debug` if `nodeEnv` is set to `development`, otherwise, set as `warn` for production. |
+| configMap.kongaSeedKongNodeDataSourceFile | string | `""` | Seed default Kong Admin API connections on first run. Reference [Adding a default kong node seed](https://github.com/pantsel/konga/blob/master/docs/SEED_DEFAULT_DATA.md#adding-a-default-kong-node-seed). |
+| configMap.kongaSeedUserDataSourceFile | string | `""` | Seed default users on first run. Reference [Changing the default user seed data](https://github.com/pantsel/konga/blob/master/docs/SEED_DEFAULT_DATA.md#changing-the-default-user-seed-data). |
+| configMap.noAuth | string | `"false"` | Run Konga without authentication. |
 | configMap.nodeEnv | string | `"development"` | The environment. Valid values are `development` and `production`. |
 | configMap.port | string | `"1337"` | The port that will be used by Konga's server. Must be aligned with `containerPorts.http` and `service.targetPort`. |
-| configMap.sslCrtPath | string | `""` | If SSL is needed, this will be the absolute path to the .key file. Both sslKeyPath & sslCrtPath must be set.  |
-| configMap.sslKeyPath | string | `""` | If SSL is needed, this will be the absolute path to the .key file. Both sslKeyPath & sslCrtPath must be set. |
+| configMap.sslCrtPath | string | `""` | If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set.  |
+| configMap.sslKeyPath | string | `""` | If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set. |
 | containerPorts | object | `{"http":1337}` | containerPort is the port or ports that the container listens on. |
 | extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | extraEnvs | list | `[]` | Additional environment variables to set. |
@@ -102,10 +103,10 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | keda.triggers | list | `[]` | triggers is a list of triggers to activate scaling on for a target resource. |
 | kong.enabled | bool | `false` | Indicates whether or not to deploy Kong with Konga. |
 | kong.ingressController.enabled | bool | `true` | Indicates whether or not to deploy the Kong Ingress Controller |
-| kong.metrics.enabled | bool | `false` | Indicates whether or not to enable the export of Prometheus metrics. |
-| kong.replicaCount | int | `2` | Number of Kong replicas. |
+| kong.metrics.enabled | bool | `false` | Indicates whether or not to enable the export of Prometheus metrics for Kong. |
+| kong.replicaCount | int | `2` | replicaCount is the number of Kong pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | migrations.annotations | object | `{}` | annotations to add to the DB migrations Job resource. |
-| migrations.enabled | bool | `true` | Indicates whether or not to run DB migrations when configMap.dbAdapter is set to `mysql` or `postgres` because this isn't done automatically when configMap.nodeEnv is set to `production`. |
+| migrations.enabled | bool | `true` | Indicates whether or not to run DB migrations when `configMap.dbAdapter` is set to `mysql` or `postgres` because this isn't done automatically when `configMap.nodeEnv` is set to `production`. |
 | migrations.job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
 | migrations.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
@@ -113,7 +114,7 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the deployment pods. |
 | replicaCount | int | `1` | replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
-| secrets.dbPassword | string | `""` | If dbUri is not specified, this is the database user's password. Depends on dbAdapter. |
+| secrets.dbPassword | string | `""` | If `dbUri` is not specified, this is the database user's password. Depends on `dbAdapter`. |
 | secrets.kongaLdapBindPassword | string | `""` | The password for the user konga will use to search for users. |
 | secrets.tokenSecret | string | `""` | The secret that will be used to sign JWT tokens issued by Konga. |
 | service.annotations | object | `{}` | annotations to add to the service resource. |

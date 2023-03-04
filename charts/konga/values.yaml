@@ -82,7 +82,6 @@ podSecurityContext:
 
 # @ignored
 securityContext:
-  # readOnlyRootFilesystem: true causes 'WebServerException: Unable to create tempDir', so fixed using tmp volume mount.
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
@@ -93,9 +92,10 @@ securityContext:
 containerPorts:
   http: 1337
 
-# @ignored. Startup, Liveness and readiness probes. Reference [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes).
+# @ignored. Startup, Liveness and readiness probes.
 # Liveness probes do not wait for readiness probes to succeed. If you want to wait before
 # executing a liveness probe you should use initialDelaySeconds or a startupProbe.
+# Reference [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes).
 health:
   startupProbe: {}
   #  httpGet:
@@ -162,10 +162,12 @@ service:
   annotations: {}
   # -- clusterIP allows for customizing the cluster IP address of a service resource.
   clusterIP: ""
-  # -- externalIPs is a list of IP addresses at which a service is available at. Reference [External IPs](https://kubernetes.io/docs/user-guide/services/#external-ips).
+  # -- externalIPs is a list of IP addresses at which a service is available at.
+  # Reference [External IPs](https://kubernetes.io/docs/user-guide/services/#external-ips).
   externalIPs: []
   # -- loadBalancerIP is a field used by cloud providers to connect the resulting `LoadBalancer` created by a service resource to a
-  # pre-existing static IP. Reference [Type LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer).
+  # pre-existing static IP.
+  # Reference [Type LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer).
   # This field is deprecated as of Kubernetes 1.24.0 since it doesn't support dual-stack, but there is no replacement as of yet. Most likely
   # cloud providers will adopt a provider specific annotation approach for this. Progress can be tracked here [kubernetes/enhancements#1992](https://github.com/kubernetes/enhancements/pull/1992).
   loadBalancerIP: ""
@@ -179,13 +181,16 @@ service:
   # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
   externalTrafficPolicy: ""
   # -- sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's
-  # IP address. Must be either "None" or "ClientIP" if set. Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace)
+  # IP address. Must be either "None" or "ClientIP" if set.
+  # Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace)
   sessionAffinity: "None"
   # -- healthCheckNodePort specifies the health check node port (numeric port number) for the service. If healthCheckNodePort isn’t specified,
-  # the service controller allocates a port from your cluster’s NodePort range. Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
+  # the service controller allocates a port from your cluster’s NodePort range.
+  # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
   healthCheckNodePort: 0
   # -- ipFamilyPolicy represents the dual-stack-ness requested or required by this Service. Possible values are SingleStack, PreferDualStack or RequireDualStack.
-  # The ipFamilies and clusterIPs fields depend on the value of this field. Reference [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack)
+  # The ipFamilies and clusterIPs fields depend on the value of this field.
+  # Reference [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack)
   ipFamilyPolicy: "SingleStack"
   # -- ipFamilies is a list of IP families (e.g. IPv4, IPv6) assigned to a service. This field is usually assigned automatically
   # based on cluster configuration and the ipFamilyPolicy field. [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack)
@@ -217,7 +222,7 @@ ingress:
   #    hosts:
   #    - chart-example.local
 
-# --  Optionally request and limit how much CPU and memory (RAM) the container needs.
+# -- Optionally request and limit how much CPU and memory (RAM) the container needs.
 # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
 resources: {}
 #  We usually recommend not to specify default resources and to leave this as a conscious
@@ -232,12 +237,12 @@ resources: {}
 #    cpu: 1000m
 
 migrations:
-  # -- Indicates whether or not to run DB migrations when configMap.dbAdapter is set to `mysql` or `postgres` because
-  # this isn't done automatically when configMap.nodeEnv is set to `production`.
+  # -- Indicates whether or not to run DB migrations when `configMap.dbAdapter` is set to `mysql` or `postgres` because
+  # this isn't done automatically when `configMap.nodeEnv` is set to `production`.
   enabled: true
   # -- annotations to add to the DB migrations Job resource.
   annotations: {}
-  # --  Optionally request and limit how much CPU and memory (RAM) the container needs.
+  # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
   # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
   resources: {}
   #  requests:
@@ -263,35 +268,38 @@ configMap:
   port: "1337"
   # -- The environment. Valid values are `development` and `production`.
   nodeEnv: "development"
-  # -- If SSL is needed, this will be the absolute path to the .key file. Both sslKeyPath & sslCrtPath must be set.
+  # -- If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set.
   sslKeyPath: ""
-  # -- If SSL is needed, this will be the absolute path to the .key file. Both sslKeyPath & sslCrtPath must be set. 
+  # -- If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set. 
   sslCrtPath: ""
   # -- The time in ms that Konga will wait for startup tasks to finish before exiting the process.
   kongaHookTimeout: "60000"
   # -- The database that Konga will use. If not set, the localDisk db will be used. Valid values are `mongo`, `mysql`, and `postgres`.
   dbAdapter: "postgres"
-  # -- The full db connection string. Depends on dbAdapter. If this is set, no other DB related var is needed.
+  # -- The full db connection string. Depends on `dbAdapter`. If this is set, no other DB related var is needed.
   dbUri: ""
-  # -- If dbUri is not specified, this is the database host. Depends on dbAdapter.
+  # -- If `dbUri` is not specified, this is the database host. Depends on `dbAdapter`.
   dbHost: "localhost"
-  # -- If dbUri is not specified, this is the database port. Depends on dbAdapter.
+  # -- If `dbUri` is not specified, this is the database port. Depends on `dbAdapter`.
   dbPort: "5432"
-  # -- If dbUri is not specified, this is the database user. Depends on dbAdapter.
+  # -- If `dbUri` is not specified, this is the database user. Depends on `dbAdapter`.
   dbUser: ""
-  # -- If dbUri is not specified, this is the name of Konga's db. Depends on dbAdapter.
+  # -- If `dbUri` is not specified, this is the name of Konga's db. Depends on `dbAdapter`.
   dbDatabase: "konga_database"
-  # -- If using postgres as a database, this is the schema that will be used.
+  # -- If using `postgres` as a database, `public` is the schema that will be used.
   dbPgSchema: "public"
-  # -- The logging level. Valid values are `silly`, `debug`, `info`, `warn`, and `error`. Set as `debug` if nodeEnv is set to `development`, otherwise, set as `warn` for production.
+  # -- The logging level. Valid values are `silly`, `debug`, `info`, `warn`, and `error`. Set as `debug` if `nodeEnv` is set
+  # to `development`, otherwise, set as `warn` for production.
   kongaLogLevel: "debug"
-  # -- Run Konga without Authentication.
+  # -- Run Konga without authentication.
   noAuth: "false"
   # -- Define a base URL or relative path that Konga will be loaded from. Ex: www.example.com/konga.
   baseUrl: ""
-  # -- Seed default Kong Admin API connections on first run. See [Docs](https://hub.docker.com/r/pantsel/docs/SEED_DEFAULT_DATA.md) for more information.
+  # -- Seed default Kong Admin API connections on first run.
+  # Reference [Adding a default kong node seed](https://github.com/pantsel/konga/blob/master/docs/SEED_DEFAULT_DATA.md#adding-a-default-kong-node-seed).
   kongaSeedKongNodeDataSourceFile: ""
-  # -- Seed default users on first run. See [Docs](https://hub.docker.com/r/pantsel/docs/SEED_DEFAULT_DATA.md) for more information.
+  # -- Seed default users on first run.
+  # Reference [Changing the default user seed data](https://github.com/pantsel/konga/blob/master/docs/SEED_DEFAULT_DATA.md#changing-the-default-user-seed-data).
   kongaSeedUserDataSourceFile: ""
   # -- Defines what authentication provider to use. Valid values are `local` and `ldap`.
   kongaAuthProvider: "local"
@@ -302,19 +310,19 @@ configMap:
   # -- The base DN used to search for users.
   kongaLdapUserSearchBase: "ou=users,dc=com"
   # -- The filter expression used to search for users. Use {{username}} where you expect the username to be.
-  # @default -- (\|(uid={{username}})(sAMAccountName={{username}}))
+  # @default -- `(\|(uid={{username}})(sAMAccountName={{username}}))`
   kongaLdapUserSearchFilter: "(|(uid={{username}})(sAMAccountName={{username}}))"
   # -- Comma separated list of attributes to pull from the LDAP server for users.
   kongaLdapUserAttrs: "uid,uidNumber,givenName,sn,mail"
   # -- The base DN used to search for groups.
   kongaLdapGroupSearchBase: "ou=groups,dc=com"
   # -- The filter expression used to search for groups. Use {{some-attr}} where you expect a user attribute to be or {{dn}} for the user dn.
-  # @default -- (\|(memberUid={{uid}})(memberUid={{uidNumber}})(sAMAccountName={{uid}}))
+  # @default -- `(\|(memberUid={{uid}})(memberUid={{uidNumber}})(sAMAccountName={{uid}}))`
   kongaLdapGroupSearchFilter: "(|(memberUid={{uid}})(memberUid={{uidNumber}})(sAMAccountName={{uid}}))"
   # -- Comma separated list of attributes to pull from the LDAP server for groups.
   kongaLdapGroupAttrs: "cn"
   # -- Regular expression used to determine if a group should be considered as an admin user.
-  # @default -- \^(admin\|konga)$
+  # @default -- `^(admin\|konga)$`
   kongaAdminGroupReg: "^(admin|konga)$"
   # -- LDAP attribute name that should be used as the konga username.
   kongaLdapAttrUsername: "uid"
@@ -326,18 +334,20 @@ configMap:
   kongaLdapAttrEmail: "mail"
 
 secrets:
-  # -- If dbUri is not specified, this is the database user's password. Depends on dbAdapter.
+  # -- If `dbUri` is not specified, this is the database user's password. Depends on `dbAdapter`.
   dbPassword: ""
   # -- The secret that will be used to sign JWT tokens issued by Konga.
   tokenSecret: ""
   # -- The password for the user konga will use to search for users.
   kongaLdapBindPassword: ""
 
-# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
+# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
+# Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
 nodeSelector:
   kubernetes.io/os: linux
 
-# -- affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
+# -- affinity for pod scheduling.
+# Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
 affinity: {}
 #  podAntiAffinity:
 #    requiredDuringSchedulingIgnoredDuringExecution:
@@ -349,7 +359,8 @@ affinity: {}
 #          - app-name
 #      topologyKey: "kubernetes.io/hostname"
 
-# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
+# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints.
+# Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
 tolerations: []
 #  - key: "key"
 #    operator: "Equal|Exists"
@@ -369,7 +380,8 @@ autoscaling:
   # -- targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods.
   targetMemoryUtilizationPercentage: 80
   # -- template provides custom or additional autoscaling metrics that are not built in to Kubernetes
-  # or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics).
+  # or any Kubernetes component.
+  # Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics).
   template: []
   # - type: Pods
   #   pods:
@@ -447,7 +459,8 @@ keda:
 kong:
   # -- Indicates whether or not to deploy Kong with Konga.
   enabled: false
-  # -- Number of Kong replicas.
+  # -- replicaCount is the number of Kong pod instances created by the Deployment owned ReplicaSet to
+  # increase availability when set to more than one.
   replicaCount: 2
   # @ignored
   nameOverride: "kong"
@@ -465,5 +478,5 @@ kong:
     # -- Indicates whether or not to deploy the Kong Ingress Controller
     enabled: true
   metrics:
-    # -- Indicates whether or not to enable the export of Prometheus metrics.
+    # -- Indicates whether or not to enable the export of Prometheus metrics for Kong.
     enabled: false

@@ -14,6 +14,7 @@
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
 helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
+    --set kong.enabled=true \
     --namespace example \
     --create-namespace \
     --atomic
