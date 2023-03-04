@@ -24,6 +24,6 @@ metadata:
 data:
   {{- range $key, $val := .Values.configMap }}
   {{- if $val }}
-  {{ $key | snakecase | upper }}: {{ $val }}
+  {{ $key | snakecase | upper }}: {{ $val | quote }}
   {{- end}}
   {{- end}}
