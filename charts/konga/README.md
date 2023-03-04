@@ -22,6 +22,7 @@ Kubernetes: `>= 1.19.0-0`
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
 helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
+    --set configMap.noAuth=true \
     --set kong.enabled=true \
     --namespace example \
     --create-namespace \
@@ -42,7 +43,7 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods. |
 | autoscaling.template | list | `[]` | template provides custom or additional autoscaling metrics that are not built in to Kubernetes or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics). |
 | configMap.baseUrl | string | `""` | Define a base URL or relative path that Konga will be loaded from. Ex: www.example.com/konga. |
-| configMap.dbAdapter | string | `"postgres"` | The database that Konga will use. If not set, the localDisk db will be used. Valid values are `mongo`, `mysql`, and `postgres`. |
+| configMap.dbAdapter | string | `""` | The database that Konga will use. If not set, the localDisk db will be used. Valid values are `mongo`, `mysql`, `postgres`, and unset. |
 | configMap.dbDatabase | string | `"konga_database"` | If `dbUri` is not specified, this is the name of Konga's db. Depends on `dbAdapter`. |
 | configMap.dbHost | string | `"localhost"` | If `dbUri` is not specified, this is the database host. Depends on `dbAdapter`. |
 | configMap.dbPgSchema | string | `"public"` | If using `postgres` as a database, `public` is the schema that will be used. |
@@ -85,7 +86,7 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | image.repository | string | `"pantsel/konga"` | repository holding the Konga container image. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | ingress.annotations | object | `{}` | annotations to add to the Ingress resource. |
-| ingress.className | string | `"nginx"` | className is the name of the Ingress class. |
+| ingress.className | string | `"nginx"` | className is the name of the Ingress class. For APIs exposed via the Kong Ingress Controller, use the `kong` class for those Ingress resources. Reference [Getting started with the Kong KIC](https://docs.konghq.com/kubernetes-ingress-controller/latest/guides/getting-started/) and [API Management with Kong Ingress Controller on Kubernetes](https://blog.baeke.info/2019/06/15/api-management-with-kong-ingress-controller-on-kubernetes/). |
 | ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created. |
 | ingress.hosts[0] | object | `{"host":"","paths":[{"path":"/","pathType":"Prefix"}]}` | host is the hostname of a request that must match exactly or use a wildcard as the subdomain. |
 | ingress.hosts[0].paths[0] | object | `{"path":"/","pathType":"Prefix"}` | path is part of a list of one or more paths that are associated with a backend service. |
@@ -102,7 +103,8 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | keda.scaledObject.annotations | object | `{}` | annotations to add to the ScaledObject resource. |
 | keda.triggers | list | `[]` | triggers is a list of triggers to activate scaling on for a target resource. |
 | kong.enabled | bool | `false` | Indicates whether or not to deploy Kong with Konga. |
-| kong.ingressController.enabled | bool | `true` | Indicates whether or not to deploy the Kong Ingress Controller |
+| kong.image.debug | bool | `false` | Indicates whether or not to enable Kong's image debug mode. |
+| kong.ingressController.enabled | bool | `true` | Indicates whether or not to deploy the Kong Ingress Controller. At least Kubernetes 1.22 is recommended if set to `true`. Reference [Version Compatibility](https://docs.konghq.com/kubernetes-ingress-controller/2.8.x/references/version-compatibility/). |
 | kong.metrics.enabled | bool | `false` | Indicates whether or not to enable the export of Prometheus metrics for Kong. |
 | kong.replicaCount | int | `2` | replicaCount is the number of Kong pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | migrations.annotations | object | `{}` | annotations to add to the DB migrations Job resource. |
