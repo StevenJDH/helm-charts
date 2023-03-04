@@ -76,13 +76,13 @@ extraEnvs: []
 # @ignored
 podSecurityContext:
   runAsNonRoot: true
-  runAsUser: 100
+  runAsUser: 1200
   seccompProfile:
     type: RuntimeDefault
 
 # @ignored
 securityContext:
-  readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: false
   allowPrivilegeEscalation: false
   capabilities:
     drop:
@@ -200,7 +200,10 @@ service:
 ingress:
   # -- Indicates whether or not an Ingress resource is created.
   enabled: true
-  # -- className is the name of the Ingress class.
+  # -- className is the name of the Ingress class. For APIs exposed via the Kong Ingress Controller, use the `kong` class for
+  # those Ingress resources.
+  # Reference [Getting started with the Kong KIC](https://docs.konghq.com/kubernetes-ingress-controller/latest/guides/getting-started/)
+  # and [API Management with Kong Ingress Controller on Kubernetes](https://blog.baeke.info/2019/06/15/api-management-with-kong-ingress-controller-on-kubernetes/).
   className: nginx
   # -- annotations to add to the Ingress resource.
   annotations: {}
@@ -274,8 +277,9 @@ configMap:
   sslCrtPath: ""
   # -- The time in ms that Konga will wait for startup tasks to finish before exiting the process.
   kongaHookTimeout: "60000"
-  # -- The database that Konga will use. If not set, the localDisk db will be used. Valid values are `mongo`, `mysql`, and `postgres`.
-  dbAdapter: "postgres"
+  # -- The database that Konga will use. If not set, the localDisk db will be used. Valid values are `mongo`, `mysql`,
+  # `postgres`, and unset.
+  dbAdapter: ""
   # -- The full db connection string. Depends on `dbAdapter`. If this is set, no other DB related var is needed.
   dbUri: ""
   # -- If `dbUri` is not specified, this is the database host. Depends on `dbAdapter`.
@@ -462,6 +466,9 @@ kong:
   # -- replicaCount is the number of Kong pod instances created by the Deployment owned ReplicaSet to
   # increase availability when set to more than one.
   replicaCount: 2
+  image:
+    # -- Indicates whether or not to enable Kong's image debug mode.
+    debug: false
   # @ignored
   nameOverride: "kong"
   # @ignored
@@ -475,7 +482,8 @@ kong:
     nameOverride: "cassandra"
     fullnameOverride: "kong-cassandra"
   ingressController:
-    # -- Indicates whether or not to deploy the Kong Ingress Controller
+    # -- Indicates whether or not to deploy the Kong Ingress Controller. At least Kubernetes 1.22 is recommended if set to `true`.
+    # Reference [Version Compatibility](https://docs.konghq.com/kubernetes-ingress-controller/2.8.x/references/version-compatibility/).
     enabled: true
   metrics:
     # -- Indicates whether or not to enable the export of Prometheus metrics for Kong.
