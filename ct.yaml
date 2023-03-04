@@ -6,6 +6,7 @@ chart-dirs:
   - charts
 chart-repos:
   - stevenjdh=https://StevenJDH.github.io/helm-charts
+  - bitnami=https://charts.bitnami.com/bitnami
 helm-extra-args: "--timeout 600s"
 validate-maintainers: false
 lint-conf: lintconf.yaml
