@@ -22,7 +22,7 @@ limitations under the License.
 {{- $dburi = (print .Values.configMap.dbAdapter "://" .Values.configMap.dbUser ":" .Values.secrets.dbPassword "@" (default "localhost" .Values.configMap.dbHost) ":" (default 3306 .Values.configMap.dbPort) "/" .Values.configMap.dbDatabase) -}}
 {{- end }}
 
-{{- if and .Values.migrations.enabled (ne .Values.configMap.dbAdapter "mongo") }}
+{{- if and .Values.migrations.enabled (ne .Values.configMap.dbAdapter "mongo") (not (empty .Values.configMap.dbAdapter)) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
