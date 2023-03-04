@@ -273,7 +273,7 @@ configMap:
   nodeEnv: "development"
   # -- If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set.
   sslKeyPath: ""
-  # -- If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set. 
+  # -- If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set.
   sslCrtPath: ""
   # -- The time in ms that Konga will wait for startup tasks to finish before exiting the process.
   kongaHookTimeout: "60000"

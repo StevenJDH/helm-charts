@@ -71,7 +71,7 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | configMap.noAuth | string | `"false"` | Run Konga without authentication. |
 | configMap.nodeEnv | string | `"development"` | The environment. Valid values are `development` and `production`. |
 | configMap.port | string | `"1337"` | The port that will be used by Konga's server. Must be aligned with `containerPorts.http` and `service.targetPort`. |
-| configMap.sslCrtPath | string | `""` | If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set.  |
+| configMap.sslCrtPath | string | `""` | If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set. |
 | configMap.sslKeyPath | string | `""` | If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set. |
 | containerPorts | object | `{"http":1337}` | containerPort is the port or ports that the container listens on. |
 | extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
