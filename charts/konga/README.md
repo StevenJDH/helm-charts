@@ -116,6 +116,7 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the deployment pods. |
 | replicaCount | int | `1` | replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| restartPolicy | string | `"Always"` | restartPolicy defines how a pod will automatically repair itself when a problem arises. Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy). |
 | secrets.dbPassword | string | `""` | If `dbUri` is not specified, this is the database user's password. Depends on `dbAdapter`. |
 | secrets.kongaLdapBindPassword | string | `""` | The password for the user konga will use to search for users. |
 | secrets.tokenSecret | string | `""` | The secret that will be used to sign JWT tokens issued by Konga. |

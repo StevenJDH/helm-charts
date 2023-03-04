@@ -129,6 +129,7 @@ spec:
             timeoutSeconds: 1
           resources:
             {}
+      restartPolicy: Always
       nodeSelector:
         kubernetes.io/os: linux
 ---

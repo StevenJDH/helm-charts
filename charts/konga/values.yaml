@@ -52,6 +52,10 @@ annotations: {}
 # -- podAnnotations are the annotations to be added to the deployment pods.
 podAnnotations: {}
 
+# -- restartPolicy defines how a pod will automatically repair itself when a problem arises.
+# Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy).
+restartPolicy: Always
+
 # -- The update strategy to apply to the Deployment resource.
 updateStrategy: {}
 #  rollingUpdate:
