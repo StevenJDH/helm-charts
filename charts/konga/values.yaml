@@ -477,14 +477,20 @@ kong:
   nameOverride: "kong"
   # @ignored
   fullnameOverride: "kong"
+  # @ignored. database defines which database backend Kong will use. Valid values are `postgresql`, `cassandra`, and `off`.
+  database: "postgresql"
   # @ignored
   postgresql:
+    enabled: true
     nameOverride: "postgresql"
     fullnameOverride: "kong-postgresql"
+    architecture: "standalone"
   # @ignored
   cassandra:
+    enabled: false
     nameOverride: "cassandra"
     fullnameOverride: "kong-cassandra"
+    replicaCount: 1
   ingressController:
     # -- Indicates whether or not to deploy the Kong Ingress Controller. At least Kubernetes 1.22 is recommended if set to `true`.
     # Reference [Version Compatibility](https://docs.konghq.com/kubernetes-ingress-controller/2.8.x/references/version-compatibility/).
