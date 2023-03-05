@@ -134,4 +134,28 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/covid-tracker-0.1.0/covid-tracker-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-15T13:12:37.742835238Z"
+  konga:
+  - apiVersion: v2
+    appVersion: 0.14.9
+    created: "2023-03-05T13:39:06.147828737Z"
+    dependencies:
+    - condition: kong.enabled
+      name: kong
+      repository: https://charts.bitnami.com/bitnami
+      version: ^9.x
+    description: A GUI to manage all Kong Admin API Objects.
+    digest: 4ee688aa8fc3a3a67bcff3bdb902c2ec3110357f2f57b5c1f1c667768be56fa3
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.19.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: konga
+    sources:
+    - https://github.com/pantsel/konga
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/konga-0.1.0/konga-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-03-05T13:39:06.147846538Z"
