@@ -80,6 +80,7 @@ extraEnvs: []
 # @ignored
 podSecurityContext:
   runAsNonRoot: true
+  # Using UID 1200 to run as the 'kong' container user.
   runAsUser: 1200
   seccompProfile:
     type: RuntimeDefault
