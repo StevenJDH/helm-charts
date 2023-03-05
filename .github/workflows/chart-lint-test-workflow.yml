@@ -32,7 +32,7 @@ jobs:
 
       - name: Set up chart-testing
         # Full version for action needs to be specified.
-        uses: helm/chart-testing-action@v2.2.1
+        uses: helm/chart-testing-action@v2.3.1
 
       - name: Run chart-testing (list-changed)
         id: list-changed
@@ -80,7 +80,7 @@ jobs:
 
       - name: Set up chart-testing
         # Full version for action needs to be specified.
-        uses: helm/chart-testing-action@v2.2.1
+        uses: helm/chart-testing-action@v2.3.1
         
       - name: Create kind cluster ${{ matrix.kubernetesVersion }}
         uses: helm/kind-action@v1

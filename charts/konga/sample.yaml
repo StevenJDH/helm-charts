@@ -1,0 +1,180 @@
+---
+# Source: konga/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: konga-config
+  labels:
+    helm.sh/chart: konga-0.1.0
+    app.kubernetes.io/name: konga
+    app.kubernetes.io/instance: konga
+    app.kubernetes.io/version: "0.14.9"
+    app.kubernetes.io/managed-by: Helm
+data:
+  DB_DATABASE: "konga_database"
+  DB_HOST: "localhost"
+  DB_PG_SCHEMA: "public"
+  DB_PORT: "5432"
+  KONGA_ADMIN_GROUP_REG: "^(admin|konga)$"
+  KONGA_AUTH_PROVIDER: "local"
+  KONGA_HOOK_TIMEOUT: "60000"
+  KONGA_LDAP_ATTR_EMAIL: "mail"
+  KONGA_LDAP_ATTR_FIRSTNAME: "givenName"
+  KONGA_LDAP_ATTR_LASTNAME: "sn"
+  KONGA_LDAP_ATTR_USERNAME: "uid"
+  KONGA_LDAP_GROUP_ATTRS: "cn"
+  KONGA_LDAP_GROUP_SEARCH_BASE: "ou=groups,dc=com"
+  KONGA_LDAP_GROUP_SEARCH_FILTER: "(|(memberUid={{uid}})(memberUid={{uidNumber}})(sAMAccountName={{uid}}))"
+  KONGA_LDAP_HOST: "ldap://localhost:389"
+  KONGA_LDAP_USER_ATTRS: "uid,uidNumber,givenName,sn,mail"
+  KONGA_LDAP_USER_SEARCH_BASE: "ou=users,dc=com"
+  KONGA_LDAP_USER_SEARCH_FILTER: "(|(uid={{username}})(sAMAccountName={{username}}))"
+  KONGA_LOG_LEVEL: "debug"
+  NO_AUTH: "false"
+  NODE_ENV: "development"
+  PORT: "1337"
+---
+# Source: konga/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: konga-svc
+  labels:
+    helm.sh/chart: konga-0.1.0
+    app.kubernetes.io/name: konga
+    app.kubernetes.io/instance: konga
+    app.kubernetes.io/version: "0.14.9"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilyPolicy: SingleStack
+  ipFamilies: 
+    - IPv4
+  ports:
+    - port: 80
+      targetPort: 1337
+      protocol: TCP
+      name: http
+      appProtocol: http
+  selector:
+    app.kubernetes.io/name: konga
+    app.kubernetes.io/instance: konga
+---
+# Source: konga/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: konga
+  labels:
+    helm.sh/chart: konga-0.1.0
+    app.kubernetes.io/name: konga
+    app.kubernetes.io/instance: konga
+    app.kubernetes.io/version: "0.14.9"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: konga
+      app.kubernetes.io/instance: konga
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: konga
+        app.kubernetes.io/instance: konga
+    spec:
+      serviceAccountName: default
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1200
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: konga
+          image: "pantsel/konga:0.14.9"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 1337
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: false
+          envFrom:
+          - configMapRef:
+              name: konga-config
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            {}
+      restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/os: linux
+---
+# Source: konga/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: konga-ingress
+  labels:
+    helm.sh/chart: konga-0.1.0
+    app.kubernetes.io/name: konga
+    app.kubernetes.io/instance: konga
+    app.kubernetes.io/version: "0.14.9"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ""
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: konga-svc
+                port:
+                  number: 80
+---
+# Source: konga/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "konga-test-connection"
+  annotations:
+    "helm.sh/hook": test
+  labels:
+    helm.sh/chart: konga-0.1.0
+    app.kubernetes.io/name: konga
+    app.kubernetes.io/instance: konga
+    app.kubernetes.io/version: "0.14.9"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['konga-svc:80']
+  restartPolicy: Never
