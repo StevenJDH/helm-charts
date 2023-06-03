@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- define "shared-library.service" -}}
+{{- define "shared-library.service.tpl" -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -71,4 +71,12 @@ spec:
       {{- end }}
   selector:
     {{- include "shared-library.selectorLabels" . | nindent 4 }}
+{{- end -}}
+
+{{- define "shared-library.service" -}}
+{{- if (kindIs "slice" .) }}
+  {{- include "shared-library.util.merge" (append . "shared-library.service.tpl") -}}
+{{- else -}}
+  {{- include "shared-library.service.tpl" . }}
+{{- end -}}
 {{- end -}}
