@@ -1,0 +1,38 @@
+# Shared Library Helm Chart
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . -}}
+
+## Usage example
+
+Run the following commands:
+
+```bash
+helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
+helm repo update
+```
+
+In the `Chart.yaml` file for the helm chart project, add the following dependency:
+
+```yaml
+dependencies:
+  - name: shared-library
+    version: 0.1.0
+    repository: "https://StevenJDH.github.io/helm-charts"
+```
+
+Finally, run the following command from the same project folder:
+
+```bash
+helm dep update .
+```
+
+{{- template "chart.valuesSection" . }}
+
+
+{{ template "footer.signature" . }}
