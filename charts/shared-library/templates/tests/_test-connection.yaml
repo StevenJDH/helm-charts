@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- define "shared-library.test-connection" -}}
+{{- define "shared-library.test-connection.tpl" -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -31,4 +31,12 @@ spec:
       command: ['wget']
       args: ['{{ include "shared-library.fullname" . }}-svc:{{ .Values.service.port }}']
   restartPolicy: Never
+{{- end -}}
+
+{{- define "shared-library.test-connection" -}}
+{{- if (kindIs "slice" .) }}
+  {{- include "shared-library.util.merge" (append . "shared-library.test-connection.tpl") -}}
+{{- else -}}
+  {{- include "shared-library.test-connection.tpl" . }}
+{{- end }}
 {{- end -}}
