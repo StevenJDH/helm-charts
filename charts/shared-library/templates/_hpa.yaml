@@ -16,7 +16,6 @@ limitations under the License.
 */}}
 
 {{- define "shared-library.hpa.tpl" -}}
-{{- if and .Values.autoscaling.enabled (not .Values.keda.enabled) -}}
 {{- if semverCompare ">=1.23-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: autoscaling/v2
 {{- else -}}
@@ -54,13 +53,14 @@ spec:
   behavior:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-{{- end }}
 {{- end -}}
 
 {{- define "shared-library.hpa" -}}
-{{- if (kindIs "slice" .) }}
-  {{- include "shared-library.util.merge" (append . "shared-library.hpa.tpl") -}}
-{{- else -}}
-  {{- include "shared-library.hpa.tpl" . }}
+{{- if and .Values.autoscaling.enabled (not .Values.keda.enabled) -}}
+  {{- if (kindIs "slice" .) }}
+    {{- include "shared-library.util.merge" (append . "shared-library.hpa.tpl") -}}
+  {{- else -}}
+    {{- include "shared-library.hpa.tpl" . }}
+  {{- end }}
 {{- end }}
 {{- end -}}

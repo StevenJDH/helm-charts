@@ -31,9 +31,11 @@ data:
 {{- end -}}
 
 {{- define "shared-library.configmap" -}}
-{{- if (kindIs "slice" .) }}
-  {{- include "shared-library.util.merge" (append . "shared-library.configmap.tpl") -}}
-{{- else -}}
-  {{- include "shared-library.configmap.tpl" . }}
+{{- if .Values.configMap }}
+  {{- if (kindIs "slice" .) }}
+    {{- include "shared-library.util.merge" (append . "shared-library.configmap.tpl") -}}
+  {{- else -}}
+    {{- include "shared-library.configmap.tpl" . }}
+  {{- end }}
 {{- end }}
 {{- end -}}
