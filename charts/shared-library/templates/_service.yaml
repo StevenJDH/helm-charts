@@ -15,6 +15,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
+{{/*
+Generates a service resource that is compatible with all supported Kubernetes API versions.
+
+Usage:
+{{- include "shared-library.service" . }}
+
+OR
+
+{{- include "shared-library.service" (list . "override.service") }}
+
+{{- define "override.service" -}}
+spec:
+  ports:
+  - port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.targetPort | default "http" }}
+    protocol: TCP
+    name: http
+    {{- if and (semverCompare ">=1.20.0-0" .Capabilities.KubeVersion.Version) (.Values.service.appProtocol) }}
+    appProtocol: http
+    {{- end }}
+  - port: 81
+    targetPort: 8081
+    protocol: TCP
+    name: actuator
+    {{- if and (semverCompare ">=1.20.0-0" .Capabilities.KubeVersion.Version) (.Values.service.appProtocol) }}
+    appProtocol: http
+    {{- end }}
+{{- end -}} 
+
+Params:
+  - context - Dict - Requried. The context for the template evaluation.
+  - overriding named template - String - Required. Definition to merge into the included template.
+*/}}
+
 {{- define "shared-library.service.tpl" -}}
 apiVersion: v1
 kind: Service
@@ -75,8 +109,8 @@ spec:
 
 {{- define "shared-library.service" -}}
 {{- if (kindIs "slice" .) }}
-  {{- include "shared-library.util.merge" (append . "shared-library.service.tpl") -}}
+  {{- include "shared-library.util.merge" (append . "shared-library.service.tpl") }}
 {{- else -}}
   {{- include "shared-library.service.tpl" . }}
-{{- end -}}
+{{- end }}
 {{- end -}}

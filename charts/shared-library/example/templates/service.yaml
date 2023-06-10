@@ -17,10 +17,10 @@ limitations under the License.
 
 {{- include "shared-library.service" . }}
 
-{{- /* Example for how to override the template. */ -}}
+{{- /* Example for how to override the above template with this replacement. */ -}}
 {{- /*
-{{- include "shared-library.service" (list . "example.service") }}
-{{- define "example.service" -}}
+{{- include "shared-library.service" (list . "override.service") }}
+{{- define "override.service" -}}
 spec:
   ports:
   - port: {{ .Values.service.port }}
