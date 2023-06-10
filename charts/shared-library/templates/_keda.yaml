@@ -16,6 +16,7 @@ limitations under the License.
 */}}
 
 {{- define "shared-library.keda.tpl" -}}
+{{- if .Values.keda.enabled -}}
 apiVersion: {{ .Values.keda.apiVersion }}
 kind: ScaledObject
 metadata:
@@ -50,14 +51,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     {{- end }}
+{{- end }}
 {{- end -}}
 
 {{- define "shared-library.keda" -}}
-{{- if .Values.keda.enabled -}}
-  {{- if (kindIs "slice" .) }}
-    {{- include "shared-library.util.merge" (append . "shared-library.keda.tpl") -}}
-  {{- else -}}
-    {{- include "shared-library.keda.tpl" . }}
-  {{- end }}
+{{- if (kindIs "slice" .) }}
+  {{- include "shared-library.util.merge" (append . "shared-library.keda.tpl") }}
+{{- else -}}
+  {{- include "shared-library.keda.tpl" . }}
 {{- end }}
 {{- end -}}

@@ -16,6 +16,7 @@ limitations under the License.
 */}}
 
 {{- define "shared-library.configmap.tpl" -}}
+{{- if .Values.configMap }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -28,14 +29,13 @@ data:
   {{ $key | snakecase | upper }}: {{ $val | quote }}
   {{- end }}
   {{- end }}
+{{- end }}
 {{- end -}}
 
 {{- define "shared-library.configmap" -}}
-{{- if .Values.configMap }}
-  {{- if (kindIs "slice" .) }}
-    {{- include "shared-library.util.merge" (append . "shared-library.configmap.tpl") -}}
-  {{- else -}}
-    {{- include "shared-library.configmap.tpl" . }}
-  {{- end }}
+{{- if (kindIs "slice" .) }}
+  {{- include "shared-library.util.merge" (append . "shared-library.configmap.tpl") }}
+{{- else -}}
+  {{- include "shared-library.configmap.tpl" . }}
 {{- end }}
 {{- end -}}
