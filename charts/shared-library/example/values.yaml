@@ -170,7 +170,7 @@ service:
   # @ignored
   port: 80
   # @ignored
-  targetPort: 8080
+  targetPort: &targetPort 8080
   # @ignored
   nodePort: 32080
   # -- appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example,
@@ -253,6 +253,73 @@ resources: {}
 #  limits:
 #    memory: 512Mi
 #    cpu: 1000m
+
+networkPolicy:
+  # -- Specifies whether a network policy should be created.
+  # Note: This will have no effect unless the chosen CNI supports network policies like Calico, Weave, Cilium, Romana, etc.
+  enabled: false
+  # -- policyTypes indicates whether or not the given policy applies to ingress traffic to the selected pod, egress traffic
+  # from the selected pods, or both. If no policy types are specified, then by default, Ingress will always be set and
+  # Egress will be set if any egress rules are defined.
+  # Reference [The NetworkPolicy resource](https://kubernetes.io/docs/concepts/services-networking/network-policies/#networkpolicy-resource).
+  policyTypes:
+  - Ingress
+  - Egress
+  # -- ingress may include a list of allowed ingress rules. Each rule allows traffic which matches both the `from` and `ports`
+  # sections. The `from` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`.
+  # Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating.
+  # Note: Specifying `- {}` whitelists all inbound traffic and `{}` does the same but on a specific selector, and `- to: []`
+  # will block all inbound traffic. Allow policies will override deny policies.
+  # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
+  ingress:
+  - {}
+  # - from:
+  #   - ipBlock:
+  #       cidr: 172.17.0.0/16
+  #       except:
+  #       - 172.17.1.0/24
+  #   - namespaceSelector:
+  #       matchLabels:
+  #         project: my-project
+  #     podSelector:
+  #       matchLabels:
+  #         role: client
+  #   - podSelector: {}
+  #   ports:
+  #   - port: *targetPort
+  #     # endPort requires Kubernetes 1.25+, and a CNI that supports it, or it will be ignored. Must be equal or greater than `port.`
+  #     endPort: 8081
+  #     protocol: TCP
+  # - from:
+  #   - namespaceSelector:
+  #       # Another less intuitive approach still matching based on labels since matching by namespace name is not supported directly.
+  #       matchExpressions:
+  #       - key: namespace
+  #         operator: In
+  #         values: ["frontend", "backend"]
+  #   - namespaceSelector:
+  #       # Kubernetes 1.22+ sets an immutable label with the namespace name provided that the NamespaceDefaultLabelName feature gate is enabled.
+  #       matchLabels:
+  #         kubernetes.io/metadata.name: default
+  
+  # -- egress may include a list of allowed egress rules. Each rule allows traffic which matches both the `to` and `ports`
+  # sections. The `to` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`.
+  # Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating.
+  # Note: Specifying `- {}` whitelists all outbound traffic and `{}` does the same but on a specific selector, and `- to: []`
+  # will block all outbound traffic. Allow policies will override deny policies.
+  # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
+  egress:
+  - {}
+  # - to:
+  #   - podSelector: {}
+  #   ports:
+  #   - port: 80
+  #     protocol: TCP
+  #   # Allow DNS resolution
+  #   - port: 53
+  #     protocol: UDP
+  #   - port: 53
+  #     protocol: TCP
 
 cronjob:
   # -- The Cron schedule to run a support status check. Default is 08:00 every day.
