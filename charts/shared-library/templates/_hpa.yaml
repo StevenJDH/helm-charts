@@ -27,6 +27,7 @@ metadata:
   name: {{ include "shared-library.fullname" . }}
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

@@ -23,6 +23,7 @@ metadata:
   name: {{ template "shared-library.fullname" . }}-config
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
 data:
   {{- range $key, $val := .Values.configMap }}
   {{- if $val }}

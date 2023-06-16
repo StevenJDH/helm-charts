@@ -26,6 +26,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
 spec:
   jobTemplate:
     metadata:

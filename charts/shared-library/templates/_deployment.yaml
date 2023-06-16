@@ -27,6 +27,7 @@ metadata:
     rollme: {{ randAlphaNum 5 | quote }}
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
 spec:
   {{- /*
   Workaround to handle 0 properly when it is a number or a string.
