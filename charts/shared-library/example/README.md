@@ -17,11 +17,23 @@ Kubernetes: `>= 1.19.0-0`
 | file://../ | shared-library | 0.1.0 |
 
 ## Usage example
+Prepare the example project:
 
 ```bash
-helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
-helm repo update
+git clone https://github.com/StevenJDH/helm-charts.git
+cd helm-charts/charts/shared-library/example
 helm dep update .
+```
+
+Render the result to a file:
+
+```bash
+helm template example . > rendered-output.yaml
+```
+
+Or, install the chart:
+
+```bash
 helm upgrade --install my-example . \
     --namespace example \
     --create-namespace \

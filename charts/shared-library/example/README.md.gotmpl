@@ -9,11 +9,23 @@
 {{ template "chart.requirementsSection" . }}
 
 ## Usage example
+Prepare the example project:
 
 ```bash
-helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
-helm repo update
+git clone https://github.com/StevenJDH/helm-charts.git
+cd helm-charts/charts/shared-library/example
 helm dep update .
+```
+
+Render the result to a file:
+
+```bash
+helm template example . > rendered-output.yaml
+```
+
+Or, install the chart:
+
+```bash
 helm upgrade --install my-{{ template "chart.name" . }} . \
     --namespace example \
     --create-namespace \
