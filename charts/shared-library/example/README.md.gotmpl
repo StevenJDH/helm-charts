@@ -1,0 +1,26 @@
+# Shared Library Example Helm Chart
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Usage example
+
+```bash
+helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
+helm repo update
+helm dep update .
+helm upgrade --install my-{{ template "chart.name" . }} . \
+    --namespace example \
+    --create-namespace \
+    --atomic
+```
+
+{{ template "chart.valuesSection" . }}
+
+
+{{ template "footer.signature" . }}

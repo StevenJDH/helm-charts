@@ -15,7 +15,7 @@
 
 apiVersion: v2
 name: example
-description: A Helm chart for Kubernetes.
+description: An example chart using the shared-library.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -36,7 +36,7 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "1.16.0"
+appVersion: "1.25.1"
 
 # Includes pre-releases to support version schemes used like with AWS EKS as per https://github.com/helm/helm/issues/10375#issuecomment-974203557.
 kubeVersion: ">= 1.19.0-0"

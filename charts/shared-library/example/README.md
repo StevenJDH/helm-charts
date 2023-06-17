@@ -1,46 +1,31 @@
-# Shared Library Helm Chart
+# Shared Library Example Helm Chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.1](https://img.shields.io/badge/AppVersion-1.25.1-informational?style=flat-square) 
 
-A contract-based Helm library chart for Kubernetes.
-
-## Features
-
-* Common templates and tools.
-* Override support to allow for further customization.
-
-**Note:** Current version doesn't support multiple contexts, so only one instance of each template can be used.
+An example chart using the shared-library.
 
 ## Source Code
 
-* <https://github.com/StevenJDH/helm-charts/tree/main/charts/shared-library>
+* <https://github.com/StevenJDH/helm-charts/tree/main/charts/shared-library/example>
 
 ## Requirements
 
 Kubernetes: `>= 1.19.0-0`
 
-## Usage example
+| Repository | Name | Version |
+|------------|------|---------|
+| file://../ | shared-library | 0.1.0 |
 
-Run the following commands:
+## Usage example
 
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-```
-
-In the `Chart.yaml` file of a helm chart project, add the following dependency:
-
-```yaml
-dependencies:
-  - name: shared-library
-    version: 0.1.0
-    repository: "https://StevenJDH.github.io/helm-charts"
-```
-
-Finally, run the following command from the same project folder:
-
-```bash
 helm dep update .
+helm upgrade --install my-example . \
+    --namespace example \
+    --create-namespace \
+    --atomic
 ```
 
 ## Values
@@ -56,7 +41,7 @@ helm dep update .
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | targetCPUUtilizationPercentage represents the percentage of requested CPU over all the pods. |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods. |
 | autoscaling.template | list | `[]` | template provides custom or additional autoscaling metrics that are not built in to Kubernetes or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics). |
-| configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. |
+| configMap | object | `{"configExample":"test"}` | configMap is used to store non-confidential data in key-value pairs. |
 | containerPorts | object | `{"actuator":8081,"http":8080}` | containerPort is the port or ports that the container listens on. |
 | cronjob.annotations | object | `{}` | annotations to be added to the CronJob. |
 | cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
@@ -101,7 +86,7 @@ helm dep update .
 | keda.triggers | list | `[]` | triggers is a list of triggers to activate scaling on for a target resource. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | networkPolicy.egress | list | `[{}]` | egress may include a list of allowed egress rules. Each rule allows traffic which matches both the `to` and `ports` sections. The `to` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`. Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating. Note: Specifying `- {}` whitelists all outbound traffic and `{}` does the same but on a specific selector, and `- to: []` will block all outbound traffic. Allow policies will override deny policies. Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors). |
-| networkPolicy.enabled | bool | `false` | Specifies whether a network policy should be created. Note: This will have no effect unless the chosen CNI supports network policies like Calico, Weave, Cilium, Romana, etc. |
+| networkPolicy.enabled | bool | `true` | Specifies whether a network policy should be created. Note: This will have no effect unless the chosen CNI supports network policies like Calico, Weave, Cilium, Romana, etc. |
 | networkPolicy.ingress | list | `[{}]` | ingress may include a list of allowed ingress rules. Each rule allows traffic which matches both the `from` and `ports` sections. The `from` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`. Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating. Note: Specifying `- {}` whitelists all inbound traffic and `{}` does the same but on a specific selector, and `- to: []` will block all inbound traffic. Allow policies will override deny policies. Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors). |
 | networkPolicy.policyTypes | list | `["Ingress","Egress"]` | policyTypes indicates whether or not the given policy applies to ingress traffic to the selected pod, egress traffic from the selected pods, or both. If no policy types are specified, then by default, Ingress will always be set and Egress will be set if any egress rules are defined. Reference [The NetworkPolicy resource](https://kubernetes.io/docs/concepts/services-networking/network-policies/#networkpolicy-resource). |
 | nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
@@ -109,7 +94,7 @@ helm dep update .
 | replicaCount | int | `1` | replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | restartPolicy | string | `"Always"` | restartPolicy defines how a pod will automatically repair itself when a problem arises. Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy). |
-| secrets | object | `{}` | secrets is used to store confidential data in key-value pairs. |
+| secrets | object | `{"passwordExample":"swordfish"}` | secrets is used to store confidential data in key-value pairs. |
 | service.annotations | object | `{}` | annotations to add to the service resource. |
 | service.appProtocol | bool | `true` | appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example, `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http`. See the following GitHub issue for more details [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions older than 1.20. |
 | service.clusterIP | string | `""` | clusterIP allows for customizing the cluster IP address of a service resource. |
