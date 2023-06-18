@@ -15,10 +15,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
+{{/*
+Generates a NetworkPolicy resource that is compatible with all supported Kubernetes API versions.
+
+Usage:
+{{- include "shared-library.networkpolicy" . }}
+
+OR
+
+{{- include "shared-library.networkpolicy" (list . "override.networkpolicy") }}
+
+{{- define "override.networkpolicy" -}}
+metadata:
+  labels:
+    foo: bar
+    {{- include "shared-library.labels" . | nindent 4 }}
+{{- end -}} 
+
+Params:
+  - context - Dict - Requried. The context for the template evaluation.
+  - overriding named template - String - Required. Definition to merge into the included template.
+*/}}
+
 {{- define "shared-library.networkpolicy.tpl" -}}
 {{- if .Values.networkPolicy.enabled }}
-apiVersion: "networking.k8s.io/v1"
-kind: "NetworkPolicy"
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
 metadata:
   name: {{ include "shared-library.fullname" . }}
   {{- with .Values.service.annotations }}

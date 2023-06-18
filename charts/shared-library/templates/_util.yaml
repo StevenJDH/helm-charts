@@ -15,13 +15,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- /*
+{{/*
 shared-library.util.merge will merge two YAML templates and output the result.
-This takes an array of three values:
-- the top context.
-- the template name of the overrides (destination).
-- the template name of the base (source).
+
+Usage:
+{{- include "shared-library.util.merge" (append . "shared-library.<template-name>.tpl") -}}
+
+Params:
+  - context - Dict - Requried. The top context.
+  - overriding named template - String - Required. Definition to merge into the included template.
+  - source named template - String - Required. The base template.
 */}}
+
 {{- define "shared-library.util.merge" -}}
 {{- $top       := first . -}}
 {{- $overrides := fromYaml (include (index . 1) $top) | default (dict) -}}

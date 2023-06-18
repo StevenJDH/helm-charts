@@ -15,6 +15,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
+{{/*
+Generates a CronJob resource that is compatible with all supported Kubernetes API versions.
+
+Usage:
+{{- include "shared-library.cronjob" . }}
+
+OR
+
+{{- include "shared-library.cronjob" (list . "override.cronjob") }}
+
+{{- define "override.cronjob" -}}
+metadata:
+  labels:
+    foo: bar
+    {{- include "shared-library.labels" . | nindent 4 }}
+{{- end -}} 
+
+Params:
+  - context - Dict - Requried. The context for the template evaluation.
+  - overriding named template - String - Required. Definition to merge into the included template.
+*/}}
+
 {{- define "shared-library.cronjob.tpl" -}}
 apiVersion: {{ template "cronjob.apiVersion" . }}
 kind: CronJob

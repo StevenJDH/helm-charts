@@ -16,7 +16,7 @@ limitations under the License.
 */}}
 
 {{/*
-Generates a service resource that is compatible with all supported Kubernetes API versions.
+Generates a Service resource that is compatible with all supported Kubernetes API versions.
 
 Usage:
 {{- include "shared-library.service" . }}
