@@ -78,7 +78,7 @@ spec:
     spec:
       {{- if and .Values.image.pullSecret.username .Values.image.pullSecret.password }}
       imagePullSecrets:
-      - name: {{ template "shared-library.fullname" . }}-github-pull-secret
+      - name: {{ template "shared-library.fullname" . }}-pull-secret
       {{- end }}
       serviceAccountName: {{ include "shared-library.serviceAccountName" . }}
       securityContext:
