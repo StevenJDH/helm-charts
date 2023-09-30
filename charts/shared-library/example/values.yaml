@@ -18,7 +18,7 @@
 replicaCount: 1
 
 image:
-  # -- repository holding the Konga container image.
+  # -- repository holding the container image.
   repository: nginx
   # -- pullPolicy is the strategy for pulling images from a registry.
   pullPolicy: Always
@@ -215,15 +215,13 @@ service:
 ingress:
   # -- Indicates whether or not an Ingress resource is created.
   enabled: true
-  # -- className is the name of the Ingress class. For APIs exposed via the Kong Ingress Controller, use the `kong` class for
-  # those Ingress resources.
-  # Reference [Getting started with the Kong KIC](https://docs.konghq.com/kubernetes-ingress-controller/latest/guides/getting-started/)
-  # and [API Management with Kong Ingress Controller on Kubernetes](https://blog.baeke.info/2019/06/15/api-management-with-kong-ingress-controller-on-kubernetes/).
+  # -- className is the name of the Ingress class.
   className: nginx
   # -- annotations to add to the Ingress resource.
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+  
   hosts:
     # -- host is the hostname of a request that must match exactly or use a wildcard as the subdomain.
     - host: ""
@@ -377,8 +375,30 @@ cronjob:
     #   command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
 
 job:
-  # -- annotations to add to the DB migrations Job resource.
+  image:
+    # -- Overrides the repository holding the container image.
+    repositoryOverride: busybox
+    # -- Overrides the strategy for pulling images from a registry.
+    pullPolicyOverride: ""
+    # -- Overrides the image tag whose default is the chart appVersion.
+    tagOverride: "latest"
+  # -- annotations to be added to the Job resource.
   annotations: {}
+  # @ignored
+  podSecurityContext: {}
+    # runAsNonRoot: true
+    # runAsUser: 10101
+    # seccompProfile:
+    #   type: RuntimeDefault
+
+  # @ignored
+  securityContext: {}
+    # readOnlyRootFilesystem: false
+    # allowPrivilegeEscalation: false
+    # capabilities:
+    #   drop:
+    #   - ALL
+
   # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
   # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
   resources: {}

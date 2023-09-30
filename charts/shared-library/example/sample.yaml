@@ -107,7 +107,7 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "HtEKU"
+    rollme: "6OmL1"
   labels:
     helm.sh/chart: example-0.1.0
     app.kubernetes.io/name: example
@@ -209,19 +209,13 @@ spec:
     spec:
       serviceAccountName: example
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 10101
-        seccompProfile:
-          type: RuntimeDefault
+        {}
       containers:
         - name: example-job
-          image: "nginx:1.25.1"
+          image: "busybox:latest"
+          imagePullPolicy: Always
           securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-              - ALL
-            readOnlyRootFilesystem: false
+            {}
           resources:
             {}
       restartPolicy: Never

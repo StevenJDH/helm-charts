@@ -75,18 +75,21 @@ helm dep update .
 | image.pullPolicy | string | `"Always"` | pullPolicy is the strategy for pulling images from a registry. |
 | image.pullSecret.password | string | `""` | password is the Docker password associated with the username with pull rights. |
 | image.pullSecret.username | string | `""` | username is the Docker username associated with the password. |
-| image.repository | string | `"nginx"` | repository holding the Konga container image. |
+| image.repository | string | `"nginx"` | repository holding the container image. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | ingress.annotations | object | `{}` | annotations to add to the Ingress resource. |
-| ingress.className | string | `"nginx"` | className is the name of the Ingress class. For APIs exposed via the Kong Ingress Controller, use the `kong` class for those Ingress resources. Reference [Getting started with the Kong KIC](https://docs.konghq.com/kubernetes-ingress-controller/latest/guides/getting-started/) and [API Management with Kong Ingress Controller on Kubernetes](https://blog.baeke.info/2019/06/15/api-management-with-kong-ingress-controller-on-kubernetes/). |
+| ingress.className | string | `"nginx"` | className is the name of the Ingress class. |
 | ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created. |
 | ingress.hosts[0] | object | `{"host":"","paths":[{"path":"/","pathType":"Prefix"}]}` | host is the hostname of a request that must match exactly or use a wildcard as the subdomain. |
 | ingress.hosts[0].paths[0] | object | `{"path":"/","pathType":"Prefix"}` | path is part of a list of one or more paths that are associated with a backend service. |
 | ingress.hosts[0].paths[0].pathType | string | `"Prefix"` | pathType is a field that can specify how Ingress paths should be matched. Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types). |
 | ingress.tls | list | `[]` | tls is a list of hosts that needs to explicitly match the host in the rules section. It also contains a secret with references to tls.crt and tls.key to use for TLS. |
-| job.annotations | object | `{}` | annotations to add to the DB migrations Job resource. |
+| job.annotations | object | `{}` | annotations to be added to the Job resource. |
 | job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.  |
 | job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
+| job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |
+| job.image.repositoryOverride | string | `"busybox"` | Overrides the repository holding the container image. |
+| job.image.tagOverride | string | `"latest"` | Overrides the image tag whose default is the chart appVersion. |
 | job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
 | job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | keda.apiVersion | string | `"keda.sh/v1alpha1"` | apiVersion is the KEDA API to use, which will be either `keda.k8s.io/v1alpha1` or `keda.sh/v1alpha1` depending on whether KEDA is version 1x or 2x respectively. |
