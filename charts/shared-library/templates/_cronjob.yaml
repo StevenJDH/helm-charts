@@ -86,13 +86,14 @@ spec:
           - name: {{ template "shared-library.fullname" . }}-pull-secret
           {{- end }}
           securityContext:
-            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+            {{- toYaml .Values.cronjob.job.podSecurityContext | nindent 12 }}
           containers:
           - name: {{ .Chart.Name }}
-            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- $tag := .Values.cronjob.job.image.tagOverride | default .Values.image.tag }}
+            image: "{{ .Values.cronjob.job.image.repositoryOverride | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.cronjob.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
             securityContext:
-              {{- toYaml .Values.securityContext | nindent 14 }}
+              {{- toYaml .Values.cronjob.job.securityContext | nindent 14 }}
             {{- if .Values.cronjob.job.extraArgs }}
             args:
               {{- range .Values.cronjob.job.extraArgs }}
@@ -115,7 +116,7 @@ spec:
             {{- end }}
           {{- end }}
             resources:
-              {{- toYaml .Values.resources | nindent 14 }}
+              {{- toYaml .Values.cronjob.job.resources | nindent 14 }}
             {{- with .Values.cronjob.job.extraVolumeMounts }}
             volumeMounts:
               {{- toYaml . | nindent 14 }}

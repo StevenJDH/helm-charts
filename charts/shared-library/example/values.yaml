@@ -333,6 +333,38 @@ cronjob:
   # @ignored. If startingDeadlineSeconds is set to a value less than 10 seconds, the CronJob may not be scheduled.
   startingDeadlineSeconds: ""
   job:
+    image:
+      # -- Overrides the repository holding the container image.
+      repositoryOverride: busybox
+      # -- Overrides the strategy for pulling images from a registry.
+      pullPolicyOverride: ""
+      # -- Overrides the image tag whose default is the chart appVersion.
+      tagOverride: "latest"
+    # @ignored
+    podSecurityContext: {}
+      # runAsNonRoot: true
+      # runAsUser: 10101
+      # seccompProfile:
+      #   type: RuntimeDefault
+
+    # @ignored
+    securityContext: {}
+      # readOnlyRootFilesystem: false
+      # allowPrivilegeEscalation: false
+      # capabilities:
+      #   drop:
+      #   - ALL
+
+    # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+    # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+    resources: {}
+      # requests:
+      #   memory: 256Mi
+      #   cpu: 500m
+      # limits:
+      #   memory: 512Mi
+      #   cpu: 1000m
+
     # -- podAnnotations are the annotations to be added to the job pods.
     podAnnotations: {}
     # @ignored

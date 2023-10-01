@@ -61,7 +61,11 @@ helm upgrade --install my-example . \
 | cronjob.job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
 | cronjob.job.extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
 | cronjob.job.extraVolumes | list | `[]` | Additional volumes for the pod. |
+| cronjob.job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |
+| cronjob.job.image.repositoryOverride | string | `"busybox"` | Overrides the repository holding the container image. |
+| cronjob.job.image.tagOverride | string | `"latest"` | Overrides the image tag whose default is the chart appVersion. |
 | cronjob.job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
+| cronjob.job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | cronjob.schedule | string | `"0 8 * * *"` | The Cron schedule to run a support status check. Default is 08:00 every day. |
 | extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | extraEnvs | list | `[]` | Additional environment variables to set. |
