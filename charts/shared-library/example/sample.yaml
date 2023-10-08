@@ -107,7 +107,7 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "qPsSs"
+    rollme: "LH0t4"
   labels:
     helm.sh/chart: example-0.1.0
     app.kubernetes.io/name: example
@@ -259,7 +259,7 @@ spec:
           securityContext:
             {}
           containers:
-          - name: example
+          - name: example-job
             image: "busybox:latest"
             imagePullPolicy: Always
             securityContext:

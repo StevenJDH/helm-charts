@@ -56,14 +56,17 @@ helm dep update .
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | targetCPUUtilizationPercentage represents the percentage of requested CPU over all the pods. |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods. |
 | autoscaling.template | list | `[]` | template provides custom or additional autoscaling metrics that are not built in to Kubernetes or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics). |
+| command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.  |
 | configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. |
 | containerPorts | object | `{"actuator":8081,"http":8080}` | containerPort is the port or ports that the container listens on. |
-| cronjob.annotations | object | `{}` | annotations to be added to the CronJob. |
+| cronjob.annotations | object | `{}` | annotations to be added to the CronJob resource. |
+| cronjob.job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.  |
 | cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | cronjob.job.extraEnvs | list | `[]` | Additional environment variables to set. |
 | cronjob.job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
 | cronjob.job.extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
 | cronjob.job.extraVolumes | list | `[]` | Additional volumes for the pod. |
+| cronjob.job.image.containerNameOverride | string | `""` | Overrides the container name whose default is the chart name. |
 | cronjob.job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |
 | cronjob.job.image.repositoryOverride | string | `"busybox"` | Overrides the repository holding the container image. |
 | cronjob.job.image.tagOverride | string | `"latest"` | Overrides the image tag whose default is the chart appVersion. |
@@ -81,7 +84,7 @@ helm dep update .
 | image.pullSecret.username | string | `""` | username is the Docker username associated with the password. |
 | image.repository | string | `"nginx"` | repository holding the container image. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
-| ingress.annotations | object | `{}` | annotations to add to the Ingress resource. |
+| ingress.annotations | object | `{}` | annotations to be added to the Ingress resource. |
 | ingress.className | string | `"nginx"` | className is the name of the Ingress class. |
 | ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created. |
 | ingress.hosts[0] | object | `{"host":"","paths":[{"path":"/","pathType":"Prefix"}]}` | host is the hostname of a request that must match exactly or use a wildcard as the subdomain. |
@@ -91,6 +94,7 @@ helm dep update .
 | job.annotations | object | `{}` | annotations to be added to the Job resource. |
 | job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.  |
 | job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
+| job.image.containerNameOverride | string | `""` | Overrides the container name whose default is the chart name. |
 | job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |
 | job.image.repositoryOverride | string | `"busybox"` | Overrides the repository holding the container image. |
 | job.image.tagOverride | string | `"latest"` | Overrides the image tag whose default is the chart appVersion. |
@@ -104,7 +108,7 @@ helm dep update .
 | keda.minReplicas | int | `1` | minReplicas is the minimum number of replicas KEDA will scale a target resource down to. |
 | keda.pollingInterval | int | `30` | pollingInterval is the interval to check each trigger on. |
 | keda.restoreToOriginalReplicaCount | bool | `false` | restoreToOriginalReplicaCount specifies whether the target resource (Deployment, StatefulSet,…) should be scaled back to original replicas count, after the ScaledObject is deleted. Default behavior is to keep the replica count at the same number as it is in the moment of ScaledObject's deletion. |
-| keda.scaledObject.annotations | object | `{}` | annotations to add to the ScaledObject resource. |
+| keda.scaledObject.annotations | object | `{}` | annotations to be added to the ScaledObject resource. |
 | keda.triggers | list | `[]` | triggers is a list of triggers to activate scaling on for a target resource. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | networkPolicy.egress | list | `[{}]` | egress may include a list of allowed egress rules. Each rule allows traffic which matches both the `to` and `ports` sections. The `to` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`. Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating. Note: Specifying `- {}` whitelists all outbound traffic and `{}` does the same but on a specific selector, and `- to: []` will block all outbound traffic. Allow policies will override deny policies. Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors). |
@@ -117,7 +121,7 @@ helm dep update .
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | restartPolicy | string | `"Always"` | restartPolicy defines how a pod will automatically repair itself when a problem arises. Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy). |
 | secrets | object | `{}` | secrets is used to store confidential data in key-value pairs. |
-| service.annotations | object | `{}` | annotations to add to the service resource. |
+| service.annotations | object | `{}` | annotations to be added to the Service resource. |
 | service.appProtocol | bool | `true` | appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example, `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http`. See the following GitHub issue for more details [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions older than 1.20. |
 | service.clusterIP | string | `""` | clusterIP allows for customizing the cluster IP address of a service resource. |
 | service.externalIPs | list | `[]` | externalIPs is a list of IP addresses at which a service is available at. Reference [External IPs](https://kubernetes.io/docs/user-guide/services/#external-ips). |
@@ -129,7 +133,7 @@ helm dep update .
 | service.loadBalancerSourceRanges | list | `[]` | loadBalancerSourceRanges is a list of one or more internal or external IP address ranges. If not set, a Service will accept traffic from any IP address (0.0.0.0/0). |
 | service.sessionAffinity | string | `"None"` | sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's IP address. Must be either "None" or "ClientIP" if set. Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace) |
 | service.type | string | `"ClusterIP"` | type specifies what kind of Service resource to create. |
-| serviceAccount.annotations | object | `{}` | annotations to add to the service account. |
+| serviceAccount.annotations | object | `{}` | annotations to be added to the Service Account resource. |
 | serviceAccount.aws.irsa.audience | string | `"sts.amazonaws.com"` | audience sets the intended recipient of the token. |
 | serviceAccount.aws.irsa.enabled | bool | `true` | Specifies whether or not to enable support for AWS IAM Roles for Service Accounts (IRSA). Static credentials will be required if this is set to false. |
 | serviceAccount.aws.irsa.roleArn | string | `""` | roleArn is the ARN of an IAM role with a web identity provider. For example, `arn:aws:iam::000000000000:role/example-irsa-role`. |

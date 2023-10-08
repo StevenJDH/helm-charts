@@ -88,12 +88,16 @@ spec:
           securityContext:
             {{- toYaml .Values.cronjob.job.podSecurityContext | nindent 12 }}
           containers:
-          - name: {{ .Chart.Name }}
+          - name: {{ .Values.cronjob.job.image.containerNameOverride | default (print .Chart.Name "-job") }}
             {{- $tag := .Values.cronjob.job.image.tagOverride | default .Values.image.tag }}
             image: "{{ .Values.cronjob.job.image.repositoryOverride | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
             imagePullPolicy: {{ .Values.cronjob.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
             securityContext:
               {{- toYaml .Values.cronjob.job.securityContext | nindent 14 }}
+            {{- with .Values.cronjob.job.command }}
+            command:
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
             {{- if .Values.cronjob.job.extraArgs }}
             args:
               {{- range .Values.cronjob.job.extraArgs }}

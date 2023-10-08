@@ -40,7 +40,7 @@ fullnameOverride: ""
 serviceAccount:
   # -- Specifies whether a service account should be created.
   create: true
-  # -- annotations to add to the service account.
+  # -- annotations to be added to the Service Account resource.
   annotations: {}
   # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template.
@@ -77,6 +77,9 @@ updateStrategy: {}
   # rollingUpdate:
   #   maxUnavailable: 1
   # type: RollingUpdate
+
+# -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. 
+command: []
 
 # -- Additional command line arguments to pass to the container.
 extraArgs: []
@@ -178,7 +181,7 @@ service:
   # [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions
   # older than 1.20.
   appProtocol: true
-  # -- annotations to add to the service resource.
+  # -- annotations to be added to the Service resource.
   annotations: {}
   # -- clusterIP allows for customizing the cluster IP address of a service resource.
   clusterIP: ""
@@ -217,7 +220,7 @@ ingress:
   enabled: true
   # -- className is the name of the Ingress class.
   className: nginx
-  # -- annotations to add to the Ingress resource.
+  # -- annotations to be added to the Ingress resource.
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
@@ -322,7 +325,7 @@ networkPolicy:
 cronjob:
   # -- The Cron schedule to run a support status check. Default is 08:00 every day.
   schedule: '0 8 * * *'
-  # -- annotations to be added to the CronJob.
+  # -- annotations to be added to the CronJob resource.
   annotations: {}
   # @ignored
   concurrencyPolicy: ""
@@ -334,6 +337,8 @@ cronjob:
   startingDeadlineSeconds: ""
   job:
     image:
+      # -- Overrides the container name whose default is the chart name.
+      containerNameOverride: ""
       # -- Overrides the repository holding the container image.
       repositoryOverride: busybox
       # -- Overrides the strategy for pulling images from a registry.
@@ -375,6 +380,8 @@ cronjob:
     backoffLimit: 0
     # @ignored
     activeDeadlineSeconds: 120
+    # -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. 
+    command: []
     # -- Additional command line arguments to pass to the container.
     extraArgs: []
     # - --arg1
@@ -408,6 +415,8 @@ cronjob:
 
 job:
   image:
+    # -- Overrides the container name whose default is the chart name.
+    containerNameOverride: ""
     # -- Overrides the repository holding the container image.
     repositoryOverride: busybox
     # -- Overrides the strategy for pulling images from a registry.
@@ -554,7 +563,7 @@ keda:
   # is to keep the replica count at the same number as it is in the moment of ScaledObject's deletion.
   restoreToOriginalReplicaCount: false
   scaledObject:
-    # -- annotations to add to the ScaledObject resource.
+    # -- annotations to be added to the ScaledObject resource.
     annotations: {}
       # key: value
 

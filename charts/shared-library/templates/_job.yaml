@@ -81,7 +81,7 @@ spec:
       securityContext:
         {{- toYaml .Values.job.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}-job
+        - name: {{ .Values.job.image.containerNameOverride | default (print .Chart.Name "-job") }}
           {{- $tag := .Values.job.image.tagOverride | default .Values.image.tag }}
           image: "{{ .Values.job.image.repositoryOverride | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
