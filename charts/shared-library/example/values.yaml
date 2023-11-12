@@ -116,9 +116,10 @@ containerPorts:
   http: 8080
   actuator: 8081
 
-# @ignored. Startup, Liveness and readiness probes. Reference [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes).
-# Liveness probes do not wait for readiness probes to succeed. If you want to wait before
-# executing a liveness probe you should use initialDelaySeconds or a startupProbe.
+# @ignored. Startup, Liveness and readiness probes. Liveness probes do not wait
+# for readiness probes to succeed. If you want to wait before executing a liveness
+# probe you should use initialDelaySeconds or a startupProbe.
+# Reference [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes).
 health:
   startupProbe: {}
     # httpGet:
@@ -185,12 +186,14 @@ service:
   annotations: {}
   # -- clusterIP allows for customizing the cluster IP address of a service resource.
   clusterIP: ""
-  # -- externalIPs is a list of IP addresses at which a service is available at. Reference [External IPs](https://kubernetes.io/docs/user-guide/services/#external-ips).
+  # -- externalIPs is a list of IP addresses at which a service is available at.
+  # Reference [External IPs](https://kubernetes.io/docs/user-guide/services/#external-ips).
   externalIPs: []
   # -- loadBalancerIP is a field used by cloud providers to connect the resulting `LoadBalancer` created by a service resource to a
-  # pre-existing static IP. Reference [Type LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer).
-  # This field is deprecated as of Kubernetes 1.24.0 since it doesn't support dual-stack, but there is no replacement as of yet. Most likely
-  # cloud providers will adopt a provider specific annotation approach for this. Progress can be tracked here [kubernetes/enhancements#1992](https://github.com/kubernetes/enhancements/pull/1992).
+  # pre-existing static IP. This field is deprecated as of Kubernetes 1.24.0 since it doesn't support dual-stack, but there is no
+  # replacement as of yet. Most likely cloud providers will adopt a provider specific annotation approach for this. Progress can be
+  # tracked here [kubernetes/enhancements#1992](https://github.com/kubernetes/enhancements/pull/1992).
+  # Reference [Type LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer).
   loadBalancerIP: ""
   # -- loadBalancerSourceRanges is a list of one or more internal or external IP address ranges. If not set, a Service will accept
   # traffic from any IP address (0.0.0.0/0).
@@ -202,16 +205,19 @@ service:
   # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
   externalTrafficPolicy: ""
   # -- sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's
-  # IP address. Must be either "None" or "ClientIP" if set. Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace)
+  # IP address. Must be either "None" or "ClientIP" if set.
+  # Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace).
   sessionAffinity: "None"
   # -- healthCheckNodePort specifies the health check node port (numeric port number) for the service. If healthCheckNodePort isn’t specified,
-  # the service controller allocates a port from your cluster’s NodePort range. Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
+  # the service controller allocates a port from your cluster’s NodePort range.
+  # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
   healthCheckNodePort: 0
   # -- ipFamilyPolicy represents the dual-stack-ness requested or required by this Service. Possible values are SingleStack, PreferDualStack or RequireDualStack.
-  # The ipFamilies and clusterIPs fields depend on the value of this field. Reference [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack)
+  # The ipFamilies and clusterIPs fields depend on the value of this field.
+  # Reference [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack).
   ipFamilyPolicy: "SingleStack"
   # -- ipFamilies is a list of IP families (e.g. IPv4, IPv6) assigned to a service. This field is usually assigned automatically
-  # based on cluster configuration and the ipFamilyPolicy field. [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack)
+  # based on cluster configuration and the ipFamilyPolicy field. [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack).
   ipFamilies:
   - IPv4
 
@@ -468,6 +474,14 @@ job:
   # - value1
   # - --arg2
   # - value2
+
+  # -- Additional environment variables to set.
+  extraEnvs: []
+  # - name: FOO
+  #   valueFrom:
+  #     secretKeyRef:
+  #       key: FOO
+  #       name: secret-resource
 
 # -- configMap is used to store non-confidential data in key-value pairs.
 configMap:

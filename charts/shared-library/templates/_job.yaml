@@ -97,6 +97,21 @@ spec:
             - {{ . | quote }}
             {{- end }}
           {{- end }}
+          {{- with .Values.job.extraEnvs }}
+          env:            
+            {{- toYaml . | nindent 14 }}
+          {{- end }}
+        {{- if or .Values.configMap .Values.secrets }}
+          envFrom:
+          {{- if .Values.configMap }}
+          - configMapRef:
+              name: {{ template "shared-library.fullname" . }}-config
+          {{- end }}
+          {{- if .Values.secrets }}
+          - secretRef:
+              name: {{ template "shared-library.fullname" . }}-secret
+          {{- end }}
+        {{- end }}
           resources:
             {{- toYaml .Values.job.resources | nindent 12 }}
       {{- with .Values.job.restartPolicy }}

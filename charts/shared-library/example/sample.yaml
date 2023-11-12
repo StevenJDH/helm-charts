@@ -107,7 +107,7 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "LH0t4"
+    rollme: "OSPDp"
   labels:
     helm.sh/chart: example-0.1.0
     app.kubernetes.io/name: example
@@ -216,6 +216,11 @@ spec:
           imagePullPolicy: Always
           securityContext:
             {}
+          envFrom:
+          - configMapRef:
+              name: example-config
+          - secretRef:
+              name: example-secret
           resources:
             {}
       restartPolicy: Never
