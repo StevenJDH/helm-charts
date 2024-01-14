@@ -328,6 +328,13 @@ networkPolicy:
   #   - port: 53
   #     protocol: TCP
 
+podDisruptionBudget:
+  # -- Indicates whether or not a PodDisruptionBudget resource is created.
+  create: false
+  # -- minAvailable is the number of pods from that set that must still be available after the eviction, even in
+  # the absence of the evicted pod. Only integer values are supported.
+  minAvailable: 1
+
 cronjob:
   # -- The Cron schedule to run a support status check. Default is 08:00 every day.
   schedule: '0 8 * * *'

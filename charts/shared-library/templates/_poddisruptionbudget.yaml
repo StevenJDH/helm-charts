@@ -1,0 +1,63 @@
+{{/*
+This file is part of Shared Library Helm Chart <https://github.com/StevenJDH/helm-charts>.
+Copyright (C) 2023 Steven Jenkins De Haro.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+{{/*
+Generates a PodDisruptionBudget resource that is compatible with all supported Kubernetes API versions.
+
+Usage:
+{{- include "shared-library.poddisruptionbudget" . }}
+
+OR
+
+{{- include "shared-library.poddisruptionbudget" (list . "override.poddisruptionbudget") }}
+
+{{- define "override.poddisruptionbudget" -}}
+metadata:
+  labels:
+    foo: bar
+    {{- include "shared-library.labels" . | nindent 4 }}
+{{- end -}} 
+
+Params:
+  - context - Dict - Requried. The context for the template evaluation.
+  - overriding named template - String - Required. Definition to merge into the included template.
+*/}}
+
+{{- define "shared-library.poddisruptionbudget.tpl" -}}
+{{- if and .Values.podDisruptionBudget.create (semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion) -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "shared-library.fullname" . }}
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable | int }}
+  selector:
+    matchLabels:
+      {{- include "shared-library.selectorLabels" . | nindent 6 }}
+{{- end }}
+{{- end -}}
+
+{{- define "shared-library.poddisruptionbudget" -}}
+{{- if (kindIs "slice" .) }}
+  {{- include "shared-library.util.merge" (append . "shared-library.poddisruptionbudget.tpl") }}
+{{- else -}}
+  {{- include "shared-library.poddisruptionbudget.tpl" . }}
+{{- end }}
+{{- end -}}

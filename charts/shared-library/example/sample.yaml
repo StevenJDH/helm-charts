@@ -24,6 +24,25 @@ spec:
   egress:
   - {}
 ---
+# Source: example/templates/poddisruptionbudget.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: example
+  labels:
+    helm.sh/chart: example-0.1.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.1"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: example
+      app.kubernetes.io/instance: example
+---
 # Source: example/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -107,7 +126,7 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "OSPDp"
+    rollme: "gBgQX"
   labels:
     helm.sh/chart: example-0.1.0
     app.kubernetes.io/name: example
