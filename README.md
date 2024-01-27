@@ -1,8 +1,8 @@
 # Helm Charts
 
 [![Release Charts](https://github.com/StevenJDH/helm-charts/actions/workflows/chart-releaser-workflow.yml/badge.svg?branch=main)](https://github.com/StevenJDH/helm-charts/actions/workflows/chart-releaser-workflow.yml)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/51e4129137284c32a81ec74a8600c63c)](https://www.codacy.com/gh/StevenJDH/helm-charts/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=StevenJDH/helm-charts&amp;utm_campaign=Badge_Grade)
-![Maintenance](https://img.shields.io/maintenance/yes/2023)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/51e4129137284c32a81ec74a8600c63c)](https://app.codacy.com/gh/StevenJDH/helm-charts/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=StevenJDH/helm-charts&amp;utm_campaign=Badge_Grade)
+![Maintenance](https://img.shields.io/maintenance/yes/2024)
 ![GitHub](https://img.shields.io/github/license/StevenJDH/helm-charts)
 
 A collection of Kubernetes applications ready for release using [Helm](https://github.com/helm/helm).
