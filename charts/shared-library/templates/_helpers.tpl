@@ -112,3 +112,10 @@ eks.amazonaws.com/role-arn: {{ .Values.serviceAccount.aws.irsa.roleArn | quote }
 eks.amazonaws.com/sts-regional-endpoints: {{ .Values.serviceAccount.aws.irsa.stsRegionalEndpoints | default "true" | quote }}
 eks.amazonaws.com/token-expiration: {{ .Values.serviceAccount.aws.irsa.tokenExpiration | default "3600" | quote }}
 {{- end }}
+
+{{/*
+Display contract-based message for required values.
+*/}}
+{{- define "shared-library.required-msg" -}}
+{{- "Value '%s' is required." -}}
+{{- end -}}
