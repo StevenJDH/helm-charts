@@ -38,6 +38,7 @@ Params:
 */}}
 
 {{- define "shared-library.cronjob.tpl" -}}
+{{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: {{ template "cronjob.apiVersion" . }}
 kind: CronJob
 metadata:
@@ -85,15 +86,20 @@ spec:
           imagePullSecrets:
           - name: {{ template "shared-library.fullname" . }}-pull-secret
           {{- end }}
+          {{- with .Values.cronjob.job.podSecurityContext }}
           securityContext:
-            {{- toYaml .Values.cronjob.job.podSecurityContext | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           containers:
           - name: {{ .Values.cronjob.job.image.containerNameOverride | default (print .Chart.Name "-job") }}
             {{- $tag := .Values.cronjob.job.image.tagOverride | default .Values.image.tag }}
             image: "{{ .Values.cronjob.job.image.repositoryOverride | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
-            imagePullPolicy: {{ .Values.cronjob.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
+            {{- $pullPolicy := .Values.cronjob.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
+            imagePullPolicy: {{ $pullPolicy | default "IfNotPresent" }}
+            {{- with .Values.cronjob.job.securityContext }}
             securityContext:
-              {{- toYaml .Values.cronjob.job.securityContext | nindent 14 }}
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
             {{- with .Values.cronjob.job.command }}
             command:
               {{- toYaml . | nindent 14 }}
@@ -119,8 +125,10 @@ spec:
                 name: {{ template "shared-library.fullname" . }}-secret
             {{- end }}
           {{- end }}
+            {{- with .Values.cronjob.job.resources }}
             resources:
-              {{- toYaml .Values.cronjob.job.resources | nindent 14 }}
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
             {{- with .Values.cronjob.job.extraVolumeMounts }}
             volumeMounts:
               {{- toYaml . | nindent 14 }}
@@ -148,7 +156,7 @@ spec:
           tolerations:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-  schedule: {{ .Values.cronjob.schedule | squote }}
+  schedule: {{ required (printf $requiredMsg "cronjob.schedule") .Values.cronjob.schedule | squote }}
   {{- with .Values.cronjob.concurrencyPolicy }}
   concurrencyPolicy: {{ . }}
   {{- end }}

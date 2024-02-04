@@ -78,15 +78,20 @@ spec:
       - name: {{ template "shared-library.fullname" . }}-pull-secret
       {{- end }}
       serviceAccountName: {{ include "shared-library.serviceAccountName" . }}
+      {{- with .Values.job.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.job.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Values.job.image.containerNameOverride | default (print .Chart.Name "-job") }}
           {{- $tag := .Values.job.image.tagOverride | default .Values.image.tag }}
           image: "{{ .Values.job.image.repositoryOverride | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
+          {{- $pullPolicy := .Values.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
+          imagePullPolicy: {{ $pullPolicy | default "IfNotPresent" }}
+          {{- with .Values.job.securityContext }}
           securityContext:
-            {{- toYaml .Values.job.securityContext | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.job.command }}
           command:
             {{- toYaml . | nindent 12 }}
@@ -112,8 +117,10 @@ spec:
               name: {{ template "shared-library.fullname" . }}-secret
           {{- end }}
         {{- end }}
+          {{- with .Values.job.resources }}
           resources:
-            {{- toYaml .Values.job.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
       {{- with .Values.job.restartPolicy }}
       restartPolicy: {{ . }}
       {{- end }}

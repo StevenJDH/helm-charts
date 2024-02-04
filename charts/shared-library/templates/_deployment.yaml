@@ -38,6 +38,7 @@ Params:
 */}}
 
 {{- define "shared-library.deployment.tpl" -}}
+{{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -81,20 +82,24 @@ spec:
       - name: {{ template "shared-library.fullname" . }}-pull-secret
       {{- end }}
       serviceAccountName: {{ include "shared-library.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ required "value 'image.repository' is required" .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ required (printf $requiredMsg "image.repository") .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
           ports:
           {{- range $key, $value := .Values.containerPorts }}
             - name: {{ $key }}
               containerPort: {{ $value }}
               protocol: TCP
           {{- end }}
+          {{- with .Values.securityContext }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.command }}
           command:
             {{- toYaml . | nindent 12 }}
@@ -124,12 +129,18 @@ spec:
           startupProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- with .Values.health.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.health.livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.health.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.health.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.extraVolumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
