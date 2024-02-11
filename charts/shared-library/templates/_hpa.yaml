@@ -39,6 +39,7 @@ Params:
 
 {{- define "shared-library.hpa.tpl" -}}
 {{- if and .Values.autoscaling.enabled (not .Values.keda.enabled) -}}
+{{- $requiredMsg := include "shared-library.required-msg" . -}}
 {{- if semverCompare ">=1.23-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: autoscaling/v2
 {{- else -}}
@@ -55,8 +56,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "shared-library.fullname" . }}
-  minReplicas: {{ .Values.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  minReplicas: {{ required (printf $requiredMsg "autoscaling.minReplicas") .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ required (printf $requiredMsg "autoscaling.maxReplicas") .Values.autoscaling.maxReplicas }}
   metrics:
     {{- with .Values.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource

@@ -40,7 +40,7 @@ Params:
 {{- define "shared-library.ingress.tpl" -}}
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "shared-library.fullname" . -}}
-
+{{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -53,7 +53,7 @@ metadata:
     {{- include "shared-library.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: {{ required (printf $requiredMsg "ingress.className") .Values.ingress.className }}
   {{- if .Values.ingress.tls }}
   tls:
     {{- range .Values.ingress.tls }}
@@ -61,7 +61,9 @@ spec:
         {{- range .hosts }}
         - {{ . | quote }}
         {{- end }}
-      secretName: {{ .secretName }}
+      {{- with .secretName }}
+      secretName: {{ . }}
+      {{- end }}
     {{- end }}
   {{- end }}
   rules:
@@ -70,13 +72,13 @@ spec:
       http:
         paths:
           {{- range .paths }}
-          - path: {{ .path }}
-            pathType: {{ .pathType }}
+          - path: {{ required (printf $requiredMsg "ingress.hosts[].paths[].path") .path }}
+            pathType: {{ .pathType | default "Prefix" }}
             backend:
               service:
                 name: {{ $fullName }}-svc
                 port:
-                  number: {{ $.Values.service.port }}
+                  number: {{ required (printf $requiredMsg "service.port") $.Values.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}
