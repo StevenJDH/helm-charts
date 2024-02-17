@@ -78,7 +78,7 @@ updateStrategy: {}
   #   maxUnavailable: 1
   # type: RollingUpdate
 
-# -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. 
+# -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.
 command: []
 
 # -- Additional command line arguments to pass to the container.
@@ -230,7 +230,7 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  
+
   hosts:
     # -- host is the hostname of a request that must match exactly or use a wildcard as the subdomain.
     - host: ""
@@ -308,7 +308,7 @@ networkPolicy:
   #       # Kubernetes 1.22+ sets an immutable label with the namespace name provided that the NamespaceDefaultLabelName feature gate is enabled.
   #       matchLabels:
   #         kubernetes.io/metadata.name: default
-  
+
   # -- egress may include a list of allowed egress rules. Each rule allows traffic which matches both the `to` and `ports`
   # sections. The `to` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`.
   # Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating.
@@ -393,7 +393,7 @@ cronjob:
     backoffLimit: 0
     # @ignored
     activeDeadlineSeconds: 120
-    # -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. 
+    # -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.
     command: []
     # -- Additional command line arguments to pass to the container.
     extraArgs: []
@@ -473,7 +473,7 @@ job:
   backoffLimit: 20
   # @ignored
   activeDeadlineSeconds: 120
-  # -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. 
+  # -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.
   command: []
   # -- Additional command line arguments to pass to the container.
   extraArgs: []
@@ -527,6 +527,8 @@ tolerations: []
 autoscaling:
   # -- Indicates whether or not a Horizontal Pod Autoscaling resource is created. Enabling is ignored if KEDA is enabled.
   enabled: false
+  # -- annotations to be added to the HorizontalPodAutoscaler resource.
+  annotations: {}
   # -- minReplicas is the lower limit for the number of replicas to which the autoscaler can scale down.
   minReplicas: 1
   # --  maxReplicas is the upper limit for the number of replicas to which the autoscaler can scale up.
@@ -570,6 +572,8 @@ keda:
   # -- Indicates whether or not a KEDA ScaleObject resource is created. Enabling this
   # prevents a Horizontal Pod Autoscaling resource from being created.
   enabled: false
+  # -- annotations to be added to the ScaledObject resource.
+  annotations: {}
   # -- minReplicas is the minimum number of replicas KEDA will scale a target resource down to.
   minReplicas: 1
   # -- maxReplicas is the maximum number of replicas KEDA will scale a target resource up to.
@@ -583,11 +587,6 @@ keda:
   # should be scaled back to original replicas count, after the ScaledObject is deleted. Default behavior
   # is to keep the replica count at the same number as it is in the moment of ScaledObject's deletion.
   restoreToOriginalReplicaCount: false
-  scaledObject:
-    # -- annotations to be added to the ScaledObject resource.
-    annotations: {}
-      # key: value
-
   # -- triggers is a list of triggers to activate scaling on for a target resource.
   triggers: []
   # - type: prometheus
