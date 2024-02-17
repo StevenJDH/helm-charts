@@ -48,6 +48,10 @@ apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "shared-library.fullname" . }}
+  {{- with .Values.autoscaling.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
