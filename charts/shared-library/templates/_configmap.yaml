@@ -38,7 +38,7 @@ Params:
 */}}
 
 {{- define "shared-library.configmap.tpl" -}}
-{{- if .Values.configMap }}
+{{- if .Values.configMap -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
