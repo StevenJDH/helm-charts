@@ -139,10 +139,13 @@ helm dep update .
 | service.type | string | `"ClusterIP"` | type specifies what kind of Service resource to create. |
 | serviceAccount.annotations | object | `{}` | annotations to be added to the Service Account resource. |
 | serviceAccount.aws.irsa.audience | string | `"sts.amazonaws.com"` | audience sets the intended recipient of the token. |
-| serviceAccount.aws.irsa.enabled | bool | `true` | Specifies whether or not to enable support for AWS IAM Roles for Service Accounts (IRSA). Static credentials will be required if this is set to false. |
+| serviceAccount.aws.irsa.enabled | bool | `false` | Specifies whether or not to enable support for AWS IAM Roles for Service Accounts (IRSA). Static credentials will be required if this is set to false and AWS resources are needed. |
 | serviceAccount.aws.irsa.roleArn | string | `""` | roleArn is the ARN of an IAM role with a web identity provider. For example, `arn:aws:iam::000000000000:role/example-irsa-role`. |
 | serviceAccount.aws.irsa.stsRegionalEndpoints | string | `"true"` | stsRegionalEndpoints specifies whether or not to use an STS regional endpoint instead of a global one. It is recommended to use a regional endpoint in almost all cases. |
-| serviceAccount.aws.irsa.tokenExpiration | int | `86400` | tokenExpiration is the token expiration duration in seconds. Default is 1 day. |
+| serviceAccount.aws.irsa.tokenExpiration | int | `3600` | tokenExpiration is the token expiration duration in seconds. Default is 1 hour. |
+| serviceAccount.azure.azwi.clientId | string | `""` | clientId represents the Entra ID application or user-assigned managed identity. |
+| serviceAccount.azure.azwi.enabled | bool | `false` | Specifies whether or not to enable support for Azure AD Workload Identity (AZWI). Static credentials will be required if this is set to false and Azure resources are needed. |
+| serviceAccount.azure.azwi.tokenExpiration | int | `3600` | tokenExpiration is the token expiration duration in seconds. Default is 1 hour. |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created. |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 | tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |

@@ -49,7 +49,7 @@ serviceAccount:
   aws:
     irsa:
       # -- Specifies whether or not to enable support for AWS IAM Roles for Service Accounts (IRSA).
-      # Static credentials will be required if this is set to false.
+      # Static credentials will be required if this is set to false and AWS resources are needed.
       enabled: true
       # -- audience sets the intended recipient of the token.
       audience: "sts.amazonaws.com"
@@ -59,8 +59,18 @@ serviceAccount:
       # -- stsRegionalEndpoints specifies whether or not to use an STS regional endpoint instead of a global one.
       # It is recommended to use a regional endpoint in almost all cases.
       stsRegionalEndpoints: "true"
-      # -- tokenExpiration is the token expiration duration in seconds. Default is 1 day.
-      tokenExpiration: 86400
+      # -- tokenExpiration is the token expiration duration in seconds. Default is 1 hour.
+      tokenExpiration: 3600
+  # An Entra ID application or user-assigned managed identity must have been previously set up and associated with the AKS OIDC Issuer Url for this to work.
+  azure:
+    azwi:
+      # -- Specifies whether or not to enable support for Azure AD Workload Identity (AZWI).
+      # Static credentials will be required if this is set to false and Azure resources are needed.
+      enabled: true
+      # -- clientId represents the Entra ID application or user-assigned managed identity.
+      clientId: ""
+      # -- tokenExpiration is the token expiration duration in seconds. Default is 1 hour.
+      tokenExpiration: 3600
 
 # -- annotations to be added to the Deployment resource.
 annotations: {}

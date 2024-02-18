@@ -114,6 +114,21 @@ eks.amazonaws.com/token-expiration: {{ .Values.serviceAccount.aws.irsa.tokenExpi
 {{- end }}
 
 {{/*
+Create Azure Workload Identity annotations for the service account.
+*/}}
+{{- define "shared-library.azwiAnnotations" -}}
+azure.workload.identity/client-id: {{ .Values.serviceAccount.azure.azwi.clientId | quote }}
+azure.workload.identity/service-account-token-expiration: {{ .Values.serviceAccount.azure.azwi.tokenExpiration | default "3600" | quote }}
+{{- end }}
+
+{{/*
+Create Azure Workload Identity label to enable for the pod.
+*/}}
+{{- define "shared-library.azwiPodLabel" -}}
+azure.workload.identity/use: "true"
+{{- end }}
+
+{{/*
 Display contract-based message for required values.
 */}}
 {{- define "shared-library.required-msg" -}}
