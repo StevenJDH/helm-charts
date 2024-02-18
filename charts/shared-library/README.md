@@ -49,6 +49,7 @@ helm dep update .
 |-----|------|---------|-------------|
 | affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
 | annotations | object | `{}` | annotations to be added to the Deployment resource. |
+| autoscaling.annotations | object | `{}` | annotations to be added to the HorizontalPodAutoscaler resource. |
 | autoscaling.behavior | object | `{}` | behavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively). |
 | autoscaling.enabled | bool | `false` | Indicates whether or not a Horizontal Pod Autoscaling resource is created. Enabling is ignored if KEDA is enabled. |
 | autoscaling.maxReplicas | int | `10` | maxReplicas is the upper limit for the number of replicas to which the autoscaler can scale up. It cannot be less that minReplicas. |
@@ -56,11 +57,11 @@ helm dep update .
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | targetCPUUtilizationPercentage represents the percentage of requested CPU over all the pods. |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods. |
 | autoscaling.template | list | `[]` | template provides custom or additional autoscaling metrics that are not built in to Kubernetes or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics). |
-| command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.  |
+| command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. |
 | containerPorts | object | `{"actuator":8081,"http":8080}` | containerPort is the port or ports that the container listens on. |
 | cronjob.annotations | object | `{}` | annotations to be added to the CronJob resource. |
-| cronjob.job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.  |
+| cronjob.job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | cronjob.job.extraEnvs | list | `[]` | Additional environment variables to set. |
 | cronjob.job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
@@ -92,7 +93,7 @@ helm dep update .
 | ingress.hosts[0].paths[0].pathType | string | `"Prefix"` | pathType is a field that can specify how Ingress paths should be matched. Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types). |
 | ingress.tls | list | `[]` | tls is a list of hosts that needs to explicitly match the host in the rules section. It also contains a secret with references to tls.crt and tls.key to use for TLS. |
 | job.annotations | object | `{}` | annotations to be added to the Job resource. |
-| job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.  |
+| job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | job.extraEnvs | list | `[]` | Additional environment variables to set. |
 | job.image.containerNameOverride | string | `""` | Overrides the container name whose default is the chart name. |
@@ -101,6 +102,7 @@ helm dep update .
 | job.image.tagOverride | string | `"latest"` | Overrides the image tag whose default is the chart appVersion. |
 | job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
 | job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| keda.annotations | object | `{}` | annotations to be added to the ScaledObject resource. |
 | keda.apiVersion | string | `"keda.sh/v1alpha1"` | apiVersion is the KEDA API to use, which will be either `keda.k8s.io/v1alpha1` or `keda.sh/v1alpha1` depending on whether KEDA is version 1x or 2x respectively. |
 | keda.behavior | object | `{}` | behavior is used to modify HPA's scaling behavior for the HPA definition that KEDA will create for a given resource. |
 | keda.cooldownPeriod | int | `300` | cooldownPeriod is the period to wait after the last trigger reported active before scaling the resource back to 0. |
@@ -109,7 +111,6 @@ helm dep update .
 | keda.minReplicas | int | `1` | minReplicas is the minimum number of replicas KEDA will scale a target resource down to. |
 | keda.pollingInterval | int | `30` | pollingInterval is the interval to check each trigger on. |
 | keda.restoreToOriginalReplicaCount | bool | `false` | restoreToOriginalReplicaCount specifies whether the target resource (Deployment, StatefulSet,…) should be scaled back to original replicas count, after the ScaledObject is deleted. Default behavior is to keep the replica count at the same number as it is in the moment of ScaledObject's deletion. |
-| keda.scaledObject.annotations | object | `{}` | annotations to be added to the ScaledObject resource. |
 | keda.triggers | list | `[]` | triggers is a list of triggers to activate scaling on for a target resource. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | networkPolicy.egress | list | `[{}]` | egress may include a list of allowed egress rules. Each rule allows traffic which matches both the `to` and `ports` sections. The `to` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`. Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating. Note: Specifying `- {}` whitelists all outbound traffic and `{}` does the same but on a specific selector, and `- to: []` will block all outbound traffic. Allow policies will override deny policies. Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors). |
