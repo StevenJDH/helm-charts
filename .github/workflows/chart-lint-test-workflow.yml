@@ -21,8 +21,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Helm
-        # Using full version as workaround until fixed https://github.com/Azure/setup-helm/issues/126.
-        uses: azure/setup-helm@v4.0.0
+        uses: azure/setup-helm@v4
         with:
           version: v3.12.1
 
@@ -71,8 +70,7 @@ jobs:
           fetch-depth: 0
       
       - name: Set up Helm
-        # Using full version as workaround until fixed https://github.com/Azure/setup-helm/issues/126.
-        uses: azure/setup-helm@v4.0.0
+        uses: azure/setup-helm@v4
         with:
           version: v3.12.1
 
