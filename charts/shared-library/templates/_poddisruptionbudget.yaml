@@ -39,15 +39,16 @@ Params:
 
 {{- define "shared-library.poddisruptionbudget.tpl" -}}
 {{- if and .Values.podDisruptionBudget.create (semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion) -}}
+{{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "shared-library.fullname" . }}
+  name: {{ include "shared-library.fullname" . }}-pdb
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
-  minAvailable: {{ .Values.podDisruptionBudget.minAvailable | int }}
+  minAvailable: {{ required (printf $requiredMsg "podDisruptionBudget.minAvailable") .Values.podDisruptionBudget.minAvailable | int }}
   selector:
     matchLabels:
       {{- include "shared-library.selectorLabels" . | nindent 6 }}
