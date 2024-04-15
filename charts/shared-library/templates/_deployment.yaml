@@ -89,6 +89,9 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ required (printf $requiredMsg "image.repository") .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"

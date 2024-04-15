@@ -82,6 +82,9 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.job.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
       containers:
         - name: {{ .Values.job.image.containerNameOverride | default (print .Chart.Name "-job") }}
           {{- $tag := .Values.job.image.tagOverride | default .Values.image.tag }}

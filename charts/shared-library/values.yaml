@@ -121,6 +121,13 @@ securityContext:
     drop:
     - ALL
 
+# -- priorityClassName is the name of the PriorityClass resource that indicates the
+# importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
+# scheduler tries to preempt (evict) lower priority Pods to make scheduling of the
+# pending Pod possible.
+# Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption).
+priorityClassName: ""
+
 # -- containerPort is the port or ports that the container listens on.
 containerPorts:
   http: 8080
@@ -383,6 +390,13 @@ cronjob:
       #   drop:
       #   - ALL
 
+    # -- priorityClassName is the name of the PriorityClass resource that indicates the
+    # importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
+    # scheduler tries to preempt (evict) lower priority Pods to make scheduling of the
+    # pending Pod possible.
+    # Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption).
+    priorityClassName: ""
+
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
@@ -463,6 +477,13 @@ job:
     #   drop:
     #   - ALL
 
+  # -- priorityClassName is the name of the PriorityClass resource that indicates the
+  # importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
+  # scheduler tries to preempt (evict) lower priority Pods to make scheduling of the
+  # pending Pod possible.
+  # Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption).
+  priorityClassName: ""
+
   # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
   # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
   resources: {}
@@ -501,10 +522,12 @@ job:
   #       name: secret-resource
 
 # -- configMap is used to store non-confidential data in key-value pairs.
+# Quoting is required if the value is 0.
 configMap: {}
   # key: value
 
 # -- secrets is used to store confidential data in key-value pairs.
+# Quoting is required if the value is 0.
 secrets: {}
   # key: value
 
