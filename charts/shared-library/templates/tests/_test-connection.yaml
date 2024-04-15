@@ -16,6 +16,7 @@ limitations under the License.
 */}}
 
 {{- define "shared-library.test-connection.tpl" -}}
+{{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -29,7 +30,7 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "shared-library.fullname" . }}-svc:{{ .Values.service.port }}']
+      args: ['{{ include "shared-library.fullname" . }}-svc:{{ required (printf $requiredMsg "service.port") .Values.service.port }}']
   restartPolicy: Never
 {{- end -}}
 
