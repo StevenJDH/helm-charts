@@ -10,9 +10,6 @@ A contract-based Helm library chart for Kubernetes.
 * Built-in support for AWS IAM Roles for Service Accounts (IRSA) and Azure Workload Identities (AZWI).
 * Override support to allow for template customization.
 
-> [!NOTE]  
-> Current version doesn't support multiple contexts, so only one instance of each template can be used.
-
 ## Source Code
 
 * <https://github.com/StevenJDH/helm-charts/tree/main/charts/shared-library>
@@ -44,6 +41,9 @@ Finally, run the following command from the same project folder:
 ```bash
 helm dep update .
 ```
+
+> [!NOTE]  
+> Current version doesn't support multiple contexts, so only one instance of each template can be used.
 
 ## Values
 
