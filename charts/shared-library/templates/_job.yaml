@@ -72,6 +72,9 @@ spec:
       {{- end }}
       labels:
         {{- include "shared-library.labels" . | nindent 8 }}
+        {{- if .Values.serviceAccount.azure.azwi.enabled }}
+        {{- include "shared-library.azwiPodLabel" . | nindent 8 }}
+        {{- end }}
     spec:
       {{- if and .Values.image.pullSecret.username .Values.image.pullSecret.password }}
       imagePullSecrets:
