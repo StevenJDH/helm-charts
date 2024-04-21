@@ -19,13 +19,13 @@ limitations under the License.
 Generates a PodDisruptionBudget resource that is compatible with all supported Kubernetes API versions.
 
 Usage:
-{{- include "shared-library.poddisruptionbudget" . }}
+{{- include "shared-library.pdb" . }}
 
 OR
 
-{{- include "shared-library.poddisruptionbudget" (list . "override.poddisruptionbudget") }}
+{{- include "shared-library.pdb" (list . "override.pdb") }}
 
-{{- define "override.poddisruptionbudget" -}}
+{{- define "override.pdb" -}}
 metadata:
   labels:
     foo: bar
@@ -37,7 +37,7 @@ Params:
   - overriding named template - String - Required. Definition to merge into the included template.
 */}}
 
-{{- define "shared-library.poddisruptionbudget.tpl" -}}
+{{- define "shared-library.pdb.tpl" -}}
 {{- if and .Values.podDisruptionBudget.create (semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion) -}}
 {{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: policy/v1
@@ -55,10 +55,10 @@ spec:
 {{- end }}
 {{- end -}}
 
-{{- define "shared-library.poddisruptionbudget" -}}
+{{- define "shared-library.pdb" -}}
 {{- if (kindIs "slice" .) }}
-  {{- include "shared-library.util.merge" (append . "shared-library.poddisruptionbudget.tpl") }}
+  {{- include "shared-library.util.merge" (append . "shared-library.pdb.tpl") }}
 {{- else -}}
-  {{- include "shared-library.poddisruptionbudget.tpl" . }}
+  {{- include "shared-library.pdb.tpl" . }}
 {{- end }}
 {{- end -}}
