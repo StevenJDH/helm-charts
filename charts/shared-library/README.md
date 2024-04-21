@@ -7,9 +7,11 @@ A contract-based Helm library chart for Kubernetes.
 ## Features
 
 * Common templates and tools.
-* Override support to allow for further customization.
+* Built-in support for AWS IAM Roles for Service Accounts (IRSA) and Azure Workload Identities (AZWI).
+* Override support to allow for template customization.
 
-**Note:** Current version doesn't support multiple contexts, so only one instance of each template can be used.
+> [!NOTE]  
+> Current version doesn't support multiple contexts, so only one instance of each template can be used.
 
 ## Source Code
 
