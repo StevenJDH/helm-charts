@@ -16,28 +16,29 @@ jobs:
       list-changed: ${{ steps.list-changed.outputs.changed }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4
         with:
-          version: v3.8.1
+          version: v3.12.1
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.7
+          # Use single quotes or trailing 0s are lost.
+          python-version: '3.10'
 
       - name: Set up chart-testing
         # Full version for action needs to be specified.
-        uses: helm/chart-testing-action@v2.3.1
+        uses: helm/chart-testing-action@v2.6.1
 
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --config ct.yaml)
+          changed=$(ct list-changed --config ct.yaml --excluded-charts shared-library)
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
@@ -53,34 +54,35 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetesVersion: [v1.19.16, v1.24.6, v1.25.2]
+        kubernetesVersion: [v1.19.16, v1.24.17, v1.29.1]
         include:
         # Images: https://github.com/kubernetes-sigs/kind/releases
         - kubernetesVersion: v1.19.16
           kindImage: kindest/node:v1.19.16@sha256:a146f9819fece706b337d34125bbd5cb8ae4d25558427bf2fa3ee8ad231236f2
-        - kubernetesVersion: v1.24.6
-          kindImage: kindest/node:v1.24.6@sha256:97e8d00bc37a7598a0b32d1fabd155a96355c49fa0d4d4790aab0f161bf31be1
-        - kubernetesVersion: v1.25.2
-          kindImage: kindest/node:v1.25.2@sha256:9be91e9e9cdf116809841fc77ebdb8845443c4c72fe5218f3ae9eb57fdb4bace
+        - kubernetesVersion: v1.24.17
+          kindImage: kindest/node:v1.24.17@sha256:ea292d57ec5dd0e2f3f5a2d77efa246ac883c051ff80e887109fabefbd3125c7
+        - kubernetesVersion: v1.29.1
+          kindImage: kindest/node:v1.29.1@sha256:a0cc28af37cf39b019e2b448c54d1a3f789de32536cb5a5db61a49623e527144
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
       - name: Set up Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4
         with:
-          version: v3.8.1
+          version: v3.12.1
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.7
+          # Use single quotes or trailing 0s are lost.
+          python-version: '3.10'
 
       - name: Set up chart-testing
         # Full version for action needs to be specified.
-        uses: helm/chart-testing-action@v2.3.1
+        uses: helm/chart-testing-action@v2.6.1
         
       - name: Create kind cluster ${{ matrix.kubernetesVersion }}
         uses: helm/kind-action@v1
