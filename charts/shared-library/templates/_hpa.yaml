@@ -38,7 +38,7 @@ Params:
 */}}
 
 {{- define "shared-library.hpa.tpl" -}}
-{{- if and .Values.autoscaling.enabled (not .Values.keda.enabled) -}}
+{{- if and ((.Values.autoscaling).enabled) (not ((.Values.keda).enabled)) -}}
 {{- $requiredMsg := include "shared-library.required-msg" . -}}
 {{- if semverCompare ">=1.23-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: autoscaling/v2

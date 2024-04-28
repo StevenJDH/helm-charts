@@ -28,7 +28,7 @@ In the `Chart.yaml` file of a helm chart project, add the following dependency:
 ```yaml
 dependencies:
   - name: shared-library
-    version: 0.1.0
+    version: {{ template "chart.version" . }}
     repository: "https://StevenJDH.github.io/helm-charts"
 ```
 

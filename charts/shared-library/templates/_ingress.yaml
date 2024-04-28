@@ -38,7 +38,7 @@ Params:
 */}}
 
 {{- define "shared-library.ingress.tpl" -}}
-{{- if .Values.ingress.enabled -}}
+{{- if ((.Values.ingress).enabled) -}}
 {{- $fullName := include "shared-library.fullname" . -}}
 {{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: networking.k8s.io/v1

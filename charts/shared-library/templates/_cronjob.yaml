@@ -81,14 +81,15 @@ spec:
           {{- end }}
           labels:
             {{- include "shared-library.labels" . | nindent 12 }}
-            {{- if .Values.serviceAccount.azure.azwi.enabled }}
+            {{- if ((((.Values.serviceAccount).azure).azwi).enabled) }}
             {{- include "shared-library.azwiPodLabel" . | nindent 12 }}
             {{- end }}
         spec:
-          {{- if and .Values.image.pullSecret.username .Values.image.pullSecret.password }}
+          {{- if and (((.Values.image).pullSecret).username) (((.Values.image).pullSecret).password) }}
           imagePullSecrets:
           - name: {{ template "shared-library.fullname" . }}-pull-secret
           {{- end }}
+          serviceAccountName: {{ include "shared-library.serviceAccountName" . }}
           {{- with .Values.cronjob.job.podSecurityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
@@ -97,10 +98,10 @@ spec:
           priorityClassName: {{ . }}
           {{- end }}
           containers:
-          - name: {{ .Values.cronjob.job.image.containerNameOverride | default (print .Chart.Name "-job") }}
-            {{- $tag := .Values.cronjob.job.image.tagOverride | default .Values.image.tag }}
-            image: "{{ .Values.cronjob.job.image.repositoryOverride | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
-            {{- $pullPolicy := .Values.cronjob.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
+          - name: {{ ((((.Values.cronjob).job).image).containerNameOverride) | default (print .Chart.Name "-job") }}
+            {{- $tag := ((((.Values.cronjob).job).image).tagOverride) | default .Values.image.tag }}
+            image: "{{ ((((.Values.cronjob).job).image).repositoryOverride) | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
+            {{- $pullPolicy := ((((.Values.cronjob).job).image).pullPolicyOverride) | default .Values.image.pullPolicy }}
             imagePullPolicy: {{ $pullPolicy | default "IfNotPresent" }}
             {{- with .Values.cronjob.job.securityContext }}
             securityContext:

@@ -72,11 +72,11 @@ spec:
       {{- end }}
       labels:
         {{- include "shared-library.labels" . | nindent 8 }}
-        {{- if .Values.serviceAccount.azure.azwi.enabled }}
+        {{- if ((((.Values.serviceAccount).azure).azwi).enabled) }}
         {{- include "shared-library.azwiPodLabel" . | nindent 8 }}
         {{- end }}
     spec:
-      {{- if and .Values.image.pullSecret.username .Values.image.pullSecret.password }}
+      {{- if and (((.Values.image).pullSecret).username) (((.Values.image).pullSecret).password) }}
       imagePullSecrets:
       - name: {{ template "shared-library.fullname" . }}-pull-secret
       {{- end }}
@@ -89,10 +89,10 @@ spec:
       priorityClassName: {{ . }}
       {{- end }}
       containers:
-        - name: {{ .Values.job.image.containerNameOverride | default (print .Chart.Name "-job") }}
-          {{- $tag := .Values.job.image.tagOverride | default .Values.image.tag }}
-          image: "{{ .Values.job.image.repositoryOverride | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
-          {{- $pullPolicy := .Values.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
+        - name: {{ (((.Values.job).image).containerNameOverride) | default (print .Chart.Name "-job") }}
+          {{- $tag := (((.Values.job).image).tagOverride) | default .Values.image.tag }}
+          image: "{{ (((.Values.job).image).repositoryOverride) | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
+          {{- $pullPolicy := (((.Values.job).image).pullPolicyOverride) | default .Values.image.pullPolicy }}
           imagePullPolicy: {{ $pullPolicy | default "IfNotPresent" }}
           {{- with .Values.job.securityContext }}
           securityContext:
