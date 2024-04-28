@@ -38,7 +38,7 @@ Params:
 */}}
 
 {{- define "shared-library.keda.tpl" -}}
-{{- if .Values.keda.enabled -}}
+{{- if ((.Values.keda).enabled) -}}
 {{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: {{ .Values.keda.apiVersion }}
 kind: ScaledObject
