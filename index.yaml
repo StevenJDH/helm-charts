@@ -160,6 +160,23 @@ entries:
     version: 0.1.0
   shared-library:
   - apiVersion: v2
+    created: "2024-04-28T20:16:37.503082877Z"
+    description: A contract-based Helm library chart for Kubernetes.
+    digest: 8932215a6c3c588010bd61b4a959d32db4e7d30a4efbd6498fe6afe94b96aa89
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.19.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: shared-library
+    sources:
+    - https://github.com/StevenJDH/helm-charts/tree/main/charts/shared-library
+    type: library
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/shared-library-0.1.1/shared-library-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2024-04-24T16:18:28.731231719Z"
     description: A contract-based Helm library chart for Kubernetes.
     digest: b4534d3404f149bc25e88ca3619ee8e257d5bc419c242c5b60c5ec5f47704add
@@ -176,4 +193,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/shared-library-0.1.0/shared-library-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-24T16:18:28.731250254Z"
+generated: "2024-04-28T20:16:37.503105689Z"
