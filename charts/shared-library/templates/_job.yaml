@@ -89,10 +89,10 @@ spec:
       priorityClassName: {{ . }}
       {{- end }}
       containers:
-        - name: {{ .Values.job.image.containerNameOverride | default (print .Chart.Name "-job") }}
-          {{- $tag := .Values.job.image.tagOverride | default .Values.image.tag }}
-          image: "{{ .Values.job.image.repositoryOverride | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
-          {{- $pullPolicy := .Values.job.image.pullPolicyOverride | default .Values.image.pullPolicy }}
+        - name: {{ (((.Values.job).image).containerNameOverride) | default (print .Chart.Name "-job") }}
+          {{- $tag := (((.Values.job).image).tagOverride) | default .Values.image.tag }}
+          image: "{{ (((.Values.job).image).repositoryOverride) | default .Values.image.repository }}:{{ $tag | default .Chart.AppVersion }}"
+          {{- $pullPolicy := (((.Values.job).image).pullPolicyOverride) | default .Values.image.pullPolicy }}
           imagePullPolicy: {{ $pullPolicy | default "IfNotPresent" }}
           {{- with .Values.job.securityContext }}
           securityContext:
