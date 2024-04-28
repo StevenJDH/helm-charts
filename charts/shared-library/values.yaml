@@ -19,7 +19,7 @@ replicaCount: 1
 
 image:
   # -- repository holding the container image.
-  repository: nginx
+  repository: ""
   # -- pullPolicy is the strategy for pulling images from a registry.
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
@@ -107,19 +107,19 @@ extraEnvs: []
 #       name: secret-resource
 
 # @ignored
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: 10101
-  seccompProfile:
-    type: RuntimeDefault
+podSecurityContext: {}
+  # runAsNonRoot: true
+  # runAsUser: 10101
+  # seccompProfile:
+  #   type: RuntimeDefault
 
 # @ignored
-securityContext:
-  readOnlyRootFilesystem: false
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-    - ALL
+securityContext: {}
+  # readOnlyRootFilesystem: false
+  # allowPrivilegeEscalation: false
+  # capabilities:
+  #   drop:
+  #   - ALL
 
 # -- priorityClassName is the name of the PriorityClass resource that indicates the
 # importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
@@ -129,9 +129,9 @@ securityContext:
 priorityClassName: ""
 
 # -- containerPort is the port or ports that the container listens on.
-containerPorts:
-  http: 8080
-  actuator: 8081
+containerPorts: {}
+  # http: 8080
+  # actuator: 8081
 
 # @ignored. Startup, Liveness and readiness probes. Liveness probes do not wait
 # for readiness probes to succeed. If you want to wait before executing a liveness
@@ -148,26 +148,26 @@ health:
     # timeoutSeconds: 2
     # successThreshold: 1
     # failureThreshold: 5
-  livenessProbe:
-    httpGet:
-      path: /actuator/health/liveness
-      port: actuator
-      scheme: HTTP
-    initialDelaySeconds: 10
-    periodSeconds: 10
-    timeoutSeconds: 1
-    successThreshold: 1
-    failureThreshold: 5
-  readinessProbe:
-    httpGet:
-      path: /actuator/health/readiness
-      port: actuator
-      scheme: HTTP
-    initialDelaySeconds: 10
-    periodSeconds: 10
-    timeoutSeconds: 1
-    successThreshold: 1
-    failureThreshold: 3
+  livenessProbe: {}
+    # httpGet:
+    #   path: /actuator/health/liveness
+    #   port: actuator
+    #   scheme: HTTP
+    # initialDelaySeconds: 10
+    # periodSeconds: 10
+    # timeoutSeconds: 1
+    # successThreshold: 1
+    # failureThreshold: 5
+  readinessProbe: {}
+    # httpGet:
+    #   path: /actuator/health/readiness
+    #   port: actuator
+    #   scheme: HTTP
+    # initialDelaySeconds: 10
+    # periodSeconds: 10
+    # timeoutSeconds: 1
+    # successThreshold: 1
+    # failureThreshold: 3
 
 # -- Additional volumeMounts for the main container.
 extraVolumeMounts: []
@@ -370,11 +370,11 @@ cronjob:
       # -- Overrides the container name whose default is the chart name.
       containerNameOverride: ""
       # -- Overrides the repository holding the container image.
-      repositoryOverride: busybox
+      repositoryOverride: ""
       # -- Overrides the strategy for pulling images from a registry.
       pullPolicyOverride: ""
       # -- Overrides the image tag whose default is the chart appVersion.
-      tagOverride: "latest"
+      tagOverride: ""
     # @ignored
     podSecurityContext: {}
       # runAsNonRoot: true
@@ -455,11 +455,11 @@ job:
     # -- Overrides the container name whose default is the chart name.
     containerNameOverride: ""
     # -- Overrides the repository holding the container image.
-    repositoryOverride: busybox
+    repositoryOverride: ""
     # -- Overrides the strategy for pulling images from a registry.
     pullPolicyOverride: ""
     # -- Overrides the image tag whose default is the chart appVersion.
-    tagOverride: "latest"
+    tagOverride: ""
   # -- annotations to be added to the Job resource.
   annotations: {}
   # @ignored
