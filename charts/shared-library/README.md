@@ -1,6 +1,6 @@
 # Shared Library Helm Chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
 
 A contract-based Helm library chart for Kubernetes.
 
@@ -32,7 +32,7 @@ In the `Chart.yaml` file of a helm chart project, add the following dependency:
 ```yaml
 dependencies:
   - name: shared-library
-    version: 0.1.0
+    version: 0.1.1
     repository: "https://StevenJDH.github.io/helm-charts"
 ```
 
@@ -61,7 +61,7 @@ helm dep update .
 | autoscaling.template | list | `[]` | template provides custom or additional autoscaling metrics that are not built in to Kubernetes or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics). |
 | command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. |
-| containerPorts | object | `{"actuator":8081,"http":8080}` | containerPort is the port or ports that the container listens on. |
+| containerPorts | object | `{}` | containerPort is the port or ports that the container listens on. |
 | cronjob.annotations | object | `{}` | annotations to be added to the CronJob resource. |
 | cronjob.job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
@@ -71,8 +71,8 @@ helm dep update .
 | cronjob.job.extraVolumes | list | `[]` | Additional volumes for the pod. |
 | cronjob.job.image.containerNameOverride | string | `""` | Overrides the container name whose default is the chart name. |
 | cronjob.job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |
-| cronjob.job.image.repositoryOverride | string | `"busybox"` | Overrides the repository holding the container image. |
-| cronjob.job.image.tagOverride | string | `"latest"` | Overrides the image tag whose default is the chart appVersion. |
+| cronjob.job.image.repositoryOverride | string | `""` | Overrides the repository holding the container image. |
+| cronjob.job.image.tagOverride | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | cronjob.job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
 | cronjob.job.priorityClassName | string | `""` | priorityClassName is the name of the PriorityClass resource that indicates the importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the scheduler tries to preempt (evict) lower priority Pods to make scheduling of the pending Pod possible. Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption). |
 | cronjob.job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
@@ -86,7 +86,7 @@ helm dep update .
 | image.pullPolicy | string | `"Always"` | pullPolicy is the strategy for pulling images from a registry. |
 | image.pullSecret.password | string | `""` | password is the Docker password associated with the username with pull rights. |
 | image.pullSecret.username | string | `""` | username is the Docker username associated with the password. |
-| image.repository | string | `"nginx"` | repository holding the container image. |
+| image.repository | string | `""` | repository holding the container image. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | ingress.annotations | object | `{}` | annotations to be added to the Ingress resource. |
 | ingress.className | string | `"nginx"` | className is the name of the Ingress class. |
@@ -101,8 +101,8 @@ helm dep update .
 | job.extraEnvs | list | `[]` | Additional environment variables to set. |
 | job.image.containerNameOverride | string | `""` | Overrides the container name whose default is the chart name. |
 | job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |
-| job.image.repositoryOverride | string | `"busybox"` | Overrides the repository holding the container image. |
-| job.image.tagOverride | string | `"latest"` | Overrides the image tag whose default is the chart appVersion. |
+| job.image.repositoryOverride | string | `""` | Overrides the repository holding the container image. |
+| job.image.tagOverride | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
 | job.priorityClassName | string | `""` | priorityClassName is the name of the PriorityClass resource that indicates the importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the scheduler tries to preempt (evict) lower priority Pods to make scheduling of the pending Pod possible. Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption). |
 | job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
