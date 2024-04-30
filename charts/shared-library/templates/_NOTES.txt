@@ -22,6 +22,7 @@ To get further information, you can run the commands:
   $ helm status {{ .Release.Name }} -n {{ .Release.Namespace }}
   $ helm get all {{ .Release.Name }} -n {{ .Release.Namespace }}
 
+{{ if ((.Values.service).type) -}}
 Get the application URL by running these commands:
 {{- if contains "NodePort" ((.Values.service).type | default "") }}
   $ export NODE_PORT=$(kubectl get svc {{ include "shared-library.fullname" . }}-svc --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}")
@@ -37,6 +38,7 @@ Get the application URL by running these commands:
   $ export CONTAINER_PORT=$(kubectl get pod $POD_NAME --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
   $ kubectl port-forward $POD_NAME 8080:$CONTAINER_PORT --namespace {{ .Release.Namespace }}
   $ echo "Visit http://127.0.0.1:8080 to access the application."
+{{- end }}
 {{- end }}
 
 {{ if ((.Values.ingress).enabled) -}}
