@@ -1,6 +1,6 @@
 # Shared Library Helm Chart
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
 
 A contract-based Helm library chart for Kubernetes.
 
@@ -32,7 +32,7 @@ In the `Chart.yaml` file of a helm chart project, add the following dependency:
 ```yaml
 dependencies:
   - name: shared-library
-    version: 0.1.1
+    version: 0.1.2
     repository: "https://StevenJDH.github.io/helm-charts"
 ```
 
