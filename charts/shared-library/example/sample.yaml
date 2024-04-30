@@ -5,7 +5,7 @@ kind: NetworkPolicy
 metadata:
   name: example
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -30,7 +30,7 @@ kind: PodDisruptionBudget
 metadata:
   name: example-pdb
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -56,7 +56,7 @@ metadata:
     azure.workload.identity/client-id: ""
     azure.workload.identity/service-account-token-expiration: "3600"
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -69,7 +69,7 @@ kind: Secret
 metadata:
   name: example-secret
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -85,7 +85,7 @@ kind: ConfigMap
 metadata:
   name: example-config
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -100,7 +100,7 @@ kind: Service
 metadata:
   name: example-svc
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -128,9 +128,9 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "NxPNE"
+    rollme: "RrAUJ"
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -208,7 +208,7 @@ kind: Job
 metadata:
   name: example-job
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -222,7 +222,7 @@ spec:
     metadata:
       name: example-job
       labels:
-        helm.sh/chart: example-0.1.1
+        helm.sh/chart: example-0.1.2
         app.kubernetes.io/name: example
         app.kubernetes.io/instance: example
         app.kubernetes.io/version: "1.25.4"
@@ -250,7 +250,7 @@ kind: CronJob
 metadata:
   name: example
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -260,7 +260,7 @@ spec:
   jobTemplate:
     metadata:
       labels:
-        helm.sh/chart: example-0.1.1
+        helm.sh/chart: example-0.1.2
         app.kubernetes.io/name: example
         app.kubernetes.io/instance: example
         app.kubernetes.io/version: "1.25.4"
@@ -272,7 +272,7 @@ spec:
       template:
         metadata:
           labels:
-            helm.sh/chart: example-0.1.1
+            helm.sh/chart: example-0.1.2
             app.kubernetes.io/name: example
             app.kubernetes.io/instance: example
             app.kubernetes.io/version: "1.25.4"
@@ -303,7 +303,7 @@ kind: Ingress
 metadata:
   name: example-ingress
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -331,7 +331,7 @@ metadata:
   annotations:
     "helm.sh/hook": test
   labels:
-    helm.sh/chart: example-0.1.1
+    helm.sh/chart: example-0.1.2
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"

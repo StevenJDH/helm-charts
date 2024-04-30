@@ -30,7 +30,7 @@ type: library
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.1
+version: 0.1.2
 
 # Includes pre-releases to support version schemes used like with AWS EKS as per https://github.com/helm/helm/issues/10375#issuecomment-974203557.
 kubeVersion: ">= 1.19.0-0"
