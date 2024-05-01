@@ -1,6 +1,6 @@
 {{/*
 This file is part of AWS CloudWatch Log Exporter Helm Chart <https://github.com/StevenJDH/helm-charts>.
-Copyright (C) 2022-2023 Steven Jenkins De Haro.
+Copyright (C) 2022-2024 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,21 +15,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $logGroupName := .Values.configMap.logGroupName -}}
-{{- $s3BucketName := .Values.configMap.s3BucketName -}}
-{{- $exportPrefix := .Values.configMap.exportPrefix -}}
-
-{{- if and $logGroupName $s3BucketName $exportPrefix -}}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ template "aws-cwl-exporter.fullname" . }}-config
-  labels:
-    {{- include "aws-cwl-exporter.labels" . | nindent 4 }}
-data:
-  {{- range $key, $val := .Values.configMap }}
-  {{- if $val }}
-  {{ $key | snakecase | upper }}: {{ $val }}
-  {{- end}}
-  {{- end}}
-{{- end }}
+{{- include "shared-library.configmap" . }}
