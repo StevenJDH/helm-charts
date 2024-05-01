@@ -1,5 +1,5 @@
 # This file is part of AWS CloudWatch Log Exporter Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2022-2023 Steven Jenkins De Haro.
+# Copyright (C) 2022-2024 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ image:
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
   pullSecret:
-    # @ignored. registry is the GitHub container registry for pulling images.
-    registry: ghcr.io
-    # -- username is the GitHub username associated with the PAT below, like StevenJDH.
+    # @ignored. registry is the private GitHub container registry for pulling images.
+    registry: "ghcr.io"
+    # -- username is the GitHub username associated with the password.
     username: ""
     # -- password is a PAT with at least read:packages permissions.
     password: ""
@@ -37,7 +37,7 @@ fullnameOverride: ""
 serviceAccount:
   # -- Specifies whether a service account should be created.
   create: true
-  # -- annotations to add to the service account.
+  # -- annotations to be added to the Service Account resource.
   annotations: {}
   # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template.
@@ -46,7 +46,7 @@ serviceAccount:
   aws:
     irsa:
       # -- Specifies whether or not to enable support for AWS IAM Roles for Service Accounts (IRSA).
-      # Static credentials will be required if this is set to false.
+      # Static credentials will be required if this is set to false and AWS resources are needed.
       enabled: true
       # -- audience sets the intended recipient of the token.
       audience: "sts.amazonaws.com"
@@ -59,45 +59,13 @@ serviceAccount:
       # -- tokenExpiration is the token expiration duration in seconds. Default is 1 day.
       tokenExpiration: 86400
 
-# @ignored
-podSecurityContext:
-  runAsNonRoot: true
-  # Using UID 999 to run as the 'aws' container user.
-  runAsUser: 999
-  seccompProfile:
-    type: RuntimeDefault
-
-# @ignored
-securityContext:
-  # readOnlyRootFilesystem: true causes 'cannot create temp file for here-document: Read-only file system' and something
-  # similar for the .aws folder, so fixed using tmp and .aws volume mounts.
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-    - ALL
-
-# --  Optionally request and limit how much CPU and memory (RAM) the container needs.
-# Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
-resources: {}
-#  We usually recommend not to specify default resources and to leave this as a conscious
-#  choice for the user. This also increases chances charts run on environments with little
-#  resources, such as Minikube. If you do want to specify resources, uncomment the following
-#  lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-#  requests:
-#    memory: 256Mi
-#    cpu: 500m
-#  limits:
-#    memory: 512Mi
-#    cpu: 1000m
-
 cronjob:
   # -- The Cron schedule to trigger a CreateExportTask for the previous hour or day based on `configMap.exportPeriod`.
   # Default is every hour at minute 5. Note: There is a limit of "one active (running or pending) export task at a time,
   # per account. This quota can't be changed." See [CloudWatch Logs quotas](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html)
   # for more information.
   schedule: '5 * * * *'
-  # -- annotations to be added to the CronJob.
+  # -- annotations to be added to the CronJob resource.
   annotations: {}
   # @ignored
   concurrencyPolicy: ""
@@ -108,6 +76,39 @@ cronjob:
   # @ignored. If startingDeadlineSeconds is set to a value less than 10 seconds, the CronJob may not be scheduled.
   startingDeadlineSeconds: ""
   job:
+    # @ignored
+    podSecurityContext:
+      runAsNonRoot: true
+      # Using UID 999 to run as the 'aws' container user.
+      runAsUser: 999
+      seccompProfile:
+        type: RuntimeDefault
+
+    # @ignored
+    securityContext:
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+
+    # -- priorityClassName is the name of the PriorityClass resource that indicates the
+    # importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
+    # scheduler tries to preempt (evict) lower priority Pods to make scheduling of the
+    # pending Pod possible.
+    # Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption).
+    priorityClassName: ""
+
+    # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+    # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+    resources: {}
+      # requests:
+      #   memory: 256Mi
+      #   cpu: 500m
+      # limits:
+      #   memory: 512Mi
+      #   cpu: 1000m
+
     # -- podAnnotations are the annotations to be added to the job pods.
     podAnnotations: {}
     # @ignored
@@ -118,37 +119,45 @@ cronjob:
     backoffLimit: 0
     # @ignored
     activeDeadlineSeconds: 120
+    # -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.
+    command: []
     # -- Additional command line arguments to pass to the container.
     extraArgs: []
-    #  - --arg1
-    #  - value1
-    #  - --arg2
-    #  - value2
+    # - --arg1
+    # - value1
+    # - --arg2
+    # - value2
 
     # -- Additional environment variables to set.
     extraEnvs: []
-    #  - name: FOO
-    #    valueFrom:
-    #      secretKeyRef:
-    #        key: FOO
-    #        name: secret-resource
+    # - name: FOO
+    #   valueFrom:
+    #     secretKeyRef:
+    #       key: FOO
+    #       name: secret-resource
 
     # -- Additional volumeMounts for the main container.
-    extraVolumeMounts: []
-    #  - name: example-volume
-    #    mountPath: /share/example
+    extraVolumeMounts:
+    - name: workspace-volume
+      mountPath: /tmp
+      subPath: tmp
+    - name: workspace-volume
+      mountPath: /.aws
+      subPath: .aws
 
     # -- Additional volumes for the pod.
-    extraVolumes: []
-    #  - name: example-volume
-    #    emptyDir: {}
+    extraVolumes:
+    - name: workspace-volume
+      emptyDir: {}
 
     # -- Containers, which are run before the app containers are started.
     extraInitContainers: []
-    #  - name: init-myservice
-    #    image: busybox
-    #    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+    # - name: init-myservice
+    #   image: busybox
+    #   command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
 
+# -- configMap is used to store non-confidential data in key-value pairs.
+# Quoting is required if the value is 0.
 configMap:
   # -- Required. The name of the log group source for exporting logs from.
   logGroupName: ""
@@ -162,6 +171,8 @@ configMap:
   # when using [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa).
   awsDefaultRegion: ""
 
+# -- secrets is used to store confidential data in key-value pairs.
+# Quoting is required if the value is 0.
 secrets:
   # -- Optional. The AWS access key associated with an IAM user or role. Not required when using
   # [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa).
@@ -170,25 +181,28 @@ secrets:
   # [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa).
   awsSecretAccessKey: ""
 
-# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
+# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
+# Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
 nodeSelector:
   kubernetes.io/os: linux
 
-# -- affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
+# -- affinity for pod scheduling.
+# Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
 affinity: {}
-#  podAntiAffinity:
-#    requiredDuringSchedulingIgnoredDuringExecution:
-#    - labelSelector:
-#        matchExpressions:
-#        - key: app
-#          operator: In
-#          values:
-#          - app-name
-#      topologyKey: "kubernetes.io/hostname"
+  # podAntiAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #   - labelSelector:
+  #       matchExpressions:
+  #       - key: app
+  #         operator: In
+  #         values:
+  #         - app-name
+  #     topologyKey: "kubernetes.io/hostname"
 
-# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
+# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints.
+# Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
 tolerations: []
-#  - key: "key"
-#    operator: "Equal|Exists"
-#    value: "value"
-#    effect: "NoSchedule|PreferNoSchedule|NoExecute"
+# - key: "key"
+#   operator: "Equal|Exists"
+#   value: "value"
+#   effect: "NoSchedule|PreferNoSchedule|NoExecute"

@@ -10,11 +10,43 @@ metadata:
     eks.amazonaws.com/sts-regional-endpoints: "true"
     eks.amazonaws.com/token-expiration: "86400"
   labels:
-    helm.sh/chart: aws-cwl-exporter-0.1.2
+    helm.sh/chart: aws-cwl-exporter-0.2.0
     app.kubernetes.io/name: aws-cwl-exporter
     app.kubernetes.io/instance: aws-cwl-exporter
-    app.kubernetes.io/version: "2.9.15"
+    app.kubernetes.io/version: "2.15.43"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
+---
+# Source: aws-cwl-exporter/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-cwl-exporter-secret
+  labels:
+    helm.sh/chart: aws-cwl-exporter-0.2.0
+    app.kubernetes.io/name: aws-cwl-exporter
+    app.kubernetes.io/instance: aws-cwl-exporter
+    app.kubernetes.io/version: "2.15.43"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+type: Opaque
+data:
+---
+# Source: aws-cwl-exporter/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-cwl-exporter-config
+  labels:
+    helm.sh/chart: aws-cwl-exporter-0.2.0
+    app.kubernetes.io/name: aws-cwl-exporter
+    app.kubernetes.io/instance: aws-cwl-exporter
+    app.kubernetes.io/version: "2.15.43"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+data:
+  EXPORT_PERIOD: "hourly"
+  EXPORT_PREFIX: "export-task-output"
 ---
 # Source: aws-cwl-exporter/templates/cronjob.yaml
 apiVersion: batch/v1
@@ -22,19 +54,20 @@ kind: CronJob
 metadata:
   name: aws-cwl-exporter
   labels:
-    helm.sh/chart: aws-cwl-exporter-0.1.2
+    helm.sh/chart: aws-cwl-exporter-0.2.0
     app.kubernetes.io/name: aws-cwl-exporter
     app.kubernetes.io/instance: aws-cwl-exporter
-    app.kubernetes.io/version: "2.9.15"
+    app.kubernetes.io/version: "2.15.43"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 spec:
   jobTemplate:
     metadata:
       labels:
-        helm.sh/chart: aws-cwl-exporter-0.1.2
+        helm.sh/chart: aws-cwl-exporter-0.2.0
         app.kubernetes.io/name: aws-cwl-exporter
         app.kubernetes.io/instance: aws-cwl-exporter
-        app.kubernetes.io/version: "2.9.15"
+        app.kubernetes.io/version: "2.15.43"
         app.kubernetes.io/managed-by: Helm
     spec:
       completions: 1
@@ -43,10 +76,10 @@ spec:
       template:
         metadata:
           labels:
-            helm.sh/chart: aws-cwl-exporter-0.1.2
+            helm.sh/chart: aws-cwl-exporter-0.2.0
             app.kubernetes.io/name: aws-cwl-exporter
             app.kubernetes.io/instance: aws-cwl-exporter
-            app.kubernetes.io/version: "2.9.15"
+            app.kubernetes.io/version: "2.15.43"
             app.kubernetes.io/managed-by: Helm
         spec:
           serviceAccountName: aws-cwl-exporter
@@ -56,8 +89,8 @@ spec:
             seccompProfile:
               type: RuntimeDefault
           containers:
-          - name: aws-cwl-exporter
-            image: "stevenjdh/aws-cwl-exporter:2.9.15"
+          - name: aws-cwl-exporter-job
+            image: "stevenjdh/aws-cwl-exporter:2.15.43"
             imagePullPolicy: Always
             securityContext:
               allowPrivilegeEscalation: false
@@ -68,18 +101,18 @@ spec:
             envFrom:
             - configMapRef:
                 name: aws-cwl-exporter-config
-            resources:
-              {}
+            - secretRef:
+                name: aws-cwl-exporter-secret
             volumeMounts:
-            - mountPath: /tmp
-              name: workspace-volume
-              subPath: tmp
-            - mountPath: /.aws
-              name: workspace-volume
-              subPath: .aws
+              - mountPath: /tmp
+                name: workspace-volume
+                subPath: tmp
+              - mountPath: /.aws
+                name: workspace-volume
+                subPath: .aws
           volumes:
-          - emptyDir: {}
-            name: workspace-volume
+            - emptyDir: {}
+              name: workspace-volume
           restartPolicy: Never
           nodeSelector:
             kubernetes.io/os: linux
