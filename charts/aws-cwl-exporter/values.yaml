@@ -119,9 +119,9 @@ cronjob:
     backoffLimit: 0
     # @ignored
     activeDeadlineSeconds: 120
-    # -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.
+    # @ignored. command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.
     command: []
-    # -- Additional command line arguments to pass to the container.
+    # @ignored. Additional command line arguments to pass to the container.
     extraArgs: []
     # - --arg1
     # - value1
@@ -136,7 +136,7 @@ cronjob:
     #       key: FOO
     #       name: secret-resource
 
-    # -- Additional volumeMounts for the main container.
+    # @ignored. Additional volumeMounts for the main container.
     extraVolumeMounts:
     - name: workspace-volume
       mountPath: /tmp
@@ -145,7 +145,7 @@ cronjob:
       mountPath: /.aws
       subPath: .aws
 
-    # -- Additional volumes for the pod.
+    # @ignored. Additional volumes for the pod.
     extraVolumes:
     - name: workspace-volume
       emptyDir: {}
@@ -156,7 +156,7 @@ cronjob:
     #   image: busybox
     #   command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
 
-# -- configMap is used to store non-confidential data in key-value pairs.
+# configMap is used to store non-confidential data in key-value pairs.
 # Quoting is required if the value is 0.
 configMap:
   # -- Required. The name of the log group source for exporting logs from.
@@ -171,7 +171,7 @@ configMap:
   # when using [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa).
   awsDefaultRegion: ""
 
-# -- secrets is used to store confidential data in key-value pairs.
+# secrets is used to store confidential data in key-value pairs.
 # Quoting is required if the value is 0.
 secrets:
   # -- Optional. The AWS access key associated with an IAM user or role. Not required when using

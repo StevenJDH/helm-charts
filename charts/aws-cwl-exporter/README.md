@@ -36,19 +36,14 @@ helm upgrade --install my-aws-cwl-exporter stevenjdh/aws-cwl-exporter --version 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
-| configMap | object | `{"awsDefaultRegion":"","exportPeriod":"hourly","exportPrefix":"export-task-output","logGroupName":"","s3BucketName":""}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. |
 | configMap.awsDefaultRegion | string | `""` | Optional. The AWS Region to use for requests. Must match log group and S3 bucket region. Not required when using [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa). |
 | configMap.exportPeriod | string | `"hourly"` | Optional. The `hourly` or `daily` period used for collecting logs. Not required unless set to `daily`. |
 | configMap.exportPrefix | string | `"export-task-output"` | Required. The prefix used as the start of the key for every object exported. |
 | configMap.logGroupName | string | `""` | Required. The name of the log group source for exporting logs from. |
 | configMap.s3BucketName | string | `""` | Required. The name of S3 bucket storing the exported log data. The bucket must be in the same AWS region. |
 | cronjob.annotations | object | `{}` | annotations to be added to the CronJob resource. |
-| cronjob.job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
-| cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | cronjob.job.extraEnvs | list | `[]` | Additional environment variables to set. |
 | cronjob.job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
-| cronjob.job.extraVolumeMounts | list | `[{"mountPath":"/tmp","name":"workspace-volume","subPath":"tmp"},{"mountPath":"/.aws","name":"workspace-volume","subPath":".aws"}]` | Additional volumeMounts for the main container. |
-| cronjob.job.extraVolumes | list | `[{"emptyDir":{},"name":"workspace-volume"}]` | Additional volumes for the pod. |
 | cronjob.job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
 | cronjob.job.priorityClassName | string | `""` | priorityClassName is the name of the PriorityClass resource that indicates the importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the scheduler tries to preempt (evict) lower priority Pods to make scheduling of the pending Pod possible. Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption). |
 | cronjob.job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
@@ -61,7 +56,6 @@ helm upgrade --install my-aws-cwl-exporter stevenjdh/aws-cwl-exporter --version 
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
-| secrets | object | `{"awsAccessKeyId":"","awsSecretAccessKey":""}` | secrets is used to store confidential data in key-value pairs. Quoting is required if the value is 0. |
 | secrets.awsAccessKeyId | string | `""` | Optional. The AWS access key associated with an IAM user or role. Not required when using [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa). |
 | secrets.awsSecretAccessKey | string | `""` | Optional. The AWS secret key associated with the access key. Not required when using [IRSA](https://github.com/StevenJDH/Terraform-Modules/tree/main/aws/irsa). |
 | serviceAccount.annotations | object | `{}` | annotations to be added to the Service Account resource. |
