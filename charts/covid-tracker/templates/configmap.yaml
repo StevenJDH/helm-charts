@@ -1,6 +1,6 @@
 {{/*
 This file is part of COVID-19 Tracker Helm Chart <https://github.com/StevenJDH/helm-charts>.
-Copyright (C) 2022 Steven Jenkins De Haro.
+Copyright (C) 2022-2024 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,17 +15,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- if .Values.configMap.springCronSchedule -}}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ template "covid-tracker.fullname" . }}-config
-  labels:
-    {{- include "covid-tracker.labels" . | nindent 4 }}
-data:
-  {{- range $key, $val := .Values.configMap }}
-  {{- if $val }}
-  {{ $key | snakecase | upper }}: {{ $val }}
-  {{- end}}
-  {{- end}}
-{{- end }}
+{{- include "shared-library.configmap" . }}

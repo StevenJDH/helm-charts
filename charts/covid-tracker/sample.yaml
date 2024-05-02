@@ -5,13 +5,14 @@ kind: ConfigMap
 metadata:
   name: covid-tracker-config
   labels:
-    helm.sh/chart: covid-tracker-0.1.1
+    helm.sh/chart: covid-tracker-0.2.0
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 data:
-  SPRING_CRON_SCHEDULE: 0 0 0/6 1/1 * ?
+  SPRING_CRON_SCHEDULE: "0 0 0/6 1/1 * ?"
 ---
 # Source: covid-tracker/templates/service.yaml
 apiVersion: v1
@@ -19,11 +20,12 @@ kind: Service
 metadata:
   name: covid-tracker-svc
   labels:
-    helm.sh/chart: covid-tracker-0.1.1
+    helm.sh/chart: covid-tracker-0.2.0
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 spec:
   type: ClusterIP
   sessionAffinity: None
@@ -45,12 +47,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: covid-tracker
+  annotations:
+    rollme: "L3ijB"
   labels:
-    helm.sh/chart: covid-tracker-0.1.1
+    helm.sh/chart: covid-tracker-0.2.0
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -109,14 +114,13 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-          resources:
-            {}
           volumeMounts:
-          - mountPath: /tmp
-            name: tmp
+            - mountPath: /tmp
+              name: tmp
       volumes:
-      - emptyDir: {}
-        name: tmp
+        - emptyDir: {}
+          name: tmp
+      restartPolicy: Always
       nodeSelector:
         kubernetes.io/os: linux
 ---
@@ -126,11 +130,12 @@ kind: Ingress
 metadata:
   name: covid-tracker-ingress
   labels:
-    helm.sh/chart: covid-tracker-0.1.1
+    helm.sh/chart: covid-tracker-0.2.0
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 spec:
   ingressClassName: nginx
   rules:
@@ -153,7 +158,7 @@ metadata:
   annotations:
     "helm.sh/hook": test
   labels:
-    helm.sh/chart: covid-tracker-0.1.1
+    helm.sh/chart: covid-tracker-0.2.0
     app.kubernetes.io/name: covid-tracker
     app.kubernetes.io/instance: covid-tracker
     app.kubernetes.io/version: "1.0.0"

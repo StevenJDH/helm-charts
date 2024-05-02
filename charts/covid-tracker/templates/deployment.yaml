@@ -1,6 +1,6 @@
 {{/*
 This file is part of COVID-19 Tracker Helm Chart <https://github.com/StevenJDH/helm-charts>.
-Copyright (C) 2022 Steven Jenkins De Haro.
+Copyright (C) 2022-2024 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,109 +15,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ include "covid-tracker.fullname" . }}
-  {{- with .Values.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  labels:
-    {{- include "covid-tracker.labels" . | nindent 4 }}
-spec:
-  {{- /*
-  Workaround to handle 0 properly when it is a number or a string.
-  Reference: https://github.com/helm/helm/issues/3164 
-  */}}
-  {{- if not (kindIs "invalid" .Values.replicaCount) }}
-  replicas: {{ .Values.replicaCount }}
-  {{- else }}
-  replicas: 1
-  {{- end }}
-  selector:
-    matchLabels:
-      {{- include "covid-tracker.selectorLabels" . | nindent 6 }}
-  {{- with .Values.updateStrategy }}
-  strategy:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  template:
-    metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      labels:
-        {{- include "covid-tracker.selectorLabels" . | nindent 8 }}
-    spec:
-      {{- if and .Values.image.pullSecret.username .Values.image.pullSecret.password }}
-      imagePullSecrets:
-      - name: {{ template "covid-tracker.fullname" . }}-github-pull-secret
-      {{- end }}
-      serviceAccountName: {{ include "covid-tracker.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-          {{- range $key, $value := .Values.containerPorts }}
-            - name: {{ $key }}
-              containerPort: {{ $value }}
-              protocol: TCP
-          {{- end }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- if .Values.extraArgs }}
-          args:
-            {{- range .Values.extraArgs }}
-            - {{ . | quote }}
-            {{- end }}
-          {{- end }}
-          {{- with .Values.extraEnvs }}
-          env:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          envFrom:
-          - configMapRef:
-              name: {{ template "covid-tracker.fullname" . }}-config
-          {{- with .Values.health.startupProbe }}
-          startupProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          livenessProbe:
-            {{- toYaml .Values.health.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.health.readinessProbe | nindent 12 }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:
-          - mountPath: /tmp
-            name: tmp
-          {{- with .Values.extraVolumeMounts }}
-          {{- toYaml . | nindent 10 }}
-          {{- end }}
-      {{- with .Values.extraInitContainers }}
-      initContainers:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      volumes:
-      - emptyDir: {}
-        name: tmp
-      {{- with .Values.extraVolumes }}
-      {{- toYaml . | nindent 6 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+{{- include "shared-library.deployment" . }}
