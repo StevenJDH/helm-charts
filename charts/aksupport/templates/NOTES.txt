@@ -1,6 +1,6 @@
 {{/*
 This file is part of AKSupport Helm Chart <https://github.com/StevenJDH/helm-charts>.
-Copyright (C) 2022 Steven Jenkins De Haro.
+Copyright (C) 2022-2024 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,14 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-You have deployed the following release: {{ .Release.Name }}.
-
-To get further information, you can run the commands:
-  $ helm status {{ .Release.Name }} -n {{ .Release.Namespace }}
-  $ helm get all {{ .Release.Name }} -n {{ .Release.Namespace }}
-
-Every time that AKSupport finishes its checks, it will return and exit code. To view the last exit code, type:
-  $ export POD_NAME=$(kubectl get pods -n {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "aksupport.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  $ kubectl get pod $POD_NAME -o "jsonpath={.status.containerStatuses[].state.terminated.exitCode}" -n {{ .Release.Namespace }}
+{{- include "shared-library.notes" . | trim }}
 
 See https://github.com/StevenJDH/AKSupport#exit-codes for more information.

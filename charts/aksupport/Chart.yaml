@@ -1,5 +1,5 @@
 # This file is part of AKSupport Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2022 Steven Jenkins De Haro.
+# Copyright (C) 2022-2024 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.0.0
+version: 1.1.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -52,4 +52,7 @@ maintainers:
 
 icon: https://raw.githubusercontent.com/StevenJDH/AKSupport/main/Avatars/aksupport-256x256-transparent-bg.png
 
-dependencies: []
+dependencies:
+  - name: shared-library
+    version: 0.1.2
+    repository: "https://StevenJDH.github.io/helm-charts"

@@ -1,6 +1,6 @@
 # AKSupport Helm Chart
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square) 
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square) 
 
 An automation tool that regularly checks for the current supported status of an AKS cluster to alert and maintain Microsoft support.
 
@@ -12,12 +12,16 @@ An automation tool that regularly checks for the current supported status of an 
 
 Kubernetes: `>= 1.19.0-0`
 
+| Repository | Name | Version |
+|------------|------|---------|
+| https://StevenJDH.github.io/helm-charts | shared-library | 0.1.2 |
+
 ## Usage example
 
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-aksupport stevenjdh/aksupport --version 1.0.0 \
+helm upgrade --install my-aksupport stevenjdh/aksupport --version 1.1.0 \
     --set-string configMap.azureSubscriptionId=<subscriptionId> \
     --set-string configMap.azureAppTenant=<tenant> \
     --set-string configMap.azureAksRegion=<region> \
@@ -44,27 +48,27 @@ helm upgrade --install my-aksupport stevenjdh/aksupport --version 1.0.0 \
 | configMap.mailAppTenant | string | `""` | Office Mail configuration. Office 365 AD App Directory (Tenant) Id for application registration. |
 | configMap.mailRecipientAddress | string | `""` | Office Mail configuration. Email address of the recipient. |
 | configMap.mailSenderId | string | `""` | Office Mail configuration. Email address or Object Id of the sender. Object Id is recommended. |
-| cronjob.annotations | object | `{}` | annotations to be added to the CronJob. |
-| cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
-| cronjob.job.extraEnvs | list | `[]` | Additional environment variables to set. |
+| cronjob.annotations | object | `{}` | annotations to be added to the CronJob resource. |
+| cronjob.job.extraArgs | list | `[]` | extraArgs is used here to provide a specific Kubernetes version for testing. For example, --set "cronjob.job.extraArgs={1.17.0}" or --set cronjob.job.extraArgs[0]=1.17.0. |
 | cronjob.job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
-| cronjob.job.extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
-| cronjob.job.extraVolumes | list | `[]` | Additional volumes for the pod. |
 | cronjob.job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
+| cronjob.job.priorityClassName | string | `""` | priorityClassName is the name of the PriorityClass resource that indicates the importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the scheduler tries to preempt (evict) lower priority Pods to make scheduling of the pending Pod possible. Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption). |
+| cronjob.job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | cronjob.schedule | string | `"0 8 * * *"` | The Cron schedule to run a support status check. Default is 08:00 every day. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
 | image.pullPolicy | string | `"Always"` | pullPolicy is the strategy for pulling images from a registry. |
 | image.pullSecret.password | string | `""` | password is a PAT with at least read:packages permissions. |
-| image.pullSecret.username | string | `""` | username is the GitHub username associated with the PAT below, like StevenJDH. |
+| image.pullSecret.username | string | `""` | username is the GitHub username associated with the password. |
 | image.repository | string | `"stevenjdh/aksupport"` | repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret, or "public.ecr.aws/stevenjdh/aksupport". |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
-| resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | secrets.azureAppPassword | string | `""` | Required. App Password (Client Secret) for application registration. |
 | secrets.mailAppPassword | string | `""` | Office Mail configuration. Office 365 AD App Password (Client Secret) for application registration. |
 | secrets.teamsChannelWebhookUrl | string | `""` | Teams configuration. Url for the Teams channel incoming webhook. |
-| testVersion | string | `""` | testVersion is for providing a specific version like 1.17.0 for testing. |
+| serviceAccount.annotations | object | `{}` | annotations to be added to the Service Account resource. |
+| serviceAccount.create | bool | `false` | Specifies whether a service account should be created. |
+| serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 | tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
 
 
