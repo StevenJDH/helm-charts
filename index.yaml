@@ -3,6 +3,29 @@ entries:
   aksupport:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-05-04T06:26:31.532234048Z"
+    dependencies:
+    - name: shared-library
+      repository: https://StevenJDH.github.io/helm-charts
+      version: 0.1.2
+    description: An automation tool that regularly checks for the current supported
+      status of an AKS cluster to alert and maintain Microsoft support.
+    digest: fa7dac4790e4f4692ad37990f600194f74610f0cd11d87f511ad7d8f658d58dd
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://raw.githubusercontent.com/StevenJDH/AKSupport/main/Avatars/aksupport-256x256-transparent-bg.png
+    kubeVersion: '>= 1.19.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: aksupport
+    sources:
+    - https://github.com/StevenJDH/AKSupport
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/aksupport-1.1.0/aksupport-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-12-04T17:07:45.050625511Z"
     description: An automation tool that regularly checks for the current supported
       status of an AKS cluster to alert and maintain Microsoft support.
@@ -255,4 +278,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/shared-library-0.1.0/shared-library-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-02T21:10:48.455860765Z"
+generated: "2024-05-04T06:26:31.532315662Z"
