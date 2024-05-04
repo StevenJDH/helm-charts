@@ -6,6 +6,9 @@ on:
       - main
     paths:
       - 'charts/**'
+      - '!charts/**/*.md'
+      - '!charts/**/*.png'
+      - '!charts/**/*.gotmpl'
   workflow_dispatch: # Run workflow manually through the Github Actions Workflow page directly.
 
 jobs:

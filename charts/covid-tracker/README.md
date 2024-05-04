@@ -14,7 +14,9 @@ Kubernetes: `>= 1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://StevenJDH.github.io/helm-charts | shared-library | 0.1.2 |## Usage example
+| https://StevenJDH.github.io/helm-charts | shared-library | 0.1.2 |
+
+## Usage example
 
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
