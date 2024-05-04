@@ -1,5 +1,5 @@
 # This file is part of AKSupport Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2022 Steven Jenkins De Haro.
+# Copyright (C) 2022-2024 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 image:
   # -- repository can alternatively use "ghcr.io/stevenjdh/aksupport", which requires a pull secret,
   # or "public.ecr.aws/stevenjdh/aksupport".
-  repository: stevenjdh/aksupport
+  repository: "stevenjdh/aksupport"
   # -- pullPolicy is the strategy for pulling images from a registry.
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
   pullSecret:
-    # @ignored. registry is the GitHub container registry for pulling images.
-    registry: ghcr.io
-    # -- username is the GitHub username associated with the PAT below, like StevenJDH.
+    # @ignored. registry is the private GitHub container registry for pulling images.
+    registry: "ghcr.io"
+    # -- username is the GitHub username associated with the password.
     username: ""
     # -- password is a PAT with at least read:packages permissions.
     password: ""
@@ -34,43 +34,19 @@ nameOverride: ""
 # -- Override for generated resource names.
 fullnameOverride: ""
 
-# @ignored
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: 10101
-  seccompProfile:
-    type: RuntimeDefault
-
-# @ignored
-securityContext:
-  # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005', so fixed using tmp volume mount.
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-    - ALL
-
-# --  Optionally request and limit how much CPU and memory (RAM) the container needs.
-# Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
-resources: {}
-#  We usually recommend not to specify default resources and to leave this as a conscious
-#  choice for the user. This also increases chances charts run on environments with little
-#  resources, such as Minikube. If you do want to specify resources, uncomment the following
-#  lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-#  requests:
-#    memory: 256Mi
-#    cpu: 500m
-#  limits:
-#    memory: 512Mi
-#    cpu: 1000m
-
-# -- testVersion is for providing a specific version like 1.17.0 for testing.
-testVersion: ""
+serviceAccount:
+  # -- Specifies whether a service account should be created.
+  create: false
+  # -- annotations to be added to the Service Account resource.
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template.
+  name: ""
 
 cronjob:
   # -- The Cron schedule to run a support status check. Default is 08:00 every day.
   schedule: '0 8 * * *'
-  # -- annotations to be added to the CronJob.
+  # -- annotations to be added to the CronJob resource.
   annotations: {}
   # @ignored
   concurrencyPolicy: ""
@@ -81,6 +57,39 @@ cronjob:
   # @ignored. If startingDeadlineSeconds is set to a value less than 10 seconds, the CronJob may not be scheduled.
   startingDeadlineSeconds: ""
   job:
+    # @ignored
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 10101
+      seccompProfile:
+        type: RuntimeDefault
+
+    # @ignored
+    securityContext:
+      # readOnlyRootFilesystem: true causes 'Failed to create CoreCLR, HRESULT: 0x80004005', so fixed using tmp volume mount.
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+
+    # -- priorityClassName is the name of the PriorityClass resource that indicates the
+    # importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
+    # scheduler tries to preempt (evict) lower priority Pods to make scheduling of the
+    # pending Pod possible.
+    # Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption).
+    priorityClassName: ""
+
+    # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+    # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+    resources: {}
+      # requests:
+      #   memory: 256Mi
+      #   cpu: 500m
+      # limits:
+      #   memory: 512Mi
+      #   cpu: 1000m
+
     # -- podAnnotations are the annotations to be added to the job pods.
     podAnnotations: {}
     # @ignored
@@ -91,37 +100,36 @@ cronjob:
     backoffLimit: 0
     # @ignored
     activeDeadlineSeconds: 120
-    # -- Additional command line arguments to pass to the container.
+    # @ignored. command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.
+    command: []
+    # -- extraArgs is used here to provide a specific Kubernetes version for testing.
+    # For example, --set "cronjob.job.extraArgs={1.17.0}" or --set cronjob.job.extraArgs[0]=1.17.0.
     extraArgs: []
-    #  - --arg1
-    #  - value1
-    #  - --arg2
-    #  - value2
+    # - "1.17.0"
 
-    # -- Additional environment variables to set.
-    extraEnvs: []
-    #  - name: FOO
-    #    valueFrom:
-    #      secretKeyRef:
-    #        key: FOO
-    #        name: secret-resource
+    # @ignored. Additional environment variables to set.
+    extraEnvs:
+    - name: AZMON_COLLECT_ENV # Required to prevent sensitive data leaking to Azure Monitor Logs.
+      value: "FALSE"
 
-    # -- Additional volumeMounts for the main container.
-    extraVolumeMounts: []
-    #  - name: example-volume
-    #    mountPath: /share/example
+    # @ignored. Additional volumeMounts for the main container.
+    extraVolumeMounts:
+    - name: tmp
+      mountPath: /tmp
 
-    # -- Additional volumes for the pod.
-    extraVolumes: []
-    #  - name: example-volume
-    #    emptyDir: {}
+    # @ignored. Additional volumes for the pod.
+    extraVolumes:
+    - name: tmp
+      emptyDir: {}
 
     # -- Containers, which are run before the app containers are started.
     extraInitContainers: []
-    #  - name: init-myservice
-    #    image: busybox
-    #    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+    # - name: init-myservice
+    #   image: busybox
+    #   command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
 
+# configMap is used to store non-confidential data in key-value pairs.
+# Quoting is required if the value is 0.
 configMap:
   # -- Required. Subscription Id of Azure account.
   azureSubscriptionId: ""
@@ -146,6 +154,8 @@ configMap:
   # -- Office Mail configuration. Email address of the recipient.
   mailRecipientAddress: ""
 
+# secrets is used to store confidential data in key-value pairs.
+# Quoting is required if the value is 0.
 secrets:
   # -- Required. App Password (Client Secret) for application registration.
   azureAppPassword: ""
@@ -154,25 +164,28 @@ secrets:
   # -- Office Mail configuration. Office 365 AD App Password (Client Secret) for application registration.
   mailAppPassword: ""
 
-# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
+# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
+# Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
 nodeSelector:
   kubernetes.io/os: linux
 
-# -- affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
+# -- affinity for pod scheduling.
+# Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
 affinity: {}
-#  podAntiAffinity:
-#    requiredDuringSchedulingIgnoredDuringExecution:
-#    - labelSelector:
-#        matchExpressions:
-#        - key: app
-#          operator: In
-#          values:
-#          - app-name
-#      topologyKey: "kubernetes.io/hostname"
+  # podAntiAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #   - labelSelector:
+  #       matchExpressions:
+  #       - key: app
+  #         operator: In
+  #         values:
+  #         - app-name
+  #     topologyKey: "kubernetes.io/hostname"
 
-# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
+# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints.
+# Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
 tolerations: []
-#  - key: "key"
-#    operator: "Equal|Exists"
-#    value: "value"
-#    effect: "NoSchedule|PreferNoSchedule|NoExecute"
+# - key: "key"
+#   operator: "Equal|Exists"
+#   value: "value"
+#   effect: "NoSchedule|PreferNoSchedule|NoExecute"
