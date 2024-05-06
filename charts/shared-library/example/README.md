@@ -1,6 +1,6 @@
 # Shared Library Example Helm Chart
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.4](https://img.shields.io/badge/AppVersion-1.25.4-informational?style=flat-square) 
+![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.25.4](https://img.shields.io/badge/AppVersion-1.25.4-informational?style=flat-square) 
 
 An example chart using the shared-library.
 
@@ -14,7 +14,7 @@ Kubernetes: `>= 1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://../ | shared-library | 0.1.2 |
+| file://../ | shared-library | 0.1.3 |
 
 ## Usage example
 Prepare the example project:
@@ -86,8 +86,8 @@ helm upgrade --install my-example . \
 | ingress.annotations | object | `{}` | annotations to be added to the Ingress resource. |
 | ingress.className | string | `"nginx"` | className is the name of the Ingress class. |
 | ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created. |
-| ingress.hosts[0] | object | `{"host":"","paths":[{"path":"/","pathType":"Prefix"}]}` | host is the hostname of a request that must match exactly or use a wildcard as the subdomain. |
-| ingress.hosts[0].paths[0] | object | `{"path":"/","pathType":"Prefix"}` | path is part of a list of one or more paths that are associated with a backend service. |
+| ingress.hosts[0].host | string | `""` | host is the hostname of a request that must match exactly or use a wildcard as the subdomain. |
+| ingress.hosts[0].paths[0].path | string | `"/"` | path is part of a list of one or more paths that are associated with a backend service. |
 | ingress.hosts[0].paths[0].pathType | string | `"Prefix"` | pathType is a field that can specify how Ingress paths should be matched. Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types). |
 | ingress.tls | list | `[]` | tls is a list of hosts that needs to explicitly match the host in the rules section. It also contains a secret with references to tls.crt and tls.key to use for TLS. |
 | job.annotations | object | `{}` | annotations to be added to the Job resource. |
