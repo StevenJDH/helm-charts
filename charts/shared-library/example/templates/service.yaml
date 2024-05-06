@@ -37,5 +37,5 @@ spec:
     {{- if and (semverCompare ">=1.20.0-0" .Capabilities.KubeVersion.Version) (.Values.service.appProtocol) }}
     appProtocol: http
     {{- end }}
-{{- end -}} 
+{{- end -}}
 */ -}}

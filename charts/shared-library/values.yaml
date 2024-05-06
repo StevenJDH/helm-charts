@@ -249,11 +249,11 @@ ingress:
     # kubernetes.io/tls-acme: "true"
 
   hosts:
-    # -- host is the hostname of a request that must match exactly or use a wildcard as the subdomain.
-    - host: ""
+    - # -- host is the hostname of a request that must match exactly or use a wildcard as the subdomain.
+      host: ""
       paths:
-          # -- path is part of a list of one or more paths that are associated with a backend service.
-        - path: /
+        - # -- path is part of a list of one or more paths that are associated with a backend service.
+          path: /
           # -- pathType is a field that can specify how Ingress paths should be matched.
           # Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types).
           pathType: Prefix
