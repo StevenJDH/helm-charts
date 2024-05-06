@@ -1,15 +1,31 @@
 ---
+# Source: konga/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: konga-secret
+  labels:
+    helm.sh/chart: konga-1.0.0
+    app.kubernetes.io/name: konga
+    app.kubernetes.io/instance: konga
+    app.kubernetes.io/version: "0.14.9"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+type: Opaque
+data:
+---
 # Source: konga/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: konga-config
   labels:
-    helm.sh/chart: konga-0.1.0
+    helm.sh/chart: konga-1.0.0
     app.kubernetes.io/name: konga
     app.kubernetes.io/instance: konga
     app.kubernetes.io/version: "0.14.9"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 data:
   DB_DATABASE: "konga_database"
   DB_HOST: "localhost"
@@ -40,11 +56,12 @@ kind: Service
 metadata:
   name: konga-svc
   labels:
-    helm.sh/chart: konga-0.1.0
+    helm.sh/chart: konga-1.0.0
     app.kubernetes.io/name: konga
     app.kubernetes.io/instance: konga
     app.kubernetes.io/version: "0.14.9"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 spec:
   type: ClusterIP
   sessionAffinity: None
@@ -66,12 +83,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: konga
+  annotations:
+    rollme: "MIc9r"
   labels:
-    helm.sh/chart: konga-0.1.0
+    helm.sh/chart: konga-1.0.0
     app.kubernetes.io/name: konga
     app.kubernetes.io/instance: konga
     app.kubernetes.io/version: "0.14.9"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -107,6 +127,8 @@ spec:
           envFrom:
           - configMapRef:
               name: konga-config
+          - secretRef:
+              name: konga-secret
           livenessProbe:
             failureThreshold: 5
             httpGet:
@@ -127,8 +149,6 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-          resources:
-            {}
       restartPolicy: Always
       nodeSelector:
         kubernetes.io/os: linux
@@ -139,11 +159,12 @@ kind: Ingress
 metadata:
   name: konga-ingress
   labels:
-    helm.sh/chart: konga-0.1.0
+    helm.sh/chart: konga-1.0.0
     app.kubernetes.io/name: konga
     app.kubernetes.io/instance: konga
     app.kubernetes.io/version: "0.14.9"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 spec:
   ingressClassName: nginx
   rules:
@@ -166,7 +187,7 @@ metadata:
   annotations:
     "helm.sh/hook": test
   labels:
-    helm.sh/chart: konga-0.1.0
+    helm.sh/chart: konga-1.0.0
     app.kubernetes.io/name: konga
     app.kubernetes.io/instance: konga
     app.kubernetes.io/version: "0.14.9"

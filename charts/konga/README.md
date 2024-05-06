@@ -1,6 +1,6 @@
 # Konga Helm Chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.14.9](https://img.shields.io/badge/AppVersion-0.14.9-informational?style=flat-square) 
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.14.9](https://img.shields.io/badge/AppVersion-0.14.9-informational?style=flat-square) 
 
 A GUI to manage all Kong Admin API Objects.
 
@@ -14,6 +14,7 @@ Kubernetes: `>= 1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://StevenJDH.github.io/helm-charts | shared-library | 0.1.3 |
 | https://charts.bitnami.com/bitnami | kong | ^9.x |
 
 ## Usage example
@@ -21,7 +22,7 @@ Kubernetes: `>= 1.19.0-0`
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
+helm upgrade --install my-konga stevenjdh/konga --version 1.0.0 \
     --set configMap.noAuth=true \
     --set kong.enabled=true \
     --namespace example \
@@ -35,6 +36,7 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 |-----|------|---------|-------------|
 | affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
 | annotations | object | `{}` | annotations to be added to the Deployment resource. |
+| autoscaling.annotations | object | `{}` | annotations to be added to the HorizontalPodAutoscaler resource. |
 | autoscaling.behavior | object | `{}` | behavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively). |
 | autoscaling.enabled | bool | `false` | Indicates whether or not a Horizontal Pod Autoscaling resource is created. Enabling is ignored if KEDA is enabled. |
 | autoscaling.maxReplicas | int | `10` | maxReplicas is the upper limit for the number of replicas to which the autoscaler can scale up. It cannot be less that minReplicas. |
@@ -74,7 +76,6 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | configMap.sslCrtPath | string | `""` | If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set. |
 | configMap.sslKeyPath | string | `""` | If SSL is needed, this will be the absolute path to the .key file. Both `sslKeyPath` and `sslCrtPath` must be set. |
 | containerPorts | object | `{"http":1337}` | containerPort is the port or ports that the container listens on. |
-| extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | extraEnvs | list | `[]` | Additional environment variables to set. |
 | extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
 | extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
@@ -83,15 +84,22 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | image.pullPolicy | string | `"Always"` | pullPolicy is the strategy for pulling images from a registry. |
 | image.pullSecret.password | string | `""` | password is the Docker password associated with the username with pull rights. |
 | image.pullSecret.username | string | `""` | username is the Docker username associated with the password. |
-| image.repository | string | `"pantsel/konga"` | repository holding the Konga container image. |
+| image.repository | string | `"pantsel/konga"` | repository holding the container image. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
-| ingress.annotations | object | `{}` | annotations to add to the Ingress resource. |
-| ingress.className | string | `"nginx"` | className is the name of the Ingress class. For APIs exposed via the Kong Ingress Controller, use the `kong` class for those Ingress resources. Reference [Getting started with the Kong KIC](https://docs.konghq.com/kubernetes-ingress-controller/latest/guides/getting-started/) and [API Management with Kong Ingress Controller on Kubernetes](https://blog.baeke.info/2019/06/15/api-management-with-kong-ingress-controller-on-kubernetes/). |
+| ingress.annotations | object | `{}` | annotations to be added to the Ingress resource. |
+| ingress.className | string | `"nginx"` | className is the name of the Ingress class. |
 | ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created. |
-| ingress.hosts[0] | object | `{"host":"","paths":[{"path":"/","pathType":"Prefix"}]}` | host is the hostname of a request that must match exactly or use a wildcard as the subdomain. |
-| ingress.hosts[0].paths[0] | object | `{"path":"/","pathType":"Prefix"}` | path is part of a list of one or more paths that are associated with a backend service. |
+| ingress.hosts[0].host | string | `""` | host is the hostname of a request that must match exactly or use a wildcard as the subdomain. |
+| ingress.hosts[0].paths[0].path | string | `"/"` | path is part of a list of one or more paths that are associated with a backend service. |
 | ingress.hosts[0].paths[0].pathType | string | `"Prefix"` | pathType is a field that can specify how Ingress paths should be matched. Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types). |
 | ingress.tls | list | `[]` | tls is a list of hosts that needs to explicitly match the host in the rules section. It also contains a secret with references to tls.crt and tls.key to use for TLS. |
+| job.annotations | object | `{}` | annotations to be added to the DB migrations Job resource. |
+| job.enabled | bool | `true` | Indicates whether or not to run the DB migrations job when `configMap.dbAdapter` is set to `mysql` or `postgres` because this isn't done automatically when `configMap.nodeEnv` is set to `production`. |
+| job.extraEnvs | list | `[]` | Additional environment variables to set. |
+| job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
+| job.priorityClassName | string | `""` | priorityClassName is the name of the PriorityClass resource that indicates the importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the scheduler tries to preempt (evict) lower priority Pods to make scheduling of the pending Pod possible. Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption). |
+| job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| keda.annotations | object | `{}` | annotations to be added to the ScaledObject resource. |
 | keda.apiVersion | string | `"keda.sh/v1alpha1"` | apiVersion is the KEDA API to use, which will be either `keda.k8s.io/v1alpha1` or `keda.sh/v1alpha1` depending on whether KEDA is version 1x or 2x respectively. |
 | keda.behavior | object | `{}` | behavior is used to modify HPA's scaling behavior for the HPA definition that KEDA will create for a given resource. |
 | keda.cooldownPeriod | int | `300` | cooldownPeriod is the period to wait after the last trigger reported active before scaling the resource back to 0. |
@@ -100,39 +108,37 @@ helm upgrade --install my-konga stevenjdh/konga --version 0.1.0 \
 | keda.minReplicas | int | `1` | minReplicas is the minimum number of replicas KEDA will scale a target resource down to. |
 | keda.pollingInterval | int | `30` | pollingInterval is the interval to check each trigger on. |
 | keda.restoreToOriginalReplicaCount | bool | `false` | restoreToOriginalReplicaCount specifies whether the target resource (Deployment, StatefulSet,…) should be scaled back to original replicas count, after the ScaledObject is deleted. Default behavior is to keep the replica count at the same number as it is in the moment of ScaledObject's deletion. |
-| keda.scaledObject.annotations | object | `{}` | annotations to add to the ScaledObject resource. |
 | keda.triggers | list | `[]` | triggers is a list of triggers to activate scaling on for a target resource. |
 | kong.enabled | bool | `false` | Indicates whether or not to deploy Kong with Konga. |
 | kong.image.debug | bool | `false` | Indicates whether or not to enable Kong's image debug mode. |
 | kong.ingressController.enabled | bool | `true` | Indicates whether or not to deploy the Kong Ingress Controller. At least Kubernetes 1.22 is recommended if set to `true`. Reference [Version Compatibility](https://docs.konghq.com/kubernetes-ingress-controller/2.8.x/references/version-compatibility/). |
 | kong.metrics.enabled | bool | `false` | Indicates whether or not to enable the export of Prometheus metrics for Kong. |
 | kong.replicaCount | int | `2` | replicaCount is the number of Kong pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
-| migrations.annotations | object | `{}` | annotations to add to the DB migrations Job resource. |
-| migrations.enabled | bool | `true` | Indicates whether or not to run DB migrations when `configMap.dbAdapter` is set to `mysql` or `postgres` because this isn't done automatically when `configMap.nodeEnv` is set to `production`. |
-| migrations.job.podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the job pods. |
-| migrations.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
 | podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the deployment pods. |
+| podDisruptionBudget.create | bool | `false` | Indicates whether or not a PodDisruptionBudget resource is created. |
+| podDisruptionBudget.minAvailable | int | `1` | minAvailable is the number of pods from that set that must still be available after the eviction, even in the absence of the evicted pod. Only integer values are supported. |
+| priorityClassName | string | `""` | priorityClassName is the name of the PriorityClass resource that indicates the importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the scheduler tries to preempt (evict) lower priority Pods to make scheduling of the pending Pod possible. Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption). |
 | replicaCount | int | `1` | replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | restartPolicy | string | `"Always"` | restartPolicy defines how a pod will automatically repair itself when a problem arises. Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy). |
 | secrets.dbPassword | string | `""` | If `dbUri` is not specified, this is the database user's password. Depends on `dbAdapter`. |
 | secrets.kongaLdapBindPassword | string | `""` | The password for the user konga will use to search for users. |
 | secrets.tokenSecret | string | `""` | The secret that will be used to sign JWT tokens issued by Konga. |
-| service.annotations | object | `{}` | annotations to add to the service resource. |
+| service.annotations | object | `{}` | annotations to be added to the Service resource. |
 | service.appProtocol | bool | `true` | appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example, `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http`. See the following GitHub issue for more details [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions older than 1.20. |
 | service.clusterIP | string | `""` | clusterIP allows for customizing the cluster IP address of a service resource. |
 | service.externalIPs | list | `[]` | externalIPs is a list of IP addresses at which a service is available at. Reference [External IPs](https://kubernetes.io/docs/user-guide/services/#external-ips). |
 | service.externalTrafficPolicy | string | `""` | externalTrafficPolicy is an annotation set on a service resource. It defines how traffic incoming to a node is load balanced. `Cluster` is normally the default policy, but `Local` is often used to preserve the source IP of traffic coming into a cluster node. With Local, requests are load balanced equally across nodes irrespective of how many pods are on each node. When set to Cluster, both nodes and pods are taken into consideration. Applicable only when `service.type` is `NodePort` or `LoadBalancer`. Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip). |
 | service.healthCheckNodePort | int | `0` | healthCheckNodePort specifies the health check node port (numeric port number) for the service. If healthCheckNodePort isn’t specified, the service controller allocates a port from your cluster’s NodePort range. Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip). |
-| service.ipFamilies | list | `["IPv4"]` | ipFamilies is a list of IP families (e.g. IPv4, IPv6) assigned to a service. This field is usually assigned automatically based on cluster configuration and the ipFamilyPolicy field. [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack) |
-| service.ipFamilyPolicy | string | `"SingleStack"` | ipFamilyPolicy represents the dual-stack-ness requested or required by this Service. Possible values are SingleStack, PreferDualStack or RequireDualStack. The ipFamilies and clusterIPs fields depend on the value of this field. Reference [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack) |
-| service.loadBalancerIP | string | `""` | loadBalancerIP is a field used by cloud providers to connect the resulting `LoadBalancer` created by a service resource to a pre-existing static IP. Reference [Type LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer). This field is deprecated as of Kubernetes 1.24.0 since it doesn't support dual-stack, but there is no replacement as of yet. Most likely cloud providers will adopt a provider specific annotation approach for this. Progress can be tracked here [kubernetes/enhancements#1992](https://github.com/kubernetes/enhancements/pull/1992). |
+| service.ipFamilies | list | `["IPv4"]` | ipFamilies is a list of IP families (e.g. IPv4, IPv6) assigned to a service. This field is usually assigned automatically based on cluster configuration and the ipFamilyPolicy field. [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack). |
+| service.ipFamilyPolicy | string | `"SingleStack"` | ipFamilyPolicy represents the dual-stack-ness requested or required by this Service. Possible values are SingleStack, PreferDualStack or RequireDualStack. The ipFamilies and clusterIPs fields depend on the value of this field. Reference [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack). |
+| service.loadBalancerIP | string | `""` | loadBalancerIP is a field used by cloud providers to connect the resulting `LoadBalancer` created by a service resource to a pre-existing static IP. This field is deprecated as of Kubernetes 1.24.0 since it doesn't support dual-stack, but there is no replacement as of yet. Most likely cloud providers will adopt a provider specific annotation approach for this. Progress can be tracked here [kubernetes/enhancements#1992](https://github.com/kubernetes/enhancements/pull/1992). Reference [Type LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer). |
 | service.loadBalancerSourceRanges | list | `[]` | loadBalancerSourceRanges is a list of one or more internal or external IP address ranges. If not set, a Service will accept traffic from any IP address (0.0.0.0/0). |
-| service.sessionAffinity | string | `"None"` | sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's IP address. Must be either "None" or "ClientIP" if set. Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace) |
+| service.sessionAffinity | string | `"None"` | sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's IP address. Must be either "None" or "ClientIP" if set. Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace). |
 | service.type | string | `"ClusterIP"` | type specifies what kind of Service resource to create. |
-| serviceAccount.annotations | object | `{}` | annotations to add to the service account. |
+| serviceAccount.annotations | object | `{}` | annotations to be added to the Service Account resource. |
 | serviceAccount.create | bool | `false` | Specifies whether a service account should be created. |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 | tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
