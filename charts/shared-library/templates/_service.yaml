@@ -42,10 +42,10 @@ spec:
     {{- if and (semverCompare ">=1.20.0-0" .Capabilities.KubeVersion.Version) (.Values.service.appProtocol) }}
     appProtocol: http
     {{- end }}
-{{- end -}}
+{{- end -}} 
 
 Params:
-  - context - Dict - Required. The context for the template evaluation.
+  - context - Dict - Requried. The context for the template evaluation.
   - overriding named template - String - Required. Definition to merge into the included template.
 */}}
 

@@ -22,7 +22,7 @@ Usage:
 {{- include "shared-library.util.merge" (append . "shared-library.<template-name>.tpl") -}}
 
 Params:
-  - context - Dict - Required. The top context.
+  - context - Dict - Requried. The top context.
   - overriding named template - String - Required. Definition to merge into the included template.
   - source named template - String - Required. The base template.
 */}}

@@ -15,16 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{/*
-Generates a NOTES output with useful information for a helm chart.
-
-Usage:
-{{- include "shared-library.notes" . }}
-
-Params:
-  - context - Dict - Required. The context for the template evaluation.
-*/}}
-
 {{- define "shared-library.notes" -}}
 You have deployed the following release: {{ .Release.Name }}.
 

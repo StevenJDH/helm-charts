@@ -30,10 +30,10 @@ metadata:
   labels:
     foo: bar
     {{- include "shared-library.labels" . | nindent 4 }}
-{{- end -}}
+{{- end -}} 
 
 Params:
-  - context - Dict - Required. The context for the template evaluation.
+  - context - Dict - Requried. The context for the template evaluation.
   - overriding named template - String - Required. Definition to merge into the included template.
 */}}
 

@@ -15,28 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{/*
-Generates a Pod resource with a hook to test a web service.
-
-Usage:
-{{- include "shared-library.test-connection" . }}
-
-OR
-
-{{- include "shared-library.test-connection" (list . "override.test-connection") }}
-
-{{- define "override.test-connection" -}}
-metadata:
-  labels:
-    foo: bar
-    {{- include "shared-library.labels" . | nindent 4 }}
-{{- end -}}
-
-Params:
-  - context - Dict - Required. The context for the template evaluation.
-  - overriding named template - String - Required. Definition to merge into the included template.
-*/}}
-
 {{- define "shared-library.test-connection.tpl" -}}
 {{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: v1
