@@ -30,10 +30,10 @@ metadata:
   labels:
     foo: bar
     {{- include "shared-library.labels" . | nindent 4 }}
-{{- end -}} 
+{{- end -}}
 
 Params:
-  - context - Dict - Requried. The context for the template evaluation.
+  - context - Dict - Required. The context for the template evaluation.
   - overriding named template - String - Required. Definition to merge into the included template.
 */}}
 
@@ -41,7 +41,7 @@ Params:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "shared-library.name" . }}-job
+  name: {{ include "shared-library.fullname" . }}-job
   {{- with .Values.job.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -65,7 +65,6 @@ spec:
   {{- end }}
   template:
     metadata:
-      name: {{ include "shared-library.name" . }}-job
       {{- with .Values.job.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
@@ -110,7 +109,7 @@ spec:
           {{- end }}
           {{- with .Values.job.extraEnvs }}
           env:            
-            {{- toYaml . | nindent 14 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
         {{- if or .Values.configMap .Values.secrets }}
           envFrom:
