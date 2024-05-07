@@ -205,6 +205,32 @@ entries:
   konga:
   - apiVersion: v2
     appVersion: 0.14.9
+    created: "2024-05-07T22:46:28.490014376Z"
+    dependencies:
+    - condition: kong.enabled
+      name: kong
+      repository: https://charts.bitnami.com/bitnami
+      version: ^9.x
+    - name: shared-library
+      repository: https://StevenJDH.github.io/helm-charts
+      version: 0.1.3
+    description: A GUI to manage all Kong Admin API Objects.
+    digest: cf8d1c7261162a3204546921717b69298757dc589096934abde01de456d7cb6a
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.19.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: konga
+    sources:
+    - https://github.com/pantsel/konga
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/konga-1.0.0/konga-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
+    appVersion: 0.14.9
     created: "2023-03-05T13:39:06.147828737Z"
     dependencies:
     - condition: kong.enabled
@@ -295,4 +321,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/shared-library-0.1.0/shared-library-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-06T21:53:06.170814702Z"
+generated: "2024-05-07T22:46:28.490036567Z"
