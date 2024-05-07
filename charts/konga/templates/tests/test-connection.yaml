@@ -1,6 +1,6 @@
 {{/*
 This file is part of Konga Helm Chart <https://github.com/StevenJDH/helm-charts>.
-Copyright (C) 2023 Steven Jenkins De Haro.
+Copyright (C) 2023-2024 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,18 +15,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "{{ include "konga.fullname" . }}-test-connection"
-  annotations:
-    "helm.sh/hook": test
-  labels:
-    {{- include "konga.labels" . | nindent 4 }}
-spec:
-  containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args: ['{{ include "konga.fullname" . }}-svc:{{ .Values.service.port }}']
-  restartPolicy: Never
+{{- include "shared-library.test-connection" . }}
