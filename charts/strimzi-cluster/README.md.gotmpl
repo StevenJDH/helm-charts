@@ -1,0 +1,67 @@
+# Strimzi Cluster Helm Chart
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Usage example
+
+```bash
+helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
+helm repo update
+helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
+    --set strimzi-kafka-operator.enabled=true \
+    --set strimzi-drain-cleaner.enabled=true \
+    --set-file strimzi-drain-cleaner.secret.tls_crt=tls.crt.base64 \
+    --set-file strimzi-drain-cleaner.secret.tls_key=tls.key.base64 \
+    --set-file strimzi-drain-cleaner.secret.ca_bundle=ca.crt.base64 \
+    --namespace example \
+    --create-namespace \
+    --atomic
+```
+
+> [!TIP]
+> To test Drain Cleaner, run the command `kubectl drain <node-name> --delete-emptydir-data --ignore-daemonsets --timeout=6000s --force` against a node with a broker, which will fail the first time because the strimzi cluster operator will take over for relocating those workloads. Then, rerun the command again after a few minutes, and it will work this time.
+
+### Create Drain Cleaner certificate
+
+The following will create the needed TLS certificates if Drain Cleaner will be installed as per above example. OpenSSL CLI v1.1.1 or newer is required.
+
+```bash
+# 1. Set the namespace used by Drain Cleaner.
+namespace=strimzi-drain-cleaner
+
+# 2. Create CA certificate and key.
+openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 11688 -noenc \
+    -subj "/CN=Strimzi Drain Cleaner Root CA/O=StevenJDH" \
+    -addext "basicConstraints=critical,CA:TRUE,pathlen:1" \
+    -addext "keyUsage=critical,keyCertSign,cRLSign" \
+    -addext "subjectKeyIdentifier=hash"
+
+# 3. Create certificate signing request (*.csr) and private key.
+openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
+    -subj "/CN=strimzi-drain-cleaner.$namespace.svc/O=StevenJDH" \
+    -addext "basicConstraints=critical,CA:FALSE" \
+    -addext "extendedKeyUsage=serverAuth" \
+    -addext "keyUsage=critical,digitalSignature,keyEncipherment,keyAgreement" \
+    -addext "subjectAltName=DNS:strimzi-drain-cleaner.$namespace.svc" \
+    -addext "subjectKeyIdentifier=hash"
+
+# 4. Created CA signed server certificate from CSR.
+openssl x509 -req -sha256 -days 11688 -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt \
+    -copy_extensions copy
+
+# 5. Base64 encode the files as expected by the Drain Cleaner.
+base64 -w0 tls.crt > tls.crt.base64
+base64 -w0 tls.key > tls.key.base64
+base64 -w0 ca.crt > ca.crt.base64
+```
+
+{{ template "chart.valuesSection" . }}
+
+
+{{ template "footer.signature" . }}

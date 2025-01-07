@@ -1,0 +1,77 @@
+{{/*
+This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
+Copyright (C) 2025 Steven Jenkins De Haro.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+{{- $requiredMsg := include "shared-library.required-msg" . -}}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: {{ include "shared-library.fullname" . }}
+  annotations:
+    strimzi.io/node-pools: enabled
+    strimzi.io/kraft: enabled
+    {{- with .Values.kafka.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+    {{- with .Values.kafka.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  kafka:
+    {{- with .Values.kafka.version }}
+    version: {{ . }}
+    {{- end }}
+    listeners:
+      {{- required (printf $requiredMsg "kafka.listeners") .Values.kafka.listeners | toYaml | nindent 6 }}
+    {{- with .Values.kafka.authorization }}
+    authorization:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.kafka.config }}
+    config:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    rack:
+      topologyKey: topology.kubernetes.io/zone
+    {{- with .Values.kafka.logging }}
+    logging:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.kafka.nodeSelector }}
+    nodeSelector:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.kafka.affinity }}
+    affinity:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.kafka.tolerations }}
+    tolerations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- with .Values.kafka.certificates.clusterCa }}
+  clusterCa:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+   {{- with .Values.kafka.certificates.clientsCa }}
+  clientsCa:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  entityOperator:
+    {{- required (printf $requiredMsg "kafka.entityOperator") .Values.kafka.entityOperator | toYaml | nindent 4 }}
