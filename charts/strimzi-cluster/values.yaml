@@ -36,6 +36,7 @@ kafka:
     #   kafka.root.logger.level: "INFO"
     #   log4j.logger.kafka.request.logger: "WARN"
     #   log4j.logger.kafka.authorizer.logger: "WARN"
+
   listeners:
     - name: plain
       port: 9092
@@ -92,18 +93,38 @@ kafka:
       #   limits:
       #     memory: "512Mi"
       #     cpu: "500m"
-  cruiseControl:
-    template:
-      pod: {}
-    resources: {}
+
+  # -- cruiseControl deploys the Cruise Control component to optimize Kafka when specified. Being present
+  # and not null is enough to enable it. It will also enable `kafka.metricsEnabled` by default and configure
+  # metrics for cruise control, so no need to configure here (e.g., `kafka.cruiseControl.metricsConfig`).
+  # Reference: https://strimzi.io/docs/operators/0.45.0/configuring.html#type-CruiseControlSpec-reference.
+  cruiseControl: {}
+    # template:
+    #   pod: {}
+    # resources: {}
+
+  # -- Indicates whether or not to enable the JMX Prometheus Exporter metrics for Kafka.
+  # This is enabled by default if `kafka.cruiseControl` is present.
+  metricsEnabled: true
+  # -- kafkaExporter allows to customize the configuration of the Kafka Exporter.
+  # Reference: https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaExporterSpec-reference
+  kafkaExporter: {}
+    # topicRegex: ".*"
+    # groupRegex: ".*"
+    # topicExcludeRegex: ""
+    # groupExcludeRegex: ""
+    # template:
+    #   pod: {}
+    # resources: {}
+
   nodeSelector: {}
   affinity: {}
   tolerations: []
 
 cruiseControlRebalance:
-  # -- Indicates whether or not to deploy a KafkaRebalance resource with an empty spec to use
+  # -- Indicates whether or not to create a KafkaRebalance resource with an empty spec to use
   # the default goals from the Cruise Control configuration for optimizing the cluster workloads.
-  enabled: true
+  create: true
   annotations:
     # -- Triggers the rebalance directly without any further approval step (e.g.,
     # setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`).
@@ -117,6 +138,7 @@ nodePools:
     nameOverride: ""
     annotations: {}
       # strimzi.io/next-node-ids: "[0-10]"
+
     labels: {}
     replicas: 3
     roles:
@@ -134,12 +156,14 @@ nodePools:
     jvmOptions: {}
       # -Xms: 4096m
       # -Xmx: 4096m
+
     resources: {}
   kraft-controller:
     enabled: true
     nameOverride: ""
     annotations: {}
       # strimzi.io/next-node-ids: "[11-20]"
+
     labels: {}
     replicas: 3
     roles:

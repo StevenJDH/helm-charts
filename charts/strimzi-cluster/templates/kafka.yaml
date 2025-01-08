@@ -47,6 +47,14 @@ spec:
     config:
       {{- toYaml . | nindent 6 }}
     {{- end }}
+    {{- if or (not (eq .Values.kafka.cruiseControl nil)) ((.Values.kafka).metricsEnabled) }}
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: {{ include "shared-library.fullname" . }}-metrics-config
+          key: kafka-metrics-config.yaml
+    {{- end }}
     rack:
       topologyKey: topology.kubernetes.io/zone
     {{- with .Values.kafka.logging }}
@@ -69,9 +77,25 @@ spec:
   clusterCa:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-   {{- with .Values.kafka.certificates.clientsCa }}
+  {{- with .Values.kafka.certificates.clientsCa }}
   clientsCa:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   entityOperator:
     {{- required (printf $requiredMsg "kafka.entityOperator") .Values.kafka.entityOperator | toYaml | nindent 4 }}
+  {{- if (not (eq .Values.kafka.cruiseControl nil)) }}
+  cruiseControl:
+    {{- with .Values.kafka.cruiseControl }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: {{ include "shared-library.fullname" . }}-metrics-config
+          key: cruise-control-metrics-config.yaml
+  {{- end }}
+  {{- with .Values.kafka.kafkaExporter }}
+  kafkaExporter:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}

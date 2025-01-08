@@ -37,7 +37,7 @@ helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.
 > [!TIP]
 > To test Drain Cleaner, run the command `kubectl drain <node-name> --delete-emptydir-data --ignore-daemonsets --timeout=6000s --force` against a node with a broker, which will fail the first time because the strimzi cluster operator will take over for relocating those workloads. Then, rerun the command again after a few minutes, and it will work this time.
 
-### Create Drain Cleaner certificate
+### Create Drain Cleaner certificate chain
 
 The following will create the needed TLS certificates if Drain Cleaner will be installed as per above example. OpenSSL CLI v1.1.1 or newer is required.
 
@@ -76,7 +76,7 @@ base64 -w0 ca.crt > ca.crt.base64
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | cruiseControlRebalance.annotations."strimzi.io/rebalance-auto-approval" | string | `"true"` | Triggers the rebalance directly without any further approval step (e.g., setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`). Use `strimzi.io/rebalance=refresh` to trigger a new analysis. |
-| cruiseControlRebalance.enabled | bool | `true` | Indicates whether or not to deploy a KafkaRebalance resource with an empty spec to use the default goals from the Cruise Control configuration for optimizing the cluster workloads. |
+| cruiseControlRebalance.create | bool | `true` | Indicates whether or not to create a KafkaRebalance resource with an empty spec to use the default goals from the Cruise Control configuration for optimizing the cluster workloads. |
 | cruiseControlRebalance.labels | object | `{}` |  |
 | fullnameOverride | string | `""` | Override for generated resource names. |
 | kafka.affinity | object | `{}` |  |
@@ -96,11 +96,11 @@ base64 -w0 ca.crt > ca.crt.base64
 | kafka.config."offsets.topic.replication.factor" | int | `3` |  |
 | kafka.config."transaction.state.log.min.isr" | int | `2` |  |
 | kafka.config."transaction.state.log.replication.factor" | int | `3` |  |
-| kafka.cruiseControl.resources | object | `{}` |  |
-| kafka.cruiseControl.template.pod | object | `{}` |  |
+| kafka.cruiseControl | object | `{}` | cruiseControl deploys the Cruise Control component to optimize Kafka when specified. Being present and not null is enough to enable it. It will also enable `kafka.metricsEnabled` by default and configure metrics for cruise control, so no need to configure here (e.g., `kafka.cruiseControl.metricsConfig`). Reference: https://strimzi.io/docs/operators/0.45.0/configuring.html#type-CruiseControlSpec-reference. |
 | kafka.entityOperator.template.pod | object | `{}` |  |
 | kafka.entityOperator.topicOperator | object | `{}` |  |
 | kafka.entityOperator.userOperator | object | `{}` |  |
+| kafka.kafkaExporter | object | `{}` | kafkaExporter allows to customize the configuration of the Kafka Exporter. Reference: https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaExporterSpec-reference |
 | kafka.labels | object | `{}` |  |
 | kafka.listeners[0].name | string | `"plain"` |  |
 | kafka.listeners[0].port | int | `9092` |  |
@@ -112,6 +112,7 @@ base64 -w0 ca.crt > ca.crt.base64
 | kafka.listeners[1].tls | bool | `true` |  |
 | kafka.listeners[1].type | string | `"internal"` |  |
 | kafka.logging | object | `{}` |  |
+| kafka.metricsEnabled | bool | `true` | Indicates whether or not to enable the JMX Prometheus Exporter metrics for Kafka. This is enabled by default if `kafka.cruiseControl` is present. |
 | kafka.nodeSelector | object | `{}` |  |
 | kafka.tolerations | list | `[]` |  |
 | kafka.version | string | `"3.9.0"` |  |
