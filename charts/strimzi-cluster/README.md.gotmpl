@@ -27,7 +27,7 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
 > [!TIP]
 > To test Drain Cleaner, run the command `kubectl drain <node-name> --delete-emptydir-data --ignore-daemonsets --timeout=6000s --force` against a node with a broker, which will fail the first time because the strimzi cluster operator will take over for relocating those workloads. Then, rerun the command again after a few minutes, and it will work this time.
 
-### Create Drain Cleaner certificate
+### Create Drain Cleaner certificate chain
 
 The following will create the needed TLS certificates if Drain Cleaner will be installed as per above example. OpenSSL CLI v1.1.1 or newer is required.
 
