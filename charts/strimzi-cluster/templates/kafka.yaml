@@ -77,11 +77,11 @@ spec:
     tolerations:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-  {{- with .Values.kafka.certificates.clusterCa }}
+  {{- with .Values.kafka.clusterCa }}
   clusterCa:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.kafka.certificates.clientsCa }}
+  {{- with .Values.kafka.clientsCa }}
   clientsCa:
     {{- toYaml . | nindent 4 }}
   {{- end }}

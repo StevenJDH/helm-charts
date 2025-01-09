@@ -82,30 +82,29 @@ kafka:
     # Reference: [Designating super users](https://strimzi.io/docs/operators/0.45.0/deploying#designating_super_users).
     superUsers: []
       # - "CN=my-super-user"
-  certificates:
-    clusterCa:
-      # -- If `true`, then Certificate Authority certificates will be generated automatically. Otherwise,
-      # a Secret needs to be provided with the CA certificate. Note: Setting this to `false` requires
-      # several steps for manually managing custom certificates and renewals.
-      # Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str).
-      generateCertificateAuthority: true
-      # -- The number of days generated certificates should be valid for.
-      validityDays: 365
-      # -- The number of days in the certificate renewal period. This is the number of days before the a
-      # certificate expires during which renewal actions may be performed. When generateCertificateAuthority
-      # is `true`, this will cause the generation of a new certificate, and this will cause extra logging
-      # at WARN level about the pending certificate expiry.
-      renewalDays: 30
-      # -- If `true`, the Cluster and Client CA Secrets are configured with the ownerReference set to the
-      # Kafka resource. If the Kafka resource is deleted, the CA Secrets are also deleted. If `false`,
-      # the ownerReference is disabled. If the Kafka resource is deleted, the CA Secrets are retained and
-      # available for reuse.
-      generateSecretOwnerReference: true
-    clientsCa:
-      generateCertificateAuthority: true
-      validityDays: 365
-      renewalDays: 30
-      generateSecretOwnerReference: true
+  clusterCa:
+    # -- If `true`, then Certificate Authority certificates will be generated automatically. Otherwise,
+    # a Secret needs to be provided with the CA certificate. Note: Setting this to `false` requires
+    # several steps for manually managing custom certificates and renewals.
+    # Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str).
+    generateCertificateAuthority: true
+    # -- The number of days generated certificates should be valid for.
+    validityDays: 365
+    # -- The number of days in the certificate renewal period. This is the number of days before the a
+    # certificate expires during which renewal actions may be performed. When generateCertificateAuthority
+    # is `true`, this will cause the generation of a new certificate, and this will cause extra logging
+    # at WARN level about the pending certificate expiry.
+    renewalDays: 30
+    # -- If `true`, the Cluster and Client CA Secrets are configured with the ownerReference set to the
+    # Kafka resource. If the Kafka resource is deleted, the CA Secrets are also deleted. If `false`,
+    # the ownerReference is disabled. If the Kafka resource is deleted, the CA Secrets are retained and
+    # available for reuse.
+    generateSecretOwnerReference: true
+  clientsCa:
+    generateCertificateAuthority: true
+    validityDays: 365
+    renewalDays: 30
+    generateSecretOwnerReference: true
   entityOperator:
     # template:
     #   pod: {}
@@ -200,6 +199,7 @@ nodePools:
     # -- annotations to be added to the KafkaNodePool resource.
     annotations: {}
       # strimzi.io/next-node-ids: "[0-10]"
+    # -- labels to be added to the KafkaNodePool resource.
     labels: {}
     # -- replicas is the number of instances in the node pool.
     replicas: 3
@@ -242,6 +242,7 @@ nodePools:
     # -- annotations to be added to the KafkaNodePool resource.
     annotations: {}
       # strimzi.io/next-node-ids: "[11-20]"
+    # -- labels to be added to the KafkaNodePool resource.
     labels: {}
     # -- replicas is the number of instances in the node pool.
     replicas: 3
@@ -281,6 +282,7 @@ nodePools:
     nameOverride: ""
     # -- annotations to be added to the KafkaNodePool resource.
     annotations: {}
+    # -- labels to be added to the KafkaNodePool resource.
     labels: {}
     # -- replicas is the number of instances in the node pool.
     replicas: 3

@@ -83,14 +83,14 @@ base64 -w0 ca.crt > ca.crt.base64
 | kafka.annotations | object | `{}` | annotations to be added to the Kafka resource. |
 | kafka.authorization.superUsers | list | `[]` | superUsers is a list of users that are considered super users and can perform any operation regardless of any access restrictions. Reference: [Designating super users](https://strimzi.io/docs/operators/0.45.0/deploying#designating_super_users). |
 | kafka.authorization.type | string | `"simple"` |  |
-| kafka.certificates.clientsCa.generateCertificateAuthority | bool | `true` |  |
-| kafka.certificates.clientsCa.generateSecretOwnerReference | bool | `true` |  |
-| kafka.certificates.clientsCa.renewalDays | int | `30` |  |
-| kafka.certificates.clientsCa.validityDays | int | `365` |  |
-| kafka.certificates.clusterCa.generateCertificateAuthority | bool | `true` | If `true`, then Certificate Authority certificates will be generated automatically. Otherwise, a Secret needs to be provided with the CA certificate. Note: Setting this to `false` requires several steps for manually managing custom certificates and renewals. Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str). |
-| kafka.certificates.clusterCa.generateSecretOwnerReference | bool | `true` | If `true`, the Cluster and Client CA Secrets are configured with the ownerReference set to the Kafka resource. If the Kafka resource is deleted, the CA Secrets are also deleted. If `false`, the ownerReference is disabled. If the Kafka resource is deleted, the CA Secrets are retained and available for reuse. |
-| kafka.certificates.clusterCa.renewalDays | int | `30` | The number of days in the certificate renewal period. This is the number of days before the a certificate expires during which renewal actions may be performed. When generateCertificateAuthority is `true`, this will cause the generation of a new certificate, and this will cause extra logging at WARN level about the pending certificate expiry. |
-| kafka.certificates.clusterCa.validityDays | int | `365` | The number of days generated certificates should be valid for. |
+| kafka.clientsCa.generateCertificateAuthority | bool | `true` |  |
+| kafka.clientsCa.generateSecretOwnerReference | bool | `true` |  |
+| kafka.clientsCa.renewalDays | int | `30` |  |
+| kafka.clientsCa.validityDays | int | `365` |  |
+| kafka.clusterCa.generateCertificateAuthority | bool | `true` | If `true`, then Certificate Authority certificates will be generated automatically. Otherwise, a Secret needs to be provided with the CA certificate. Note: Setting this to `false` requires several steps for manually managing custom certificates and renewals. Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str). |
+| kafka.clusterCa.generateSecretOwnerReference | bool | `true` | If `true`, the Cluster and Client CA Secrets are configured with the ownerReference set to the Kafka resource. If the Kafka resource is deleted, the CA Secrets are also deleted. If `false`, the ownerReference is disabled. If the Kafka resource is deleted, the CA Secrets are retained and available for reuse. |
+| kafka.clusterCa.renewalDays | int | `30` | The number of days in the certificate renewal period. This is the number of days before the a certificate expires during which renewal actions may be performed. When generateCertificateAuthority is `true`, this will cause the generation of a new certificate, and this will cause extra logging at WARN level about the pending certificate expiry. |
+| kafka.clusterCa.validityDays | int | `365` | The number of days generated certificates should be valid for. |
 | kafka.config."auto.create.topics.enable" | string | `"false"` | auto.create.topics.enable indicates whether or not to allow the Kafka broker to auto-create topics. It is recommended that this be set to `false` to avoid races between the operator and Kafka applications auto-creating topics. |
 | kafka.config."default.replication.factor" | int | `3` | default.replication.factor is the default replication factor for the Kafka topics. A replication factor of 1 will always affect availability when the brokers are restarted. |
 | kafka.config."min.insync.replicas" | int | `2` | min.insync.replicas is the minimum number of in-sync replicas for the Kafka topics. The in-sync replicas count should always be set to a number lower than the `*.replication.factor` or it will always affect availability when the brokers are restarted. |
@@ -121,7 +121,7 @@ base64 -w0 ca.crt > ca.crt.base64
 | nodePools.broker.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. |
 | nodePools.broker.enabled | bool | `true` | Indicates whether or not to deploy this broker node pool with the Kafka cluster. Should be set to `false` if using a dual-role broker pool. |
 | nodePools.broker.jvmOptions | object | `{}` | jvmOptions allows to customize the JVM options for the node pool pods. |
-| nodePools.broker.labels | object | `{}` |  |
+| nodePools.broker.labels | object | `{}` | labels to be added to the KafkaNodePool resource. |
 | nodePools.broker.nameOverride | string | `""` | nameOverride allows to override the generated pool name that is based on the config key, in this  case `<cluster-name>-broker`, to something custom. |
 | nodePools.broker.replicas | int | `3` | replicas is the number of instances in the node pool. |
 | nodePools.broker.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
@@ -136,7 +136,7 @@ base64 -w0 ca.crt > ca.crt.base64
 | nodePools.dual-role-broker.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. |
 | nodePools.dual-role-broker.enabled | bool | `false` | Indicates whether or not to deploy this dual-role broker pool with the Kafka cluster. Should be set to `false` if using other broker and controller node pools. |
 | nodePools.dual-role-broker.jvmOptions | object | `{}` | jvmOptions allows to customize the JVM options for the node pool pods. |
-| nodePools.dual-role-broker.labels | object | `{}` |  |
+| nodePools.dual-role-broker.labels | object | `{}` | labels to be added to the KafkaNodePool resource. |
 | nodePools.dual-role-broker.nameOverride | string | `""` | nameOverride allows to override the generated pool name that is based on the config key, in this  case `<cluster-name>-dual-role-broker`, to something custom. |
 | nodePools.dual-role-broker.replicas | int | `3` | replicas is the number of instances in the node pool. |
 | nodePools.dual-role-broker.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
@@ -151,7 +151,7 @@ base64 -w0 ca.crt > ca.crt.base64
 | nodePools.kraft-controller.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. |
 | nodePools.kraft-controller.enabled | bool | `true` | Indicates whether or not to deploy this controller node pool with the Kafka cluster. Should be set to `false` if using a dual-role broker pool. |
 | nodePools.kraft-controller.jvmOptions | object | `{}` | jvmOptions allows to customize the JVM options for the node pool pods. |
-| nodePools.kraft-controller.labels | object | `{}` |  |
+| nodePools.kraft-controller.labels | object | `{}` | labels to be added to the KafkaNodePool resource. |
 | nodePools.kraft-controller.nameOverride | string | `""` | nameOverride allows to override the generated pool name that is based on the config key, in this  case `<cluster-name>-kraft-controller`, to something custom. |
 | nodePools.kraft-controller.replicas | int | `3` | replicas is the number of instances in the node pool. |
 | nodePools.kraft-controller.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
