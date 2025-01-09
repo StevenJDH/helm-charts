@@ -19,17 +19,40 @@ nameOverride: ""
 fullnameOverride: ""
 
 kafka:
+  # -- version is the version of Kafka to use.
   version: 3.9.0
+  # -- annotations to be added to the Kafka resource.
   annotations: {}
+  # -- labels to be added to the Kafka resource.
   labels: {}
   config:
+    # -- offsets.topic.replication.factor is the replication factor for the offsets topic. A replication
+    # factor of 1 will always affect availability when the brokers are restarted.
     offsets.topic.replication.factor: 3
+    # -- transaction.state.log.replication.factor is the replication factor for the transaction state
+    # log topic. A replication factor of 1 will always affect availability when the brokers are restarted.
     transaction.state.log.replication.factor: 3
+    # -- transaction.state.log.min.isr is the minimum number of in-sync replicas for the transaction
+    # state log topic. The in-sync replicas count should always be set to a number lower than the
+    # `transaction.state.log.replication.factor` or it will always affect availability when the brokers
+    # are restarted.
     transaction.state.log.min.isr: 2
+    # -- default.replication.factor is the default replication factor for the Kafka topics. A replication
+    # factor of 1 will always affect availability when the brokers are restarted.
     default.replication.factor: 3
+    # -- min.insync.replicas is the minimum number of in-sync replicas for the Kafka topics. The in-sync
+    # replicas count should always be set to a number lower than the `*.replication.factor` or it will
+    # always affect availability when the brokers are restarted.
     min.insync.replicas: 2
-    # It is recommended that auto.create.topics.enable is set to 'false' to avoid races between the operator and Kafka applications auto-creating topics.
+    # -- auto.create.topics.enable indicates whether or not to allow the Kafka broker to auto-create topics.
+    # It is recommended that this be set to `false` to avoid races between the operator and Kafka
+    # applications auto-creating topics.
     auto.create.topics.enable: "false"
+  # -- template allows to customize the configuration of the Kafka cluster.
+  # Reference: [KafkaClusterTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaClusterTemplate-reference).
+  template: {}
+  # -- logging allows to customize the logging configuration of the Kafka cluster.
+  # Reference: [Configuring logging levels](https://strimzi.io/docs/operators/0.45.0/deploying#external-logging_str).
   logging: {}
     # type: inline
     # loggers:
@@ -37,25 +60,34 @@ kafka:
     #   log4j.logger.kafka.request.logger: "WARN"
     #   log4j.logger.kafka.authorizer.logger: "WARN"
 
+  # When configuring listeners for client access to brokers, use port 9092 or higher, but with a few
+  # exceptions. The listeners cannot be configured to use the ports reserved for interbroker
+  # communication (9090 and 9091), Prometheus metrics (9404), and JMX (Java Management Extensions)
+  # monitoring (9999). 
   listeners:
     - name: plain
       port: 9092
       type: internal
       tls: false
     - name: tls
-      port: 9093
+      port: 9094
       type: internal
       tls: true
       authentication:
         type: tls
   authorization:
     type: simple
+    # -- superUsers is a list of users that are considered super users and can perform any operation
+    # regardless of any access restrictions.
+    # Reference: [Designating super users](https://strimzi.io/docs/operators/0.45.0/deploying#designating_super_users).
+    superUsers: []
+      # - "CN=my-super-user"
   certificates:
     clusterCa:
       # -- If `true`, then Certificate Authority certificates will be generated automatically. Otherwise,
       # a Secret needs to be provided with the CA certificate. Note: Setting this to `false` requires
       # several steps for manually managing custom certificates and renewals.
-      # Reference: https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str.
+      # Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str).
       generateCertificateAuthority: true
       # -- The number of days generated certificates should be valid for.
       validityDays: 365
@@ -75,8 +107,9 @@ kafka:
       renewalDays: 30
       generateSecretOwnerReference: true
   entityOperator:
-    template:
-      pod: {}
+    # template:
+    #   pod: {}
+
     topicOperator: {}
       # resources:
       #   requests:
@@ -85,6 +118,7 @@ kafka:
       #   limits:
       #     memory: "512Mi"
       #     cpu: "500m"
+
     userOperator: {}
       # resources:
       #   requests:
@@ -97,7 +131,7 @@ kafka:
   # -- cruiseControl deploys the Cruise Control component to optimize Kafka when specified. Being present
   # and not null is enough to enable it. It will also enable `kafka.metricsEnabled` by default and configure
   # metrics for cruise control, so no need to configure here (e.g., `kafka.cruiseControl.metricsConfig`).
-  # Reference: https://strimzi.io/docs/operators/0.45.0/configuring.html#type-CruiseControlSpec-reference.
+  # Reference: [CruiseControlSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-CruiseControlSpec-reference).
   cruiseControl: {}
     # template:
     #   pod: {}
@@ -107,7 +141,7 @@ kafka:
   # This is enabled by default if `kafka.cruiseControl` is present.
   metricsEnabled: true
   # -- kafkaExporter allows to customize the configuration of the Kafka Exporter.
-  # Reference: https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaExporterSpec-reference
+  # Reference: [KafkaExporterSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaExporterSpec-reference)
   kafkaExporter: {}
     # topicRegex: ".*"
     # groupRegex: ".*"
@@ -117,9 +151,31 @@ kafka:
     #   pod: {}
     # resources: {}
 
-  nodeSelector: {}
+  # -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
+  # Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
+  nodeSelector:
+    kubernetes.io/os: linux
+
+  # -- affinity for pod scheduling.
+  # Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
   affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app
+    #         operator: In
+    #         values:
+    #         - app-name
+    #     topologyKey: "kubernetes.io/hostname"
+
+  # -- tolerations allow the scheduler to schedule pods onto nodes with matching taints.
+  # Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
   tolerations: []
+  # - key: "key"
+  #   operator: "Equal|Exists"
+  #   value: "value"
+  #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
 
 cruiseControlRebalance:
   # -- Indicates whether or not to create a KafkaRebalance resource with an empty spec to use
@@ -130,76 +186,131 @@ cruiseControlRebalance:
     # setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`).
     # Use `strimzi.io/rebalance=refresh` to trigger a new analysis.
     strimzi.io/rebalance-auto-approval: "true"
+  # -- labels to be added to the Kafka Rebalance resource.
   labels: {}
 
 nodePools:
   broker:
+    # -- Indicates whether or not to deploy this broker node pool with the Kafka cluster. Should be set to
+    # `false` if using a dual-role broker pool.
     enabled: true
+    # -- nameOverride allows to override the generated pool name that is based on the config key, in this 
+    # case `<cluster-name>-broker`, to something custom.
     nameOverride: ""
+    # -- annotations to be added to the KafkaNodePool resource.
     annotations: {}
       # strimzi.io/next-node-ids: "[0-10]"
-
     labels: {}
+    # -- replicas is the number of instances in the node pool.
     replicas: 3
+    # -- roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`.
     roles:
       - broker
     storage:
+      # -- type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older
+      # approach using `persistent-claim` directly.
+      # Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference).
       type: jbod
       volumes:
-        - id: 0
+        - # -- id is the volume ID.
+          id: 0
+          # -- type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`.
           type: persistent-claim
+          # -- size is the size of the volume.
           size: 1Gi
+          # -- deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster
+          # is deleted.
           deleteClaim: false
-          # @ignored.
+          # -- kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log.
           kraftMetadata: shared
+          # -- class is the storage class to use for the PersistentVolumeClaim.
           class: default
+    # -- jvmOptions allows to customize the JVM options for the node pool pods.
     jvmOptions: {}
       # -Xms: 4096m
       # -Xmx: 4096m
-
+    # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+    # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
   kraft-controller:
+    # -- Indicates whether or not to deploy this controller node pool with the Kafka cluster. Should be set to
+    # `false` if using a dual-role broker pool.
     enabled: true
+    # -- nameOverride allows to override the generated pool name that is based on the config key, in this 
+    # case `<cluster-name>-kraft-controller`, to something custom.
     nameOverride: ""
+    # -- annotations to be added to the KafkaNodePool resource.
     annotations: {}
       # strimzi.io/next-node-ids: "[11-20]"
-
     labels: {}
+    # -- replicas is the number of instances in the node pool.
     replicas: 3
+    # -- roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`.
     roles:
       - controller
     storage:
+      # -- type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older
+      # approach using `persistent-claim` directly.
+      # Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference).
       type: jbod
       volumes:
-        - id: 0
+        - # -- id is the volume ID.
+          id: 0
+          # -- type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`.
           type: persistent-claim
+          # -- size is the size of the volume.
           size: 1Gi
+          # -- deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster
+          # is deleted.
           deleteClaim: false
-          # @ignored. Indicates that this directory will be used to store the KRaft metadata log.
+          # -- kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log.
           kraftMetadata: shared
+          # -- class is the storage class to use for the PersistentVolumeClaim.
           class: default
+    # -- jvmOptions allows to customize the JVM options for the node pool pods.
     jvmOptions: {}
+    # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+    # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
-  dual-role-pool:
+  dual-role-broker:
+    # -- Indicates whether or not to deploy this dual-role broker pool with the Kafka cluster. Should be set to
+    # `false` if using other broker and controller node pools.
     enabled: false
+    # -- nameOverride allows to override the generated pool name that is based on the config key, in this 
+    # case `<cluster-name>-dual-role-broker`, to something custom.
     nameOverride: ""
+    # -- annotations to be added to the KafkaNodePool resource.
     annotations: {}
     labels: {}
+    # -- replicas is the number of instances in the node pool.
     replicas: 3
+    # -- roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`.
     roles:
       - controller
       - broker
     storage:
+      # -- type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older
+      # approach using `persistent-claim` directly.
+      # Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference).
       type: jbod
       volumes:
-        - id: 0
+        - # -- id is the volume ID.
+          id: 0
+          # -- type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`.
           type: persistent-claim
+          # -- size is the size of the volume.
           size: 1Gi
+          # -- deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster
+          # is deleted.
           deleteClaim: false
-          # @ignored.
+          # -- kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log.
           kraftMetadata: shared
+          # -- class is the storage class to use for the PersistentVolumeClaim.
           class: default
+    # -- jvmOptions allows to customize the JVM options for the node pool pods.
     jvmOptions: {}
+    # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+    # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
 
 strimzi-kafka-operator:
@@ -207,6 +318,8 @@ strimzi-kafka-operator:
   enabled: true
   # -- replicas is for the number of cluster operator instances.
   replicas: 1
+  # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+  # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
   resources: {}
     # limits:
     #   memory: 384Mi
@@ -224,15 +337,23 @@ strimzi-drain-cleaner:
   certManager:
     create: false
   secret:
+    # -- Indicates whether or not to create a TLS secret. Kubernetes requires ValidationWebhooks to be
+    # secured by TLS like the one used by Drain Cleaner's webhook service endpoint to receive Strimzi
+    # pod eviction events.
     create: true
+    # -- tls_crt is the TLS certificate in PEM format used for the ValidationWebhook.
     tls_crt: ""
+    # -- tls_key is the TLS private key in PEM format used for the ValidationWebhook.
     tls_key: ""
     # -- ca_bundle is the CA certificate bundle in PEM format used for the ValidatingWebhookConfiguration
     # truststore regardless of the `strimzi-drain-cleaner.secret.create` state.
     ca_bundle: ""
   namespace:
+    # -- Indicates whether or not to create the namespace defined at `strimzi-drain-cleaner.namespace.name` for where Drain Cleaner resources will be deployed.
     create: true
     # -- name is the name of the namespace where the Drain Cleaner resources will be deployed, but also,
     # it's used for RBAC permissions regardless of the `strimzi-drain-cleaner.namespace.create` state.
     name: strimzi-drain-cleaner
+  # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+  # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
   resources: {}

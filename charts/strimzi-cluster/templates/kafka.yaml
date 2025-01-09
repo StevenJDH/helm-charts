@@ -47,6 +47,10 @@ spec:
     config:
       {{- toYaml . | nindent 6 }}
     {{- end }}
+    {{- with .Values.kafka.template }}
+    template:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     {{- if or (not (eq .Values.kafka.cruiseControl nil)) ((.Values.kafka).metricsEnabled) }}
     metricsConfig:
       type: jmxPrometheusExporter

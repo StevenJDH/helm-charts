@@ -996,6 +996,64 @@ spec:
   selector:
     app: strimzi-drain-cleaner
 ---
+# Source: strimzi-cluster/templates/metrics-headless-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-broker-headless
+  labels:
+    helm.sh/chart: strimzi-cluster-0.1.0
+    app.kubernetes.io/name: strimzi-cluster
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "0.45.0"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  publishNotReadyAddresses: true
+  ports:
+    - port: 9404
+      targetPort: 9404
+      protocol: TCP
+      name: prometheus-metrics
+  selector:
+    strimzi.io/cluster: example-strimzi-cluster
+    strimzi.io/kind: Kafka
+    strimzi.io/pool-name: broker
+---
+# Source: strimzi-cluster/templates/metrics-headless-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-kraft-controller-headless
+  labels:
+    helm.sh/chart: strimzi-cluster-0.1.0
+    app.kubernetes.io/name: strimzi-cluster
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "0.45.0"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  publishNotReadyAddresses: true
+  ports:
+    - port: 9404
+      targetPort: 9404
+      protocol: TCP
+      name: prometheus-metrics
+  selector:
+    strimzi.io/cluster: example-strimzi-cluster
+    strimzi.io/kind: Kafka
+    strimzi.io/pool-name: kraft-controller
+---
 # Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/060-Deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -1230,10 +1288,11 @@ spec:
       - authentication:
           type: tls
         name: tls
-        port: 9093
+        port: 9094
         tls: true
         type: internal
     authorization:
+      superUsers: []
       type: simple
     config:
       auto.create.topics.enable: "false"
@@ -1250,6 +1309,8 @@ spec:
           key: kafka-metrics-config.yaml
     rack:
       topologyKey: topology.kubernetes.io/zone
+    nodeSelector:
+      kubernetes.io/os: linux
   clusterCa:
     generateCertificateAuthority: true
     generateSecretOwnerReference: true
@@ -1261,8 +1322,6 @@ spec:
     renewalDays: 30
     validityDays: 365
   entityOperator:
-    template:
-      pod: {}
     topicOperator: {}
     userOperator: {}
   cruiseControl:
