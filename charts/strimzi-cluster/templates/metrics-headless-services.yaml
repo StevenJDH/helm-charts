@@ -22,6 +22,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ $config.nameOverride | default (printf "%s-%s" $.Release.Name $name) }}-headless
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/scheme: "http"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "9404"
   labels:
     {{- include "shared-library.labels" $ | nindent 4 }}
   namespace: {{ $.Release.Namespace }}
