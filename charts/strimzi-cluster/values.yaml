@@ -60,56 +60,107 @@ kafka:
     #   log4j.logger.kafka.request.logger: "WARN"
     #   log4j.logger.kafka.authorizer.logger: "WARN"
 
-  # When configuring listeners for client access to brokers, use port 9092 or higher, but with a few
-  # exceptions. The listeners cannot be configured to use the ports reserved for interbroker
-  # communication (9090 and 9091), Prometheus metrics (9404), and JMX (Java Management Extensions)
-  # monitoring (9999). 
   listeners:
-    - name: plain
+    - # -- name is the unique name of the listener within given a Kafka cluster. It consists of
+      # lowercase characters and numbers and can be up to 11 characters long.
+      name: plain
+      # -- port is the port number for the listener. When configuring listeners for client access
+      # to brokers, use port 9092 or higher, but with a few exceptions. The listeners cannot be
+      # configured to use the ports reserved for interbroker communication (9090 and 9091),
+      # Prometheus metrics (9404), and JMX (Java Management Extensions) monitoring (9999). 
       port: 9092
+      # -- type is the type of listener. Supported values are `ingress`, `internal`, `route`,
+      # `loadbalancer`, `cluster-ip`, and `nodeport`.
+      # Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/0.45.0/deploying#configuration-points-listeners-str).
       type: internal
+      # -- tls indicates whether or not to enable TLS for the listener. For `route` and `ingress`
+      # type listeners, TLS encryption must be always enabled.
       tls: false
-    - name: tls
+    - # -- name is the unique name of the listener within given a Kafka cluster. It consists of
+      # lowercase characters and numbers and can be up to 11 characters long.
+      name: tls
+      # -- port is the port number for the listener. When configuring listeners for client access
+      # to brokers, use port 9092 or higher, but with a few exceptions. The listeners cannot be
+      # configured to use the ports reserved for interbroker communication (9090 and 9091),
+      # Prometheus metrics (9404), and JMX (Java Management Extensions) monitoring (9999).
       port: 9094
+      # -- type is the type of listener. Supported values are `ingress`, `internal`, `route`,
+      # `loadbalancer`, `cluster-ip`, and `nodeport`.
+      # Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/0.45.0/deploying#configuration-points-listeners-str).
       type: internal
+      # -- tls indicates whether or not to enable TLS for the listener. For `route` and `ingress`
+      # type listeners, TLS encryption must be always enabled.
       tls: true
       authentication:
+        # -- type is the type of authentication to use on the Kafka brokers. Supported values are
+        # `tls`, `scram-sha-512`, `oauth`, and `custom`.
         type: tls
+      configuration:
+        # -- useServiceDnsDomain indicates whether or not to use the service DNS domain for the listener.
+        # By default, `internal` and `cluster-ip` listeners and their headless service do not use the
+        # Kubernetes service DNS domain (typically .cluster.local). This makes them only accessible from
+        # within the same namespace (i.e., <service-name>). To enable cross-namespace communication, set
+        # this to `true`.
+        # Reference: [Using fully-qualified DNS names](https://strimzi.io/docs/operators/0.45.0/configuring#property-listener-config-dns-reference).
+        useServiceDnsDomain: true
   authorization:
+    # -- type is the type of authorization to use on the Kafka brokers. Supported values are
+    # [simple](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationSimple-schema-reference),
+    # [opa](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationOpa-schema-reference),
+    # [keycloak](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationKeycloak-reference), and
+    # [custom](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationCustom-schema-reference).
     type: simple
     # -- superUsers is a list of users that are considered super users and can perform any operation
-    # regardless of any access restrictions.
+    # regardless of any access restrictions configured because the ACL rules aren't queried.
     # Reference: [Designating super users](https://strimzi.io/docs/operators/0.45.0/deploying#designating_super_users).
     superUsers: []
       # - "CN=my-super-user"
   clusterCa:
-    # -- If `true`, then Certificate Authority certificates will be generated automatically. Otherwise,
-    # a Secret needs to be provided with the CA certificate. Note: Setting this to `false` requires
-    # several steps for manually managing custom certificates and renewals.
+    # -- generateCertificateAuthority indicates whether or not to generate a Certificate Authority for the cluster.
+    # Setting this to `false` requires providing a Secret with the CA certificate, and there will be several
+    # steps to consider for manually managing custom certificates and renewals.
     # Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str).
     generateCertificateAuthority: true
-    # -- The number of days generated certificates should be valid for.
+    # -- validityDays is the number of days generated certificates should be valid for.
     validityDays: 365
-    # -- The number of days in the certificate renewal period. This is the number of days before the a
-    # certificate expires during which renewal actions may be performed. When generateCertificateAuthority
+    # -- renewalDays is the number of days in the certificate renewal period. This is the number of days before
+    # a certificate expires during which renewal actions may be performed. When generateCertificateAuthority
     # is `true`, this will cause the generation of a new certificate, and this will cause extra logging
     # at WARN level about the pending certificate expiry.
     renewalDays: 30
-    # -- If `true`, the Cluster and Client CA Secrets are configured with the ownerReference set to the
-    # Kafka resource. If the Kafka resource is deleted, the CA Secrets are also deleted. If `false`,
-    # the ownerReference is disabled. If the Kafka resource is deleted, the CA Secrets are retained and
-    # available for reuse.
+    # -- generateSecretOwnerReference indicates whether or not to set the `ownerReference` on the Cluster CA to
+    # the Kafka resource. If `true`, and the Kafka resource is deleted, the generated CA Secret is also deleted.
+    # If `false`, the `ownerReference` is disabled, which will retain the CA Secret for reuse when the Kafka
+    # resource is deleted.
     generateSecretOwnerReference: true
   clientsCa:
+    # -- generateCertificateAuthority indicates whether or not to generate a Certificate Authority for clients.
+    # Setting this to `false` requires providing a Secret with the CA certificate, and there will be several
+    # steps to consider for manually managing custom certificates and renewals.
+    # Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str).
     generateCertificateAuthority: true
+    # -- validityDays is the number of days generated certificates should be valid for.
     validityDays: 365
+    # -- renewalDays is the number of days in the certificate renewal period. This is the number of days before
+    # a certificate expires during which renewal actions may be performed. When generateCertificateAuthority
+    # is `true`, this will cause the generation of a new certificate, and this will cause extra logging
+    # at WARN level about the pending certificate expiry.
     renewalDays: 30
+    # -- generateSecretOwnerReference indicates whether or not to set the `ownerReference` on the Client CA to
+    # the Kafka resource. If `true`, and the Kafka resource is deleted, the generated CA Secret is also deleted.
+    # If `false`, the `ownerReference` is disabled, which will retain the CA Secret for reuse when the Kafka
+    # resource is deleted.
     generateSecretOwnerReference: true
   entityOperator:
     # template:
     #   pod: {}
 
+    # -- topicOperator allows to customize the configuration of the Topic Operator. By Default, the Topic
+    # Operator watches for KafkaTopic resources in the namespace of the Kafka cluster deployed by the
+    # Cluster Operator.
+    # Reference: [EntityTopicOperatorSpec schema properties](https://strimzi.io/docs/operators/0.45.0/configuring#type-EntityTopicOperatorSpec-schema-reference).
     topicOperator: {}
+      # watchedNamespace: my-topic-namespace
       # resources:
       #   requests:
       #     memory: "256Mi"
@@ -117,8 +168,22 @@ kafka:
       #   limits:
       #     memory: "512Mi"
       #     cpu: "500m"
+      # logging:
+      #   type: inline
+      #   loggers:
+      #     rootLogger.level: INFO
+      #     logger.top.name: io.strimzi.operator.topic
+      #     logger.top.level: DEBUG
+      #     logger.toc.name: io.strimzi.operator.topic.TopicOperator
+      #     logger.toc.level: TRACE
+      #     logger.clients.level: DEBUG
 
+    # -- userOperator allows to customize the configuration of the User Operator. By Default, the User
+    # Operator watches for KafkaUser resources in the namespace of the Kafka cluster deployed by the
+    # Cluster Operator.
+    # Reference: [EntityUserOperatorSpec schema properties](https://strimzi.io/docs/operators/0.45.0/configuring#type-EntityUserOperatorSpec-schema-reference).
     userOperator: {}
+      # watchedNamespace: my-topic-namespace
       # resources:
       #   requests:
       #     memory: "256Mi"
@@ -126,6 +191,15 @@ kafka:
       #   limits:
       #     memory: "512Mi"
       #     cpu: "500m"
+      # logging:
+      #   type: inline
+      #   loggers:
+      #     rootLogger.level: INFO
+      #     logger.uop.name: io.strimzi.operator.user
+      #     logger.uop.level: DEBUG
+      #     logger.abstractcache.name: io.strimzi.operator.user.operator.cache.AbstractCache
+      #     logger.abstractcache.level: TRACE
+      #     logger.jetty.level: DEBUG
 
   # -- cruiseControl deploys the Cruise Control component to optimize Kafka when specified. Being present
   # and not null is enough to enable it. It will also enable `kafka.metricsEnabled` by default and configure
