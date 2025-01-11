@@ -103,3 +103,7 @@ spec:
   kafkaExporter:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- with .Values.kafka.maintenanceTimeWindows }}
+  maintenanceTimeWindows:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
