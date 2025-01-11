@@ -141,7 +141,7 @@ base64 -w0 ca.crt > ca.crt.base64
 | nodePools.dual-role-broker.nameOverride | string | `""` | nameOverride allows to override the generated pool name that is based on the config key, in this  case `<cluster-name>-dual-role-broker`, to something custom. |
 | nodePools.dual-role-broker.replicas | int | `3` | replicas is the number of instances in the node pool. |
 | nodePools.dual-role-broker.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
-| nodePools.dual-role-broker.roles | list | `["controller","broker"]` | roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`. |
+| nodePools.dual-role-broker.roles | list | `["controller", "broker"]` | roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`. |
 | nodePools.dual-role-broker.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference). |
 | nodePools.dual-role-broker.storage.volumes[0].class | string | `"default"` | class is the storage class to use for the PersistentVolumeClaim. |
 | nodePools.dual-role-broker.storage.volumes[0].deleteClaim | bool | `false` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |

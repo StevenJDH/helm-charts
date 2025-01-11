@@ -361,6 +361,7 @@ nodePools:
     # -- replicas is the number of instances in the node pool.
     replicas: 3
     # -- roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`.
+    # @default -- `["controller", "broker"]`
     roles:
       - controller
       - broker
