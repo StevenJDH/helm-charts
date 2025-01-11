@@ -16,6 +16,7 @@ helm repo update
 helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
     --set strimzi-kafka-operator.enabled=true \
     --set strimzi-drain-cleaner.enabled=true \
+    --set strimzi-drain-cleaner.certManager.create=false \
     --set-file strimzi-drain-cleaner.secret.tls_crt=tls.crt.base64 \
     --set-file strimzi-drain-cleaner.secret.tls_key=tls.key.base64 \
     --set-file strimzi-drain-cleaner.secret.ca_bundle=ca.crt.base64 \
@@ -29,7 +30,7 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
 
 ### Create Drain Cleaner certificate chain
 
-The following will create the needed TLS certificates if Drain Cleaner will be installed as per above example. OpenSSL CLI v1.1.1 or newer is required.
+The following shows how to create the needed TLS certificates if Drain Cleaner will be installed with `strimzi-drain-cleaner.certManager.create` set to `false` as per above example. OpenSSL CLI v1.1.1 or newer is required.
 
 ```bash
 # 1. Set the namespace used by Drain Cleaner.

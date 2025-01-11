@@ -26,6 +26,7 @@ helm repo update
 helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.1.0 \
     --set strimzi-kafka-operator.enabled=true \
     --set strimzi-drain-cleaner.enabled=true \
+    --set strimzi-drain-cleaner.certManager.create=false \
     --set-file strimzi-drain-cleaner.secret.tls_crt=tls.crt.base64 \
     --set-file strimzi-drain-cleaner.secret.tls_key=tls.key.base64 \
     --set-file strimzi-drain-cleaner.secret.ca_bundle=ca.crt.base64 \
@@ -39,7 +40,7 @@ helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.
 
 ### Create Drain Cleaner certificate chain
 
-The following will create the needed TLS certificates if Drain Cleaner will be installed as per above example. OpenSSL CLI v1.1.1 or newer is required.
+The following shows how to create the needed TLS certificates if Drain Cleaner will be installed with `strimzi-drain-cleaner.certManager.create` set to `false` as per above example. OpenSSL CLI v1.1.1 or newer is required.
 
 ```bash
 # 1. Set the namespace used by Drain Cleaner.
@@ -165,15 +166,16 @@ base64 -w0 ca.crt > ca.crt.base64
 | nodePools.kraft-controller.storage.volumes[0].kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
 | nodePools.kraft-controller.storage.volumes[0].size | string | `"1Gi"` | size is the size of the volume. |
 | nodePools.kraft-controller.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
+| strimzi-drain-cleaner.certManager.create | bool | `false` | Indicates whether or not to create the Certificate and Issuer custom resources used for the ValidatingWebhookConfiguration and ValidationWebhook when cert-manager is installed. |
 | strimzi-drain-cleaner.enabled | bool | `true` | Indicates whether or not to deploy Drain Cleaner with the Kafka cluster. |
 | strimzi-drain-cleaner.namespace.create | bool | `true` | Indicates whether or not to create the namespace defined at `strimzi-drain-cleaner.namespace.name` for where Drain Cleaner resources will be deployed. |
 | strimzi-drain-cleaner.namespace.name | string | `"strimzi-drain-cleaner"` | name is the name of the namespace where the Drain Cleaner resources will be deployed, but also, it's used for RBAC permissions regardless of the `strimzi-drain-cleaner.namespace.create` state. |
 | strimzi-drain-cleaner.replicaCount | int | `1` | replicaCount is for the number of Drain Cleaner instances. |
 | strimzi-drain-cleaner.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
-| strimzi-drain-cleaner.secret.ca_bundle | string | `""` | ca_bundle is the CA certificate bundle in PEM format used for the ValidatingWebhookConfiguration truststore regardless of the `strimzi-drain-cleaner.secret.create` state. |
+| strimzi-drain-cleaner.secret.ca_bundle | string | `""` | ca_bundle is the CA certificate bundle in PEM format used for the ValidatingWebhookConfiguration regardless of the `strimzi-drain-cleaner.secret.create` state. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
 | strimzi-drain-cleaner.secret.create | bool | `true` | Indicates whether or not to create a TLS secret. Kubernetes requires ValidationWebhooks to be secured by TLS like the one used by Drain Cleaner's webhook service endpoint to receive Strimzi pod eviction events. |
-| strimzi-drain-cleaner.secret.tls_crt | string | `""` | tls_crt is the TLS certificate in PEM format used for the ValidationWebhook. |
-| strimzi-drain-cleaner.secret.tls_key | string | `""` | tls_key is the TLS private key in PEM format used for the ValidationWebhook. |
+| strimzi-drain-cleaner.secret.tls_crt | string | `""` | tls_crt is the TLS certificate in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
+| strimzi-drain-cleaner.secret.tls_key | string | `""` | tls_key is the TLS private key in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
 | strimzi-kafka-operator.enabled | bool | `true` | Indicates whether or not to deploy Strimzi with the Kafka cluster. |
 | strimzi-kafka-operator.replicas | int | `1` | replicas is for the number of cluster operator instances. |
 | strimzi-kafka-operator.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |

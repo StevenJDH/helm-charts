@@ -417,20 +417,24 @@ strimzi-drain-cleaner:
   enabled: true
   # -- replicaCount is for the number of Drain Cleaner instances.
   replicaCount: 1
-  # @ignored. Indicates whether the Certificate and Issuer custom resources should be created.
   certManager:
+    # -- Indicates whether or not to create the Certificate and Issuer custom resources used for the
+    # ValidatingWebhookConfiguration and ValidationWebhook when cert-manager is installed.
     create: false
   secret:
     # -- Indicates whether or not to create a TLS secret. Kubernetes requires ValidationWebhooks to be
     # secured by TLS like the one used by Drain Cleaner's webhook service endpoint to receive Strimzi
     # pod eviction events.
     create: true
-    # -- tls_crt is the TLS certificate in PEM format used for the ValidationWebhook.
+    # -- tls_crt is the TLS certificate in PEM format used for the ValidationWebhook. Required when
+    # `strimzi-drain-cleaner.certManager.create` is `false`.
     tls_crt: ""
-    # -- tls_key is the TLS private key in PEM format used for the ValidationWebhook.
+    # -- tls_key is the TLS private key in PEM format used for the ValidationWebhook. Required when
+    # `strimzi-drain-cleaner.certManager.create` is `false`.
     tls_key: ""
     # -- ca_bundle is the CA certificate bundle in PEM format used for the ValidatingWebhookConfiguration
-    # truststore regardless of the `strimzi-drain-cleaner.secret.create` state.
+    # regardless of the `strimzi-drain-cleaner.secret.create` state. Required when
+    # `strimzi-drain-cleaner.certManager.create` is `false`.
     ca_bundle: ""
   namespace:
     # -- Indicates whether or not to create the namespace defined at `strimzi-drain-cleaner.namespace.name` for where Drain Cleaner resources will be deployed.
