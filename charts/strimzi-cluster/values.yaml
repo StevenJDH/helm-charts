@@ -51,6 +51,17 @@ kafka:
   # -- template allows to customize the configuration of the Kafka cluster.
   # Reference: [KafkaClusterTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaClusterTemplate-reference).
   template: {}
+  rackTopology:
+    # -- Indicates whether or not to enable the rack-aware feature for the node pools to improve
+    # resiliency, availability, and reliability. Strimzi will automatically add the Kubernetes preferred
+    # affinity rule to distribute the node pools across the different availability zones or actual racks
+    # in the data center, which is not guaranteed to be evenly done. As such, Cruise Control will make
+    # sure that replicas remain and get distributed properly if in use. When testing locally, set this 
+    # to `false`.
+    enabled: true
+    # -- customKey allows to override the standard `topology.kubernetes.io/zone` key used for the
+    # rack-aware feature.
+    customKey: ""
   # -- logging allows to customize the logging configuration of the Kafka cluster.
   # Reference: [Configuring logging levels](https://strimzi.io/docs/operators/0.45.0/deploying#external-logging_str).
   logging: {}
@@ -115,6 +126,7 @@ kafka:
     # Reference: [Designating super users](https://strimzi.io/docs/operators/0.45.0/deploying#designating_super_users).
     superUsers: []
       # - "CN=my-super-user"
+
   clusterCa:
     # -- generateCertificateAuthority indicates whether or not to generate a Certificate Authority for the cluster.
     # Setting this to `false` requires providing a Secret with the CA certificate, and there will be several
@@ -152,7 +164,8 @@ kafka:
     # resource is deleted.
     generateSecretOwnerReference: true
   entityOperator:
-    # template:
+    # -- template allows to customize how the resources belonging to the Entity Operator are generated.
+    template: {}
     #   pod: {}
 
     # -- topicOperator allows to customize the configuration of the Topic Operator. By Default, the Topic
@@ -231,32 +244,6 @@ kafka:
     # - "* * 0-1 ? * MON-THU,SUN *" # 00:00am - 01:59am UTC on Monday, Tuesday, Wednesday, Thursday, and Sunday.
     # - "* * 1-3 ? * FRI *" # 01:00am - 03:59am UTC on Friday.
 
-  # -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
-  # Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
-  nodeSelector:
-    kubernetes.io/os: linux
-
-  # -- affinity for pod scheduling.
-  # Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
-  affinity: {}
-    # podAntiAffinity:
-    #   requiredDuringSchedulingIgnoredDuringExecution:
-    #   - labelSelector:
-    #       matchExpressions:
-    #       - key: app
-    #         operator: In
-    #         values:
-    #         - app-name
-    #     topologyKey: "kubernetes.io/hostname"
-
-  # -- tolerations allow the scheduler to schedule pods onto nodes with matching taints.
-  # Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
-  tolerations: []
-  # - key: "key"
-  #   operator: "Equal|Exists"
-  #   value: "value"
-  #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
-
 cruiseControlRebalance:
   # -- Indicates whether or not to create a KafkaRebalance resource with an empty spec to use
   # the default goals from the Cruise Control configuration for optimizing the cluster workloads.
@@ -301,15 +288,20 @@ nodePools:
           size: 1Gi
           # -- deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster
           # is deleted.
-          deleteClaim: false
+          deleteClaim: true
           # -- kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log.
           kraftMetadata: shared
-          # -- class is the storage class to use for the PersistentVolumeClaim.
-          class: default
+          # -- class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the
+          # default storage class.
+          class: null
     # -- jvmOptions allows to customize the JVM options for the node pool pods.
     jvmOptions: {}
       # -Xms: 4096m
       # -Xmx: 4096m
+    # -- template allows to customize how the resources belonging to this pool are generated.
+    # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference).
+    template: {}
+      # pod: {}
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
@@ -344,13 +336,18 @@ nodePools:
           size: 1Gi
           # -- deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster
           # is deleted.
-          deleteClaim: false
+          deleteClaim: true
           # -- kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log.
           kraftMetadata: shared
-          # -- class is the storage class to use for the PersistentVolumeClaim.
-          class: default
+          # -- class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the
+          # default storage class.
+          class: null
     # -- jvmOptions allows to customize the JVM options for the node pool pods.
     jvmOptions: {}
+    # -- template allows to customize how the resources belonging to this pool are generated.
+    # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference).
+    template: {}
+      # pod: {}
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
@@ -386,13 +383,18 @@ nodePools:
           size: 1Gi
           # -- deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster
           # is deleted.
-          deleteClaim: false
+          deleteClaim: true
           # -- kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log.
           kraftMetadata: shared
-          # -- class is the storage class to use for the PersistentVolumeClaim.
-          class: default
+          # -- class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the
+          # default storage class.
+          class: null
     # -- jvmOptions allows to customize the JVM options for the node pool pods.
     jvmOptions: {}
+    # -- template allows to customize how the resources belonging to this pool are generated.
+    # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference).
+    template: {}
+      # pod: {}
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
@@ -402,6 +404,31 @@ strimzi-kafka-operator:
   enabled: true
   # -- replicas is for the number of cluster operator instances.
   replicas: 1
+  # -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
+  # Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
+  nodeSelector:
+    kubernetes.io/os: linux
+  # -- affinity for pod scheduling.
+  # Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
+  affinity: {}
+    # nodeAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app
+    #         operator: In
+    #         values:
+    #         - app-name
+    #     topologyKey: "kubernetes.io/hostname"
+
+  # -- tolerations allow the scheduler to schedule pods onto nodes with matching taints.
+  # Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
+  tolerations: []
+  # - key: "key"
+  #   operator: "Equal|Exists"
+  #   value: "value"
+  #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+  
   # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
   # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
   resources: {}

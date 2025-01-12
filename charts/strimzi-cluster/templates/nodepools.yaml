@@ -20,7 +20,7 @@ limitations under the License.
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaNodePool
 metadata:
-  name: {{ $config.nameOverride | default (printf "%s-%s" $.Release.Name $name) }}
+  name: {{ $config.nameOverride | default $name }}
   {{- with $config.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -40,6 +40,10 @@ spec:
     {{- toYaml $config.storage | nindent 4 }}
   {{- with $config.jvmOptions }}
   jvmOptions:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $config.template }}
+  template:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with $config.resources }}

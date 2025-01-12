@@ -14,7 +14,7 @@ Kubernetes: `>= 1.25.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://StevenJDH.github.io/helm-charts | shared-library | 0.1.3 |
+| https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
 | oci://quay.io/strimzi-helm | strimzi-drain-cleaner | 1.2.0 |
 | oci://quay.io/strimzi-helm | strimzi-kafka-operator | 0.45.0 |
 
@@ -30,6 +30,7 @@ helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.
     --set-file strimzi-drain-cleaner.secret.tls_crt=tls.crt.base64 \
     --set-file strimzi-drain-cleaner.secret.tls_key=tls.key.base64 \
     --set-file strimzi-drain-cleaner.secret.ca_bundle=ca.crt.base64 \
+    --set kafka.rackTopology.enabled=false \
     --namespace example \
     --create-namespace \
     --atomic
@@ -80,7 +81,6 @@ base64 -w0 ca.crt > ca.crt.base64
 | cruiseControlRebalance.create | bool | `true` | Indicates whether or not to create a KafkaRebalance resource with an empty spec to use the default goals from the Cruise Control configuration for optimizing the cluster workloads. |
 | cruiseControlRebalance.labels | object | `{}` | labels to be added to the Kafka Rebalance resource. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
-| kafka.affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
 | kafka.annotations | object | `{}` | annotations to be added to the Kafka resource. |
 | kafka.authorization.superUsers | list | `[]` | superUsers is a list of users that are considered super users and can perform any operation regardless of any access restrictions configured because the ACL rules aren't queried. Reference: [Designating super users](https://strimzi.io/docs/operators/0.45.0/deploying#designating_super_users). |
 | kafka.authorization.type | string | `"simple"` | type is the type of authorization to use on the Kafka brokers. Supported values are [simple](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationSimple-schema-reference), [opa](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationOpa-schema-reference), [keycloak](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationKeycloak-reference), and [custom](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationCustom-schema-reference). |
@@ -99,6 +99,7 @@ base64 -w0 ca.crt > ca.crt.base64
 | kafka.config."transaction.state.log.min.isr" | int | `2` | transaction.state.log.min.isr is the minimum number of in-sync replicas for the transaction state log topic. The in-sync replicas count should always be set to a number lower than the `transaction.state.log.replication.factor` or it will always affect availability when the brokers are restarted. |
 | kafka.config."transaction.state.log.replication.factor" | int | `3` | transaction.state.log.replication.factor is the replication factor for the transaction state log topic. A replication factor of 1 will always affect availability when the brokers are restarted. |
 | kafka.cruiseControl | object | `{}` | cruiseControl deploys the Cruise Control component to optimize Kafka when specified. Being present and not null is enough to enable it. It will also enable `kafka.metricsEnabled` by default and configure metrics for cruise control, so no need to configure here (e.g., `kafka.cruiseControl.metricsConfig`). Reference: [CruiseControlSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-CruiseControlSpec-reference). |
+| kafka.entityOperator.template | object | `{}` | template allows to customize how the resources belonging to the Entity Operator are generated. |
 | kafka.entityOperator.topicOperator | object | `{}` | topicOperator allows to customize the configuration of the Topic Operator. By Default, the Topic Operator watches for KafkaTopic resources in the namespace of the Kafka cluster deployed by the Cluster Operator. Reference: [EntityTopicOperatorSpec schema properties](https://strimzi.io/docs/operators/0.45.0/configuring#type-EntityTopicOperatorSpec-schema-reference). |
 | kafka.entityOperator.userOperator | object | `{}` | userOperator allows to customize the configuration of the User Operator. By Default, the User Operator watches for KafkaUser resources in the namespace of the Kafka cluster deployed by the Cluster Operator. Reference: [EntityUserOperatorSpec schema properties](https://strimzi.io/docs/operators/0.45.0/configuring#type-EntityUserOperatorSpec-schema-reference). |
 | kafka.kafkaExporter | object | `{}` | kafkaExporter allows to customize the configuration of the Kafka Exporter. Reference: [KafkaExporterSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaExporterSpec-reference) |
@@ -116,9 +117,9 @@ base64 -w0 ca.crt > ca.crt.base64
 | kafka.logging | object | `{}` | logging allows to customize the logging configuration of the Kafka cluster. Reference: [Configuring logging levels](https://strimzi.io/docs/operators/0.45.0/deploying#external-logging_str). |
 | kafka.maintenanceTimeWindows | list | `[]` | maintenanceTimeWindows is a list of time windows for maintenance tasks (e.g., certificate renewals). Each time window is defined by a [cron expression](http://www.cronmaker.com). Reference: [Quartz Tutorials - CronTrigger](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html). |
 | kafka.metricsEnabled | bool | `true` | Indicates whether or not to enable the JMX Prometheus Exporter metrics for Kafka. This is enabled by default if `kafka.cruiseControl` is present. |
-| kafka.nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
+| kafka.rackTopology.customKey | string | `""` | customKey allows to override the standard `topology.kubernetes.io/zone` key used for the rack-aware feature. |
+| kafka.rackTopology.enabled | bool | `true` | Indicates whether or not to enable the rack-aware feature for the node pools to improve resiliency, availability, and reliability. Strimzi will automatically add the Kubernetes preferred affinity rule to distribute the node pools across the different availability zones or actual racks in the data center, which is not guaranteed to be evenly done. As such, Cruise Control will make sure that replicas remain and get distributed properly if in use. When testing locally, set this  to `false`. |
 | kafka.template | object | `{}` | template allows to customize the configuration of the Kafka cluster. Reference: [KafkaClusterTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaClusterTemplate-reference). |
-| kafka.tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
 | kafka.version | string | `"3.9.0"` | version is the version of Kafka to use. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | nodePools.broker.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. |
@@ -130,12 +131,13 @@ base64 -w0 ca.crt > ca.crt.base64
 | nodePools.broker.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | nodePools.broker.roles | list | `["broker"]` | roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`. |
 | nodePools.broker.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference). |
-| nodePools.broker.storage.volumes[0].class | string | `"default"` | class is the storage class to use for the PersistentVolumeClaim. |
-| nodePools.broker.storage.volumes[0].deleteClaim | bool | `false` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
+| nodePools.broker.storage.volumes[0].class | string | `nil` | class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the default storage class. |
+| nodePools.broker.storage.volumes[0].deleteClaim | bool | `true` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
 | nodePools.broker.storage.volumes[0].id | int | `0` | id is the volume ID. |
 | nodePools.broker.storage.volumes[0].kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
 | nodePools.broker.storage.volumes[0].size | string | `"1Gi"` | size is the size of the volume. |
 | nodePools.broker.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
+| nodePools.broker.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
 | nodePools.dual-role-broker.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. |
 | nodePools.dual-role-broker.enabled | bool | `false` | Indicates whether or not to deploy this dual-role broker pool with the Kafka cluster. Should be set to `false` if using other broker and controller node pools. |
 | nodePools.dual-role-broker.jvmOptions | object | `{}` | jvmOptions allows to customize the JVM options for the node pool pods. |
@@ -145,12 +147,13 @@ base64 -w0 ca.crt > ca.crt.base64
 | nodePools.dual-role-broker.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | nodePools.dual-role-broker.roles | list | `["controller", "broker"]` | roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`. |
 | nodePools.dual-role-broker.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference). |
-| nodePools.dual-role-broker.storage.volumes[0].class | string | `"default"` | class is the storage class to use for the PersistentVolumeClaim. |
-| nodePools.dual-role-broker.storage.volumes[0].deleteClaim | bool | `false` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
+| nodePools.dual-role-broker.storage.volumes[0].class | string | `nil` | class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the default storage class. |
+| nodePools.dual-role-broker.storage.volumes[0].deleteClaim | bool | `true` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
 | nodePools.dual-role-broker.storage.volumes[0].id | int | `0` | id is the volume ID. |
 | nodePools.dual-role-broker.storage.volumes[0].kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
 | nodePools.dual-role-broker.storage.volumes[0].size | string | `"1Gi"` | size is the size of the volume. |
 | nodePools.dual-role-broker.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
+| nodePools.dual-role-broker.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
 | nodePools.kraft-controller.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. |
 | nodePools.kraft-controller.enabled | bool | `true` | Indicates whether or not to deploy this controller node pool with the Kafka cluster. Should be set to `false` if using a dual-role broker pool. |
 | nodePools.kraft-controller.jvmOptions | object | `{}` | jvmOptions allows to customize the JVM options for the node pool pods. |
@@ -160,12 +163,13 @@ base64 -w0 ca.crt > ca.crt.base64
 | nodePools.kraft-controller.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | nodePools.kraft-controller.roles | list | `["controller"]` | roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`. |
 | nodePools.kraft-controller.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference). |
-| nodePools.kraft-controller.storage.volumes[0].class | string | `"default"` | class is the storage class to use for the PersistentVolumeClaim. |
-| nodePools.kraft-controller.storage.volumes[0].deleteClaim | bool | `false` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
+| nodePools.kraft-controller.storage.volumes[0].class | string | `nil` | class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the default storage class. |
+| nodePools.kraft-controller.storage.volumes[0].deleteClaim | bool | `true` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
 | nodePools.kraft-controller.storage.volumes[0].id | int | `0` | id is the volume ID. |
 | nodePools.kraft-controller.storage.volumes[0].kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
 | nodePools.kraft-controller.storage.volumes[0].size | string | `"1Gi"` | size is the size of the volume. |
 | nodePools.kraft-controller.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
+| nodePools.kraft-controller.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
 | strimzi-drain-cleaner.certManager.create | bool | `false` | Indicates whether or not to create the Certificate and Issuer custom resources used for the ValidatingWebhookConfiguration and ValidationWebhook when cert-manager is installed. |
 | strimzi-drain-cleaner.enabled | bool | `true` | Indicates whether or not to deploy Drain Cleaner with the Kafka cluster. |
 | strimzi-drain-cleaner.namespace.create | bool | `true` | Indicates whether or not to create the namespace defined at `strimzi-drain-cleaner.namespace.name` for where Drain Cleaner resources will be deployed. |
@@ -176,9 +180,12 @@ base64 -w0 ca.crt > ca.crt.base64
 | strimzi-drain-cleaner.secret.create | bool | `true` | Indicates whether or not to create a TLS secret. Kubernetes requires ValidationWebhooks to be secured by TLS like the one used by Drain Cleaner's webhook service endpoint to receive Strimzi pod eviction events. |
 | strimzi-drain-cleaner.secret.tls_crt | string | `""` | tls_crt is the TLS certificate in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
 | strimzi-drain-cleaner.secret.tls_key | string | `""` | tls_key is the TLS private key in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
+| strimzi-kafka-operator.affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
 | strimzi-kafka-operator.enabled | bool | `true` | Indicates whether or not to deploy Strimzi with the Kafka cluster. |
+| strimzi-kafka-operator.nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
 | strimzi-kafka-operator.replicas | int | `1` | replicas is for the number of cluster operator instances. |
 | strimzi-kafka-operator.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| strimzi-kafka-operator.tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
 
 
 // Steven Jenkins De Haro ("StevenJDH" on GitHub)

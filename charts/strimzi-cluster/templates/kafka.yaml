@@ -59,22 +59,12 @@ spec:
           name: {{ include "shared-library.fullname" . }}-metrics-config
           key: kafka-metrics-config.yaml
     {{- end }}
+    {{- if (((.Values.kafka).rackTopology).enabled) }}
     rack:
-      topologyKey: topology.kubernetes.io/zone
+      topologyKey: {{ .Values.kafka.rackTopology.customKey | default "topology.kubernetes.io/zone" | quote }}
+    {{- end }}
     {{- with .Values.kafka.logging }}
     logging:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with .Values.kafka.nodeSelector }}
-    nodeSelector:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with .Values.kafka.affinity }}
-    affinity:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with .Values.kafka.tolerations }}
-    tolerations:
       {{- toYaml . | nindent 6 }}
     {{- end }}
   {{- with .Values.kafka.clusterCa }}

@@ -21,7 +21,7 @@ limitations under the License.
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $config.nameOverride | default (printf "%s-%s" $.Release.Name $name) }}-headless
+  name: {{ $config.nameOverride | default (printf "%s-%s-metrics" $.Release.Name $name) }}-headless
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/scheme: "http"

@@ -20,6 +20,7 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
     --set-file strimzi-drain-cleaner.secret.tls_crt=tls.crt.base64 \
     --set-file strimzi-drain-cleaner.secret.tls_key=tls.key.base64 \
     --set-file strimzi-drain-cleaner.secret.ca_bundle=ca.crt.base64 \
+    --set kafka.rackTopology.enabled=false \
     --namespace example \
     --create-namespace \
     --atomic

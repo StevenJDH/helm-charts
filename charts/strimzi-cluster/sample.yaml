@@ -1000,7 +1000,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-broker-headless
+  name: example-broker-metrics-headless
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/scheme: "http"
@@ -1034,7 +1034,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-kraft-controller-headless
+  name: example-kraft-controller-metrics-headless
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/scheme: "http"
@@ -1271,6 +1271,8 @@ spec:
             requests:
               cpu: 200m
               memory: 384Mi
+      nodeSelector:
+        kubernetes.io/os: linux
 ---
 # Source: strimzi-cluster/templates/kafka.yaml
 apiVersion: kafka.strimzi.io/v1beta2
@@ -1320,9 +1322,7 @@ spec:
           name: example-strimzi-cluster-metrics-config
           key: kafka-metrics-config.yaml
     rack:
-      topologyKey: topology.kubernetes.io/zone
-    nodeSelector:
-      kubernetes.io/os: linux
+      topologyKey: "topology.kubernetes.io/zone"
   clusterCa:
     generateCertificateAuthority: true
     generateSecretOwnerReference: true
@@ -1334,6 +1334,7 @@ spec:
     renewalDays: 30
     validityDays: 365
   entityOperator:
+    template: {}
     topicOperator: {}
     userOperator: {}
   cruiseControl:
@@ -1348,7 +1349,7 @@ spec:
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaNodePool
 metadata:
-  name: example-broker
+  name: broker
   labels:
     strimzi.io/cluster: example-strimzi-cluster
     helm.sh/chart: strimzi-cluster-0.1.0
@@ -1364,8 +1365,8 @@ spec:
   storage:
     type: jbod
     volumes:
-    - class: default
-      deleteClaim: false
+    - class: null
+      deleteClaim: true
       id: 0
       kraftMetadata: shared
       size: 1Gi
@@ -1375,7 +1376,7 @@ spec:
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaNodePool
 metadata:
-  name: example-kraft-controller
+  name: kraft-controller
   labels:
     strimzi.io/cluster: example-strimzi-cluster
     helm.sh/chart: strimzi-cluster-0.1.0
@@ -1391,8 +1392,8 @@ spec:
   storage:
     type: jbod
     volumes:
-    - class: default
-      deleteClaim: false
+    - class: null
+      deleteClaim: true
       id: 0
       kraftMetadata: shared
       size: 1Gi
