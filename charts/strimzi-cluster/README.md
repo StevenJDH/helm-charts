@@ -186,6 +186,7 @@ base64 -w0 ca.crt > ca.crt.base64
 | strimzi-kafka-operator.replicas | int | `1` | replicas is for the number of cluster operator instances. |
 | strimzi-kafka-operator.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | strimzi-kafka-operator.tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
+| testResources.create | bool | `false` | Indicates whether or not to create the test resources, which consist of a KafkaUser and a KafkaTopic. |
 
 
 // Steven Jenkins De Haro ("StevenJDH" on GitHub)

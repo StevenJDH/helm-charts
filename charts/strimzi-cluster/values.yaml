@@ -399,6 +399,10 @@ nodePools:
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
 
+testResources:
+  # -- Indicates whether or not to create the test resources, which consist of a KafkaUser and a KafkaTopic.
+  create: false
+
 strimzi-kafka-operator:
   # -- Indicates whether or not to deploy Strimzi with the Kafka cluster.
   enabled: true
