@@ -223,10 +223,9 @@ kafka:
     #   pod: {}
     # resources: {}
 
-  # -- Indicates whether or not to enable the JMX Prometheus Exporter metrics for Kafka.
-  # This is enabled by default if `kafka.cruiseControl` is present.
-  metricsEnabled: true
-  # -- kafkaExporter allows to customize the configuration of the Kafka Exporter.
+  # -- kafkaExporter is an optional component for extracting additional metrics data from Kafka brokers
+  # related to offsets, consumer groups, consumer lag, and topics. For Kafka Exporter to be able to work
+  # properly, consumer groups needs to be in use. Being present and not null is enough to enable it.
   # Reference: [KafkaExporterSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaExporterSpec-reference)
   kafkaExporter: {}
     # topicRegex: ".*"
@@ -237,6 +236,9 @@ kafka:
     #   pod: {}
     # resources: {}
 
+  # -- Indicates whether or not to enable the JMX Prometheus Exporter metrics for Kafka. This is enabled
+  # by default if `kafka.cruiseControl` is present.
+  metricsEnabled: true
   # -- maintenanceTimeWindows is a list of time windows for maintenance tasks (e.g., certificate renewals).
   # Each time window is defined by a [cron expression](http://www.cronmaker.com).
   # Reference: [Quartz Tutorials - CronTrigger](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html).
@@ -264,7 +266,8 @@ nodePools:
     # -- nameOverride allows to override the generated pool name that is based on the config key, in this 
     # case `<cluster-name>-broker`, to something custom.
     nameOverride: ""
-    # -- annotations to be added to the KafkaNodePool resource.
+    # -- annotations to be added to the KafkaNodePool resource. It's recommended to set something like
+    # `strimzi.io/next-node-ids: "[0-10]"` to have more control over what node pool gets what IDs.
     annotations: {}
       # strimzi.io/next-node-ids: "[0-10]"
     # -- labels to be added to the KafkaNodePool resource.
@@ -312,7 +315,8 @@ nodePools:
     # -- nameOverride allows to override the generated pool name that is based on the config key, in this 
     # case `<cluster-name>-kraft-controller`, to something custom.
     nameOverride: ""
-    # -- annotations to be added to the KafkaNodePool resource.
+    # -- annotations to be added to the KafkaNodePool resource. It's recommended to set something like
+    # `strimzi.io/next-node-ids: "[11-20]"` to have more control over what node pool gets what IDs.
     annotations: {}
       # strimzi.io/next-node-ids: "[11-20]"
     # -- labels to be added to the KafkaNodePool resource.
@@ -415,7 +419,7 @@ strimzi-kafka-operator:
   # -- affinity for pod scheduling.
   # Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
   affinity: {}
-    # nodeAffinity:
+    # podAntiAffinity:
     #   requiredDuringSchedulingIgnoredDuringExecution:
     #   - labelSelector:
     #       matchExpressions:

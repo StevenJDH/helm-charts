@@ -15,7 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $requiredMsg := include "shared-library.required-msg" . -}}
+{{- $requiredMsg          := include "shared-library.required-msg" .      -}}
+{{- $cruiseControlEnabled := not (eq ((.Values.kafka).cruiseControl) nil) -}}
+{{- $kafkaExporterEnabled := not (eq ((.Values.kafka).kafkaExporter) nil) -}}
+{{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)             -}}
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
@@ -51,7 +54,7 @@ spec:
     template:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-    {{- if or (not (eq .Values.kafka.cruiseControl nil)) ((.Values.kafka).metricsEnabled) }}
+    {{- if or $cruiseControlEnabled $metricsEnabled }}
     metricsConfig:
       type: jmxPrometheusExporter
       valueFrom:
@@ -77,7 +80,7 @@ spec:
   {{- end }}
   entityOperator:
     {{- required (printf $requiredMsg "kafka.entityOperator") .Values.kafka.entityOperator | toYaml | nindent 4 }}
-  {{- if (not (eq .Values.kafka.cruiseControl nil)) }}
+  {{- if $cruiseControlEnabled }}
   cruiseControl:
     {{- with .Values.kafka.cruiseControl }}
     {{- toYaml . | nindent 4 }}
@@ -89,9 +92,9 @@ spec:
           name: {{ include "shared-library.fullname" . }}-metrics-config
           key: cruise-control-metrics-config.yaml
   {{- end }}
-  {{- with .Values.kafka.kafkaExporter }}
+  {{- if $kafkaExporterEnabled }}
   kafkaExporter:
-    {{- toYaml . | nindent 4 }}
+    {{- toYaml .Values.kafka.kafkaExporter | nindent 4 }}
   {{- end }}
   {{- with .Values.kafka.maintenanceTimeWindows }}
   maintenanceTimeWindows:

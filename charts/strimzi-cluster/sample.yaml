@@ -1344,6 +1344,8 @@ spec:
         configMapKeyRef:
           name: example-strimzi-cluster-metrics-config
           key: cruise-control-metrics-config.yaml
+  kafkaExporter:
+    {}
 ---
 # Source: strimzi-cluster/templates/nodepools.yaml
 apiVersion: kafka.strimzi.io/v1beta2
