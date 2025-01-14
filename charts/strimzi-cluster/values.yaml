@@ -163,6 +163,13 @@ kafka:
     # If `false`, the `ownerReference` is disabled, which will retain the CA Secret for reuse when the Kafka
     # resource is deleted.
     generateSecretOwnerReference: true
+  # -- maintenanceTimeWindows is a list of time windows for maintenance tasks (e.g., certificate renewals).
+  # Each time window is defined by a [cron expression](http://www.cronmaker.com).
+  # Reference: [Quartz Tutorials - CronTrigger](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html).
+  maintenanceTimeWindows: []
+    # - "* * 0-1 ? * MON-THU,SUN *" # 00:00am - 01:59am UTC on Monday, Tuesday, Wednesday, Thursday, and Sunday.
+    # - "* * 1-3 ? * FRI *" # 01:00am - 03:59am UTC on Friday.
+
   entityOperator:
     # -- template allows to customize how the resources belonging to the Entity Operator are generated.
     template: {}
@@ -239,12 +246,31 @@ kafka:
   # -- Indicates whether or not to enable the JMX Prometheus Exporter metrics for Kafka. This is enabled
   # by default if `kafka.cruiseControl` is present.
   metricsEnabled: true
-  # -- maintenanceTimeWindows is a list of time windows for maintenance tasks (e.g., certificate renewals).
-  # Each time window is defined by a [cron expression](http://www.cronmaker.com).
-  # Reference: [Quartz Tutorials - CronTrigger](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html).
-  maintenanceTimeWindows: []
-    # - "* * 0-1 ? * MON-THU,SUN *" # 00:00am - 01:59am UTC on Monday, Tuesday, Wednesday, Thursday, and Sunday.
-    # - "* * 1-3 ? * FRI *" # 01:00am - 03:59am UTC on Friday.
+
+podMonitor:
+  # -- Indicates whether or not to create PodMonitors to scrape Kafka related metrics. This approach is
+  # recommended over using `scrapeConfigHeadlessServices.create`. Ensure to set `kafka.metricsEnabled`
+  # to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. See Option 1 under the
+  # Monitoring section of the README for more information.
+  create: false
+  # -- overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor
+  # resources will be deployed. If deploying to a namespace where the prometheus operator isn't
+  # location, some config changes will be required. See Option 1 under the Monitoring section of the
+  # README for more information.
+  overrideNamespace: ""
+  # -- labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of
+  # the prometheus operator, which by default uses the release name of the kube-prometheus-stack
+  # chart used when installing. Adjustments may be needed if deploying to a different namespace
+  # other then where the prometheus operator is deployed. See Option 1 under the Monitoring section
+  # of the README for more information.
+  labels:
+    release: kube-prometheus-stack
+
+scrapeConfigHeadlessServices:
+  # -- Indicates whether or not to create headless services to scrape Kafka related metrics. Setting
+  # is ignored if `podMonitor.create` is set to `true`. See Option 2 under the Monitoring section of
+  # the README for more information.
+  create: false
 
 cruiseControlRebalance:
   # -- Indicates whether or not to create a KafkaRebalance resource with an empty spec to use
@@ -412,6 +438,12 @@ strimzi-kafka-operator:
   enabled: true
   # -- replicas is for the number of cluster operator instances.
   replicas: 1
+  dashboards:
+    # -- Indicates whether or not to deploy a set of Kafka related Grafana dashboards that are imported automatically.
+    enabled: false
+    # -- namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace
+    # as the Prometheus Operator and Grafana instance.
+    namespace: monitoring
   # -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
   # Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
   nodeSelector:
@@ -436,7 +468,7 @@ strimzi-kafka-operator:
   #   operator: "Equal|Exists"
   #   value: "value"
   #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
-  
+
   # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
   # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
   resources: {}

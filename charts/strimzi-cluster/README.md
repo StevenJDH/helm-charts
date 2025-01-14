@@ -73,6 +73,139 @@ base64 -w0 tls.key > tls.key.base64
 base64 -w0 ca.crt > ca.crt.base64
 ```
 
+## Monitoring with Prometheus and Grafana
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 67.11.0
+    -f prometheus-values.yaml \ # Check below for one of the options to use for this file.
+    --namespace monitoring \
+    --create-namespace \
+    --atomic
+```
+
+For alerts, apply the [Prometheus Alert Rules](https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/refs/tags/0.45.0/examples/metrics/prometheus-install/prometheus-rules.yaml) to the monitoring namespace, and add to it the label `release: kube-prometheus-stack` so it will be imported automatically.
+
+### Option 1 - Using PodMonitor (Recommended)
+This recommended approach will automatically detect and directly collect metrics from Strimzi related pods.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    # Disabling this adds better support for third-party PodMonitor resource detection
+    # in its namespace without having to deal with label filtering or compromising the
+    # default discovery. Otherwise, the `release: kube-prometheus-stack` label needs
+    # to be present in CRD resources like PodMonitor. To get the release name if
+    # the chart is already installed, use `helm list -n monitoring`.
+    podMonitorSelectorNilUsesHelmValues: true
+
+    # PodMonitors to be selected for target discovery. If {}, select all PodMonitors.
+    podMonitorSelector: {}
+      # matchLabels:
+      #   prometheus: main
+      
+    # If {}, select own namespace (e.g., monitoring). Namespaces matching labels to
+    # be selected for PodMonitor discovery. Useful for when wanting to keep
+    # resources together with app instead of grouped together in monitoring namespace.
+    podMonitorNamespaceSelector: {}
+      # matchLabels:
+      #   monitoring: prometheus
+```
+
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `spodMonitor.create` to `true` in the strimzi-cluster chart.
+
+### Option 2 - Using Headless Services
+This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack), `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: strimzi-brokers-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-broker-metrics-headless.strimzi.svc.cluster.local
+      relabelings:
+        - separator: ;
+          regex: __meta_kubernetes_pod_label_(strimzi_io_.+)
+          replacement: $1
+          action: labelmap
+        - sourceLabels: [__meta_kubernetes_namespace]
+          separator: ;
+          regex: (.*)
+          targetLabel: namespace
+          replacement: $1
+          action: replace
+        - sourceLabels: [__meta_kubernetes_pod_name]
+          separator: ;
+          regex: (.*)
+          targetLabel: kubernetes_pod_name
+          replacement: $1
+          action: replace
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          separator: ;
+          regex: (.*)
+          targetLabel: node_name
+          replacement: $1
+          action: replace
+        - sourceLabels: [__meta_kubernetes_pod_host_ip]
+          separator: ;
+          regex: (.*)
+          targetLabel: node_ip
+          replacement: $1
+          action: replace
+    - job_name: strimzi-kraft-controllers-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-kraft-controller-metrics-headless.strimzi.svc.cluster.local
+    - job_name: strimzi-cluster-operator-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-cluster-operator-metrics-headless.strimzi.svc.cluster.local
+    - job_name: strimzi-entity-operator-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-entity-operator-metrics-headless.strimzi.svc.cluster.local
+    - job_name: strimzi-cruise-control-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-cruise-control-metrics-headless.strimzi.svc.cluster.local
+    - job_name: strimzi-kafka-exporter-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-kafka-exporter-metrics-headless.strimzi.svc.cluster.local
+```
+
+> [!NOTE]  
+> The above config assumes that the strimzi-cluster chart is deployed to the `strimzi` namespace. If not, then update to match. Also, the relabeling section hasn't been applied to every job for conciseness. To match Option 1's relabeling, apply to each job except for the two operators.
+
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` to `true` in the strimzi-cluster chart.
+
 ## Values
 
 | Key | Type | Default | Description |
@@ -170,6 +303,10 @@ base64 -w0 ca.crt > ca.crt.base64
 | nodePools.kraft-controller.storage.volumes[0].size | string | `"1Gi"` | size is the size of the volume. |
 | nodePools.kraft-controller.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
 | nodePools.kraft-controller.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
+| podMonitor.create | bool | `false` | Indicates whether or not to create PodMonitors to scrape Kafka related metrics. This approach is recommended over using `scrapeConfigHeadlessServices.create`. Ensure to set `kafka.metricsEnabled` to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. See Option 1 under the Monitoring section of the README for more information. |
+| podMonitor.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. Adjustments may be needed if deploying to a different namespace other then where the prometheus operator is deployed. See Option 1 under the Monitoring section of the README for more information. |
+| podMonitor.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor resources will be deployed. If deploying to a namespace where the prometheus operator isn't location, some config changes will be required. See Option 1 under the Monitoring section of the README for more information. |
+| scrapeConfigHeadlessServices.create | bool | `false` | Indicates whether or not to create headless services to scrape Kafka related metrics. Setting is ignored if `podMonitor.create` is set to `true`. See Option 2 under the Monitoring section of the README for more information. |
 | strimzi-drain-cleaner.certManager.create | bool | `false` | Indicates whether or not to create the Certificate and Issuer custom resources used for the ValidatingWebhookConfiguration and ValidationWebhook when cert-manager is installed. |
 | strimzi-drain-cleaner.enabled | bool | `true` | Indicates whether or not to deploy Drain Cleaner with the Kafka cluster. |
 | strimzi-drain-cleaner.namespace.create | bool | `true` | Indicates whether or not to create the namespace defined at `strimzi-drain-cleaner.namespace.name` for where Drain Cleaner resources will be deployed. |
@@ -181,6 +318,8 @@ base64 -w0 ca.crt > ca.crt.base64
 | strimzi-drain-cleaner.secret.tls_crt | string | `""` | tls_crt is the TLS certificate in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
 | strimzi-drain-cleaner.secret.tls_key | string | `""` | tls_key is the TLS private key in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
 | strimzi-kafka-operator.affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
+| strimzi-kafka-operator.dashboards.enabled | bool | `false` | Indicates whether or not to deploy a set of Kafka related Grafana dashboards that are imported automatically. |
+| strimzi-kafka-operator.dashboards.namespace | string | `"monitoring"` | namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
 | strimzi-kafka-operator.enabled | bool | `true` | Indicates whether or not to deploy Strimzi with the Kafka cluster. |
 | strimzi-kafka-operator.nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
 | strimzi-kafka-operator.replicas | int | `1` | replicas is for the number of cluster operator instances. |

@@ -15,7 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- if and (not (eq ((.Values.kafka).cruiseControl) nil)) ((.Values.cruiseControlRebalance).create) -}}
+{{- $cruiseControlEnabled := not (eq ((.Values.kafka).cruiseControl) nil) -}}
+{{- $createRebalance      := ((.Values.cruiseControlRebalance).create)    -}}
+{{- if and $cruiseControlEnabled $createRebalance -}}
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaRebalance
 metadata:

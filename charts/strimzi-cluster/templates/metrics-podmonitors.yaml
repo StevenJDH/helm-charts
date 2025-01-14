@@ -1,0 +1,121 @@
+{{/*
+This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
+Copyright (C) 2025 Steven Jenkins De Haro.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+{{- $cruiseControlEnabled := not (eq ((.Values.kafka).cruiseControl) nil) -}}
+{{- $kafkaExporterEnabled := not (eq ((.Values.kafka).kafkaExporter) nil) -}}
+{{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)             -}}
+{{- $createPodMonitor     := ((.Values.podMonitor).create)                -}}
+{{- if and $createPodMonitor (or $cruiseControlEnabled $kafkaExporterEnabled $metricsEnabled) -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: strimzi-kafka-resources-metrics
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+    {{- with .Values.podMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  namespace: {{ .Values.podMonitor.overrideNamespace | default "monitoring" }}
+spec:
+  selector:
+    matchExpressions:
+      - key: "strimzi.io/kind"
+        operator: In
+        values: ["Kafka"]
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  podMetricsEndpoints:
+  - path: /metrics
+    port: tcp-prometheus
+    relabelings:
+    - separator: ;
+      regex: __meta_kubernetes_pod_label_(strimzi_io_.+)
+      replacement: $1
+      action: labelmap
+    - sourceLabels: [__meta_kubernetes_namespace]
+      separator: ;
+      regex: (.*)
+      targetLabel: namespace
+      replacement: $1
+      action: replace
+    - sourceLabels: [__meta_kubernetes_pod_name]
+      separator: ;
+      regex: (.*)
+      targetLabel: kubernetes_pod_name
+      replacement: $1
+      action: replace
+    - sourceLabels: [__meta_kubernetes_pod_node_name]
+      separator: ;
+      regex: (.*)
+      targetLabel: node_name
+      replacement: $1
+      action: replace
+    - sourceLabels: [__meta_kubernetes_pod_host_ip]
+      separator: ;
+      regex: (.*)
+      targetLabel: node_ip
+      replacement: $1
+      action: replace
+---
+{{- if or $cruiseControlEnabled $metricsEnabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: strimzi-cluster-operator-metrics
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+    {{- with .Values.podMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  namespace: {{ .Values.podMonitor.overrideNamespace | default "monitoring" }}
+spec:
+  selector:
+    matchLabels:
+      strimzi.io/kind: cluster-operator
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  podMetricsEndpoints:
+  - path: /metrics
+    port: http
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: strimzi-entity-operator-metrics
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+    {{- with .Values.podMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  namespace: {{ .Values.podMonitor.overrideNamespace | default "monitoring" }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: entity-operator
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  podMetricsEndpoints:
+  - path: /metrics
+    port: "8080"
+  - path: /metrics
+    port: "8081"
+---
+{{- end }}
+{{- end -}}
