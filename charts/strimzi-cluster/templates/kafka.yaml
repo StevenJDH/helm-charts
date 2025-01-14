@@ -78,6 +78,10 @@ spec:
   clientsCa:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- with .Values.kafka.maintenanceTimeWindows }}
+  maintenanceTimeWindows:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   entityOperator:
     {{- required (printf $requiredMsg "kafka.entityOperator") .Values.kafka.entityOperator | toYaml | nindent 4 }}
   {{- if $cruiseControlEnabled }}
@@ -95,8 +99,4 @@ spec:
   {{- if $kafkaExporterEnabled }}
   kafkaExporter:
     {{- toYaml .Values.kafka.kafkaExporter | nindent 4 }}
-  {{- end }}
-  {{- with .Values.kafka.maintenanceTimeWindows }}
-  maintenanceTimeWindows:
-    {{- toYaml . | nindent 4 }}
   {{- end }}

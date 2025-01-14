@@ -16,7 +16,7 @@ limitations under the License.
 */}}
 
 {{- range $name, $config := .Values.nodePools }}
-{{- if (($config).enabled) }}
+{{- if (($config).enabled) -}}
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaNodePool
 metadata:
