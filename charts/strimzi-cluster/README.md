@@ -101,9 +101,9 @@ prometheus:
   prometheusSpec:
     # Disabling this adds better support for third-party PodMonitor resource detection
     # in its namespace without having to deal with label filtering or compromising the
-    # default discovery. Otherwise, the `release: kube-prometheus-stack` label needs
+    # default discovery. Otherwise, the 'release: kube-prometheus-stack' label needs
     # to be present in CRD resources like PodMonitor. To get the release name if
-    # the chart is already installed, use `helm list -n monitoring`.
+    # the chart is already installed, use 'helm list -n monitoring'.
     podMonitorSelectorNilUsesHelmValues: true
 
     # PodMonitors to be selected for target discovery. If {}, select all PodMonitors.
@@ -119,7 +119,7 @@ prometheus:
       #   monitoring: prometheus
 ```
 
-After the kube-prometheus-stack chart has been deployed or updated with the config above, set `spodMonitor.create` to `true` in the strimzi-cluster chart.
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `podMonitor.create` to `true` in the strimzi-cluster chart.
 
 ### Option 2 - Using Headless Services
 This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack), `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
@@ -205,6 +205,145 @@ prometheus:
 > The above config assumes that the strimzi-cluster chart is deployed to the `strimzi` namespace. If not, then update to match. Also, the relabeling section hasn't been applied to every job for conciseness. To match Option 1's relabeling, apply to each job except for the two operators.
 
 After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` to `true` in the strimzi-cluster chart.
+
+## Load testing
+Below is a simple script to perform a load test on a cluster using a Grafana managed tool called K6 that is making use of a Kafka extension. If it hasn't been done already, set `testResources.create` to `true` in the chart to create the test resources, and set `kafka.authorization` to `null` to disable ACL checks. Check if the setup is ready by running the following commands:
+
+**Window 1 - Producer:**
+
+```bash
+kubectl run kafka-producer --image=quay.io/strimzi/kafka:0.45.0-kafka-3.9.0 -it --rm --restart=Never -n strimzi \
+  -- bin/kafka-console-producer.sh --bootstrap-server strimzi-cluster-kafka-bootstrap:9092 --topic test-topic
+
+# Or
+
+kubectl exec strimzi-cluster-broker-0 -it -c kafka -n strimzi \
+  -- bin/kafka-console-producer.sh --bootstrap-server strimzi-cluster-kafka-bootstrap:9092 --topic test-topic
+```
+
+Type a message when you see the `>` character.
+
+**Window 2 - Consumer:**
+
+```bash
+kubectl run kafka-consumer --image=quay.io/strimzi/kafka:0.45.0-kafka-3.9.0 -it --rm --restart=Never -n strimzi \
+  -- bin/kafka-console-consumer.sh --bootstrap-server strimzi-cluster-kafka-bootstrap:9092 \
+  --topic test-topic --group test-consumer-group --from-beginning
+
+# Or
+
+kubectl exec strimzi-cluster-broker-0 -it -c kafka -n strimzi \
+  -- bin/kafka-console-consumer.sh --bootstrap-server strimzi-cluster-kafka-bootstrap:9092 \
+  --topic test-topic --group test-consumer-group --from-beginning
+```
+
+Produced messages should be visible now after being consumed. The commands can be exited by pressing `Ctrl+C`. To begin the load tests and stop it, use the following commands:
+
+```bash
+# Deploy load test
+kubectl create -f k6-load-test.yaml
+# View logs in realtime (-f)
+kubectl logs -l app.kubernetes.io/name=k6-load-test --tail=100 -f -n strimzi
+# Stop load test (or, alternatively scale to 0)
+kubectl delete -f k6-load-test.yaml
+```
+
+When finished, the Grafana Dashboard for Kafka Exporter will have useful information about the test as well. Since the consumer window was terminated, the dashboard should show a huge lag for the consumer group. Start the consumer again, and wait for the lag to drop back down to 0. By then, there will be additional numbers to check the consumption rate per second.
+
+**k6-load-test.yaml**
+
+```yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: load-test-config
+  namespace: strimzi
+data:
+  load-test.js: |
+    import {
+      Writer,
+      SchemaRegistry,
+      SCHEMA_TYPE_JSON,
+    } from "k6/x/kafka";
+    const writer = new Writer({
+      brokers: [__ENV.KAFKA_URL],
+      topic: __ENV.TOPIC,
+    });
+    const schemaRegistry = new SchemaRegistry();
+    export default function () {
+      writer.produce({
+        messages: [
+          {
+            value: schemaRegistry.serialize({
+              data: {
+                id: 1,
+                source: "k6-load-test",
+                space: "strimzi",
+                cluster: __ENV.CLUSTER,
+                message: "Hello World!"
+              },
+              schemaType: SCHEMA_TYPE_JSON,
+            }),
+          },
+        ],
+      });
+    }
+    export function teardown(data) {
+      writer.close();
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k6-load-test
+  namespace: strimzi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: k6-load-test
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: k6-load-test
+    spec:
+      containers:
+        - image: mostafamoradian/xk6-kafka:latest
+          name: xk6-kafka
+          command:
+            - "k6"
+            - "run"
+            - "--vus"
+            - "1"
+            - "--duration"
+            - "60s"
+            - "/tests/load-test.js"
+          env:
+            - name: KAFKA_URL
+              value: strimzi-cluster-kafka-bootstrap:9092
+            - name: CLUSTER
+              value: strimzi-cluster
+            - name: TOPIC
+              value: test-topic
+            - name: POD
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          volumeMounts:
+            - mountPath: /tests
+              name: test-script
+      volumes:
+        - name: test-script
+          configMap:
+            name: load-test-config
+```
+
+> [!TIP]
+> The flags `--vus` and `--duration` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed.
 
 ## Values
 
@@ -303,10 +442,10 @@ After the kube-prometheus-stack chart has been deployed or updated with the conf
 | nodePools.kraft-controller.storage.volumes[0].size | string | `"1Gi"` | size is the size of the volume. |
 | nodePools.kraft-controller.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
 | nodePools.kraft-controller.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
-| podMonitor.create | bool | `false` | Indicates whether or not to create PodMonitors to scrape Kafka related metrics. This approach is recommended over using `scrapeConfigHeadlessServices.create`. Ensure to set `kafka.metricsEnabled` to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. See Option 1 under the Monitoring section of the README for more information. |
-| podMonitor.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. Adjustments may be needed if deploying to a different namespace other then where the prometheus operator is deployed. See Option 1 under the Monitoring section of the README for more information. |
-| podMonitor.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor resources will be deployed. If deploying to a namespace where the prometheus operator isn't location, some config changes will be required. See Option 1 under the Monitoring section of the README for more information. |
-| scrapeConfigHeadlessServices.create | bool | `false` | Indicates whether or not to create headless services to scrape Kafka related metrics. Setting is ignored if `podMonitor.create` is set to `true`. See Option 2 under the Monitoring section of the README for more information. |
+| podMonitor.create | bool | `false` | Indicates whether or not to create PodMonitors to scrape Kafka related metrics. This approach is recommended over using `scrapeConfigHeadlessServices.create`. Ensure to set `kafka.metricsEnabled` to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
+| podMonitor.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. Adjustments may be needed if deploying to a different namespace other then where the prometheus operator is deployed. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
+| podMonitor.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor resources will be deployed. If deploying to a namespace where the prometheus operator isn't location, some config changes will be required. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
+| scrapeConfigHeadlessServices.create | bool | `false` | Indicates whether or not to create headless services to scrape Kafka related metrics. Setting is ignored if `podMonitor.create` is set to `true`. See [Option 2](#option-2---using-headless-services) under the Monitoring section of the README for more information. |
 | strimzi-drain-cleaner.certManager.create | bool | `false` | Indicates whether or not to create the Certificate and Issuer custom resources used for the ValidatingWebhookConfiguration and ValidationWebhook when cert-manager is installed. |
 | strimzi-drain-cleaner.enabled | bool | `true` | Indicates whether or not to deploy Drain Cleaner with the Kafka cluster. |
 | strimzi-drain-cleaner.namespace.create | bool | `true` | Indicates whether or not to create the namespace defined at `strimzi-drain-cleaner.namespace.name` for where Drain Cleaner resources will be deployed. |

@@ -250,26 +250,30 @@ kafka:
 podMonitor:
   # -- Indicates whether or not to create PodMonitors to scrape Kafka related metrics. This approach is
   # recommended over using `scrapeConfigHeadlessServices.create`. Ensure to set `kafka.metricsEnabled`
-  # to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. See Option 1 under the
-  # Monitoring section of the README for more information.
+  # to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. See
+  # [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for
+  # more information.
   create: false
   # -- overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor
   # resources will be deployed. If deploying to a namespace where the prometheus operator isn't
-  # location, some config changes will be required. See Option 1 under the Monitoring section of the
-  # README for more information.
+  # location, some config changes will be required. See
+  # [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README
+  # for more information.
   overrideNamespace: ""
   # -- labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of
   # the prometheus operator, which by default uses the release name of the kube-prometheus-stack
   # chart used when installing. Adjustments may be needed if deploying to a different namespace
-  # other then where the prometheus operator is deployed. See Option 1 under the Monitoring section
-  # of the README for more information.
+  # other then where the prometheus operator is deployed. See
+  # [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README
+  # for more information.
   labels:
     release: kube-prometheus-stack
 
 scrapeConfigHeadlessServices:
   # -- Indicates whether or not to create headless services to scrape Kafka related metrics. Setting
-  # is ignored if `podMonitor.create` is set to `true`. See Option 2 under the Monitoring section of
-  # the README for more information.
+  # is ignored if `podMonitor.create` is set to `true`. See
+  # [Option 2](#option-2---using-headless-services) under the Monitoring section of the README for
+  # more information.
   create: false
 
 cruiseControlRebalance:

@@ -113,9 +113,7 @@ spec:
       - {{ .Release.Namespace }}
   podMetricsEndpoints:
   - path: /metrics
-    port: "8080"
-  - path: /metrics
-    port: "8081"
+    port: "healthcheck"
 ---
 {{- end }}
 {{- end -}}
