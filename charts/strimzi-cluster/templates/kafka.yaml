@@ -16,8 +16,8 @@ limitations under the License.
 */}}
 
 {{- $requiredMsg          := include "shared-library.required-msg" .      -}}
-{{- $cruiseControlEnabled := not (eq ((.Values.kafka).cruiseControl) nil) -}}
-{{- $kafkaExporterEnabled := not (eq ((.Values.kafka).kafkaExporter) nil) -}}
+{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl) -}}
+{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter) -}}
 {{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)             -}}
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka

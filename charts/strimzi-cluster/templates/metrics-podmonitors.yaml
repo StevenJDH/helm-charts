@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $cruiseControlEnabled := not (eq ((.Values.kafka).cruiseControl) nil) -}}
-{{- $kafkaExporterEnabled := not (eq ((.Values.kafka).kafkaExporter) nil) -}}
+{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl) -}}
+{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter) -}}
 {{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)             -}}
 {{- $createPodMonitor     := ((.Values.podMonitor).create)                -}}
 {{- if and $createPodMonitor (or $cruiseControlEnabled $kafkaExporterEnabled $metricsEnabled) -}}

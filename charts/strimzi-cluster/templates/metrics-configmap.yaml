@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $cruiseControlEnabled := not (eq ((.Values.kafka).cruiseControl) nil) -}}
+{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl) -}}
 {{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)             -}}
 {{- if or $cruiseControlEnabled $metricsEnabled -}}
 kind: ConfigMap

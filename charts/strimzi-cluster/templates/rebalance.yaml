@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $cruiseControlEnabled := not (eq ((.Values.kafka).cruiseControl) nil) -}}
+{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl) -}}
 {{- $createRebalance      := ((.Values.cruiseControlRebalance).create)    -}}
 {{- if and $cruiseControlEnabled $createRebalance -}}
 apiVersion: kafka.strimzi.io/v1beta2
