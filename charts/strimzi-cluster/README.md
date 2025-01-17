@@ -78,7 +78,7 @@ base64 -w0 ca.crt > ca.crt.base64
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 67.11.0
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 68.1.0
     -f prometheus-values.yaml \ # Check below for one of the options to use for this file.
     --namespace monitoring \
     --create-namespace \
@@ -207,48 +207,20 @@ prometheus:
 After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` to `true` in the strimzi-cluster chart.
 
 ## Load testing
-Below is a simple script to perform a load test on a cluster using a Grafana managed tool called K6 that is making use of a Kafka extension. If it hasn't been done already, set `testResources.create` to `true` in the chart to create the test resources, and set `kafka.authorization` to `null` to disable ACL checks. Check if the setup is ready by running the following commands:
+Below is a simple script to perform a load test on a cluster using a Grafana managed tool called K6 that is making use of a [Kafka extension](https://github.com/mostafa/xk6-kafka). If it hasn't been done already, set `testResources.create` to `true` in the chart to create the included test user and topic.
 
-**Window 1 - Producer:**
-
-```bash
-kubectl run kafka-producer --image=quay.io/strimzi/kafka:0.45.0-kafka-3.9.0 -it --rm --restart=Never -n strimzi \
-  -- bin/kafka-console-producer.sh --bootstrap-server strimzi-cluster-kafka-bootstrap:9092 --topic test-topic
-
-# Or
-
-kubectl exec strimzi-cluster-broker-0 -it -c kafka -n strimzi \
-  -- bin/kafka-console-producer.sh --bootstrap-server strimzi-cluster-kafka-bootstrap:9092 --topic test-topic
-```
-
-Type a message when you see the `>` character.
-
-**Window 2 - Consumer:**
-
-```bash
-kubectl run kafka-consumer --image=quay.io/strimzi/kafka:0.45.0-kafka-3.9.0 -it --rm --restart=Never -n strimzi \
-  -- bin/kafka-console-consumer.sh --bootstrap-server strimzi-cluster-kafka-bootstrap:9092 \
-  --topic test-topic --group test-consumer-group --from-beginning
-
-# Or
-
-kubectl exec strimzi-cluster-broker-0 -it -c kafka -n strimzi \
-  -- bin/kafka-console-consumer.sh --bootstrap-server strimzi-cluster-kafka-bootstrap:9092 \
-  --topic test-topic --group test-consumer-group --from-beginning
-```
-
-Produced messages should be visible now after being consumed. The commands can be exited by pressing `Ctrl+C`. To begin the load tests and stop it, use the following commands:
+To start load testing using the script below, run the following commands:
 
 ```bash
 # Deploy load test
 kubectl create -f k6-load-test.yaml
 # View logs in realtime (-f)
 kubectl logs -l app.kubernetes.io/name=k6-load-test --tail=100 -f -n strimzi
-# Stop load test (or, alternatively scale to 0)
+# Delete load test after reviewing summary in logs
 kubectl delete -f k6-load-test.yaml
 ```
 
-When finished, the Grafana Dashboard for Kafka Exporter will have useful information about the test as well. Since the consumer window was terminated, the dashboard should show a huge lag for the consumer group. Start the consumer again, and wait for the lag to drop back down to 0. By then, there will be additional numbers to check the consumption rate per second.
+When finished, apart from the test result summary, the Grafana Dashboard for Kafka Exporter will have useful information about the test as well.
 
 **k6-load-test.yaml**
 
@@ -263,87 +235,143 @@ data:
     import {
       Writer,
       SchemaRegistry,
+      SCHEMA_TYPE_STRING,
       SCHEMA_TYPE_JSON,
+      TLS_1_2
     } from "k6/x/kafka";
+
+    // Reference: https://k6.io/docs/using-k6/k6-options/
+    export const options = {
+      thresholds: {
+        kafka_writer_error_count: ["count == 0"],
+        kafka_reader_error_count: ["count == 0"],
+      },
+      scenarios: {
+        // Using environment variables because CLI flags
+        // apply only to the default scenario.
+        // Reference: https://community.grafana.com/t/harness-docker-k6-error-function-default-not-found-in-exports/98961
+        load_test: {
+          exec: "load_test",
+          executor: "constant-vus",
+          vus: __ENV.VUS,
+          duration: __ENV.DURATION,
+          gracefulStop: __ENV.GRACEFUL_STOP,
+        },
+      },
+    };
+
     const writer = new Writer({
-      brokers: [__ENV.KAFKA_URL],
+      brokers: [__ENV.BOOTSTRAP_URL],
       topic: __ENV.TOPIC,
+      tls: {
+        enableTls: true,
+        insecureSkipTLSVerify: false,
+        minVersion: TLS_1_2,
+        clientCertPem: __ENV.CERT_PATH,
+        clientKeyPem: __ENV.KEY_PATH,
+        serverCaPem: __ENV.CA_PATH,
+      },
     });
+
     const schemaRegistry = new SchemaRegistry();
-    export default function () {
+
+    export function load_test() {
       writer.produce({
         messages: [
           {
+            key: schemaRegistry.serialize({
+              data: "a-key",
+              schemaType: SCHEMA_TYPE_STRING,
+            }),
             value: schemaRegistry.serialize({
               data: {
                 id: 1,
-                source: "k6-load-test",
-                space: "strimzi",
+                source: __ENV.POD,
+                namespace: __ENV.NAMESPACE,
                 cluster: __ENV.CLUSTER,
                 message: "Hello World!"
               },
               schemaType: SCHEMA_TYPE_JSON,
             }),
+            headers: {
+              foo: "bar",
+            },
+            time: new Date(), // Converts to timestamp automatically.
           },
         ],
       });
     }
+
     export function teardown(data) {
-      writer.close();
+      if (writer) writer.close();
     }
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: k6-load-test
+  labels:
+    app.kubernetes.io/name: k6-load-test
   namespace: strimzi
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: k6-load-test
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: k6-load-test
-    spec:
-      containers:
-        - image: mostafamoradian/xk6-kafka:latest
-          name: xk6-kafka
-          command:
-            - "k6"
-            - "run"
-            - "--vus"
-            - "1"
-            - "--duration"
-            - "60s"
-            - "/tests/load-test.js"
-          env:
-            - name: KAFKA_URL
-              value: strimzi-cluster-kafka-bootstrap:9092
-            - name: CLUSTER
-              value: strimzi-cluster
-            - name: TOPIC
-              value: test-topic
-            - name: POD
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-          volumeMounts:
-            - mountPath: /tests
-              name: test-script
-      volumes:
-        - name: test-script
-          configMap:
-            name: load-test-config
+  restartPolicy: Never
+  containers:
+    - image: mostafamoradian/xk6-kafka:latest
+      name: xk6-kafka
+      command: ["k6", "run", "/tests/load-test.js"]
+      env:
+        - name: BOOTSTRAP_URL
+          value: strimzi-cluster-kafka-bootstrap:9094
+        - name: CLUSTER
+          value: strimzi-cluster
+        - name: TOPIC
+          value: test-topic
+        - name: CONSUMER_GROUP
+          value: test-consumer-group
+        - name: CERT_PATH
+          value: "/client/user.crt"
+        - name: KEY_PATH
+          value: "/client/user.key"
+        - name: CA_PATH
+          value: "/server/ca.crt"
+        - name: POD
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: VUS
+          value: "1"
+        - name: DURATION
+          value: "10s"
+        - name: GRACEFUL_STOP
+          value: "30s"
+      volumeMounts:
+        - name: client-volume
+          mountPath: /client
+          readOnly: true
+        - name: server-volume
+          mountPath: /server
+          readOnly: true
+        - mountPath: /tests
+          name: script-volume
+          readOnly: true
+  volumes:
+    - name: client-volume
+      secret:
+        secretName: test-user
+    - name: server-volume
+      secret:
+        secretName: strimzi-cluster-cluster-ca-cert
+    - name: script-volume
+      configMap:
+        name: load-test-config
 ```
 
 > [!TIP]
-> The flags `--vus` and `--duration` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed.
+> The environment variables `VUS` and `DURATION` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed. Use these instead of the CLI flags `--vus` and `--duration` as those apply only to the default scenario and will throw an error because it's not used.
 
 ## Values
 
