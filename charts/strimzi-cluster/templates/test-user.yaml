@@ -41,8 +41,8 @@ spec:
         host: "*"
       - resource:
           type: group
-          name: "*"
-          patternType: prefix
+          name: test-consumer-group
+          patternType: literal
         operations:
           - Read
         host: "*"
