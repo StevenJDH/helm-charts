@@ -1,0 +1,3853 @@
+{
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "7.4.5"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus"
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Timeseries"
+    }
+  ],
+  "annotations": {
+      "list": [
+      {
+          "builtIn": 1,
+          "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+          },
+          "type": "dashboard"
+      }
+      ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 45,
+  "links": [],
+  "panels": [
+      {
+      "collapsed": false,
+      "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+      },
+      "id": 2,
+      "panels": [],
+      "title": "General",
+      "type": "row"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "palette-classic"
+          },
+          "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "bars",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+              "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+              "group": "A",
+              "mode": "none"
+              },
+              "thresholdsStyle": {
+              "mode": "off"
+              }
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "none"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 0,
+          "y": 1
+      },
+      "id": 4,
+      "options": {
+          "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+          },
+          "tooltip": {
+          "mode": "single",
+          "sort": "none"
+          }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "alias": "Active VUs",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_vus",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "Active VUs",
+          "measurement": "vus",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "range": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "Virtual Users",
+      "type": "timeseries"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "palette-classic"
+          },
+          "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+              "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+              "group": "A",
+              "mode": "none"
+              },
+              "thresholdsStyle": {
+              "mode": "off"
+              }
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              },
+              {
+                  "color": "red",
+                  "value": 80
+              }
+              ]
+          }
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 6,
+          "y": 1
+      },
+      "id": 5,
+      "options": {
+          "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+          },
+          "tooltip": {
+          "mode": "single",
+          "sort": "none"
+          }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "alias": "kafka_reader_error",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_error_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "kafka_writer_error",
+          "measurement": "kafka_reader_error_count",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"kafka_reader_error_count\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "sum"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "kafka_writer_error",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_error_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "kafka_reader_error",
+          "measurement": "kafka_writer_error_count",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"kafka_reader_error_count\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "sum"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "Errors Per Second",
+      "type": "timeseries"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "palette-classic"
+          },
+          "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+              "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+              "group": "A",
+              "mode": "none"
+              },
+              "thresholdsStyle": {
+              "mode": "off"
+              }
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          }
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 12,
+          "y": 1
+      },
+      "id": 7,
+      "options": {
+          "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+          },
+          "tooltip": {
+          "mode": "single",
+          "sort": "none"
+          }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "alias": "kafka_writer_message_count",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_message_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "kafka_writer_message_count",
+          "measurement": "kafka_writer_message_count",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"kafka_reader_error_count\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "count"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "kafka_reader_message_count",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_message_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "kafka_reader_message_count",
+          "measurement": "kafka_reader_message_count",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"kafka_reader_error_count\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "count"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "Kafka Messsages",
+      "type": "timeseries"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "palette-classic"
+          },
+          "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+              "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+              "group": "A",
+              "mode": "none"
+              },
+              "thresholdsStyle": {
+              "mode": "off"
+              }
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          }
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 18,
+          "y": 1
+      },
+      "id": 6,
+      "options": {
+          "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+          },
+          "tooltip": {
+          "mode": "single",
+          "sort": "none"
+          }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "alias": "$tag_check",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_checks_rate",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "check"
+              ],
+              "type": "tag"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "{{check}}",
+          "measurement": "checks",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"kafka_reader_error_count\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "sum"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "Checks Per Second",
+      "type": "timeseries"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 0,
+          "y": 9
+      },
+      "id": 19,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_avg",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "measurement": "k6_kafka_writer_write_seconds_max",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM $Measurement WHERE $timeFilter and value > 0",
+          "range": true,
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_write_seconds (mean)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 4,
+          "y": 9
+      },
+      "id": 9,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_avg",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "measurement": "kafka_reader_read_seconds",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM $Measurement WHERE $timeFilter and value > 0",
+          "range": true,
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_read_seconds (mean)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              },
+              {
+                  "color": "dark-red",
+                  "value": 1
+              }
+              ]
+          },
+          "unit": "none"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 8,
+          "y": 9
+      },
+      "id": 20,
+      "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "sum"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_error_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "measurement": "kafka_writer_error_count",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM $Measurement WHERE $timeFilter and value > 0",
+          "range": true,
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "sum"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_error_count (sum)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              },
+              {
+                  "color": "dark-red",
+                  "value": 1
+              }
+              ]
+          },
+          "unit": "none"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 12,
+          "y": 9
+      },
+      "id": 21,
+      "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "sum"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_error_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "measurement": "kafka_reader_error_count",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM $Measurement WHERE $timeFilter and value > 0",
+          "range": true,
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "sum"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_error_count (sum)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "none"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 16,
+          "y": 9
+      },
+      "id": 22,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "sum"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_message_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "measurement": "k6_kafka_writer_message_count_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM $Measurement WHERE $timeFilter and value > 0",
+          "range": true,
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "sum"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_message_count",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "none"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 20,
+          "y": 9
+      },
+      "id": 23,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "sum"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_message_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "measurement": "k6_kafka_reader_message_count_total",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM $Measurement WHERE $timeFilter and value > 0",
+          "range": true,
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "sum"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_message_count",
+      "type": "stat"
+      },
+      {
+      "collapsed": false,
+      "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 12
+      },
+      "id": 18,
+      "panels": [],
+      "title": "Kafka Writer",
+      "type": "row"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 0,
+          "y": 13
+      },
+      "id": 30,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_avg",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_write_seconds (mean)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 4,
+          "y": 13
+      },
+      "id": 32,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_med",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT median(\"value\") FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_write_seconds (med)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 8,
+          "y": 13
+      },
+      "id": 33,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_min",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_read_seconds (min)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 12,
+          "y": 13
+      },
+      "id": 31,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_batch_seconds_max",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"value\") FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_write_seconds (max)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 16,
+          "y": 13
+      },
+      "id": 34,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_p90",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\",90) FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_write_seconds (p90)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 20,
+          "y": 13
+      },
+      "id": 35,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_p95",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\",95) FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_write_seconds (p95)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "Grouped by 1 sec intervals",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "palette-classic"
+          },
+          "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+              "group": "A",
+              "mode": "none"
+              },
+              "thresholdsStyle": {
+              "mode": "off"
+              }
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              },
+              {
+                  "color": "red",
+                  "value": 80
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 16
+      },
+      "id": 27,
+      "interval": ">1s",
+      "options": {
+          "alertThreshold": true,
+          "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+          },
+          "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+          }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "alias": "max",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_max",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "max",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"value\") FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "max"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "p95",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_p95",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "p95",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\", 95) FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [
+                  95
+                  ],
+                  "type": "percentile"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "p90",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_p90",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "p90",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\", 90) FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [
+                  "90"
+                  ],
+                  "type": "percentile"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "min",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_min",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "min",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "min"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "mean",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_avg",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "mean",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "min"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "p99",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_write_seconds_p99",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "p99",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\", 99) FROM \"k6_kafka_writer_write_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [
+                  95
+                  ],
+                  "type": "percentile"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_write_seconds (over time)",
+      "type": "timeseries"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "palette-classic"
+          },
+          "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+              "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+              "group": "A",
+              "mode": "none"
+              },
+              "thresholdsStyle": {
+              "mode": "off"
+              }
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              },
+              {
+                  "color": "red",
+                  "value": 80
+              }
+              ]
+          }
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 12,
+          "y": 16
+      },
+      "id": 44,
+      "options": {
+          "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+          },
+          "tooltip": {
+          "mode": "single",
+          "sort": "none"
+          }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "alias": "kafka_writer_error_count",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_writer_error_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "kafka_write_error_count",
+          "measurement": "kafka_writer_error_count",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"kafka_reader_error_count\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "sum"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_writer_error_count (over time)",
+      "type": "timeseries"
+      },
+      {
+      "collapsed": false,
+      "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 25
+      },
+      "id": 16,
+      "panels": [],
+      "title": "Kafka Reader",
+      "type": "row"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 0,
+          "y": 26
+      },
+      "id": 36,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_avg",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"kafka_reader_read_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_read_seconds (mean)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 4,
+          "y": 26
+      },
+      "id": 37,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_med",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT median(\"value\") FROM \"kafka_reader_read_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_read_seconds (med)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 8,
+          "y": 26
+      },
+      "id": 38,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_min",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM \"kafka_reader_read_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_read_seconds (min)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 12,
+          "y": 26
+      },
+      "id": 39,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_max",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"value\") FROM \"kafka_reader_read_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_read_seconds (max)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 16,
+          "y": 26
+      },
+      "id": 40,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_p90",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\",90) FROM \"kafka_reader_read_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_read_seconds (p90)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "thresholds"
+          },
+          "decimals": 4,
+          "mappings": [
+              {
+              "options": {
+                  "match": "null",
+                  "result": {
+                  "text": "N/A"
+                  }
+              },
+              "type": "special"
+              }
+          ],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 20,
+          "y": 26
+      },
+      "id": 41,
+      "maxDataPoints": 100,
+      "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+          "calcs": [
+              "mean"
+          ],
+          "fields": "",
+          "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_p95",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "null"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\",95) FROM \"kafka_reader_read_seconds\" WHERE $timeFilter ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "mean"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_read_seconds (p95)",
+      "type": "stat"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "description": "Grouped by 1 sec intervals",
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "palette-classic"
+          },
+          "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+              "group": "A",
+              "mode": "none"
+              },
+              "thresholdsStyle": {
+              "mode": "off"
+              }
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              },
+              {
+                  "color": "red",
+                  "value": 80
+              }
+              ]
+          },
+          "unit": "ms"
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 29
+      },
+      "id": 42,
+      "interval": ">1s",
+      "options": {
+          "alertThreshold": true,
+          "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+          },
+          "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+          }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "alias": "max",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_max",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "max",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"value\") FROM \"kafka_reader_read_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "max"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "p95",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_p95",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "p95",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\", 95) FROM \"kafka_reader_read_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [
+                  95
+                  ],
+                  "type": "percentile"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "p90",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_p90",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "p90",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\", 90) FROM \"kafka_reader_read_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [
+                  "90"
+                  ],
+                  "type": "percentile"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "min",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_min",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "includeNullMetadata": true,
+          "legendFormat": "min",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT min(\"value\") FROM \"kafka_reader_read_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "min"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "mean",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_avg",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "mean",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"kafka_reader_read_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "min"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          },
+          {
+          "alias": "p99",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "dsType": "datasource",
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_read_seconds_p99",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "p99",
+          "measurement": "/^$Measurement$/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT percentile(\"value\", 99) FROM \"kafka_reader_read_seconds\" WHERE $timeFilter and value > 0 GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [
+                  95
+                  ],
+                  "type": "percentile"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_read_seconds (over time)",
+      "type": "timeseries"
+      },
+      {
+      "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+      },
+      "fieldConfig": {
+          "defaults": {
+          "color": {
+              "mode": "palette-classic"
+          },
+          "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+              "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+              "group": "A",
+              "mode": "none"
+              },
+              "thresholdsStyle": {
+              "mode": "off"
+              }
+          },
+          "mappings": [],
+          "thresholds": {
+              "mode": "absolute",
+              "steps": [
+              {
+                  "color": "green",
+                  "value": null
+              },
+              {
+                  "color": "red",
+                  "value": 80
+              }
+              ]
+          }
+          },
+          "overrides": []
+      },
+      "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 12,
+          "y": 29
+      },
+      "id": 45,
+      "options": {
+          "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+          },
+          "tooltip": {
+          "mode": "single",
+          "sort": "none"
+          }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+          {
+          "alias": "kafka_reader_error_count ",
+          "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "k6_kafka_reader_error_count_total",
+          "fullMetaSearch": false,
+          "groupBy": [
+              {
+              "params": [
+                  "$__interval"
+              ],
+              "type": "time"
+              },
+              {
+              "params": [
+                  "none"
+              ],
+              "type": "fill"
+              }
+          ],
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "kafka_reader_error_count",
+          "measurement": "kafka_reader_error_count",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"kafka_reader_error_count\" WHERE $timeFilter GROUP BY time($__interval) fill(none)",
+          "range": true,
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+              [
+              {
+                  "params": [
+                  "value"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "params": [],
+                  "type": "sum"
+              }
+              ]
+          ],
+          "tags": [],
+          "useBackend": false
+          }
+      ],
+      "title": "kafka_reader_error_count (over time)",
+      "type": "timeseries"
+      }
+  ],
+  "preload": false,
+  "refresh": "5s",
+  "schemaVersion": 40,
+  "tags": [
+    "Strimzi",
+    "Kafka",
+    "k6",
+    "xk6"
+  ],
+  "templating": {
+      "list": []
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "xk6-kafka-dashboard",
+  "version": 1,
+  "weekStart": ""
+}

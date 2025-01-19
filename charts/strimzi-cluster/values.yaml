@@ -437,13 +437,30 @@ testResources:
   # -- Indicates whether or not to create the test resources, which consist of a KafkaUser and a KafkaTopic.
   create: false
 
+k6:
+  loadTestScripts:
+    # -- Indicates whether or not to create a ConfigMap with k6 scripts that can be mounted for load testing
+    # Kafka. See the [Load testing the cluster](#load-testing-the-cluster) section of the README for more
+    # information.
+    create: false
+  dashboard:
+    # -- Indicates whether or not to deploy a k6 Grafana dashboard for Kafka load testing results that will be
+    # imported automatically. Requires enabling Remote Write Receiver in Prometheus. See
+    # [Sending load testing results to Prometheus](#sending-load-testing-results-to-prometheus) for more
+    # information.
+    enabled: false
+    # -- overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard will be deployed. This should be the same
+    # namespace as the Prometheus Operator and Grafana instance.
+    overrideNamespace: ""
+
 strimzi-kafka-operator:
   # -- Indicates whether or not to deploy Strimzi with the Kafka cluster.
   enabled: true
   # -- replicas is for the number of cluster operator instances.
   replicas: 1
   dashboards:
-    # -- Indicates whether or not to deploy a set of Kafka related Grafana dashboards that are imported automatically.
+    # -- Indicates whether or not to deploy a set of Kafka related Grafana dashboards that will be imported
+    # automatically.
     enabled: false
     # -- namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace
     # as the Prometheus Operator and Grafana instance.

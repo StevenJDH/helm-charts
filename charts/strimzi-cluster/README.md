@@ -74,6 +74,7 @@ base64 -w0 ca.crt > ca.crt.base64
 ```
 
 ## Monitoring with Prometheus and Grafana
+This sections shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -95,6 +96,7 @@ This recommended approach will automatically detect and directly collect metrics
 ```yaml
 grafana:
   defaultDashboardsEnabled: false
+  # Change adminPassword as needed.
   adminPassword: admin
 
 prometheus:
@@ -119,7 +121,7 @@ prometheus:
       #   monitoring: prometheus
 ```
 
-After the kube-prometheus-stack chart has been deployed or updated with the config above, set `podMonitor.create` to `true` in the strimzi-cluster chart.
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
 
 ### Option 2 - Using Headless Services
 This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack), `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
@@ -129,6 +131,7 @@ This approach is more for compatibility reasons. For example, when using CRDs is
 ```yaml
 grafana:
   defaultDashboardsEnabled: false
+  # Change adminPassword as needed.
   adminPassword: admin
 
 prometheus:
@@ -204,108 +207,14 @@ prometheus:
 > [!NOTE]  
 > The above config assumes that the strimzi-cluster chart is deployed to the `strimzi` namespace. If not, then update to match. Also, the relabeling section hasn't been applied to every job for conciseness. To match Option 1's relabeling, apply to each job except for the two operators.
 
-After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` to `true` in the strimzi-cluster chart.
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
 
-## Load testing
-Below is a simple script to perform a load test on a cluster using a Grafana managed tool called K6 that is making use of a [Kafka extension](https://github.com/mostafa/xk6-kafka). If it hasn't been done already, set `testResources.create` to `true` in the chart to create the included test user and topic.
-
-To start load testing using the script below, run the following commands:
-
-```bash
-# Deploy load test
-kubectl create -f k6-load-test.yaml
-# View logs in realtime (-f)
-kubectl logs -l app.kubernetes.io/name=k6-load-test --tail=100 -f -n strimzi
-# Delete load test after reviewing summary in logs
-kubectl delete -f k6-load-test.yaml
-```
-
-When finished, apart from the test result summary, the Grafana Dashboard for Kafka Exporter will have useful information about the test as well.
+## Load testing the cluster
+Below is a pod definition that will run one of the included producer and consumer load test scripts against a cluster. The scripts are ran by using a Grafana managed tool called [K6](https://grafana.com/docs/k6/latest/using-k6/) that is making use of a [Kafka extension](https://github.com/mostafa/xk6-kafka). If it hasn't been done already, set `testResources.create` and `k6.loadTestScripts.create` to `true` in this chart to create the included test user, test topic, and load testing scripts. Next, store the following pod definition into a file.
 
 **k6-load-test.yaml**
 
 ```yaml
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: load-test-config
-  namespace: strimzi
-data:
-  load-test.js: |
-    import {
-      Writer,
-      SchemaRegistry,
-      SCHEMA_TYPE_STRING,
-      SCHEMA_TYPE_JSON,
-      TLS_1_2
-    } from "k6/x/kafka";
-
-    // Reference: https://k6.io/docs/using-k6/k6-options/
-    export const options = {
-      thresholds: {
-        kafka_writer_error_count: ["count == 0"],
-        kafka_reader_error_count: ["count == 0"],
-      },
-      scenarios: {
-        // Using environment variables because CLI flags
-        // apply only to the default scenario.
-        // Reference: https://community.grafana.com/t/harness-docker-k6-error-function-default-not-found-in-exports/98961
-        load_test: {
-          exec: "load_test",
-          executor: "constant-vus",
-          vus: __ENV.VUS,
-          duration: __ENV.DURATION,
-          gracefulStop: __ENV.GRACEFUL_STOP,
-        },
-      },
-    };
-
-    const writer = new Writer({
-      brokers: [__ENV.BOOTSTRAP_URL],
-      topic: __ENV.TOPIC,
-      tls: {
-        enableTls: true,
-        insecureSkipTLSVerify: false,
-        minVersion: TLS_1_2,
-        clientCertPem: __ENV.CERT_PATH,
-        clientKeyPem: __ENV.KEY_PATH,
-        serverCaPem: __ENV.CA_PATH,
-      },
-    });
-
-    const schemaRegistry = new SchemaRegistry();
-
-    export function load_test() {
-      writer.produce({
-        messages: [
-          {
-            key: schemaRegistry.serialize({
-              data: "a-key",
-              schemaType: SCHEMA_TYPE_STRING,
-            }),
-            value: schemaRegistry.serialize({
-              data: {
-                id: 1,
-                source: __ENV.POD,
-                namespace: __ENV.NAMESPACE,
-                cluster: __ENV.CLUSTER,
-                message: "Hello World!"
-              },
-              schemaType: SCHEMA_TYPE_JSON,
-            }),
-            headers: {
-              foo: "bar",
-            },
-            time: new Date(), // Converts to timestamp automatically.
-          },
-        ],
-      });
-    }
-
-    export function teardown(data) {
-      if (writer) writer.close();
-    }
----
 apiVersion: v1
 kind: Pod
 metadata:
@@ -318,7 +227,9 @@ spec:
   containers:
     - image: mostafamoradian/xk6-kafka:latest
       name: xk6-kafka
-      command: ["k6", "run", "/tests/load-test.js"]
+      # For sending Prometheus metrics, use:
+      # command: ["k6", "run", "-o", "experimental-prometheus-rw", "/scripts/producer-load-test.js"]
+      command: ["k6", "run", "/scripts/producer-load-test.js"]
       env:
         - name: BOOTSTRAP_URL
           value: strimzi-cluster-kafka-bootstrap:9094
@@ -334,7 +245,7 @@ spec:
           value: "/client/user.key"
         - name: CA_PATH
           value: "/server/ca.crt"
-        - name: POD
+        - name: POD_NAME
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
@@ -348,30 +259,63 @@ spec:
           value: "10s"
         - name: GRACEFUL_STOP
           value: "30s"
+        - name: K6_PROMETHEUS_RW_SERVER_URL
+          value: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write
+        - name: K6_PROMETHEUS_RW_TREND_STATS
+          value: p(90),p(95),p(99),count,min,med,max,avg,sum
+        # Will be marked stale after 5 minutes if false.
+        - name: K6_PROMETHEUS_RW_STALE_MARKERS
+          value: "false"
       volumeMounts:
-        - name: client-volume
+        - name: client-auth-volume
           mountPath: /client
           readOnly: true
-        - name: server-volume
+        - name: server-ca-volume
           mountPath: /server
           readOnly: true
-        - mountPath: /tests
-          name: script-volume
+        - mountPath: /scripts
+          name: k6-scripts-volume
           readOnly: true
   volumes:
-    - name: client-volume
+    - name: client-auth-volume
       secret:
         secretName: test-user
-    - name: server-volume
+    - name: server-ca-volume
       secret:
         secretName: strimzi-cluster-cluster-ca-cert
-    - name: script-volume
+    - name: k6-scripts-volume
       configMap:
-        name: load-test-config
+        name: k6-scripts-config
 ```
 
 > [!TIP]
-> The environment variables `VUS` and `DURATION` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed. Use these instead of the CLI flags `--vus` and `--duration` as those apply only to the default scenario and will throw an error because it's not used.
+> The environment variables `VUS` and `DURATION` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed. use this method for configuring k6 instead of the CLI flags `--vus` and `--duration` as those [apply only to the default scenario](https://community.grafana.com/t/harness-docker-k6-error-function-default-not-found-in-exports/98961) and will throw an error because it's not used.
+
+To start load testing, run the following set of commands:
+
+```bash
+# Deploy pod to run the load test.
+kubectl create -f k6-load-test.yaml
+# View logs in realtime (-f).
+kubectl logs -l app.kubernetes.io/name=k6-load-test --tail=100 -f -n strimzi
+# Delete pod after reviewing summary in logs.
+kubectl delete -f k6-load-test.yaml
+```
+
+When finished, in the `command` field of the pod, try switching `producer-load-test.js` for `consumer-load-test.js` to run another test, except this time using a consumer.
+
+### Sending load testing results to Prometheus
+If `strimzi-kafka-operator.dashboards.enabled` was previously enabled as per the [Monitoring with Prometheus and Grafana](#monitoring-with-prometheus-and-grafana) section, then there would have been a dashboard called "Strimzi Kafka Exporter" created that would have useful information about the tests previously ran. However, the strmizi-cluster chart includes a specialized dashboard called "xk6-kafka-dashboard" that better represents the metrics collected from the load tests. To enable it, first update the kube-prometheus-stack chart with the configuration below to enable remote write receiver.
+
+```yaml
+prometheus:
+  prometheusSpec:
+    # Enables --web.enable-remote-write-receiver flag on prometheus-server.
+    # Enable this to allow K6 load test results to be sent to Prometheus.
+    enableRemoteWriteReceiver: true
+```
+
+After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update the `command` field in the pod above to include `"-o", "experimental-prometheus-rw"` as in the comment above it. The next time load testing is done, the data will appear in the dashboard.
 
 ## Values
 
@@ -381,6 +325,9 @@ spec:
 | cruiseControlRebalance.create | bool | `true` | Indicates whether or not to create a KafkaRebalance resource with an empty spec to use the default goals from the Cruise Control configuration for optimizing the cluster workloads. |
 | cruiseControlRebalance.labels | object | `{}` | labels to be added to the Kafka Rebalance resource. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
+| k6.dashboard.enabled | bool | `false` | Indicates whether or not to deploy a k6 Grafana dashboard for Kafka load testing results that will be imported automatically. Requires enabling Remote Write Receiver in Prometheus. See [Sending load testing results to Prometheus](#sending-load-testing-results-to-prometheus) for more information. |
+| k6.dashboard.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
+| k6.loadTestScripts.create | bool | `false` | Indicates whether or not to create a ConfigMap with k6 scripts that can be mounted for load testing Kafka. See the [Load testing the cluster](#load-testing-the-cluster) section of the README for more information. |
 | kafka.annotations | object | `{}` | annotations to be added to the Kafka resource. |
 | kafka.authorization.superUsers | list | `[]` | superUsers is a list of users that are considered super users and can perform any operation regardless of any access restrictions configured because the ACL rules aren't queried. Reference: [Designating super users](https://strimzi.io/docs/operators/0.45.0/deploying#designating_super_users). |
 | kafka.authorization.type | string | `"simple"` | type is the type of authorization to use on the Kafka brokers. Supported values are [simple](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationSimple-schema-reference), [opa](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationOpa-schema-reference), [keycloak](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationKeycloak-reference), and [custom](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationCustom-schema-reference). |
@@ -485,7 +432,7 @@ spec:
 | strimzi-drain-cleaner.secret.tls_crt | string | `""` | tls_crt is the TLS certificate in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
 | strimzi-drain-cleaner.secret.tls_key | string | `""` | tls_key is the TLS private key in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
 | strimzi-kafka-operator.affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
-| strimzi-kafka-operator.dashboards.enabled | bool | `false` | Indicates whether or not to deploy a set of Kafka related Grafana dashboards that are imported automatically. |
+| strimzi-kafka-operator.dashboards.enabled | bool | `false` | Indicates whether or not to deploy a set of Kafka related Grafana dashboards that will be imported automatically. |
 | strimzi-kafka-operator.dashboards.namespace | string | `"monitoring"` | namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
 | strimzi-kafka-operator.enabled | bool | `true` | Indicates whether or not to deploy Strimzi with the Kafka cluster. |
 | strimzi-kafka-operator.nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
