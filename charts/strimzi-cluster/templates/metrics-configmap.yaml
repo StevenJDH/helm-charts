@@ -24,6 +24,7 @@ metadata:
   name: {{ include "shared-library.fullname" . }}-metrics-config
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
 data:
   kafka-metrics-config.yaml: |
     # See https://github.com/prometheus/jmx_exporter for more info about JMX Prometheus Exporter metrics

@@ -1,31 +1,4 @@
 ---
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/000-Namespace.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
----
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/010-ServiceAccount.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: example-strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
-  namespace: strimzi-drain-cleaner
----
 # Source: strimzi-cluster/charts/strimzi-kafka-operator/templates/010-ServiceAccount-strimzi-cluster-operator.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -38,24 +11,6 @@ metadata:
     component: service-account
     release: example
     heritage: Helm
----
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/040-Secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
-  namespace: strimzi-drain-cleaner
-type: kubernetes.io/tls
-data:
-  tls.crt: 
-  tls.key:
 ---
 # Source: strimzi-cluster/charts/strimzi-kafka-operator/templates/050-ConfigMap-strimzi-cluster-operator.yaml
 kind: ConfigMap
@@ -106,6 +61,7 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "0.45.0"
     app.kubernetes.io/managed-by: Helm
+  namespace: default
 data:
   kafka-metrics-config.yaml: |
     # See https://github.com/prometheus/jmx_exporter for more info about JMX Prometheus Exporter metrics
@@ -276,29 +232,6 @@ data:
     - pattern: kafka.cruisecontrol<name=(.+)><>(\w+)
       name: kafka_cruisecontrol_$1_$2
       type: GAUGE
----
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/020-ClusterRole.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: example-strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
-rules:
-  # Drain Cleaner needs to be able to get the Kafka or ZooKeeper pods that are being evicted and patch them with the
-  # annotation which tells Strimzi Cluster Operator to roll the Pod
-  - apiGroups:
-      - ""
-    resources:
-      - pods
-    verbs:
-      - get
-      - patch
 ---
 # Source: strimzi-cluster/charts/strimzi-kafka-operator/templates/020-ClusterRole-strimzi-cluster-operator-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -740,27 +673,6 @@ rules:
   verbs:
   - get
 ---
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/030-ClusterRoleBinding.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: example-strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
-subjects:
-  - kind: ServiceAccount
-    name: example-strimzi-drain-cleaner
-    namespace: strimzi-drain-cleaner
-roleRef:
-  kind: ClusterRole
-  name: example-strimzi-drain-cleaner
-  apiGroup: rbac.authorization.k8s.io
----
 # Source: strimzi-cluster/charts/strimzi-kafka-operator/templates/021-ClusterRoleBinding-strimzi-cluster-operator.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -824,64 +736,6 @@ subjects:
 roleRef:
   kind: ClusterRole
   name: strimzi-kafka-client
-  apiGroup: rbac.authorization.k8s.io
----
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/021-Role.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: example-strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
-  namespace: strimzi-drain-cleaner
-rules:
-  # When certificate reloading is enabled, Drain Cleaner will delete itself to reload the certificates. Therefore it
-  # needs the right to delete the pods in its own namespace.
-  - apiGroups:
-      - ""
-    resources:
-      - pods
-    verbs:
-      - delete
-  # When certificate reloading is enabled, Strimzi needs to be able to get, list and watch the Secret with the
-  # certificate to detect any changes to it. The RBAC allows it to watch only one Secret with given name. If your
-  # certificate Secret has a custom name, you need to modify this Role accordingly.
-  - apiGroups:
-      - ""
-    resources:
-      - secrets
-    verbs:
-      - get
-      - watch
-      - list
-    resourceNames:
-      - strimzi-drain-cleaner
----
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/031-RoleBinding.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: example-strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
-  namespace: strimzi-drain-cleaner
-subjects:
-  - kind: ServiceAccount
-    name: example-strimzi-drain-cleaner
-    namespace: strimzi-drain-cleaner
-roleRef:
-  kind: Role
-  name: example-strimzi-drain-cleaner
   apiGroup: rbac.authorization.k8s.io
 ---
 # Source: strimzi-cluster/charts/strimzi-kafka-operator/templates/020-RoleBinding-strimzi-cluster-operator.yaml
@@ -969,110 +823,6 @@ roleRef:
   kind: ClusterRole
   name: strimzi-entity-operator
   apiGroup: rbac.authorization.k8s.io
----
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/050-Service.yaml
-kind: Service
-apiVersion: v1
-metadata:
-  name: strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
-  namespace: strimzi-drain-cleaner
-spec:
-  ports:
-    - port: 80
-      name: http
-      protocol: TCP
-      targetPort: 8080
-    - port: 443
-      name: https
-      protocol: TCP
-      targetPort: 8443
-  selector:
-    app: strimzi-drain-cleaner
----
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/060-Deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
-  namespace: strimzi-drain-cleaner
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: strimzi-drain-cleaner
-  template:
-    metadata:
-      labels:
-        app: strimzi-drain-cleaner
-    spec:
-      serviceAccountName: example-strimzi-drain-cleaner
-      containers:
-        - name: strimzi-drain-cleaner
-          image: quay.io/strimzi/drain-cleaner:1.2.0
-          ports:
-            - containerPort: 8080
-              name: http
-            - containerPort: 8443
-              name: https
-          env:
-            - name: STRIMZI_DRAIN_KAFKA
-              value: "true"
-            - name: STRIMZI_DRAIN_ZOOKEEPER
-              value: "true"
-            - name: STRIMZI_DENY_EVICTION
-              value: "true"
-            - name: STRIMZI_CERTIFICATE_WATCH_ENABLED
-              value: "true"
-            - name: STRIMZI_CERTIFICATE_WATCH_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: STRIMZI_CERTIFICATE_WATCH_POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-          args:
-            - /opt/strimzi/bin/drain_cleaner_run.sh
-          volumeMounts:
-            - name: webhook-certificates
-              mountPath: "/etc/webhook-certificates"
-              readOnly: true
-            - name: tmp-dir
-              mountPath: "/tmp"
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: http
-            initialDelaySeconds: 10
-            periodSeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: http
-            initialDelaySeconds: 10
-            periodSeconds: 30
-      volumes:
-        - name: webhook-certificates
-          secret:
-            secretName: strimzi-drain-cleaner
-        - name: tmp-dir
-          emptyDir: {}
-  strategy:
-    type: RollingUpdate
 ---
 # Source: strimzi-cluster/charts/strimzi-kafka-operator/templates/060-Deployment-strimzi-cluster-operator.yaml
 apiVersion: apps/v1
@@ -1349,34 +1099,3 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec: {}
----
-# Source: strimzi-cluster/charts/strimzi-drain-cleaner/templates/070-ValidatingWebhookConfiguration.yaml
-apiVersion: admissionregistration.k8s.io/v1
-kind: ValidatingWebhookConfiguration
-metadata:
-  name: strimzi-drain-cleaner
-  labels:
-    helm.sh/chart: strimzi-drain-cleaner-1.2.0
-    app: strimzi-drain-cleaner
-    app.kubernetes.io/version: "1.2.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: strimzi-drain-cleaner
-    app.kubernetes.io/instance: example
-webhooks:
-  - name: strimzi-drain-cleaner.strimzi.io
-    rules:
-      - apiGroups:   [""]
-        apiVersions: ["v1"]
-        operations:  ["CREATE"]
-        resources:   ["pods/eviction"]
-        scope:       "Namespaced"
-    clientConfig:
-      service:
-        namespace: "strimzi-drain-cleaner"
-        name: "strimzi-drain-cleaner"
-        path: /drainer
-        port: 443
-    admissionReviewVersions: ["v1"]
-    sideEffects: None
-    failurePolicy: Ignore
-    timeoutSeconds: 5

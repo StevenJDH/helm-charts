@@ -56,7 +56,7 @@ kafka:
     # resiliency, availability, and reliability. Strimzi will automatically add the Kubernetes preferred
     # affinity rule to distribute the node pools across the different availability zones or actual racks
     # in the data center, which is not guaranteed to be evenly done. As such, Cruise Control will make
-    # sure that replicas remain and get distributed properly if in use. When testing locally, set this 
+    # sure that replicas remain and get distributed properly if in use. When testing locally, set this
     # to `false`.
     enabled: true
     # -- customKey allows to override the standard `topology.kubernetes.io/zone` key used for the
@@ -78,7 +78,7 @@ kafka:
       # -- port is the port number for the listener. When configuring listeners for client access
       # to brokers, use port 9092 or higher, but with a few exceptions. The listeners cannot be
       # configured to use the ports reserved for interbroker communication (9090 and 9091),
-      # Prometheus metrics (9404), and JMX (Java Management Extensions) monitoring (9999). 
+      # Prometheus metrics (9404), and JMX (Java Management Extensions) monitoring (9999).
       port: 9092
       # -- type is the type of listener. Supported values are `ingress`, `internal`, `route`
       # (OpenShift only), `loadbalancer`, `cluster-ip`, and `nodeport`.
@@ -293,7 +293,7 @@ nodePools:
     # -- Indicates whether or not to deploy this broker node pool with the Kafka cluster. Should be set to
     # `false` if using a dual-role broker pool.
     enabled: true
-    # -- nameOverride allows to override the generated pool name that is based on the config key, in this 
+    # -- nameOverride allows to override the generated pool name that is based on the config key, in this
     # case `<cluster-name>-broker`, to something custom.
     nameOverride: ""
     # -- annotations to be added to the KafkaNodePool resource. It's recommended to set something like
@@ -342,7 +342,7 @@ nodePools:
     # -- Indicates whether or not to deploy this controller node pool with the Kafka cluster. Should be set to
     # `false` if using a dual-role broker pool.
     enabled: true
-    # -- nameOverride allows to override the generated pool name that is based on the config key, in this 
+    # -- nameOverride allows to override the generated pool name that is based on the config key, in this
     # case `<cluster-name>-kraft-controller`, to something custom.
     nameOverride: ""
     # -- annotations to be added to the KafkaNodePool resource. It's recommended to set something like
@@ -389,7 +389,7 @@ nodePools:
     # -- Indicates whether or not to deploy this dual-role broker pool with the Kafka cluster. Should be set to
     # `false` if using other broker and controller node pools.
     enabled: false
-    # -- nameOverride allows to override the generated pool name that is based on the config key, in this 
+    # -- nameOverride allows to override the generated pool name that is based on the config key, in this
     # case `<cluster-name>-dual-role-broker`, to something custom.
     nameOverride: ""
     # -- annotations to be added to the KafkaNodePool resource.
@@ -502,7 +502,7 @@ strimzi-kafka-operator:
 
 strimzi-drain-cleaner:
   # -- Indicates whether or not to deploy Drain Cleaner with the Kafka cluster.
-  enabled: true
+  enabled: false
   # -- replicaCount is for the number of Drain Cleaner instances.
   replicaCount: 1
   certManager:
