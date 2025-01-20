@@ -78,41 +78,40 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check K8s Exclusions
-        id: check-exclusions
+      - name: Check chart requirements
+        id: check-req
         run: |
-          CURRENT_K8S_VERSION=$(echo "${{ matrix.kubernetesVersion }}" | cut -d'.' -f1,2)
-          echo "Checking for K8s version: $CURRENT_K8S_VERSION"
+          echo "Checking chart version requirements before kind tests..."
+          CHART_NAME=${{ needs.lint-test.outputs.changed-chart }}
+          K8S_VERSION=${{ matrix.kubernetesVersion }}
 
-          # Extract exclusion list for the current chart.
-          EXCLUSION_LINE=$(grep "^${{ needs.lint-test.outputs.changed-chart }}=" exclusions.txt || echo "")
-          EXCLUDED_VERSIONS=$(echo "$EXCLUSION_LINE" | cut -d'=' -f2)
-          echo "Chart exclusions: [$EXCLUDED_VERSIONS]"
-
-          # Check if the current Kubernetes version is in the exclusion list.
-          if [[ "$EXCLUDED_VERSIONS" == *"$CURRENT_K8S_VERSION"* ]]; then
-            echo "::notice::Excluded K8s version $CURRENT_K8S_VERSION for ${{ needs.lint-test.outputs.changed-chart }} chart."
+          REQ_LINE=$(grep "^$CHART_NAME=" kind-requirements.txt || echo "")
+          REQ_VERSION=$(echo "$REQ_LINE" | cut -d'=' -f2)
+          echo "Chart minimum requirement: [$REQ_VERSION]"
+          
+          if [[ "$(echo -e "$REQ_VERSION\n$K8S_VERSION" | sort -V | tail -n 1)" == "$REQ_VERSION" ]]; then
+            echo "::notice::Excluded K8s version $K8S_VERSION from kind tests for $CHART_NAME chart."
             echo "skip=true" >> $GITHUB_OUTPUT
           else
-            echo "No exclusions found, so proceeding with kind tests."
+            echo "Minimum version requirements met, so proceeding with kind tests."
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Set up Helm
-        if: steps.check-exclusions.outputs.skip != 'true'
+        if: steps.check-req.outputs.skip != 'true'
         uses: azure/setup-helm@v4
         with:
           version: v3.17.0
 
       - name: Set up Python
-        if: steps.check-exclusions.outputs.skip != 'true'
+        if: steps.check-req.outputs.skip != 'true'
         uses: actions/setup-python@v5
         with:
           # Use single quotes or trailing 0s are lost.
           python-version: '3.13'
 
       - name: Set up chart-testing
-        if: steps.check-exclusions.outputs.skip != 'true'
+        if: steps.check-req.outputs.skip != 'true'
         # Full version for action needs to be specified
         # because @2 points to previous release with
         # issue helm/chart-testing-action#135.
@@ -121,7 +120,7 @@ jobs:
           version: '3.12.0'
 
       - name: Create kind cluster ${{ matrix.kubernetesVersion }}
-        if: steps.check-exclusions.outputs.skip != 'true'
+        if: steps.check-req.outputs.skip != 'true'
         uses: helm/kind-action@v1
         with:
           node_image: ${{ matrix.kindImage }}
@@ -129,5 +128,5 @@ jobs:
           cluster_name: chart-testing
 
       - name: Run chart-testing (install)
-        if: steps.check-exclusions.outputs.skip != 'true'
+        if: steps.check-req.outputs.skip != 'true'
         run: ct install --config ct.yaml

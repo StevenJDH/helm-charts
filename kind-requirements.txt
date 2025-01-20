@@ -1,0 +1,1 @@
+strimzi-cluster=v1.25
