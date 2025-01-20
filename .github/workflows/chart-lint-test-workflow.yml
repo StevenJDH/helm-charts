@@ -17,6 +17,7 @@ jobs:
     # Map a step output to a job output.
     outputs:
       list-changed: ${{ steps.list-changed.outputs.changed }}
+      changed-chart: ${{ steps.list-changed.outputs.changed-chart }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,17 +27,21 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v4
         with:
-          version: v3.12.1
+          version: v3.17.0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           # Use single quotes or trailing 0s are lost.
-          python-version: '3.10'
+          python-version: '3.13'
 
       - name: Set up chart-testing
-        # Full version for action needs to be specified.
+        # Full version for action needs to be specified
+        # because @2 points to previous release with
+        # issue helm/chart-testing-action#135.
         uses: helm/chart-testing-action@v2.6.1
+        with:
+          version: '3.12.0'
 
       - name: Run chart-testing (list-changed)
         id: list-changed
@@ -44,6 +49,7 @@ jobs:
           changed=$(ct list-changed --config ct.yaml --excluded-charts shared-library)
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> $GITHUB_OUTPUT
+            echo "changed-chart=${changed#charts/}" >> $GITHUB_OUTPUT
           fi
 
       - name: Run chart-testing (lint)
@@ -57,37 +63,65 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetesVersion: [v1.19.16, v1.24.17, v1.29.1]
+        kubernetesVersion: [v1.19.16, v1.25.16, v1.32.0]
         include:
         # Images: https://github.com/kubernetes-sigs/kind/releases
         - kubernetesVersion: v1.19.16
           kindImage: kindest/node:v1.19.16@sha256:a146f9819fece706b337d34125bbd5cb8ae4d25558427bf2fa3ee8ad231236f2
-        - kubernetesVersion: v1.24.17
-          kindImage: kindest/node:v1.24.17@sha256:ea292d57ec5dd0e2f3f5a2d77efa246ac883c051ff80e887109fabefbd3125c7
-        - kubernetesVersion: v1.29.1
-          kindImage: kindest/node:v1.29.1@sha256:a0cc28af37cf39b019e2b448c54d1a3f789de32536cb5a5db61a49623e527144
+        - kubernetesVersion: v1.25.16
+          kindImage: kindest/node:v1.25.16@sha256:6110314339b3b44d10da7d27881849a87e092124afab5956f2e10ecdb463b025
+        - kubernetesVersion: v1.32.0
+          kindImage: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
+      - name: Check K8s Exclusions
+        id: check-exclusions
+        run: |
+          CURRENT_K8S_VERSION=$(echo "${{ matrix.kubernetesVersion }}" | cut -d'.' -f1,2)
+          echo "Checking for K8s version: $CURRENT_K8S_VERSION"
+
+          # Extract exclusion list for the current chart.
+          EXCLUSION_LINE=$(grep "^${{ needs.lint-test.outputs.changed-chart }}=" exclusions.txt || echo "")
+          EXCLUDED_VERSIONS=$(echo "$EXCLUSION_LINE" | cut -d'=' -f2)
+          echo "Chart exclusions: [$EXCLUDED_VERSIONS]"
+
+          # Check if the current Kubernetes version is in the exclusion list.
+          if [[ "$EXCLUDED_VERSIONS" == *"$CURRENT_K8S_VERSION"* ]]; then
+            echo "::notice::Excluded K8s version $CURRENT_K8S_VERSION for ${{ needs.lint-test.outputs.changed-chart }} chart."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "No exclusions found, so proceeding with kind tests."
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Set up Helm
+        if: steps.check-exclusions.outputs.skip != 'true'
         uses: azure/setup-helm@v4
         with:
-          version: v3.12.1
+          version: v3.17.0
 
       - name: Set up Python
+        if: steps.check-exclusions.outputs.skip != 'true'
         uses: actions/setup-python@v5
         with:
           # Use single quotes or trailing 0s are lost.
-          python-version: '3.10'
+          python-version: '3.13'
 
       - name: Set up chart-testing
-        # Full version for action needs to be specified.
+        if: steps.check-exclusions.outputs.skip != 'true'
+        # Full version for action needs to be specified
+        # because @2 points to previous release with
+        # issue helm/chart-testing-action#135.
         uses: helm/chart-testing-action@v2.6.1
-        
+        with:
+          version: '3.12.0'
+
       - name: Create kind cluster ${{ matrix.kubernetesVersion }}
+        if: steps.check-exclusions.outputs.skip != 'true'
         uses: helm/kind-action@v1
         with:
           node_image: ${{ matrix.kindImage }}
@@ -95,4 +129,5 @@ jobs:
           cluster_name: chart-testing
 
       - name: Run chart-testing (install)
+        if: steps.check-exclusions.outputs.skip != 'true'
         run: ct install --config ct.yaml
