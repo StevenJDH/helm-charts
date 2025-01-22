@@ -256,7 +256,7 @@ podMonitor:
   create: false
   # -- overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor
   # resources will be deployed. If deploying to a namespace where the prometheus operator isn't
-  # location, some config changes will be required. See
+  # located, some config changes will be required. See
   # [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README
   # for more information.
   overrideNamespace: ""
@@ -275,6 +275,28 @@ scrapeConfigHeadlessServices:
   # [Option 2](#option-2---using-headless-services) under the Monitoring section of the README for
   # more information.
   create: false
+
+prometheusKafkaAlerts:
+  # -- Indicates whether or not to create PrometheusRules to define Kafka related alerts. Ensure to set
+  # `kafka.metricsEnabled` to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. Also,
+  # `podMonitor.create` or `scrapeConfigHeadlessServices.create` must be set to `true`.  See
+  # [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring
+  # section of the README for more information.
+  create: true
+  # -- overrideNamespace allows to override the default `monitoring` namespace where the PrometheusRule
+  # resource will be deployed. If deploying to a namespace where the prometheus operator isn't
+  # located, some config changes will be required. See
+  # [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring
+  # section of the README for more information.
+  overrideNamespace: ""
+  # -- labels to be added to the PrometheusRule resource. This is used by the auto-discovery feature of
+  # the prometheus operator, which by default uses the release name of the kube-prometheus-stack
+  # chart used when installing. Adjustments may be needed if deploying to a different namespace
+  # other then where the prometheus operator is deployed. See
+  # [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring
+  # section of the README for more information.
+  labels:
+    release: kube-prometheus-stack
 
 cruiseControlRebalance:
   # -- Indicates whether or not to create a KafkaRebalance resource with an empty spec to use
