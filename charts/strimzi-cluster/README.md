@@ -67,14 +67,14 @@ openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
 openssl x509 -req -sha256 -days 11688 -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt \
     -copy_extensions copy
 
-# 5. Base64 encode the files as expected by the Drain Cleaner.
+# 5. Base64 encode the files as expected by Drain Cleaner.
 base64 -w0 tls.crt > tls.crt.base64
 base64 -w0 tls.key > tls.key.base64
 base64 -w0 ca.crt > ca.crt.base64
 ```
 
 ## Monitoring with Prometheus and Grafana
-This sections shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
+This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -122,7 +122,7 @@ prometheus:
 After the kube-prometheus-stack chart has been deployed or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
 
 ### Option 2 - Using Headless Services
-This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack), `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
+This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) chart instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) chart, `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
 
 **prometheus-values.yaml**
 
@@ -319,7 +319,7 @@ spec:
 ```
 
 > [!TIP]
-> The environment variables `VUS` and `DURATION` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed. use this method for configuring k6 instead of the CLI flags `--vus` and `--duration` as those [apply only to the default scenario](https://community.grafana.com/t/harness-docker-k6-error-function-default-not-found-in-exports/98961) and will throw an error because it's not used.
+> The environment variables `VUS` and `DURATION` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed. Use this method for configuring k6 instead of the CLI flags `--vus` and `--duration` as those [apply only to the default scenario](https://community.grafana.com/t/harness-docker-k6-error-function-default-not-found-in-exports/98961) and will throw an error because it's not used.
 
 To start load testing, run the following set of commands:
 
@@ -345,7 +345,7 @@ prometheus:
     enableRemoteWriteReceiver: true
 ```
 
-After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update the `command` field in the pod above to include `"-o", "experimental-prometheus-rw"` as in the comment above it. The next time load testing is done, the data will appear in the dashboard.
+After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update the `command` field in the pod above to include `"-o", "experimental-prometheus-rw"` as in the comment above it. The next time load testing is done, data will appear in the dashboard.
 
 ## Values
 
@@ -386,7 +386,7 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | kafka.listeners[0].tls | bool | `false` | tls indicates whether or not to enable TLS for the listener. For `route` and `ingress` type listeners, TLS encryption must be always enabled. |
 | kafka.listeners[0].type | string | `"internal"` | type is the type of listener. Supported values are `ingress`, `internal`, `route` (OpenShift only), `loadbalancer`, `cluster-ip`, and `nodeport`. Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/0.45.0/deploying#configuration-points-listeners-str). |
 | kafka.listeners[1].authentication.type | string | `"tls"` | type is the type of authentication to use on the Kafka brokers. Supported values are `tls`, `scram-sha-512`, `oauth`, and `custom`. |
-| kafka.listeners[1].configuration.useServiceDnsDomain | bool | `true` | useServiceDnsDomain indicates whether or not to use the service DNS domain for the listener. By default, `internal` and `cluster-ip` listeners and their headless service do not use the Kubernetes service DNS domain (typically .cluster.local). This makes them only accessible from within the same namespace (i.e., <service-name>). To enable cross-namespace communication, set this to `true`. Reference: [Using fully-qualified DNS names](https://strimzi.io/docs/operators/0.45.0/configuring#property-listener-config-dns-reference). |
+| kafka.listeners[1].configuration.useServiceDnsDomain | bool | `true` | useServiceDnsDomain indicates whether or not to use the service DNS domain for the listener. By default, `internal` and `cluster-ip` listeners and their headless service do not use the Kubernetes service DNS domain (typically `*.cluster.local`). This makes them only accessible from within the same namespace (i.e., `<cluster-name>-kafka-bootstrap:9092`). To enable cross-namespace communication, set this to `true`. Reference: [Using fully-qualified DNS names](https://strimzi.io/docs/operators/0.45.0/configuring#property-listener-config-dns-reference). |
 | kafka.listeners[1].name | string | `"tls"` | name is the unique name of the listener within given a Kafka cluster. It consists of lowercase characters and numbers and can be up to 11 characters long. |
 | kafka.listeners[1].port | int | `9094` | port is the port number for the listener. When configuring listeners for client access to brokers, use port 9092 or higher, but with a few exceptions. The listeners cannot be configured to use the ports reserved for interbroker communication (9090 and 9091), Prometheus metrics (9404), and JMX (Java Management Extensions) monitoring (9999). |
 | kafka.listeners[1].tls | bool | `true` | tls indicates whether or not to enable TLS for the listener. For `route` and `ingress` type listeners, TLS encryption must be always enabled. |

@@ -109,9 +109,9 @@ kafka:
       configuration:
         # -- useServiceDnsDomain indicates whether or not to use the service DNS domain for the listener.
         # By default, `internal` and `cluster-ip` listeners and their headless service do not use the
-        # Kubernetes service DNS domain (typically .cluster.local). This makes them only accessible from
-        # within the same namespace (i.e., <service-name>). To enable cross-namespace communication, set
-        # this to `true`.
+        # Kubernetes service DNS domain (typically `*.cluster.local`). This makes them only accessible
+        # from within the same namespace (i.e., `<cluster-name>-kafka-bootstrap:9092`). To enable
+        # cross-namespace communication, set this to `true`.
         # Reference: [Using fully-qualified DNS names](https://strimzi.io/docs/operators/0.45.0/configuring#property-listener-config-dns-reference).
         useServiceDnsDomain: true
   authorization:

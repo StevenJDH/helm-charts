@@ -57,14 +57,14 @@ openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
 openssl x509 -req -sha256 -days 11688 -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt \
     -copy_extensions copy
 
-# 5. Base64 encode the files as expected by the Drain Cleaner.
+# 5. Base64 encode the files as expected by Drain Cleaner.
 base64 -w0 tls.crt > tls.crt.base64
 base64 -w0 tls.key > tls.key.base64
 base64 -w0 ca.crt > ca.crt.base64
 ```
 
 ## Monitoring with Prometheus and Grafana
-This sections shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
+This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -112,7 +112,7 @@ prometheus:
 After the kube-prometheus-stack chart has been deployed or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
 
 ### Option 2 - Using Headless Services
-This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack), `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
+This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) chart instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) chart, `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
 
 **prometheus-values.yaml**
 
@@ -309,7 +309,7 @@ spec:
 ```
 
 > [!TIP]
-> The environment variables `VUS` and `DURATION` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed. use this method for configuring k6 instead of the CLI flags `--vus` and `--duration` as those [apply only to the default scenario](https://community.grafana.com/t/harness-docker-k6-error-function-default-not-found-in-exports/98961) and will throw an error because it's not used.
+> The environment variables `VUS` and `DURATION` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed. Use this method for configuring k6 instead of the CLI flags `--vus` and `--duration` as those [apply only to the default scenario](https://community.grafana.com/t/harness-docker-k6-error-function-default-not-found-in-exports/98961) and will throw an error because it's not used.
 
 To start load testing, run the following set of commands:
 
@@ -335,7 +335,7 @@ prometheus:
     enableRemoteWriteReceiver: true
 ```
 
-After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update the `command` field in the pod above to include `"-o", "experimental-prometheus-rw"` as in the comment above it. The next time load testing is done, the data will appear in the dashboard.
+After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update the `command` field in the pod above to include `"-o", "experimental-prometheus-rw"` as in the comment above it. The next time load testing is done, data will appear in the dashboard.
 
 {{ template "chart.valuesSection" . }}
 
