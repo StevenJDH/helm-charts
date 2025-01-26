@@ -32,8 +32,12 @@ scrapeConfigHeadlessServices:
 nodePools:
   broker:
     enabled: false
+    annotations:
+      strimzi.io/next-node-ids: "[0-10]"
   kraft-controller:
     enabled: false
+    annotations:
+      strimzi.io/next-node-ids: "[11-20]"
   dual-role-broker:
     enabled: true
 
