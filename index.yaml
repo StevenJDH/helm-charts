@@ -321,4 +321,35 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/shared-library-0.1.0/shared-library-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-07T22:46:28.490036567Z"
+  strimzi-cluster:
+  - apiVersion: v2
+    appVersion: 0.45.0
+    created: "2025-01-27T01:07:49.754576945Z"
+    dependencies:
+    - condition: strimzi-kafka-operator.enabled
+      name: strimzi-kafka-operator
+      repository: oci://quay.io/strimzi-helm
+      version: 0.45.0
+    - condition: strimzi-drain-cleaner.enabled
+      name: strimzi-drain-cleaner
+      repository: oci://quay.io/strimzi-helm
+      version: 1.2.0
+    - name: shared-library
+      repository: https://StevenJDH.github.io/helm-charts
+      version: ^0.x
+    description: Installs Strimzi, Drain Cleaner, and a Kafka cluster in KRaft mode.
+    digest: fc46fc869e1c97c0b255b119d3eb732bf58fd2a8f1f96b25077250987c4bca40
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.25.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: strimzi-cluster
+    sources:
+    - https://github.com/strimzi/strimzi-kafka-operator
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/strimzi-cluster-0.1.0/strimzi-cluster-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-01-27T01:07:49.754596682Z"
