@@ -1,0 +1,343 @@
+# Strimzi Cluster Helm Chart
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Usage example
+
+```bash
+helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
+helm repo update
+helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
+    --set strimzi-kafka-operator.enabled=true \
+    --set strimzi-drain-cleaner.enabled=true \
+    --set strimzi-drain-cleaner.certManager.create=false \
+    --set-file strimzi-drain-cleaner.secret.tls_crt=tls.crt.base64 \
+    --set-file strimzi-drain-cleaner.secret.tls_key=tls.key.base64 \
+    --set-file strimzi-drain-cleaner.secret.ca_bundle=ca.crt.base64 \
+    --set kafka.rackTopology.enabled=false \
+    --namespace example \
+    --create-namespace \
+    --atomic
+```
+
+> [!TIP]
+> To test Drain Cleaner, run the command `kubectl drain <node-name> --delete-emptydir-data --ignore-daemonsets --timeout=6000s --force` against a node with a broker, which will fail the first time because the strimzi cluster operator will take over for relocating those workloads. Then, rerun the command again after a few minutes, and it will work this time. For more info, see [Using the Strimzi Drain Cleaner](https://github.com/strimzi/drain-cleaner?tab=readme-ov-file#see-it-in-action).
+
+### Create Drain Cleaner certificate chain
+
+The following shows how to create the needed TLS certificates if Drain Cleaner will be installed with `strimzi-drain-cleaner.certManager.create` set to `false` as per above example. OpenSSL CLI v1.1.1 or newer is required.
+
+```bash
+# 1. Set the namespace used by Drain Cleaner.
+namespace=strimzi-drain-cleaner
+
+# 2. Create CA certificate and key.
+openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 11688 -noenc \
+    -subj "/CN=Strimzi Drain Cleaner Root CA/O=StevenJDH" \
+    -addext "basicConstraints=critical,CA:TRUE,pathlen:1" \
+    -addext "keyUsage=critical,keyCertSign,cRLSign" \
+    -addext "subjectKeyIdentifier=hash"
+
+# 3. Create certificate signing request (*.csr) and private key.
+openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
+    -subj "/CN=strimzi-drain-cleaner.$namespace.svc/O=StevenJDH" \
+    -addext "basicConstraints=critical,CA:FALSE" \
+    -addext "extendedKeyUsage=serverAuth" \
+    -addext "keyUsage=critical,digitalSignature,keyEncipherment,keyAgreement" \
+    -addext "subjectAltName=DNS:strimzi-drain-cleaner.$namespace.svc" \
+    -addext "subjectKeyIdentifier=hash"
+
+# 4. Created CA signed server certificate from CSR.
+openssl x509 -req -sha256 -days 11688 -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt \
+    -copy_extensions copy
+
+# 5. Base64 encode the files as expected by Drain Cleaner.
+base64 -w0 tls.crt > tls.crt.base64
+base64 -w0 tls.key > tls.key.base64
+base64 -w0 ca.crt > ca.crt.base64
+```
+
+## Monitoring with Prometheus and Grafana
+This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 68.1.0
+    -f prometheus-values.yaml \ # Check below for one of the options to use for this file.
+    --namespace monitoring \
+    --create-namespace \
+    --atomic
+```
+
+### Option 1 - Using PodMonitor (Recommended)
+This recommended approach will automatically detect and directly collect metrics from Strimzi related pods.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  # Change adminPassword as needed.
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    # Disabling this adds better support for third-party PodMonitor resource detection
+    # in its namespace without having to deal with label filtering or compromising the
+    # default discovery. Otherwise, the 'release: kube-prometheus-stack' label needs
+    # to be present in CRD resources like PodMonitor. To get the release name if
+    # the chart is already installed, use 'helm list -n monitoring'.
+    podMonitorSelectorNilUsesHelmValues: true
+
+    # PodMonitors to be selected for target discovery. If {}, select all PodMonitors.
+    podMonitorSelector: {}
+      # matchLabels:
+      #   prometheus: main
+      
+    # Namespaces matching labels to be selected for PodMonitor discovery. If {},
+    # select own namespace (e.g., monitoring). Useful for when wanting to keep
+    # resources together with app instead of grouped together in monitoring namespace.
+    podMonitorNamespaceSelector: {}
+      # matchLabels:
+      #   monitoring: prometheus
+```
+
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
+
+### Option 2 - Using Headless Services
+This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) chart instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) chart, `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  # Change adminPassword as needed.
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: strimzi-brokers-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-broker-metrics-headless.strimzi.svc.cluster.local
+      relabelings:
+        - separator: ;
+          regex: __meta_kubernetes_pod_label_(strimzi_io_.+)
+          replacement: $1
+          action: labelmap
+        - sourceLabels: [__meta_kubernetes_namespace]
+          separator: ;
+          regex: (.*)
+          targetLabel: namespace
+          replacement: $1
+          action: replace
+        - sourceLabels: [__meta_kubernetes_pod_name]
+          separator: ;
+          regex: (.*)
+          targetLabel: kubernetes_pod_name
+          replacement: $1
+          action: replace
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          separator: ;
+          regex: (.*)
+          targetLabel: node_name
+          replacement: $1
+          action: replace
+        - sourceLabels: [__meta_kubernetes_pod_host_ip]
+          separator: ;
+          regex: (.*)
+          targetLabel: node_ip
+          replacement: $1
+          action: replace
+    - job_name: strimzi-kraft-controllers-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-kraft-controller-metrics-headless.strimzi.svc.cluster.local
+    - job_name: strimzi-cluster-operator-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-cluster-operator-metrics-headless.strimzi.svc.cluster.local
+    - job_name: strimzi-entity-operator-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-entity-operator-metrics-headless.strimzi.svc.cluster.local
+    - job_name: strimzi-cruise-control-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-cruise-control-metrics-headless.strimzi.svc.cluster.local
+    - job_name: strimzi-kafka-exporter-metrics
+      scrape_interval: 5s
+      metrics_path: /metrics
+      dns_sd_configs:
+      - names:
+        - strimzi-kafka-exporter-metrics-headless.strimzi.svc.cluster.local
+```
+
+> [!NOTE]  
+> The above config assumes that the strimzi-cluster chart is deployed to the `strimzi` namespace. If not, then update to match. Also, the relabeling section hasn't been applied to every job for conciseness. To match Option 1's relabeling, apply to each job except for the two operators.
+
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
+
+### Optional - Enabling Prometheus alert rules
+Customize and consolidate the below with one of the options above if wanting to create alerts in a different namespace from where the kube-prometheus-stack chart is deployed. In many cases, the below is not needed. After, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart.
+
+```yaml
+prometheus:
+  prometheusSpec:
+    # Disabling this adds better support for third-party PrometheusRule resource
+    # detection in its namespace without having to deal with label filtering or
+    # compromising the default discovery. Otherwise, the 'release: kube-prometheus-stack'
+    # label needs to be present in CRD resources like PrometheusRule. To get the
+    # release name if the chart is already installed, use 'helm list -n monitoring'.
+    ruleSelectorNilUsesHelmValues: true
+
+    # PrometheusRules to be selected for discovery. If {}, select all PrometheusRules.
+    ruleSelector: {}
+      # matchLabels:
+      #   prometheus: main
+      # matchExpressions:
+      #   - key: prometheus
+      #     operator: In
+      #     values:
+      #       - main
+      #       - examples
+      
+    # Namespaces matching labels to be selected for PrometheusRule discovery. If {},
+    # select own namespace (e.g., monitoring). Useful for when wanting to keep
+    # resources together with app instead of grouped together in monitoring namespace.
+    ruleNamespaceSelector: {}
+      # matchLabels:
+      #   monitoring: prometheus
+```
+
+## Load testing the cluster
+Below is a pod definition that will run one of the included producer and consumer load test scripts against a cluster. The scripts are ran by using a Grafana managed tool called [K6](https://grafana.com/docs/k6/latest/using-k6/) that is making use of a [Kafka extension](https://github.com/mostafa/xk6-kafka). If it hasn't been done already, set `testResources.create` and `k6.loadTestScripts.create` to `true` in this chart to create the included test user, test topic, and load testing scripts. Next, store the following pod definition into a file.
+
+**k6-load-test.yaml**
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: k6-load-test
+  labels:
+    app.kubernetes.io/name: k6-load-test
+  namespace: strimzi
+spec:
+  restartPolicy: Never
+  containers:
+    - image: mostafamoradian/xk6-kafka:latest
+      name: xk6-kafka
+      # For sending Prometheus metrics, use:
+      # command: ["k6", "run", "-o", "experimental-prometheus-rw", "/scripts/producer-load-test.js"]
+      command: ["k6", "run", "/scripts/producer-load-test.js"]
+      env:
+        - name: BOOTSTRAP_URL
+          value: strimzi-cluster-kafka-bootstrap:9094
+        - name: CLUSTER
+          value: strimzi-cluster
+        - name: TOPIC
+          value: test-topic
+        - name: CONSUMER_GROUP
+          value: test-consumer-group
+        - name: CERT_PATH
+          value: "/client/user.crt"
+        - name: KEY_PATH
+          value: "/client/user.key"
+        - name: CA_PATH
+          value: "/server/ca.crt"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: VUS
+          value: "1"
+        - name: DURATION
+          value: "10s"
+        - name: GRACEFUL_STOP
+          value: "30s"
+        - name: K6_PROMETHEUS_RW_SERVER_URL
+          value: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/api/v1/write
+        - name: K6_PROMETHEUS_RW_TREND_STATS
+          value: p(90),p(95),p(99),count,min,med,max,avg,sum
+        # Will be marked stale after 5 minutes if false.
+        - name: K6_PROMETHEUS_RW_STALE_MARKERS
+          value: "false"
+      volumeMounts:
+        - name: client-auth-volume
+          mountPath: /client
+          readOnly: true
+        - name: server-ca-volume
+          mountPath: /server
+          readOnly: true
+        - mountPath: /scripts
+          name: k6-scripts-volume
+          readOnly: true
+  volumes:
+    - name: client-auth-volume
+      secret:
+        secretName: test-user
+    - name: server-ca-volume
+      secret:
+        secretName: strimzi-cluster-cluster-ca-cert
+    - name: k6-scripts-volume
+      configMap:
+        name: k6-scripts-config
+```
+
+> [!TIP]
+> The environment variables `VUS` and `DURATION` represent the number of concurrent virtual users and the duration specified in a format of `s` (seconds), `m` (minutes), or `h` (hours). Adjust these values as needed. Use this method for configuring k6 instead of the CLI flags `--vus` and `--duration` as those [apply only to the default scenario](https://community.grafana.com/t/harness-docker-k6-error-function-default-not-found-in-exports/98961) and will throw an error because it's not used.
+
+To start load testing, run the following set of commands:
+
+```bash
+# Deploy pod to run the load test.
+kubectl create -f k6-load-test.yaml
+# View logs in realtime (-f).
+kubectl logs -l app.kubernetes.io/name=k6-load-test --tail=100 -f -n strimzi
+# Delete pod after reviewing summary in logs.
+kubectl delete -f k6-load-test.yaml
+```
+
+When finished, in the `command` field of the pod, try switching `producer-load-test.js` for `consumer-load-test.js` to run another test, except this time using a consumer.
+
+### Sending load testing results to Prometheus
+If `strimzi-kafka-operator.dashboards.enabled` was previously enabled as per the [Monitoring with Prometheus and Grafana](#monitoring-with-prometheus-and-grafana) section, then there would have been a dashboard called "Strimzi Kafka Exporter" created that would have useful information about the tests previously ran. However, the strmizi-cluster chart includes a specialized dashboard called "xk6-kafka-dashboard" that better represents the metrics collected from the load tests. To enable it, first update the kube-prometheus-stack chart with the configuration below to enable remote write receiver.
+
+```yaml
+prometheus:
+  prometheusSpec:
+    # Enables --web.enable-remote-write-receiver flag on prometheus-server.
+    # Enable this to allow K6 load test results to be sent to Prometheus.
+    enableRemoteWriteReceiver: true
+```
+
+After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update the `command` field in the pod above to include `"-o", "experimental-prometheus-rw"` as in the comment above it. The next time load testing is done, data will appear in the dashboard.
+
+{{ template "chart.valuesSection" . }}
+
+
+{{ template "footer.signature" . }}

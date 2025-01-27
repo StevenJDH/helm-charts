@@ -1,0 +1,141 @@
+{{/*
+This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
+Copyright (C) 2025 Steven Jenkins De Haro.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl)    -}}
+{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter)    -}}
+{{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)                -}}
+{{- $createHeadlessSvc    := ((.Values.scrapeConfigHeadlessServices).create) -}}
+{{- if and $createHeadlessSvc (or $cruiseControlEnabled $metricsEnabled) -}}
+{{- range $name, $config := .Values.nodePools }}
+{{- if (($config).enabled) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: strimzi-{{ $config.nameOverride | default $name }}-metrics-headless
+  labels:
+    {{- include "shared-library.labels" $ | nindent 4 }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  publishNotReadyAddresses: true
+  ports:
+    - port: tcp-prometheus
+      protocol: TCP
+  selector:
+    strimzi.io/cluster: {{ include "shared-library.fullname" $ }}
+    strimzi.io/kind: Kafka
+    strimzi.io/pool-name: {{ $config.nameOverride | default $name }}
+---
+{{- end }}
+{{- end -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: strimzi-cluster-operator-metrics-headless
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  publishNotReadyAddresses: true
+  ports:
+    - port: http
+      protocol: TCP
+  selector:
+    strimzi.io/kind: cluster-operator
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: strimzi-entity-operator-metrics-headless
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  publishNotReadyAddresses: true
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: topic-operator
+    - port: 8081
+      protocol: TCP
+      name: user-operator
+  selector:
+    app.kubernetes.io/name: entity-operator
+---
+{{- if $cruiseControlEnabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: strimzi-cruise-control-metrics-headless
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  publishNotReadyAddresses: true
+  ports:
+    - port: tcp-prometheus
+      protocol: TCP
+  selector:
+    strimzi.io/cluster: {{ include "shared-library.fullname" . }}
+    strimzi.io/kind: Kafka
+    app.kubernetes.io/name: cruise-control
+---
+{{- end }}
+{{- end -}}
+{{- if and $createHeadlessSvc $kafkaExporterEnabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: strimzi-kafka-exporter-metrics-headless
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  publishNotReadyAddresses: true
+  ports:
+    - port: tcp-prometheus
+      protocol: TCP
+  selector:
+    strimzi.io/cluster: {{ include "shared-library.fullname" . }}
+    strimzi.io/kind: Kafka
+    app.kubernetes.io/name: kafka-exporter
+---
+{{- end -}}

@@ -25,14 +25,13 @@ helm install my-release stevenjdh/<chart>
 ```
 
 ## Pull requests
-Pull requests will trigger automatic chart testing and tests against Kubernetes 1.19.x, 1.24.x, and 1.29.x before they can be merged into `main`. To avoid issues, run the same tests locally before submitting a PR.
+Pull requests will trigger automatic chart testing and tests against Kubernetes 1.19.x, 1.25.x, and 1.32.x before they can be merged into `main`. To avoid issues, run the same tests locally before submitting a PR.
 
 ### Manual chart testing
 
 ```bash
-docker pull quay.io/helmpack/chart-testing:v3.10.1
 docker run -it --rm --name ct --workdir=/data \
-    --volume $(pwd):/data quay.io/helmpack/chart-testing:v3.10.1 sh \
+    --volume "$(pwd):/data" quay.io/helmpack/chart-testing:v3.12.0 sh \
     -c "ct lint --charts charts/<chart> --print-config --config ct.yaml"
 ```
 
@@ -45,7 +44,8 @@ helm install my-release charts/<chart>
 kind delete cluster
 ```
 
-**Note:** Run all commands from the root of the repository.
+> [!NOTE]  
+> Run all commands from the root of the repository.
 
 ## Contributing
 Thanks for your interest in contributing! There are many ways to contribute to this project. Get started [here](https://github.com/StevenJDH/.github/blob/main/docs/CONTRIBUTING.md).

@@ -1,0 +1,102 @@
+{{/*
+This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
+Copyright (C) 2025 Steven Jenkins De Haro.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+{{- $requiredMsg          := include "shared-library.required-msg" .      -}}
+{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl) -}}
+{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter) -}}
+{{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)             -}}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: {{ include "shared-library.fullname" . }}
+  annotations:
+    strimzi.io/node-pools: enabled
+    strimzi.io/kraft: enabled
+    {{- with .Values.kafka.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+    {{- with .Values.kafka.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  kafka:
+    {{- with .Values.kafka.version }}
+    version: {{ . }}
+    {{- end }}
+    listeners:
+      {{- required (printf $requiredMsg "kafka.listeners") .Values.kafka.listeners | toYaml | nindent 6 }}
+    {{- with .Values.kafka.authorization }}
+    authorization:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.kafka.config }}
+    config:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.kafka.template }}
+    template:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if or $cruiseControlEnabled $metricsEnabled }}
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: {{ include "shared-library.fullname" . }}-metrics-config
+          key: kafka-metrics-config.yaml
+    {{- end }}
+    {{- if (((.Values.kafka).rackTopology).enabled) }}
+    rack:
+      topologyKey: {{ .Values.kafka.rackTopology.customKey | default "topology.kubernetes.io/zone" | quote }}
+    {{- end }}
+    {{- with .Values.kafka.logging }}
+    logging:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- with .Values.kafka.clusterCa }}
+  clusterCa:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.kafka.clientsCa }}
+  clientsCa:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.kafka.maintenanceTimeWindows }}
+  maintenanceTimeWindows:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  entityOperator:
+    {{- required (printf $requiredMsg "kafka.entityOperator") .Values.kafka.entityOperator | toYaml | nindent 4 }}
+  {{- if $cruiseControlEnabled }}
+  cruiseControl:
+    {{- with .Values.kafka.cruiseControl }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: {{ include "shared-library.fullname" . }}-metrics-config
+          key: cruise-control-metrics-config.yaml
+  {{- end }}
+  {{- if $kafkaExporterEnabled }}
+  kafkaExporter:
+    {{- toYaml .Values.kafka.kafkaExporter | nindent 4 }}
+  {{- end }}
