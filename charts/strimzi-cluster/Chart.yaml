@@ -15,7 +15,7 @@
 
 apiVersion: v2
 name: strimzi-cluster
-description: Installs Strimzi, Drain Cleaner, and a Kafka cluster in KRaft mode.
+description: Installs Strimzi, Drain Cleaner, Schema Registry, and a Kafka cluster in KRaft mode.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -30,7 +30,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.0
+version: 0.2.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -61,6 +61,11 @@ dependencies:
     version: "1.2.0"
     repository: "oci://quay.io/strimzi-helm"
     condition: strimzi-drain-cleaner.enabled
+  - name: confluent-for-kubernetes
+    alias: schemaregistry
+    version: "0.1145.6"
+    repository: "file://charts/cfk/"
+    condition: schemaregistry.enabled
   - name: shared-library
     version: "^0.x"
     repository: "https://StevenJDH.github.io/helm-charts"

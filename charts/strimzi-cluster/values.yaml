@@ -456,7 +456,8 @@ nodePools:
     resources: {}
 
 testResources:
-  # -- Indicates whether or not to create the test resources, which consist of a KafkaUser and a KafkaTopic.
+  # -- Indicates whether or not to create the test resources, which consist of a KafkaUser, KafkaTopic, and a AVRO
+  # schema if `schemaregistry.enabled is set to `true`.
   create: false
 
 k6:
@@ -471,8 +472,8 @@ k6:
     # [Sending load testing results to Prometheus](#sending-load-testing-results-to-prometheus) for more
     # information.
     enabled: false
-    # -- overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard will be deployed. This should be the same
-    # namespace as the Prometheus Operator and Grafana instance.
+    # -- overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard
+    # will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance.
     overrideNamespace: ""
 
 strimzi-kafka-operator:
@@ -547,7 +548,8 @@ strimzi-drain-cleaner:
     # `strimzi-drain-cleaner.certManager.create` is `false`.
     ca_bundle: ""
   namespace:
-    # -- Indicates whether or not to create the namespace defined at `strimzi-drain-cleaner.namespace.name` for where Drain Cleaner resources will be deployed.
+    # -- Indicates whether or not to create the namespace defined at `strimzi-drain-cleaner.namespace.name`
+    # for where Drain Cleaner resources will be deployed.
     create: true
     # -- name is the name of the namespace where the Drain Cleaner resources will be deployed, but also,
     # it's used for RBAC permissions regardless of the `strimzi-drain-cleaner.namespace.create` state.
@@ -555,3 +557,50 @@ strimzi-drain-cleaner:
   # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
   # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
   resources: {}
+
+schemaregistry:
+  # -- Indicates whether or not to deploy Schema Registry from Confluent for Kubernetes (CFK) with the
+  # Kafka cluster.
+  enabled: false
+  # @ignored.
+  name: schemaregistry-operator
+  # -- replicas is for the number of Schema Registry Operator instances. Leader election is enabled for
+  # more than one replica.
+  replicas: 1
+  dashboards:
+    # -- Indicates whether or not to deploy a Schema Registry Grafana dashboards that will be imported
+    # automatically.
+    enabled: false
+    # -- namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace
+    # as the Prometheus Operator and Grafana instance.
+    namespace: monitoring
+  managedCerts:
+    # -- Indicates whether or not to enable auto-generated certificates using provided CA cert and key.
+    # Will continue using older model of reading CA from secret `ca-pair-sslcerts` named secret if set to `false`.
+    enabled: true
+    caCertificate:
+      # -- secretRef is the name of the secret holding a CA cert and key defined as `tls.crt` and `tls.key`.
+      secretRef: "ca-keypair-for-generated-tls"
+  # @ignored.
+  clusterRole:
+    openshift: false
+  ingress:
+    # -- Indicates whether or not an Ingress resource is created.
+    enabled: true
+    # -- className is the name of the Ingress class.
+    className: nginx
+    # @ignored. annotations to be added to the Ingress resource.
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    hosts:
+    - # -- host is the hostname of a request that must match exactly or use a wildcard as the subdomain.
+      host: ""
+      paths:
+        - # -- path is part of a list of one or more paths that are associated with a backend service.
+          path: /
+          # -- pathType is a field that can specify how Ingress paths should be matched.
+          # Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types).
+          pathType: Prefix
+  # @ignored
+  service:
+    port: 8081

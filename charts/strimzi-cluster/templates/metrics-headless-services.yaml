@@ -15,10 +15,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl)    -}}
-{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter)    -}}
-{{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)                -}}
-{{- $createHeadlessSvc    := ((.Values.scrapeConfigHeadlessServices).create) -}}
+{{- $cruiseControlEnabled  := kindIs "map" ((.Values.kafka).cruiseControl)    -}}
+{{- $kafkaExporterEnabled  := kindIs "map" ((.Values.kafka).kafkaExporter)    -}}
+{{- $schemaRegistryEnabled := ((.Values.schemaregistry).enabled)              -}}
+{{- $metricsEnabled        := ((.Values.kafka).metricsEnabled)                -}}
+{{- $createHeadlessSvc     := ((.Values.scrapeConfigHeadlessServices).create) -}}
 {{- if and $createHeadlessSvc (or $cruiseControlEnabled $metricsEnabled) -}}
 {{- range $name, $config := .Values.nodePools }}
 {{- if (($config).enabled) }}
@@ -137,5 +138,30 @@ spec:
     strimzi.io/cluster: {{ include "shared-library.fullname" . }}
     strimzi.io/kind: Kafka
     app.kubernetes.io/name: kafka-exporter
+---
+{{- end -}}
+{{- if and $createHeadlessSvc $schemaRegistryEnabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: schemaregistry-operator-metrics-headless
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  publishNotReadyAddresses: true
+  ports:
+    - port: 7778
+      protocol: TCP
+      name: http-metrics
+  selector:
+    app.kubernetes.io/name: "confluent-operator"
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    confluent-platform: "true"
 ---
 {{- end -}}

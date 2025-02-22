@@ -116,4 +116,53 @@ spec:
     port: "healthcheck"
 ---
 {{- end }}
+{{- if ((.Values.schemaregistry).enabled) -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: schemaregistry-metrics
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+    {{- with .Values.podMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  namespace: {{ .Values.podMonitor.overrideNamespace | default "monitoring" }}
+spec:
+  selector:
+    matchLabels:
+      app: schemaregistry
+      type: schemaregistry
+      clusterId: strimzi
+      confluent-platform: "true"
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  podMetricsEndpoints:
+  - path: /metrics
+    port: "7778"
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: schemaregistry-operator-metrics
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
+    {{- with .Values.podMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  namespace: {{ .Values.podMonitor.overrideNamespace | default "monitoring" }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "confluent-operator"
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      confluent-platform: "true"
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  podMetricsEndpoints:
+  - path: /metrics
+    port: "7778"
+---
+{{- end }}
 {{- end -}}
