@@ -564,6 +564,16 @@ schemaregistry:
   enabled: false
   # @ignored.
   name: schemaregistry-operator
+  image:
+    # -- application is the image that provides a centralized repository for managing and validating schemas
+    # in Kafka message data, facilitating consistent serialization and deserialization across applications.
+    # It ensures data compatibility and quality by allowing producers and consumers to enforce schema
+    # compliance, thereby maintaining data integrity as schemas evolve. 
+    application: confluentinc/cp-schema-registry:7.8.0
+    # -- init is the image used in Kubernetes deployments of Confluent Platform to prepare the environment
+    # before the main application starts. It ensures proper initialization and configuration, and its
+    # version should match the Confluent for Kubernetes (CFK) version being deployed.
+    init: confluentinc/confluent-init-container:2.10.0
   # -- replicas is for the number of Schema Registry Operator instances. Leader election is enabled for
   # more than one replica.
   replicas: 1
