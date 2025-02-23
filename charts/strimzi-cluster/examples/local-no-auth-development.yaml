@@ -14,8 +14,16 @@
 # limitations under the License.
 
 kafka:
+  config:
+    auto.create.topics.enable: "false"
   rackTopology:
     enabled: false
+  listeners:
+    - name: plain
+      port: 9092
+      type: internal
+      tls: false
+  authorization: null
   clusterCa:
     generateSecretOwnerReference: true
   clientsCa:
@@ -44,12 +52,6 @@ nodePools:
 testResources:
   create: true
 
-k6:
-  loadTestScripts:
-    create: true
-  dashboard:
-    enabled: true
-
 strimzi-kafka-operator:
   dashboards:
     enabled: true
@@ -60,6 +62,7 @@ strimzi-drain-cleaner:
     create: false
 
 schemaregistry:
-  enabled: false
+  enabled: true
+  bootstrapPort: 9092
   dashboards:
     enabled: true
