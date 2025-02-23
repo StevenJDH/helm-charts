@@ -567,6 +567,9 @@ schemaregistry:
   # -- replicas is for the number of Schema Registry Operator instances. Leader election is enabled for
   # more than one replica.
   replicas: 1
+  # -- bootstrapPort is the internal listener port of the Kafka cluster protected by mTLS. This only needs
+  # to be changed if not using the default ports, or if using no authentication for development purposes.
+  bootstrapPort: 9094
   dashboards:
     # -- Indicates whether or not to deploy a Schema Registry Grafana dashboards that will be imported
     # automatically.
@@ -602,5 +605,5 @@ schemaregistry:
           # Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types).
           pathType: Prefix
   # @ignored
-  service:
+  server:
     port: 8081

@@ -16,6 +16,7 @@ limitations under the License.
 */}}
 
 {{- if ((.Values.schemaregistry).enabled) -}}
+{{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -71,12 +72,12 @@ spec:
       - kafkastore.ssl.truststore.location=/mnt/secrets/cluster-ca/ca.p12
       - kafkastore.topic=_schemas_schemaregistry_{{ .Release.Namespace }}
       - kafkastore.topic.replication.factor=3
-      - listeners=https://0.0.0.0:{{ .Values.schemaregistry.service.port }}
+      - listeners=https://0.0.0.0:{{ .Values.schemaregistry.server.port }}
       - metrics.jmx.prefix=schemaregistry_{{ .Release.Namespace }}
       - schema.registry.group.id=id_schemaregistry_{{ .Release.Namespace }}
   dependencies:
     kafka:
-      bootstrapEndpoint: {{ include "shared-library.fullname" . }}-kafka-bootstrap.{{ .Release.Namespace }}.svc.cluster.local:9094
+      bootstrapEndpoint: {{ include "shared-library.fullname" . }}-kafka-bootstrap.{{ .Release.Namespace }}.svc.cluster.local:{{ required (printf $requiredMsg "schemaregistry.bootstrapPort") .Values.schemaregistry.bootstrapPort }}
       authentication:
         type: mtls
       tls:
