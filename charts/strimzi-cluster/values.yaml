@@ -457,7 +457,7 @@ nodePools:
 
 testResources:
   # -- Indicates whether or not to create the test resources, which consist of a KafkaUser, KafkaTopic, and a AVRO
-  # schema if `schemaregistry.enabled is set to `true`.
+  # schema if `schemaregistry_operator.enabled is set to `true`.
   create: false
 
 k6:

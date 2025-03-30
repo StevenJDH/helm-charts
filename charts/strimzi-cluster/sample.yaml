@@ -56,7 +56,7 @@ apiVersion: v1
 metadata:
   name: example-strimzi-cluster-metrics-config
   labels:
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "0.45.0"
@@ -1026,7 +1026,7 @@ metadata:
     strimzi.io/node-pools: enabled
     strimzi.io/kraft: enabled
   labels:
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "0.45.0"
@@ -1097,7 +1097,7 @@ metadata:
   name: broker
   labels:
     strimzi.io/cluster: example-strimzi-cluster
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "0.45.0"
@@ -1124,7 +1124,7 @@ metadata:
   name: kraft-controller
   labels:
     strimzi.io/cluster: example-strimzi-cluster
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "0.45.0"
@@ -1153,7 +1153,7 @@ metadata:
     strimzi.io/rebalance-auto-approval: "true"
   labels:
     strimzi.io/cluster: example-strimzi-cluster
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "0.45.0"
