@@ -560,7 +560,7 @@ strimzi-drain-cleaner:
 
 schemaregistry:
   # -- Indicates whether or not to deploy Schema Registry from Confluent for Kubernetes (CFK) with the
-  # Kafka cluster.
+  # Kafka cluster. Requires an internal listener that is protected by mTLS.
   enabled: false
   # @ignored.
   name: schemaregistry-operator
@@ -597,6 +597,61 @@ schemaregistry:
   # @ignored.
   clusterRole:
     openshift: false
+  # -- annotations to be added to the SchemaRegistry resource.
+  annotations: {}
+  # -- labels to be added to the SchemaRegistry resource.
+  labels: {}
+  # -- envVars are additional environment variables to set.
+  envVars: []
+  # - name: FOO
+  #   valueFrom:
+  #     secretKeyRef:
+  #       key: FOO
+  #       name: secret-resource
+
+  # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+  # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+  resources: {}
+    # requests:
+    #   memory: 256Mi
+    #   cpu: 500m
+    # limits:
+    #   memory: 512Mi
+    #   cpu: 1000m
+
+  # -- affinity for pod scheduling.
+  # Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
+  affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app
+    #         operator: In
+    #         values:
+    #         - app-name
+    #     topologyKey: "kubernetes.io/hostname"
+
+  # -- tolerations allow the scheduler to schedule pods onto nodes with matching taints.
+  # Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
+  tolerations: []
+  # - key: "key"
+  #   operator: "Equal|Exists"
+  #   value: "value"
+  #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+
+  rackTopology:
+    # -- Indicates whether or not to enable the rack-aware feature for the schema registry to improve
+    # resiliency, availability, and reliability. This will distribute the instances across the
+    # different availability zones or actual racks in the data center. When testing locally, set this
+    # to `false`.
+    enabled: true
+    # -- customKey allows to override the standard `topology.kubernetes.io/zone` key used for the
+    # rack-aware feature.
+    customKey: ""
+    # --  maxSkew is the maximum degree to which pods may be unevenly distributed. Setting 0 is not
+    # allowed.
+    maxSkew: 1
   ingress:
     # -- Indicates whether or not an Ingress resource is created.
     enabled: true

@@ -88,6 +88,43 @@ spec:
   image:
     application: {{ required (printf $requiredMsg "schemaregistry.image.application") .Values.schemaregistry.image.application }}
     init: {{ required (printf $requiredMsg "schemaregistry.image.init") .Values.schemaregistry.image.init }}
+  podTemplate:
+    {{- with .Values.schemaregistry.annotations }}
+    annotations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    labels:
+      strimzi.io/cluster: {{ include "shared-library.fullname" . }}
+      {{- include "shared-library.labels" . | nindent 6 }}
+      {{- with .Values.schemaregistry.labels }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+    {{- with .Values.schemaregistry.envVars }}
+    envVars:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    resources:
+      {{- toYaml .Values.schemaregistry.resources | nindent 6 }}
+    {{- with .Values.schemaregistry.affinity }}
+    affinity:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.schemaregistry.tolerations }}
+    tolerations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if (((.Values.schemaregistry).rackTopology).enabled) }}
+    topologySpreadConstraints:
+      - maxSkew: {{ required (printf $requiredMsg "schemaregistry.rackTopology.maxSkew") .Values.schemaregistry.rackTopology.maxSkew }}
+        topologyKey: {{ .Values.schemaregistry.rackTopology.customKey | default "topology.kubernetes.io/zone" | quote }}
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            strimzi.io/cluster: {{ include "shared-library.fullname" . }}
+            app: schemaregistry
+            type: schemaregistry
+            confluent-platform: "true"
+    {{- end }}
   mountedVolumes:
     volumeMounts:
       - mountPath: /mnt/secrets/client-auth
