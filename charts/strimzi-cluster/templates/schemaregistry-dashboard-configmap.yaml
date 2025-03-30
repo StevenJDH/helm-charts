@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- if and ((.Values.schemaregistry).enabled) (((.Values.schemaregistry).dashboard).enabled) -}}
+{{- if and ((.Values.schemaregistry_operator).enabled) ((((.Values.schemaregistry_operator).schemaregistry).dashboard).enabled) -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -23,7 +23,7 @@ metadata:
   labels:
     grafana_dashboard: "1"
     {{- include "shared-library.labels" . | nindent 4 }}
-  namespace: {{ .Values.schemaregistry.dashboard.namespace | default "monitoring" }}
+  namespace: {{ .Values.schemaregistry_operator.schemaregistry.dashboard.namespace | default "monitoring" }}
 data:
   schemaregistry-dashboard.json: |
     {{- (.Files.Get "files/grafana-dashboards/schemaregistry-dashboard.json") | nindent 4 }}

@@ -116,7 +116,7 @@ spec:
     port: "healthcheck"
 ---
 {{- end }}
-{{- if ((.Values.schemaregistry).enabled) -}}
+{{- if ((.Values.schemaregistry_operator).enabled) -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -132,7 +132,6 @@ spec:
     matchLabels:
       app: schemaregistry
       type: schemaregistry
-      clusterId: strimzi
       confluent-platform: "true"
   namespaceSelector:
     matchNames:

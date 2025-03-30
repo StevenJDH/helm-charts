@@ -59,7 +59,15 @@ strimzi-drain-cleaner:
   certManager:
     create: false
 
-schemaregistry:
+schemaregistry_operator:
   enabled: false
-  dashboards:
+  managedCerts:
     enabled: true
+    caCertificate:
+      secretRef: "ca-keypair-for-generated-tls"
+  schemaregistry:
+    replicationFactor: 1
+    dashboards:
+      enabled: true
+    rackTopology:
+      enabled: false

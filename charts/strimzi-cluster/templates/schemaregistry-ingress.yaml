@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- if and ((.Values.schemaregistry).enabled) ((.Values.schemaregistry.ingress).enabled) -}}
+{{- if and ((.Values.schemaregistry_operator).enabled) ((((.Values.schemaregistry_operator).schemaregistry).ingress).enabled) -}}
 {{- $requiredMsg := include "shared-library.required-msg" . -}}
 apiVersion: v1
 kind: Service
@@ -32,20 +32,19 @@ spec:
     - IPv4
   ports:
     - port: 443
-      targetPort: {{ required (printf $requiredMsg "schemaregistry.server.port") $.Values.schemaregistry.server.port }}
+      targetPort: {{ required (printf $requiredMsg "schemaregistry_operator.schemaregistry.serverPort") .Values.schemaregistry_operator.schemaregistry.serverPort }}
       protocol: TCP
       name: https
   selector:
     app: schemaregistry
     type: schemaregistry
-    clusterId: strimzi
     confluent-platform: "true"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: schemaregistry-ingress
-  {{- with .Values.schemaregistry.ingress.annotations }}
+  {{- with .Values.schemaregistry_operator.schemaregistry.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -53,14 +52,14 @@ metadata:
     {{- include "shared-library.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
-  ingressClassName: {{ required (printf $requiredMsg "schemaregistry.ingress.className") .Values.schemaregistry.ingress.className }}
+  ingressClassName: {{ required (printf $requiredMsg "schemaregistry_operator.schemaregistry.ingress.className") .Values.schemaregistry_operator.schemaregistry.ingress.className }}
   rules:
-    {{- range .Values.schemaregistry.ingress.hosts }}
+    {{- range .Values.schemaregistry_operator.schemaregistry.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
           {{- range .paths }}
-          - path: {{ required (printf $requiredMsg "schemaregistry.ingress.hosts[].paths[].path") .path }}
+          - path: {{ required (printf $requiredMsg "schemaregistry_operator.schemaregistry.ingress.hosts[].paths[].path") .path }}
             pathType: {{ .pathType | default "Prefix" }}
             backend:
               service:

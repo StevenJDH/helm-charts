@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- if ((.Values.schemaregistry).enabled) -}}
+{{- if ((.Values.schemaregistry_operator).enabled) -}}
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:

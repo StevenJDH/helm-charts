@@ -17,7 +17,7 @@ limitations under the License.
 
 {{- $cruiseControlEnabled  := kindIs "map" ((.Values.kafka).cruiseControl)    -}}
 {{- $kafkaExporterEnabled  := kindIs "map" ((.Values.kafka).kafkaExporter)    -}}
-{{- $schemaRegistryEnabled := ((.Values.schemaregistry).enabled)              -}}
+{{- $schemaRegistryEnabled := ((.Values.schemaregistry_operator).enabled)     -}}
 {{- $metricsEnabled        := ((.Values.kafka).metricsEnabled)                -}}
 {{- $createHeadlessSvc     := ((.Values.scrapeConfigHeadlessServices).create) -}}
 {{- if and $createHeadlessSvc (or $cruiseControlEnabled $metricsEnabled) -}}

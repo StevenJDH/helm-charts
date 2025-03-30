@@ -62,10 +62,10 @@ dependencies:
     repository: "oci://quay.io/strimzi-helm"
     condition: strimzi-drain-cleaner.enabled
   - name: confluent-for-kubernetes
-    alias: schemaregistry
+    alias: schemaregistry_operator
     version: "0.1145.6"
     repository: "file://charts/cfk/"
-    condition: schemaregistry.enabled
+    condition: schemaregistry_operator.enabled
   - name: shared-library
     version: "^0.x"
     repository: "https://StevenJDH.github.io/helm-charts"

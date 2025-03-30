@@ -61,8 +61,16 @@ strimzi-drain-cleaner:
   certManager:
     create: false
 
-schemaregistry:
-  enabled: true
-  bootstrapPort: 9092
-  dashboards:
+schemaregistry_operator:
+  enabled: false
+  managedCerts:
     enabled: true
+    caCertificate:
+      secretRef: "ca-keypair-for-generated-tls"
+  schemaregistry:
+    bootstrapPort: 9092
+    replicationFactor: 1
+    dashboards:
+      enabled: true
+    rackTopology:
+      enabled: false
