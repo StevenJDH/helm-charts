@@ -67,10 +67,11 @@ schemaregistry_operator:
     enabled: true
     caCertificate:
       secretRef: "ca-keypair-for-generated-tls"
-  schemaregistry:
-    bootstrapPort: 9092
-    replicationFactor: 1
-    dashboards:
-      enabled: true
-    rackTopology:
-      enabled: false
+
+schemaregistry:
+  bootstrapPort: 9092
+  replicationFactor: 1
+  dashboards:
+    enabled: true
+  rackTopology:
+    enabled: false

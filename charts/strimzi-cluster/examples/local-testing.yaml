@@ -65,9 +65,10 @@ schemaregistry_operator:
     enabled: true
     caCertificate:
       secretRef: "ca-keypair-for-generated-tls"
-  schemaregistry:
-    replicationFactor: 1
-    dashboards:
-      enabled: true
-    rackTopology:
-      enabled: false
+
+schemaregistry:
+  replicationFactor: 1
+  dashboards:
+    enabled: true
+  rackTopology:
+    enabled: false
