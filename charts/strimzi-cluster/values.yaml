@@ -1,5 +1,5 @@
 # This file is part of Strimzi Cluster Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2025 Steven Jenkins De Haro.
+# Copyright (C) 2025-2026 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ fullnameOverride: ""
 
 kafka:
   # -- version is the version of Kafka to use.
-  version: 3.9.0
+  version: 4.2.0
   # -- annotations to be added to the Kafka resource.
   annotations: {}
   # -- labels to be added to the Kafka resource.
@@ -67,9 +67,10 @@ kafka:
   logging: {}
     # type: inline
     # loggers:
-    #   kafka.root.logger.level: "INFO"
-    #   log4j.logger.kafka.request.logger: "WARN"
-    #   log4j.logger.kafka.authorizer.logger: "WARN"
+    #   rootLogger.level: "INFO"
+    #   logger.orgapachekafka.level: "INFO"
+    #   logger.kafka.level: "INFO"
+    #   logger.authorizer.level: "INFO"
 
   listeners:
     - # -- name is the unique name of the listener within given a Kafka cluster. It consists of
@@ -172,9 +173,20 @@ kafka:
 
   entityOperator:
     # -- template allows to customize how the resources belonging to the Entity Operator are generated.
-    template: {}
-    #   pod: {}
-
+    # NOTE: The environment variable `STRIMZI_IGNORED_USERS_PATTERN` is set in
+    # `entityOperator.template.userOperatorContainer.env` by default to ignore the ACL rules for the
+    # `*` and `ANONYMOUS` users. When overriding the `env` section, be sure to redefine the environment
+    # variable to maintain the default behavior if needed.
+    # @default -- `{}`
+    template:
+      # pod: {}
+      
+      # @ignored. User Operator does not ignore the ACL rules for the * and ANONYMOUS users by default anymore.
+      # Setting 'STRIMZI_IGNORED_USERS_PATTERN' re-enables this behavior.
+      userOperatorContainer:
+        env:
+          - name: STRIMZI_IGNORED_USERS_PATTERN
+            value: "^\\*|ANONYMOUS$" # Double \ needed for escaping.
     # -- topicOperator allows to customize the configuration of the Topic Operator. By Default, the Topic
     # Operator watches for KafkaTopic resources in the namespace of the Kafka cluster deployed by the
     # Cluster Operator.
@@ -302,6 +314,37 @@ cruiseControlRebalance:
   # -- Indicates whether or not to create a KafkaRebalance resource with an empty spec to use
   # the default goals from the Cruise Control configuration for optimizing the cluster workloads.
   create: true
+  # -- skipHardGoalCheck indicates whether or not to skip the check for hard goals. This can be
+  # useful when some of those hard goals are preventing a balance solution being found.
+  skipHardGoalCheck: false
+  # -- goals is a list, ordered by decreasing priority, to use for generating and executing the
+  # rebalance proposal. If an empty goals list is provided, the default goals are used. Exclude
+  # `RackAwareGoal` if `kafka.rackTopology.enabled` is set to `true`, and the number of domains
+  # is less than 3. Also, set skipHardGoalCheck to `true`.
+  # Reference: [Default Goals](https://github.com/linkedin/cruise-control#goals).
+  goals: []
+    # # - RackAwareGoal
+    # - RackAwareDistributionGoal
+    # - MinTopicLeadersPerBrokerGoal
+    # - ReplicaCapacityGoal
+    # - DiskCapacityGoal
+    # - NetworkInboundCapacityGoal
+    # - NetworkOutboundCapacityGoal
+    # - CpuCapacityGoal
+    # - ReplicaDistributionGoal
+    # - PotentialNwOutGoal
+    # - DiskUsageDistributionGoal
+    # - NetworkInboundUsageDistributionGoal
+    # - NetworkOutboundUsageDistributionGoal
+    # - CpuUsageDistributionGoal
+    # - LeaderReplicaDistributionGoal
+    # - LeaderBytesInDistributionGoal
+    # - TopicReplicaDistributionGoal
+    # - PreferredLeaderElectionGoal
+    # - KafkaAssignerDiskUsageDistributionGoal
+    # - IntraBrokerDiskCapacityGoal
+    # - IntraBrokerDiskUsageDistributionGoal
+    
   annotations:
     # -- Triggers the rebalance directly without any further approval step (e.g.,
     # setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`).
@@ -356,7 +399,27 @@ nodePools:
     # -- template allows to customize how the resources belonging to this pool are generated.
     # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference).
     template: {}
-      # pod: {}
+      # pod:
+        # # Strimzi will not automatically add the best-effort-affinity rules for spreading the
+        # # Kafka Pods between the zones even if 'kafka.rackTopology.enabled' is set to 'true'. To
+        # # guarantee enforcement with rackTopology, uncomment this section.
+        # # See 'cruiseControlRebalance.goals' if using less than 3 'minDomains'.
+        # topologySpreadConstraints:
+        # - maxSkew: 1
+        #   # Only enforced if all of the domains are available. Rackaware feature and
+        #   # Cruise Control Rebalancing goal depending on this.
+        #   minDomains: 3
+        #   topologyKey: topology.kubernetes.io/zone
+        #   # When using minDomains, set this as DoNotSchedule instead of ScheduleAnyway
+        #   # to enforce setting and to avoid Kubernetes warning.
+        #   whenUnsatisfiable: DoNotSchedule
+        #   labelSelector:
+        #     matchLabels:
+        #       app.kubernetes.io/instance: my-strimzi-cluster
+        #       app.kubernetes.io/name: strimzi-cluster
+        #       strimzi.io/cluster: my-strimzi-cluster
+        #       strimzi.io/kind: Kafka
+
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
@@ -403,7 +466,27 @@ nodePools:
     # -- template allows to customize how the resources belonging to this pool are generated.
     # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference).
     template: {}
-      # pod: {}
+      # pod:
+        # # Strimzi will not automatically add the best-effort-affinity rules for spreading the
+        # # Kafka Pods between the zones even if 'kafka.rackTopology.enabled' is set to 'true'. To
+        # # guarantee enforcement with rackTopology, uncomment this section.
+        # # See 'cruiseControlRebalance.goals' if using less than 3 'minDomains'.
+        # topologySpreadConstraints:
+        # - maxSkew: 1
+        #   # Only enforced if all of the domains are available. Rackaware feature and
+        #   # Cruise Control Rebalancing goal depending on this.
+        #   minDomains: 3
+        #   topologyKey: topology.kubernetes.io/zone
+        #   # When using minDomains, set this as DoNotSchedule instead of ScheduleAnyway
+        #   # to enforce setting and to avoid Kubernetes warning.
+        #   whenUnsatisfiable: DoNotSchedule
+        #   labelSelector:
+        #     matchLabels:
+        #       app.kubernetes.io/instance: my-strimzi-cluster
+        #       app.kubernetes.io/name: strimzi-cluster
+        #       strimzi.io/cluster: my-strimzi-cluster
+        #       strimzi.io/kind: Kafka
+    
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}

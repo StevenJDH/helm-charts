@@ -1,6 +1,6 @@
 # Strimzi Cluster Helm Chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.45.0](https://img.shields.io/badge/AppVersion-0.45.0-informational?style=flat-square) 
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.51.0](https://img.shields.io/badge/AppVersion-0.51.0-informational?style=flat-square) 
 
 Installs Strimzi, Drain Cleaner, and a Kafka cluster in KRaft mode.
 
@@ -10,20 +10,20 @@ Installs Strimzi, Drain Cleaner, and a Kafka cluster in KRaft mode.
 
 ## Requirements
 
-Kubernetes: `>= 1.25.0-0`
+Kubernetes: `>= 1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
 | https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
-| oci://quay.io/strimzi-helm | strimzi-drain-cleaner | 1.2.0 |
-| oci://quay.io/strimzi-helm | strimzi-kafka-operator | 0.45.0 |
+| oci://quay.io/strimzi-helm | strimzi-drain-cleaner | 1.6.0 |
+| oci://quay.io/strimzi-helm | strimzi-kafka-operator | 0.51.0 |
 
 ## Usage example
 
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.1.0 \
+helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.2.0 \
     --set strimzi-kafka-operator.enabled=true \
     --set strimzi-drain-cleaner.enabled=true \
     --set strimzi-drain-cleaner.certManager.create=false \
@@ -353,7 +353,9 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 |-----|------|---------|-------------|
 | cruiseControlRebalance.annotations."strimzi.io/rebalance-auto-approval" | string | `"true"` | Triggers the rebalance directly without any further approval step (e.g., setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`). Use `strimzi.io/rebalance=refresh` to trigger a new analysis. |
 | cruiseControlRebalance.create | bool | `true` | Indicates whether or not to create a KafkaRebalance resource with an empty spec to use the default goals from the Cruise Control configuration for optimizing the cluster workloads. |
+| cruiseControlRebalance.goals | list | `[]` | goals is a list, ordered by decreasing priority, to use for generating and executing the rebalance proposal. If an empty goals list is provided, the default goals are used. Exclude `RackAwareGoal` if `kafka.rackTopology.enabled` is set to `true`, and the number of domains is less than 3. Also, set skipHardGoalCheck to `true`. Reference: [Default Goals](https://github.com/linkedin/cruise-control#goals). |
 | cruiseControlRebalance.labels | object | `{}` | labels to be added to the Kafka Rebalance resource. |
+| cruiseControlRebalance.skipHardGoalCheck | bool | `false` | skipHardGoalCheck indicates whether or not to skip the check for hard goals. This can be useful when some of those hard goals are preventing a balance solution being found. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
 | k6.dashboard.enabled | bool | `false` | Indicates whether or not to deploy a k6 Grafana dashboard for Kafka load testing results that will be imported automatically. Requires enabling Remote Write Receiver in Prometheus. See [Sending load testing results to Prometheus](#sending-load-testing-results-to-prometheus) for more information. |
 | k6.dashboard.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
@@ -376,7 +378,7 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | kafka.config."transaction.state.log.min.isr" | int | `2` | transaction.state.log.min.isr is the minimum number of in-sync replicas for the transaction state log topic. The in-sync replicas count should always be set to a number lower than the `transaction.state.log.replication.factor` or it will always affect availability when the brokers are restarted. |
 | kafka.config."transaction.state.log.replication.factor" | int | `3` | transaction.state.log.replication.factor is the replication factor for the transaction state log topic. A replication factor of 1 will always affect availability when the brokers are restarted. |
 | kafka.cruiseControl | object | `{}` | cruiseControl deploys the Cruise Control component to optimize Kafka when specified. Being present and not null is enough to enable it. It will also enable `kafka.metricsEnabled` by default and configure metrics for cruise control, so no need to configure here (e.g., `kafka.cruiseControl.metricsConfig`). Reference: [CruiseControlSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-CruiseControlSpec-reference). |
-| kafka.entityOperator.template | object | `{}` | template allows to customize how the resources belonging to the Entity Operator are generated. |
+| kafka.entityOperator.template | object | `{}` | template allows to customize how the resources belonging to the Entity Operator are generated. NOTE: The environment variable `STRIMZI_IGNORED_USERS_PATTERN` is set in `entityOperator.template.userOperatorContainer.env` by default to ignore the ACL rules for the `*` and `ANONYMOUS` users. When overriding the `env` section, be sure to redefine the environment variable to maintain the default behavior if needed. |
 | kafka.entityOperator.topicOperator | object | `{}` | topicOperator allows to customize the configuration of the Topic Operator. By Default, the Topic Operator watches for KafkaTopic resources in the namespace of the Kafka cluster deployed by the Cluster Operator. Reference: [EntityTopicOperatorSpec schema properties](https://strimzi.io/docs/operators/0.45.0/configuring#type-EntityTopicOperatorSpec-schema-reference). |
 | kafka.entityOperator.userOperator | object | `{}` | userOperator allows to customize the configuration of the User Operator. By Default, the User Operator watches for KafkaUser resources in the namespace of the Kafka cluster deployed by the Cluster Operator. Reference: [EntityUserOperatorSpec schema properties](https://strimzi.io/docs/operators/0.45.0/configuring#type-EntityUserOperatorSpec-schema-reference). |
 | kafka.kafkaExporter | object | `{}` | kafkaExporter is an optional component for extracting additional metrics data from Kafka brokers related to offsets, consumer groups, consumer lag, and topics. For Kafka Exporter to be able to work properly, consumer groups needs to be in use. Being present and not null is enough to enable it. Reference: [KafkaExporterSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaExporterSpec-reference) |
@@ -397,7 +399,7 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | kafka.rackTopology.customKey | string | `""` | customKey allows to override the standard `topology.kubernetes.io/zone` key used for the rack-aware feature. |
 | kafka.rackTopology.enabled | bool | `true` | Indicates whether or not to enable the rack-aware feature for the node pools to improve resiliency, availability, and reliability. Strimzi will automatically add the Kubernetes affinity rule to distribute the node pools across the different availability zones or actual racks in the data center, which is not guaranteed to be evenly done. As such, Cruise Control will make sure that replicas remain and get distributed properly if in use. When testing locally, set this to `false`. |
 | kafka.template | object | `{}` | template allows to customize the configuration of the Kafka cluster. Reference: [KafkaClusterTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaClusterTemplate-reference). |
-| kafka.version | string | `"3.9.0"` | version is the version of Kafka to use. |
+| kafka.version | string | `"4.2.0"` | version is the version of Kafka to use. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | nodePools.broker.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. It's recommended to set something like `strimzi.io/next-node-ids: "[0-10]"` to have more control over what node pool gets what IDs. |
 | nodePools.broker.enabled | bool | `true` | Indicates whether or not to deploy this broker node pool with the Kafka cluster. Should be set to `false` if using a dual-role broker pool. |

@@ -1,6 +1,6 @@
 {{/*
 This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
-Copyright (C) 2025 Steven Jenkins De Haro.
+Copyright (C) 2025-2026 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ limitations under the License.
 {{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl) -}}
 {{- $createRebalance      := ((.Values.cruiseControlRebalance).create)    -}}
 {{- if and $cruiseControlEnabled $createRebalance -}}
-apiVersion: kafka.strimzi.io/v1beta2
+apiVersion: kafka.strimzi.io/v1
 kind: KafkaRebalance
 metadata:
   name: {{ include "shared-library.fullname" . }}-full-rebalance
@@ -33,5 +33,10 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
   namespace: {{ .Release.Namespace }}
-spec: {}
+spec:
+  skipHardGoalCheck: {{ .Values.cruiseControlRebalance.skipHardGoalCheck }}
+  goals: {{- if empty .Values.cruiseControlRebalance.goals }} []
+  {{- else }}
+    {{- toYaml .Values.cruiseControlRebalance.goals | nindent 4 }}
+  {{- end }}
 {{- end -}}

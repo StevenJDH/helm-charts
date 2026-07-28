@@ -1,6 +1,6 @@
 /*
  * This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
- * Copyright (C) 2025 Steven Jenkins De Haro.
+ * Copyright (C) 2025-2026 Steven Jenkins De Haro.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

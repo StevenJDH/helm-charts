@@ -7,7 +7,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: service-account
     release: example
     heritage: Helm
@@ -20,7 +20,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: logging-config-map
     release: example
     heritage: Helm
@@ -42,10 +42,6 @@ data:
     logger.kafka.name = org.apache.kafka
     logger.kafka.level = WARN
 
-    # Zookeeper is very verbose even on INFO level -> We set it to WARN by default
-    logger.zookeepertrustmanager.name = org.apache.zookeeper
-    logger.zookeepertrustmanager.level = WARN
-
     # Keeps separate level for Netty logging -> to not be changed by the root logger
     logger.netty.name = io.netty
     logger.netty.level = INFO
@@ -56,10 +52,10 @@ apiVersion: v1
 metadata:
   name: example-strimzi-cluster-metrics-config
   labels:
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.45.0"
+    app.kubernetes.io/version: "0.51.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 data:
@@ -301,7 +297,7 @@ metadata:
   name: strimzi-cluster-operator-namespaced
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: role
     release: example
     heritage: Helm
@@ -365,8 +361,6 @@ rules:
   resources:
     # The cluster operator needs to access and manage deployments to run deployment based Strimzi components
   - deployments
-    # The cluster operator needs to access and manage stateful sets to run stateful sets based Strimzi components
-  - statefulsets
     # The cluster operator needs to access replica-sets to manage Strimzi components and to determine error states
   - replicasets
   verbs:
@@ -466,7 +460,7 @@ metadata:
   name: strimzi-cluster-operator-global
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: role
     release: example
     heritage: Helm
@@ -510,7 +504,7 @@ metadata:
   name: strimzi-cluster-operator-leader-election
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: role
     release: example
     heritage: Helm
@@ -547,7 +541,7 @@ metadata:
   name: strimzi-cluster-operator-watched
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: role
     release: example
     heritage: Helm
@@ -572,7 +566,6 @@ rules:
   - kafkanodepools
   - kafkaconnects
   - kafkaconnectors
-  - kafkamirrormakers
   - kafkabridges
   - kafkamirrormaker2s
   - kafkarebalances
@@ -591,7 +584,6 @@ rules:
   - kafkanodepools/status
   - kafkaconnects/status
   - kafkaconnectors/status
-  - kafkamirrormakers/status
   - kafkabridges/status
   - kafkamirrormaker2s/status
   - kafkarebalances/status
@@ -600,9 +592,22 @@ rules:
   - patch
   - update
 - apiGroups:
+    - "kafka.strimzi.io"
+  resources:
+    # Needed for environments with enabled OwnerReferencesPermissionEnforcement admission controller (e.g. OpenShift)
+    - kafkas/finalizers
+    - kafkanodepools/finalizers
+    - kafkaconnects/finalizers
+    - kafkaconnectors/finalizers
+    - kafkabridges/finalizers
+    - kafkamirrormaker2s/finalizers
+    - kafkarebalances/finalizers
+  verbs:
+    - update
+- apiGroups:
   - "core.strimzi.io"
   resources:
-  # The cluster operator uses StrimziPodSets to manage the Kafka and ZooKeeper pods
+  # The cluster operator uses StrimziPodSets to manage the Kafka, Kafka Connect, and Kafka MirrorMaker 2 pods
   - strimzipodsets
   verbs:
   - get
@@ -622,6 +627,13 @@ rules:
   - patch
   - update
 - apiGroups:
+  - "core.strimzi.io"
+  resources:
+  # Needed for environments with enabled OwnerReferencesPermissionEnforcement admission controller (e.g. OpenShift)
+  - strimzipodsets/finalizers
+  verbs:
+  - update
+- apiGroups:
     - "kafka.strimzi.io"
   resources:
     # The Cluster Operator needs deletion for KafkaRebalance only (during auto-rebalancing)
@@ -636,7 +648,7 @@ metadata:
   name: strimzi-kafka-broker
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: broker-role
     release: example
     heritage: Helm
@@ -657,7 +669,7 @@ metadata:
   name: strimzi-entity-operator
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: entity-operator-role
     release: example
     heritage: Helm
@@ -699,6 +711,14 @@ rules:
   - patch
   - update
 - apiGroups:
+    - "kafka.strimzi.io"
+  resources:
+    # Needed for environments with enabled OwnerReferencesPermissionEnforcement admission controller (e.g. OpenShift)
+    - kafkatopics/finalizers
+    - kafkausers/finalizers
+  verbs:
+    - update
+- apiGroups:
   - ""
   resources:
     # The entity operator user-operator needs to access and manage secrets to store generated credentials
@@ -719,7 +739,7 @@ metadata:
   name: strimzi-kafka-client
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: client-role
     release: example
     heritage: Helm
@@ -741,7 +761,7 @@ metadata:
   name: strimzi-cluster-operator
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: role-binding
     release: example
     heritage: Helm
@@ -761,7 +781,7 @@ metadata:
   name: strimzi-cluster-operator-kafka-broker-delegation
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: broker-role-binding
     release: example
     heritage: Helm
@@ -783,7 +803,7 @@ metadata:
   name: strimzi-cluster-operator-kafka-client-delegation
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: client-role-binding
     release: example
     heritage: Helm
@@ -807,7 +827,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: role-binding
     release: example
     heritage: Helm
@@ -828,7 +848,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: role-binding
     release: example
     heritage: Helm
@@ -849,7 +869,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: role-binding
     release: example
     heritage: Helm
@@ -870,7 +890,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: entity-operator-role-binding
     release: example
     heritage: Helm
@@ -893,7 +913,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.45.0
+    chart: strimzi-kafka-operator-0.51.0
     component: deployment
     release: example
     heritage: Helm
@@ -920,7 +940,7 @@ spec:
             name: strimzi-cluster-operator
       containers:
         - name: strimzi-cluster-operator
-          image: quay.io/strimzi/operator:0.45.0
+          image: quay.io/strimzi/operator:0.51.0
           ports:
             - containerPort: 8080
               name: http
@@ -941,41 +961,38 @@ spec:
             - name: STRIMZI_OPERATION_TIMEOUT_MS
               value: "300000"
             - name: STRIMZI_DEFAULT_KAFKA_EXPORTER_IMAGE
-              value: quay.io/strimzi/kafka:0.45.0-kafka-3.9.0
+              value: quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
             - name: STRIMZI_DEFAULT_CRUISE_CONTROL_IMAGE
-              value: quay.io/strimzi/kafka:0.45.0-kafka-3.9.0
+              value: quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
             - name: STRIMZI_KAFKA_IMAGES
               value: |                 
-                3.8.0=quay.io/strimzi/kafka:0.45.0-kafka-3.8.0
-                3.8.1=quay.io/strimzi/kafka:0.45.0-kafka-3.8.1
-                3.9.0=quay.io/strimzi/kafka:0.45.0-kafka-3.9.0
+                4.1.0=quay.io/strimzi/kafka:0.51.0-kafka-4.1.0
+                4.1.1=quay.io/strimzi/kafka:0.51.0-kafka-4.1.1
+                4.2.0=quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
             - name: STRIMZI_KAFKA_CONNECT_IMAGES
               value: |                 
-                3.8.0=quay.io/strimzi/kafka:0.45.0-kafka-3.8.0
-                3.8.1=quay.io/strimzi/kafka:0.45.0-kafka-3.8.1
-                3.9.0=quay.io/strimzi/kafka:0.45.0-kafka-3.9.0
-            - name: STRIMZI_KAFKA_MIRROR_MAKER_IMAGES
-              value: |                 
-                3.8.0=quay.io/strimzi/kafka:0.45.0-kafka-3.8.0
-                3.8.1=quay.io/strimzi/kafka:0.45.0-kafka-3.8.1
-                3.9.0=quay.io/strimzi/kafka:0.45.0-kafka-3.9.0
+                4.1.0=quay.io/strimzi/kafka:0.51.0-kafka-4.1.0
+                4.1.1=quay.io/strimzi/kafka:0.51.0-kafka-4.1.1
+                4.2.0=quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
             - name: STRIMZI_KAFKA_MIRROR_MAKER_2_IMAGES
               value: |                 
-                3.8.0=quay.io/strimzi/kafka:0.45.0-kafka-3.8.0
-                3.8.1=quay.io/strimzi/kafka:0.45.0-kafka-3.8.1
-                3.9.0=quay.io/strimzi/kafka:0.45.0-kafka-3.9.0
+                4.1.0=quay.io/strimzi/kafka:0.51.0-kafka-4.1.0
+                4.1.1=quay.io/strimzi/kafka:0.51.0-kafka-4.1.1
+                4.2.0=quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
             - name: STRIMZI_DEFAULT_TOPIC_OPERATOR_IMAGE
-              value: quay.io/strimzi/operator:0.45.0
+              value: quay.io/strimzi/operator:0.51.0
             - name: STRIMZI_DEFAULT_USER_OPERATOR_IMAGE
-              value: quay.io/strimzi/operator:0.45.0
+              value: quay.io/strimzi/operator:0.51.0
             - name: STRIMZI_DEFAULT_KAFKA_INIT_IMAGE
-              value: quay.io/strimzi/operator:0.45.0
+              value: quay.io/strimzi/operator:0.51.0
             - name: STRIMZI_DEFAULT_KAFKA_BRIDGE_IMAGE
-              value: quay.io/strimzi/kafka-bridge:0.31.1
+              value: quay.io/strimzi/kafka-bridge:0.33.1
             - name: STRIMZI_DEFAULT_KANIKO_EXECUTOR_IMAGE
-              value: quay.io/strimzi/kaniko-executor:0.45.0
+              value: quay.io/strimzi/kaniko-executor:0.51.0
+            - name: STRIMZI_DEFAULT_BUILDAH_IMAGE
+              value: quay.io/strimzi/buildah:0.51.0
             - name: STRIMZI_DEFAULT_MAVEN_BUILDER
-              value: quay.io/strimzi/maven-builder:0.45.0
+              value: quay.io/strimzi/maven-builder:0.51.0
             - name: STRIMZI_OPERATOR_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -1018,23 +1035,20 @@ spec:
         kubernetes.io/os: linux
 ---
 # Source: strimzi-cluster/templates/kafka.yaml
-apiVersion: kafka.strimzi.io/v1beta2
+apiVersion: kafka.strimzi.io/v1
 kind: Kafka
 metadata:
   name: example-strimzi-cluster
-  annotations:
-    strimzi.io/node-pools: enabled
-    strimzi.io/kraft: enabled
   labels:
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.45.0"
+    app.kubernetes.io/version: "0.51.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec:
   kafka:
-    version: 3.9.0
+    version: 4.2.0
     listeners:
       - name: plain
         port: 9092
@@ -1077,7 +1091,11 @@ spec:
     renewalDays: 30
     validityDays: 365
   entityOperator:
-    template: {}
+    template:
+      userOperatorContainer:
+        env:
+        - name: STRIMZI_IGNORED_USERS_PATTERN
+          value: ^\*|ANONYMOUS$
     topicOperator: {}
     userOperator: {}
   cruiseControl:
@@ -1091,16 +1109,16 @@ spec:
     {}
 ---
 # Source: strimzi-cluster/templates/nodepools.yaml
-apiVersion: kafka.strimzi.io/v1beta2
+apiVersion: kafka.strimzi.io/v1
 kind: KafkaNodePool
 metadata:
   name: broker
   labels:
     strimzi.io/cluster: example-strimzi-cluster
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.45.0"
+    app.kubernetes.io/version: "0.51.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec:
@@ -1118,16 +1136,16 @@ spec:
       type: persistent-claim
 ---
 # Source: strimzi-cluster/templates/nodepools.yaml
-apiVersion: kafka.strimzi.io/v1beta2
+apiVersion: kafka.strimzi.io/v1
 kind: KafkaNodePool
 metadata:
   name: kraft-controller
   labels:
     strimzi.io/cluster: example-strimzi-cluster
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.45.0"
+    app.kubernetes.io/version: "0.51.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec:
@@ -1145,7 +1163,7 @@ spec:
       type: persistent-claim
 ---
 # Source: strimzi-cluster/templates/rebalance.yaml
-apiVersion: kafka.strimzi.io/v1beta2
+apiVersion: kafka.strimzi.io/v1
 kind: KafkaRebalance
 metadata:
   name: example-strimzi-cluster-full-rebalance
@@ -1153,10 +1171,12 @@ metadata:
     strimzi.io/rebalance-auto-approval: "true"
   labels:
     strimzi.io/cluster: example-strimzi-cluster
-    helm.sh/chart: strimzi-cluster-0.1.0
+    helm.sh/chart: strimzi-cluster-0.2.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.45.0"
+    app.kubernetes.io/version: "0.51.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
-spec: {}
+spec:
+  skipHardGoalCheck: false
+  goals: []
