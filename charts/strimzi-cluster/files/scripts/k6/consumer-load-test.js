@@ -17,7 +17,7 @@
 
 import { check } from "k6";
 import {
-  Reader,
+  Consumer,
   SchemaRegistry,
   SCHEMA_TYPE_JSON,
   TLS_1_2
@@ -40,7 +40,7 @@ export const options = {
   },
 };
 
-const reader = new Reader({
+const reader = new Consumer({
   brokers: [__ENV.BOOTSTRAP_URL],
   groupID: __ENV.CONSUMER_GROUP,
   groupTopics: [__ENV.TOPIC],
@@ -58,7 +58,7 @@ const schemaRegistry = new SchemaRegistry();
 
 export function load_test() {
   // Read 1 message only.
-  let messages = reader.consume({ limit: 1, expectTimeout: false });
+  let messages = reader.consume({ maxMessages: 1, expectTimeout: false });
 
   check(messages[0], {
     "Message has the expected value": (message) =>

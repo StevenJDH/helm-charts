@@ -245,7 +245,7 @@ metadata:
 spec:
   restartPolicy: Never
   containers:
-    - image: mostafamoradian/xk6-kafka:latest
+    - image: mostafamoradian/xk6-kafka:2.1.0
       name: xk6-kafka
       # For sending Prometheus metrics, use:
       # command: ["k6", "run", "-o", "experimental-prometheus-rw", "/scripts/producer-load-test.js"]

@@ -16,7 +16,7 @@
  */
 
 import {
-  Writer,
+  Producer,
   SchemaRegistry,
   SCHEMA_TYPE_STRING,
   SCHEMA_TYPE_JSON,
@@ -40,7 +40,7 @@ export const options = {
   },
 };
 
-const writer = new Writer({
+const writer = new Producer({
   brokers: [__ENV.BOOTSTRAP_URL],
   topic: __ENV.TOPIC,
   tls: {
