@@ -53,21 +53,21 @@ spec:
         summary: 'Kafka under replicated partitions'
         description: 'There are {{`{{ $value }}`}} under replicated partitions on {{`{{ $labels.kubernetes_pod_name }}`}}'
     - alert: AbnormalControllerState
-      expr: sum(kafka_controller_kafkacontroller_activecontrollercount) by (strimzi_io_name) != 1
+      expr: sum(kafka_controller_kafkacontroller_activecontrollercount) by (strimzi_io_name, namespace) != 1
       for: 10s
       labels:
         severity: warning
       annotations:
         summary: 'Kafka abnormal controller state'
-        description: 'There are {{`{{ $value }}`}} active controllers in the cluster'
+        description: 'Kafka instance {{`{{ $labels.strimzi_io_name }}`}}  on namespace {{`{{ $labels.namespace }}`}} has {{`{{ $value }}`}} active controllers'
     - alert: OfflinePartitions
-      expr: sum(kafka_controller_kafkacontroller_offlinepartitionscount) > 0
+      expr: sum(kafka_controller_kafkacontroller_offlinepartitionscount)  by (namespace, pod) > 0
       for: 10s
       labels:
         severity: warning
       annotations:
         summary: 'Kafka offline partitions'
-        description: 'One or more partitions have no leader'
+        description: 'Kafka instance on pod {{`{{ $labels.namespace }}`}}/{{`{{ $labels.pod }}`}} has {{`{{ $value }}`}} partition(s) with no leader'
     - alert: UnderMinIsrPartitionCount
       expr: kafka_server_replicamanager_underminisrpartitioncount > 0
       for: 10s
@@ -92,14 +92,6 @@ spec:
       annotations:
         summary: 'Prometheus unable to scrape metrics from {{`{{ $labels.kubernetes_pod_name }}`}}/{{`{{ $labels.instance }}`}}'
         description: 'Prometheus was unable to scrape metrics from {{`{{ $labels.kubernetes_pod_name }}`}}/{{`{{ $labels.instance }}`}} for more than 3 minutes'
-    - alert: ClusterOperatorContainerDown
-      expr: count((container_last_seen{container="strimzi-cluster-operator"} > (time() - 90))) < 1 or absent(container_last_seen{container="strimzi-cluster-operator"})
-      for: 1m
-      labels:
-        severity: major
-      annotations:
-        summary: 'Cluster Operator down'
-        description: 'The Cluster Operator has been down for longer than 90 seconds'
     - alert: KafkaBrokerContainersDown
       expr: absent(container_last_seen{container="kafka",pod=~".+-kafka-[0-9]+"})
       for: 3m
@@ -116,7 +108,17 @@ spec:
       annotations:
         summary: 'One or more Kafka containers restarted too often'
         description: 'One or more Kafka containers were restarted too often within the last 5 minutes'
-  - name: entityOperator
+  - name: cluster-operator
+    rules:
+    - alert: ClusterOperatorContainerDown
+      expr: count((container_last_seen{container="strimzi-cluster-operator"} > (time() - 90))) < 1 or absent(container_last_seen{container="strimzi-cluster-operator"})
+      for: 1m
+      labels:
+        severity: major
+      annotations:
+        summary: 'Cluster Operator down'
+        description: 'The Cluster Operator has been down for longer than 90 seconds'
+  - name: strimzi-entity-operator
     rules:
     - alert: TopicOperatorContainerDown
       expr: absent(container_last_seen{container="topic-operator",pod=~".+-entity-operator-.+"})
@@ -134,7 +136,7 @@ spec:
       annotations:
         summary: 'Container user-operator in Entity Operator pod down or in CrashLookBackOff status'
         description: 'Container user-operator in Entity Operator pod have been down or in CrashLookBackOff status for 3 minutes'
-  - name: kafkaExporter
+  - name: kafka-exporter-topic
     rules:
     - alert: UnderReplicatedPartition
       expr: kafka_topic_partition_under_replicated_partition > 0
@@ -160,7 +162,7 @@ spec:
       annotations:
         summary: 'No message for 10 minutes'
         description: 'There is no messages in topic {{`{{ $labels.topic }}`}}/partition {{`{{ $labels.partition }}`}} for 10 minutes'
-  - name: certificates
+  - name: kafka-certificates
     interval: 1m0s
     rules:
     - alert: CertificateExpiration
