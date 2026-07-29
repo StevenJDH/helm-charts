@@ -20,7 +20,7 @@ import {
   Consumer,
   SchemaRegistry,
   SCHEMA_TYPE_JSON,
-  TLS_1_2
+  TLS_1_3
 } from "k6/x/kafka";
 
 // Reference: https://k6.io/docs/using-k6/k6-options/
@@ -33,7 +33,7 @@ export const options = {
     load_test: {
       exec: "load_test",
       executor: "constant-vus",
-      vus: __ENV.VUS,
+      vus: Number(__ENV.VUS),
       duration: __ENV.DURATION,
       gracefulStop: __ENV.GRACEFUL_STOP,
     },
@@ -42,15 +42,15 @@ export const options = {
 
 const reader = new Consumer({
   brokers: [__ENV.BOOTSTRAP_URL],
-  groupID: __ENV.CONSUMER_GROUP,
+  groupId: __ENV.CONSUMER_GROUP,
   groupTopics: [__ENV.TOPIC],
   tls: {
     enableTls: true,
-    insecureSkipTLSVerify: false,
-    minVersion: TLS_1_2,
-    clientCertPem: __ENV.CERT_PATH,
-    clientKeyPem: __ENV.KEY_PATH,
-    serverCaPem: __ENV.CA_PATH,
+    insecureSkipTlsVerify: false,
+    minVersion: TLS_1_3,
+    clientCertPem: open(__ENV.CERT_PATH),
+    clientKeyPem: open(__ENV.KEY_PATH),
+    serverCaPem: open(__ENV.CA_PATH),
   },
 });
 
@@ -72,6 +72,8 @@ export function load_test() {
     "Time of message is in past": (message) => new Date(message.time) < new Date(),
     "High watermark is gte zero": (message) => message.highWaterMark >= 0,
   });
+
+  reader.commitOffsets();
 }
 
 export function teardown(data) {

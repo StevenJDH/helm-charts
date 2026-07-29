@@ -36,6 +36,9 @@ helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.
     --atomic
 ```
 
+> [!IMPORTANT]  
+> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
+
 > [!TIP]
 > To test Drain Cleaner, run the command `kubectl drain <node-name> --delete-emptydir-data --ignore-daemonsets --timeout=6000s --force` against a node with a broker, which will fail the first time because the strimzi cluster operator will take over for relocating those workloads. Then, rerun the command again after a few minutes, and it will work this time. For more info, see [Using the Strimzi Drain Cleaner](https://github.com/strimzi/drain-cleaner?tab=readme-ov-file#see-it-in-action).
 
@@ -77,14 +80,15 @@ base64 -w0 ca.crt > ca.crt.base64
 This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
 
 ```bash
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 68.1.0
-    -f prometheus-values.yaml \ # Check below for one of the options to use for this file.
+helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack --version 87.21.0
+    -f prometheus-values.yaml \ # TODO: Check below for one of the options to use for this file.
     --namespace monitoring \
     --create-namespace \
     --atomic
 ```
+
+> [!IMPORTANT]  
+> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
 
 ### Option 1 - Using PodMonitor (Recommended)
 This recommended approach will automatically detect and directly collect metrics from Strimzi related pods.
@@ -94,6 +98,7 @@ This recommended approach will automatically detect and directly collect metrics
 ```yaml
 grafana:
   defaultDashboardsEnabled: false
+  adminUser: admin
   # Change adminPassword as needed.
   adminPassword: admin
 
@@ -117,6 +122,11 @@ prometheus:
     podMonitorNamespaceSelector: {}
       # matchLabels:
       #   monitoring: prometheus
+ 
+ crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
 ```
 
 After the kube-prometheus-stack chart has been deployed or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
@@ -255,16 +265,16 @@ metadata:
 spec:
   restartPolicy: Never
   containers:
-    - image: mostafamoradian/xk6-kafka:latest
+    - image: mostafamoradian/xk6-kafka:2.1.0
       name: xk6-kafka
       # For sending Prometheus metrics, use:
       # command: ["k6", "run", "-o", "experimental-prometheus-rw", "/scripts/producer-load-test.js"]
       command: ["k6", "run", "/scripts/producer-load-test.js"]
       env:
         - name: BOOTSTRAP_URL
-          value: strimzi-cluster-kafka-bootstrap:9094
+          value: my-strimzi-cluster-kafka-bootstrap:9094
         - name: CLUSTER
-          value: strimzi-cluster
+          value: my-strimzi-cluster
         - name: TOPIC
           value: test-topic
         - name: CONSUMER_GROUP
@@ -312,7 +322,7 @@ spec:
         secretName: test-user
     - name: server-ca-volume
       secret:
-        secretName: strimzi-cluster-cluster-ca-cert
+        secretName: my-strimzi-cluster-cluster-ca-cert
     - name: k6-scripts-volume
       configMap:
         name: k6-scripts-config
