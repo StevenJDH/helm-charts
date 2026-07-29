@@ -416,7 +416,7 @@ nodePools:
         #   labelSelector:
         #     matchLabels:
         #       app.kubernetes.io/instance: my-strimzi-cluster
-        #       app.kubernetes.io/name: strimzi-cluster
+        #       strimzi.io/pool-name: broker
         #       strimzi.io/cluster: my-strimzi-cluster
         #       strimzi.io/kind: Kafka
 
@@ -483,7 +483,7 @@ nodePools:
         #   labelSelector:
         #     matchLabels:
         #       app.kubernetes.io/instance: my-strimzi-cluster
-        #       app.kubernetes.io/name: strimzi-cluster
+        #       strimzi.io/pool-name: kraft-controller
         #       strimzi.io/cluster: my-strimzi-cluster
         #       strimzi.io/kind: Kafka
     

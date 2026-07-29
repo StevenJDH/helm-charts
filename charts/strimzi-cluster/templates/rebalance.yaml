@@ -35,8 +35,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   skipHardGoalCheck: {{ .Values.cruiseControlRebalance.skipHardGoalCheck | default false }}
-  goals: {{- if empty .Values.cruiseControlRebalance.goals }} []
-  {{- else }}
-    {{- toYaml .Values.cruiseControlRebalance.goals | nindent 4 }}
+  {{- with .Values.cruiseControlRebalance.goals }}
+  goals:
+    {{- toYaml . | nindent 4 }}
   {{- end }}
 {{- end -}}
