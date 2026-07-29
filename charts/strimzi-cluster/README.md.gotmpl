@@ -69,7 +69,7 @@ This section shows how to enable monitoring of the cluster via Prometheus and Gr
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 68.1.0
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 87.21.0
     -f prometheus-values.yaml \ # Check below for one of the options to use for this file.
     --namespace monitoring \
     --create-namespace \
