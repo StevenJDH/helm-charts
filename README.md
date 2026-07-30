@@ -11,10 +11,6 @@ A collection of Kubernetes applications ready for release using [Helm](https://g
 
 [![Buy me a coffee](https://img.shields.io/static/v1?label=Buy%20me%20a&message=coffee&color=important&style=flat&logo=buy-me-a-coffee&logoColor=white)](https://www.buymeacoffee.com/stevenjdh)
 
-## Prerequisites
-* Kubernetes 1.19+
-* [Helm](https://github.com/helm/helm/releases) 3.8.0+
-
 ## TL;DR
 
 ```bash
