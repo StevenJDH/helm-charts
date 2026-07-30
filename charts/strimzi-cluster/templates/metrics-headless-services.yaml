@@ -37,8 +37,9 @@ spec:
   ipFamilyPolicy: SingleStack
   publishNotReadyAddresses: true
   ports:
-    - port: tcp-prometheus
+    - port: 9404
       protocol: TCP
+      name: tcp-prometheus
   selector:
     strimzi.io/cluster: {{ include "shared-library.fullname" $ }}
     strimzi.io/kind: Kafka
@@ -61,8 +62,9 @@ spec:
   ipFamilyPolicy: SingleStack
   publishNotReadyAddresses: true
   ports:
-    - port: http
+    - port: 8080
       protocol: TCP
+      name: http
   selector:
     strimzi.io/kind: cluster-operator
 ---
@@ -106,8 +108,9 @@ spec:
   ipFamilyPolicy: SingleStack
   publishNotReadyAddresses: true
   ports:
-    - port: tcp-prometheus
+    - port: 9404
       protocol: TCP
+      name: tcp-prometheus
   selector:
     strimzi.io/cluster: {{ include "shared-library.fullname" . }}
     strimzi.io/kind: Kafka
@@ -131,8 +134,9 @@ spec:
   ipFamilyPolicy: SingleStack
   publishNotReadyAddresses: true
   ports:
-    - port: tcp-prometheus
+    - port: 9404
       protocol: TCP
+      name: tcp-prometheus
   selector:
     strimzi.io/cluster: {{ include "shared-library.fullname" . }}
     strimzi.io/kind: Kafka
