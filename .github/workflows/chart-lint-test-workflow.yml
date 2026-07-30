@@ -9,7 +9,12 @@ on:
       - '!charts/**/*.md'
       - '!charts/**/*.png'
       - '!charts/**/*.gotmpl'
-  workflow_dispatch: # Run workflow manually through the Github Actions Workflow page directly.
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'The reason for running the workflow.'
+        required: true
+        default: 'Manual run'
 
 jobs:
   lint-test:
@@ -20,28 +25,25 @@ jobs:
       changed-chart: ${{ steps.list-changed.outputs.changed-chart }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Set up Helm
-        uses: azure/setup-helm@v4
+        uses: azure/setup-helm@v5
         with:
-          version: v3.17.0
+          version: v3.21.3
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           # Use single quotes or trailing 0s are lost.
           python-version: '3.13'
 
       - name: Set up chart-testing
-        # Full version for action needs to be specified
-        # because @2 points to previous release with
-        # issue helm/chart-testing-action#135.
-        uses: helm/chart-testing-action@v2.6.1
+        uses: helm/chart-testing-action@v2
         with:
-          version: '3.12.0'
+          version: '3.14.0'
 
       - name: Run chart-testing (list-changed)
         id: list-changed
@@ -63,18 +65,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetesVersion: [v1.19.16, v1.25.16, v1.32.0]
+        kubernetesVersion: [v1.30.13, v1.33.7, v1.35.0]
         include:
         # Images: https://github.com/kubernetes-sigs/kind/releases
-        - kubernetesVersion: v1.19.16
-          kindImage: kindest/node:v1.19.16@sha256:a146f9819fece706b337d34125bbd5cb8ae4d25558427bf2fa3ee8ad231236f2
-        - kubernetesVersion: v1.25.16
-          kindImage: kindest/node:v1.25.16@sha256:6110314339b3b44d10da7d27881849a87e092124afab5956f2e10ecdb463b025
-        - kubernetesVersion: v1.32.0
-          kindImage: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
+        - kubernetesVersion: v1.30.13
+          kindImage: kindest/node:v1.30.13@sha256:397209b3d947d154f6641f2d0ce8d473732bd91c87d9575ade99049aa33cd648
+        - kubernetesVersion: v1.33.7
+          kindImage: kindest/node:v1.33.7@sha256:d26ef333bdb2cbe9862a0f7c3803ecc7b4303d8cea8e814b481b09949d353040
+        - kubernetesVersion: v1.35.0
+          kindImage: kindest/node:v1.35.0@sha256:452d707d4862f52530247495d180205e029056831160e22870e37e3f6c1ac31f
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -99,25 +101,22 @@ jobs:
 
       - name: Set up Helm
         if: steps.check-req.outputs.skip != 'true'
-        uses: azure/setup-helm@v4
+        uses: azure/setup-helm@v5
         with:
-          version: v3.17.0
+          version: v3.21.3
 
       - name: Set up Python
         if: steps.check-req.outputs.skip != 'true'
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           # Use single quotes or trailing 0s are lost.
           python-version: '3.13'
 
       - name: Set up chart-testing
         if: steps.check-req.outputs.skip != 'true'
-        # Full version for action needs to be specified
-        # because @2 points to previous release with
-        # issue helm/chart-testing-action#135.
-        uses: helm/chart-testing-action@v2.6.1
+        uses: helm/chart-testing-action@v2
         with:
-          version: '3.12.0'
+          version: '3.14.0'
 
       - name: Create kind cluster ${{ matrix.kubernetesVersion }}
         if: steps.check-req.outputs.skip != 'true'

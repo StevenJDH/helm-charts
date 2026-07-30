@@ -11,10 +11,6 @@ A collection of Kubernetes applications ready for release using [Helm](https://g
 
 [![Buy me a coffee](https://img.shields.io/static/v1?label=Buy%20me%20a&message=coffee&color=important&style=flat&logo=buy-me-a-coffee&logoColor=white)](https://www.buymeacoffee.com/stevenjdh)
 
-## Prerequisites
-* Kubernetes 1.19+
-* [Helm](https://github.com/helm/helm/releases) 3.8.0+
-
 ## TL;DR
 
 ```bash
@@ -25,13 +21,13 @@ helm install my-release stevenjdh/<chart>
 ```
 
 ## Pull requests
-Pull requests will trigger automatic chart testing and tests against Kubernetes 1.19.x, 1.25.x, and 1.32.x before they can be merged into `main`. To avoid issues, run the same tests locally before submitting a PR.
+Pull requests will trigger automatic chart testing and tests against Kubernetes 1.30.x, 1.33.x, and 1.35.x before they can be merged into `main`. To avoid issues, run the same tests locally before submitting a PR.
 
 ### Manual chart testing
 
 ```bash
 docker run -it --rm --name ct --workdir=/data \
-    --volume "$(pwd):/data" quay.io/helmpack/chart-testing:v3.12.0 sh \
+    --volume "$(pwd):/data" quay.io/helmpack/chart-testing:v3.14.0 sh \
     -c "ct lint --charts charts/<chart> --print-config --config ct.yaml"
 ```
 
@@ -39,7 +35,7 @@ docker run -it --rm --name ct --workdir=/data \
 Install the needed CLI from [here](https://kind.sigs.k8s.io/docs/user/quick-start/#installation), then run the following commands against the needed [Kubernetes versions](https://hub.docker.com/r/kindest/node/tags):
 
 ```bash
-kind create cluster --image kindest/node:v1.19.16
+kind create cluster --image kindest/node:v1.30.13
 helm install my-release charts/<chart>
 kind delete cluster
 ```
