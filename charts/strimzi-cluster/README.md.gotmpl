@@ -113,16 +113,160 @@ prometheus:
       # matchLabels:
       #   monitoring: prometheus
  
- crds:
+crds:
   upgradeJob:
     enabled: true
     forceConflicts: false
 ```
 
-After the kube-prometheus-stack chart has been deployed or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
+After the kube-prometheus-stack chart has been deployed, or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
 
-### Option 2 - Using Headless Services
-This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) chart instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) chart, `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
+### Option 2 - Static Config
+This option replicates the behavior of Option 1 without relying on PodMonitor CRs.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  # Change adminPassword as needed.
+  adminUser: admin  
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: strimzi-kafka-resources-metrics
+      honor_timestamps: true
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      follow_redirects: true
+      enable_http2: true
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+          - strimzi
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_phase]
+        separator: ;
+        regex: (Failed|Succeeded)
+        replacement: $1
+        action: drop
+      - source_labels:
+        - __meta_kubernetes_pod_label_strimzi_io_kind
+        - __meta_kubernetes_pod_labelpresent_strimzi_io_kind
+        separator: ;
+        regex: (Kafka);true
+        replacement: $1
+        action: keep
+      - separator: ;
+        target_label: endpoint
+        replacement: tcp-prometheus
+        action: replace
+      - separator: ;
+        regex: __meta_kubernetes_pod_label_(strimzi_io_.+)
+        replacement: $1
+        action: labelmap
+      - source_labels: [__meta_kubernetes_namespace]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        separator: ;
+        regex: (.*)
+        target_label: kubernetes_pod_name
+        replacement: $1
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_node_name]
+        separator: ;
+        regex: (.*)
+        target_label: node_name
+        replacement: $1
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_host_ip]
+        separator: ;
+        regex: (.*)
+        target_label: node_ip
+        replacement: $1
+        action: replace       
+    - job_name: strimzi-cluster-operator-metrics
+      honor_timestamps: true
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      follow_redirects: true
+      enable_http2: true
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+          - strimzi
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_phase]
+        separator: ;
+        regex: (Failed|Succeeded)
+        replacement: $1
+        action: drop
+      - source_labels:
+        - __meta_kubernetes_pod_label_strimzi_io_kind
+        - __meta_kubernetes_pod_labelpresent_strimzi_io_kind
+        separator: ;
+        regex: (cluster-operator);true
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        separator: ;
+        regex: http
+        replacement: $1
+        action: keep
+    - job_name: strimzi-entity-operator-metrics
+      honor_timestamps: true
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      follow_redirects: true
+      enable_http2: true
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+          - strimzi
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_phase]
+        separator: ;
+        regex: (Failed|Succeeded)
+        replacement: $1
+        action: drop
+      - source_labels:
+        - __meta_kubernetes_pod_label_app_kubernetes_io_name
+        - __meta_kubernetes_pod_labelpresent_app_kubernetes_io_name
+        separator: ;
+        regex: (entity-operator);true
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        separator: ;
+        regex: healthcheck
+        replacement: $1
+        action: keep
+
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
+```
+
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
+
+### Option 3 - Using Headless Services
+This approach is more for compatibility reasons. For example, when using CRDs or Option 2 is not possible. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) chart instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) chart, `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` and `crds` sections are dropped.
 
 **prometheus-values.yaml**
 
@@ -141,35 +285,6 @@ prometheus:
       dns_sd_configs:
       - names:
         - strimzi-broker-metrics-headless.strimzi.svc.cluster.local
-      relabelings:
-        - separator: ;
-          regex: __meta_kubernetes_pod_label_(strimzi_io_.+)
-          replacement: $1
-          action: labelmap
-        - sourceLabels: [__meta_kubernetes_namespace]
-          separator: ;
-          regex: (.*)
-          targetLabel: namespace
-          replacement: $1
-          action: replace
-        - sourceLabels: [__meta_kubernetes_pod_name]
-          separator: ;
-          regex: (.*)
-          targetLabel: kubernetes_pod_name
-          replacement: $1
-          action: replace
-        - sourceLabels: [__meta_kubernetes_pod_node_name]
-          separator: ;
-          regex: (.*)
-          targetLabel: node_name
-          replacement: $1
-          action: replace
-        - sourceLabels: [__meta_kubernetes_pod_host_ip]
-          separator: ;
-          regex: (.*)
-          targetLabel: node_ip
-          replacement: $1
-          action: replace
     - job_name: strimzi-kraft-controllers-metrics
       scrape_interval: 5s
       metrics_path: /metrics
@@ -200,15 +315,20 @@ prometheus:
       dns_sd_configs:
       - names:
         - strimzi-kafka-exporter-metrics-headless.strimzi.svc.cluster.local
+
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
 ```
 
 > [!NOTE]  
-> The above config assumes that the strimzi-cluster chart is deployed to the `strimzi` namespace. If not, then update to match. Also, the relabeling section hasn't been applied to every job for conciseness. To match Option 1's relabeling, apply to each job except for the two operators.
+> The above config assumes that the strimzi-cluster chart is deployed to the `strimzi` namespace. If not, then update to match. Also, with this approach, the official Strimzi dashboards and alerts won't work due to the absence of kubernetes metadata.
 
-After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` to `true` and `strimzi-kafka-operator.dashboards.enabled` to `false` in the strimzi-cluster chart.
 
-### Optional - Enabling Prometheus alert rules
-Customize and consolidate the below with one of the options above if wanting to create alerts in a different namespace from where the kube-prometheus-stack chart is deployed. In many cases, the below is not needed. After, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart.
+### Optional - Enabling Prometheus Alert Rules
+To enable alerts, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart. If wanting to create alerts in a different namespace from where the kube-prometheus-stack chart is deployed, customize and consolidate the below with one of the options above, except Option 3. Otherwise, skip this configuration if not needed.
 
 ```yaml
 prometheus:
