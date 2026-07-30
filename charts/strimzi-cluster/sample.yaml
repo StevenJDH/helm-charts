@@ -1179,4 +1179,3 @@ metadata:
   namespace: default
 spec:
   skipHardGoalCheck: false
-  goals: []
