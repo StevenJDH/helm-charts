@@ -15,13 +15,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl)    -}}
-{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter)    -}}
-{{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)                -}}
-{{- $createPodMonitor     := ((.Values.podMonitor).create)                   -}}
-{{- $createHeadlessSvc    := ((.Values.scrapeConfigHeadlessServices).create) -}}
-{{- $createKafkaAlerts    := ((.Values.prometheusKafkaAlerts).create)        -}}
-{{- if and $createKafkaAlerts (or $cruiseControlEnabled $kafkaExporterEnabled $metricsEnabled) (or $createPodMonitor $createHeadlessSvc) -}}
+{{- $createKafkaAlerts    := ((.Values.prometheusKafkaAlerts).create)                  -}}
+{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl)              -}}
+{{- $metricsEnabled       := or ((.Values.kafka).metricsEnabled) $cruiseControlEnabled -}}
+{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter)              -}}
+{{- if and $createKafkaAlerts (or $metricsEnabled $kafkaExporterEnabled) -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
