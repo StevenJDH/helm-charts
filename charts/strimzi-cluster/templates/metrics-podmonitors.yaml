@@ -15,11 +15,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl) -}}
-{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter) -}}
-{{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)             -}}
-{{- $createPodMonitor     := ((.Values.podMonitor).create)                -}}
-{{- if and $createPodMonitor (or $cruiseControlEnabled $kafkaExporterEnabled $metricsEnabled) -}}
+{{- $createPodMonitor   := ((.Values.podMonitor).create)                               -}}
+{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl)              -}}
+{{- $metricsEnabled       := or ((.Values.kafka).metricsEnabled) $cruiseControlEnabled -}}
+{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter)              -}}
+{{- if and $createPodMonitor (or $metricsEnabled $kafkaExporterEnabled) -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -72,7 +72,7 @@ spec:
       replacement: $1
       action: replace
 ---
-{{- if or $cruiseControlEnabled $metricsEnabled }}
+{{- if $metricsEnabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
