@@ -281,18 +281,18 @@ podMonitor:
 
 scrapeConfigHeadlessServices:
   # -- Indicates whether or not to create headless services to scrape Kafka related metrics. Setting
-  # is ignored if `podMonitor.create` is set to `true`. See
-  # [Option 2](#option-2---using-headless-services) under the Monitoring section of the README for
+  # is ignored if `podMonitor.create` is set to `true`. This is a compatibility feature that is meant
+  # only for custom setups and does not support Strimzi's official dashboards. See
+  # [Option 3](#option-3---using-headless-services) under the Monitoring section of the README for
   # more information.
   create: false
 
 prometheusKafkaAlerts:
   # -- Indicates whether or not to create PrometheusRules to define Kafka related alerts. Ensure to set
-  # `kafka.metricsEnabled` to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. Also,
-  # `podMonitor.create` or `scrapeConfigHeadlessServices.create` must be set to `true`.  See
-  # [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring
-  # section of the README for more information.
-  create: true
+  # `kafka.metricsEnabled` to `true`, or define the `kafka.cruiseControl` or `kafka.kafkaExporter`
+  # properties. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under
+  # the Monitoring section of the README for more information.
+  create: false
   # -- overrideNamespace allows to override the default `monitoring` namespace where the PrometheusRule
   # resource will be deployed. If deploying to a namespace where the prometheus operator isn't
   # located, some config changes will be required. See
