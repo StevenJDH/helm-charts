@@ -15,11 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl)    -}}
-{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter)    -}}
-{{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)                -}}
-{{- $createHeadlessSvc    := ((.Values.scrapeConfigHeadlessServices).create) -}}
-{{- if and $createHeadlessSvc (or $cruiseControlEnabled $metricsEnabled) -}}
+{{- $createPodMonitors    := ((.Values.podMonitor).create)                             -}}
+{{- $createHeadlessSvc    := ((.Values.scrapeConfigHeadlessServices).create)           -}}
+{{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl)              -}}
+{{- $metricsEnabled       := or ((.Values.kafka).metricsEnabled) $cruiseControlEnabled -}}
+{{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter)              -}}
+{{- if and (not $createPodMonitors) $createHeadlessSvc $metricsEnabled -}}
 {{- range $name, $config := .Values.nodePools }}
 {{- if (($config).enabled) }}
 apiVersion: v1
@@ -118,7 +119,7 @@ spec:
 ---
 {{- end }}
 {{- end -}}
-{{- if and $createHeadlessSvc $kafkaExporterEnabled -}}
+{{- if and (not $createPodMonitors) $createHeadlessSvc $kafkaExporterEnabled -}}
 apiVersion: v1
 kind: Service
 metadata:
