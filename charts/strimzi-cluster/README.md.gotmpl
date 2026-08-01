@@ -1,8 +1,19 @@
-# Strimzi Cluster Helm Chart
+{{- template "chart.centeredHeader" "Strimzi Cluster Helm Chart" }}
 
-{{ template "chart.badgesSection" . }}
+{{ template "chart.centeredBadgesSection" . }}
 
+<p align="center">
+    <a href="#requirements"><b>Requirements</b></a> •
+    <a href="#usage-example"><b>Usage</b></a> •
+    <a href="#create-drain-cleaner-certificate-chain"><b>Drain Cleaner</b></a> •
+    <a href="#monitoring-with-prometheus-and-grafana"><b>Monitoring</b></a> •
+    <a href="#load-testing-the-cluster"><b>Load Testing</b></a> •
+    <a href="#values"><b>Chart Values</b></a>
+</p>
+
+<p align="center">
 {{ template "chart.description" . }}
+</p>
 
 {{ template "chart.sourcesSection" . }}
 

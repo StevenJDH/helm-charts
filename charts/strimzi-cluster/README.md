@@ -1,8 +1,34 @@
-# Strimzi Cluster Helm Chart
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.51.0](https://img.shields.io/badge/AppVersion-0.51.0-informational?style=flat-square) 
 
+<h1 align="center">Strimzi Cluster Helm Chart</h1>
+
+<p align="center">
+  <img
+    alt="Version: 0.2.0"
+    src="https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square"
+  />
+  <img
+    alt="Type: application"
+    src="https://img.shields.io/badge/Type-application-informational?style=flat-square"
+  />
+  <img
+    alt="AppVersion: 0.51.0"
+    src="https://img.shields.io/badge/AppVersion-0.51.0-informational?style=flat-square"
+  />
+</p>
+
+<p align="center">
+    <a href="#requirements"><b>Requirements</b></a> •
+    <a href="#usage-example"><b>Usage</b></a> •
+    <a href="#create-drain-cleaner-certificate-chain"><b>Drain Cleaner</b></a> •
+    <a href="#monitoring-with-prometheus-and-grafana"><b>Monitoring</b></a> •
+    <a href="#load-testing-the-cluster"><b>Load Testing</b></a> •
+    <a href="#values"><b>Chart Values</b></a>
+</p>
+
+<p align="center">
 Installs Strimzi, Drain Cleaner, and a Kafka cluster in KRaft mode.
+</p>
 
 ## Source Code
 
