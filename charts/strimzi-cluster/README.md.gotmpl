@@ -91,6 +91,51 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 > [!IMPORTANT]  
 > Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Strimzi Kafka - Dashboards - Grafana.png" width="260"
+        title="Strimzi Kafka Dashboard" alt="Strimzi Kafka Dashboard"
+      /><br>
+      <b>Strimzi Kafka Dashboard</b><br>
+      Kafka brokers overview.
+    </td>
+      <td align="center">
+      <img src="screenshots/Strimzi KRaft - Dashboards - Grafana.png" width="260"
+        title="Strimzi KRaft Dashboard" alt="Strimzi KRaft Dashboard"
+      /><br>
+      <b>Strimzi KRaft Dashboard</b><br>
+      KRaft controller metrics.
+    </td>
+    <td align="center">
+      <img src="screenshots/Strimzi Kafka Exporter - Dashboards - Grafana.png" width="260"
+        title="Strimzi Kafka Exporter Dashboard" alt="Strimzi Kafka Exporter Dashboard"
+      /><br>
+      <b>Strimzi Kafka Exporter Dashboard</b><br>
+      Consumer group insights.
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Strimzi Operators - Dashboards - Grafana.png" width="260"
+        title="Strimzi Operators Dashboard" alt="Strimzi Operators Dashboard"
+      /><br>
+      <b>Strimzi Operators Dashboard</b><br>
+      Operator health metrics.
+    </td>
+    <td align="center">
+      <img src="screenshots/Strimzi Cruise Control - Dashboards - Grafana.png" width="260"
+        title="Strimzi Cruise Control Dashboard" alt="Strimzi Cruise Control Dashboard"
+      /><br>
+      <b>Strimzi Cruise Control Dashboard</b><br>
+      Cluster balancing metrics.
+    </td>
+    <td align="center">
+      <a href="./screenshots/">More...</a>
+    </td>
+  </tr>
+</table>
+
 ### Option 1 - Using PodMonitor (Recommended)
 This recommended approach will automatically detect and directly collect metrics from Strimzi related pods.
 
@@ -339,6 +384,9 @@ crds:
 After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` to `true` and `strimzi-kafka-operator.dashboards.enabled` to `false` in the strimzi-cluster chart.
 
 ### Optional - Enabling Prometheus Alert Rules
+
+![Strimzi Alerts](screenshots/Strimzi%20Alerts%20-%20Prometheus.png "Strimzi Alerts")
+
 To enable alerts, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart. If wanting to create alerts in a different namespace from where the kube-prometheus-stack chart is deployed, customize and consolidate the below with one of the options above, except Option 3. Otherwise, skip this configuration if not needed.
 
 ```yaml
@@ -466,6 +514,9 @@ kubectl delete -f k6-load-test.yaml
 When finished, in the `command` field of the pod, try switching `producer-load-test.js` for `consumer-load-test.js` to run another test, except this time using a consumer.
 
 ### Sending load testing results to Prometheus
+
+![xk6 Kafka Dashboard](screenshots/xk6-kafka-dashboard%20-%20Dashboards%20-%20Grafana.png "xk6 Kafka Dashboard")
+
 If `strimzi-kafka-operator.dashboards.enabled` was previously enabled as per the [Monitoring with Prometheus and Grafana](#monitoring-with-prometheus-and-grafana) section, then there would have been a dashboard called "Strimzi Kafka Exporter" created that would have useful information about the tests previously ran. However, the strmizi-cluster chart includes a specialized dashboard called "xk6-kafka-dashboard" that better represents the metrics collected from the load tests. To enable it, first update the kube-prometheus-stack chart with the configuration below to enable remote write receiver.
 
 ```yaml
