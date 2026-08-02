@@ -1,0 +1,385 @@
+# This file is part of Shared Library Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2023-2024 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# -- replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to
+# increase availability when set to more than one.
+replicaCount: 1
+
+image:
+  # -- repository holding the container image.
+  repository: "quay.io/keycloak/keycloak"
+  # -- pullPolicy is the strategy for pulling images from a registry.
+  pullPolicy: Always
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  pullSecret:
+    # @ignored. registry is the private docker container registry for pulling images.
+    registry: "index.docker.io/v1/"
+    # -- username is the Docker username associated with the password.
+    username: ""
+    # -- password is the Docker password associated with the username with pull rights.
+    password: ""
+
+# -- Override for chart name in helm common labels.
+nameOverride: ""
+# -- Override for generated resource names.
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created.
+  create: true
+  # -- annotations to be added to the Service Account resource.
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template.
+  name: ""
+  
+# -- annotations to be added to the Deployment resource.
+annotations: {}
+
+# -- podAnnotations are the annotations to be added to the deployment pods.
+podAnnotations: {}
+
+# -- restartPolicy defines how a pod will automatically repair itself when a problem arises.
+# Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy).
+restartPolicy: Always
+
+# -- The update strategy to apply to the Deployment resource.
+updateStrategy: {}
+  # rollingUpdate:
+  #   maxUnavailable: 1
+  # type: RollingUpdate
+
+# -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.
+command: ["/opt/keycloak/bin/kc.sh"]
+
+# -- Additional command line arguments to pass to the container. For production, use ["start"] and for development use ["start-dev"].
+extraArgs: ["start-dev"]
+# - --arg1
+# - value1
+# - --arg2
+# - value2
+
+# -- Additional environment variables to set.
+extraEnvs: []
+# - name: FOO
+#   valueFrom:
+#     secretKeyRef:
+#       key: FOO
+#       name: secret-resource
+
+# @ignored
+podSecurityContext: {}
+  # runAsNonRoot: true
+  # runAsUser: 10101
+  # seccompProfile:
+  #   type: RuntimeDefault
+
+# @ignored
+securityContext: {}
+  # readOnlyRootFilesystem: false
+  # allowPrivilegeEscalation: false
+  # capabilities:
+  #   drop:
+  #   - ALL
+
+# -- priorityClassName is the name of the PriorityClass resource that indicates the
+# importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
+# scheduler tries to preempt (evict) lower priority Pods to make scheduling of the
+# pending Pod possible.
+# Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption).
+priorityClassName: ""
+
+# -- containerPort is the port or ports that the container listens on.
+containerPorts: {}
+  # http: 8080
+  # actuator: 8081
+
+# @ignored. Startup, Liveness and readiness probes. Liveness probes do not wait
+# for readiness probes to succeed. If you want to wait before executing a liveness
+# probe you should use initialDelaySeconds or a startupProbe.
+# Reference [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes).
+health:
+  startupProbe: {}
+    # httpGet:
+    #   path: /actuator/health
+    #   port: actuator
+    #   scheme: HTTP
+    # initialDelaySeconds: 5
+    # periodSeconds: 5
+    # timeoutSeconds: 2
+    # successThreshold: 1
+    # failureThreshold: 5
+  livenessProbe: {}
+    # httpGet:
+    #   path: /actuator/health/liveness
+    #   port: actuator
+    #   scheme: HTTP
+    # initialDelaySeconds: 10
+    # periodSeconds: 10
+    # timeoutSeconds: 1
+    # successThreshold: 1
+    # failureThreshold: 5
+  readinessProbe: {}
+    # httpGet:
+    #   path: /actuator/health/readiness
+    #   port: actuator
+    #   scheme: HTTP
+    # initialDelaySeconds: 10
+    # periodSeconds: 10
+    # timeoutSeconds: 1
+    # successThreshold: 1
+    # failureThreshold: 3
+
+# -- Additional volumeMounts for the main container.
+extraVolumeMounts: []
+# - name: example-volume
+#   mountPath: /share/example
+
+# -- Additional volumes for the pod.
+extraVolumes: []
+# - name: example-volume
+#   emptyDir: {}
+
+# -- Containers, which are run before the app containers are started.
+extraInitContainers: []
+# - name: init-myservice
+#   image: busybox
+#   command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+
+service:
+  # -- type specifies what kind of Service resource to create.
+  type: ClusterIP
+  # @ignored
+  port: 80
+  # @ignored
+  targetPort: &targetPort 8080
+  # @ignored
+  nodePort: 32080
+  # -- appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example,
+  # `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http`. See the following GitHub issue for more details
+  # [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions
+  # older than 1.20.
+  appProtocol: true
+  # -- annotations to be added to the Service resource.
+  annotations: {}
+  # -- clusterIP allows for customizing the cluster IP address of a service resource.
+  clusterIP: ""
+  # -- externalIPs is a list of IP addresses at which a service is available at.
+  # Reference [External IPs](https://kubernetes.io/docs/user-guide/services/#external-ips).
+  externalIPs: []
+  # -- loadBalancerIP is a field used by cloud providers to connect the resulting `LoadBalancer` created by a service resource to a
+  # pre-existing static IP. This field is deprecated as of Kubernetes 1.24.0 since it doesn't support dual-stack, but there is no
+  # replacement as of yet. Most likely cloud providers will adopt a provider specific annotation approach for this. Progress can be
+  # tracked here [kubernetes/enhancements#1992](https://github.com/kubernetes/enhancements/pull/1992).
+  # Reference [Type LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer).
+  loadBalancerIP: ""
+  # -- loadBalancerSourceRanges is a list of one or more internal or external IP address ranges. If not set, a Service will accept
+  # traffic from any IP address (0.0.0.0/0).
+  loadBalancerSourceRanges: []
+  # -- externalTrafficPolicy is an annotation set on a service resource. It defines how traffic incoming to a node is load balanced.
+  # `Cluster` is normally the default policy, but `Local` is often used to preserve the source IP of traffic coming into a cluster
+  # node. With Local, requests are load balanced equally across nodes irrespective of how many pods are on each node. When set to
+  # Cluster, both nodes and pods are taken into consideration. Applicable only when `service.type` is `NodePort` or `LoadBalancer`.
+  # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
+  externalTrafficPolicy: ""
+  # -- sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's
+  # IP address. Must be either "None" or "ClientIP" if set.
+  # Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace).
+  sessionAffinity: "None"
+  # -- healthCheckNodePort specifies the health check node port (numeric port number) for the service. If healthCheckNodePort isn’t specified,
+  # the service controller allocates a port from your cluster’s NodePort range.
+  # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
+  healthCheckNodePort: 0
+  # -- ipFamilyPolicy represents the dual-stack-ness requested or required by this Service. Possible values are SingleStack, PreferDualStack or RequireDualStack.
+  # The ipFamilies and clusterIPs fields depend on the value of this field.
+  # Reference [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack).
+  ipFamilyPolicy: "SingleStack"
+  # -- ipFamilies is a list of IP families (e.g. IPv4, IPv6) assigned to a service. This field is usually assigned automatically
+  # based on cluster configuration and the ipFamilyPolicy field. [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack).
+  ipFamilies:
+  - IPv4
+
+ingress:
+  # -- Indicates whether or not an Ingress resource is created.
+  enabled: true
+  # -- className is the name of the Ingress class.
+  className: traefik
+  # -- annotations to be added to the Ingress resource.
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+
+  hosts:
+    - # -- host is the hostname of a request that must match exactly or use a wildcard as the subdomain.
+      host: "keycloak.127.0.0.1.sslip.io"
+      paths:
+        - # -- path is part of a list of one or more paths that are associated with a backend service.
+          path: /
+          # -- pathType is a field that can specify how Ingress paths should be matched.
+          # Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types).
+          pathType: Prefix
+  # -- tls is a list of hosts that needs to explicitly match the host in the rules section.
+  # It also contains a secret with references to tls.crt and tls.key to use for TLS.
+  tls: []
+  # - secretName: chart-example-tls
+  #   hosts:
+  #   - chart-example.local
+
+# -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+# Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+resources: {}
+  #  We usually recommend not to specify default resources and to leave this as a conscious
+  #  choice for the user. This also increases chances charts run on environments with little
+  #  resources, such as Minikube. If you do want to specify resources, uncomment the following
+  #  lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # requests:
+  #   memory: 256Mi
+  #   cpu: 500m
+  # limits:
+  #   memory: 512Mi
+  #   cpu: 1000m
+
+networkPolicy:
+  # -- Specifies whether a network policy should be created.
+  # Note: This will have no effect unless the chosen CNI supports network policies like Calico, Weave, Cilium, Romana, etc.
+  enabled: false
+  # -- policyTypes indicates whether or not the given policy applies to ingress traffic to the selected pod, egress traffic
+  # from the selected pods, or both. If no policy types are specified, then by default, Ingress will always be set and
+  # Egress will be set if any egress rules are defined.
+  # Reference [The NetworkPolicy resource](https://kubernetes.io/docs/concepts/services-networking/network-policies/#networkpolicy-resource).
+  policyTypes:
+  - Ingress
+  - Egress
+  # -- ingress may include a list of allowed ingress rules. Each rule allows traffic which matches both the `from` and `ports`
+  # sections. The `from` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`.
+  # Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating.
+  # Note: Specifying `- {}` whitelists all inbound traffic and `{}` does the same but on a specific selector, and `- to: []`
+  # will block all inbound traffic. Allow policies will override deny policies.
+  # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
+  ingress:
+  - {}
+  # - from:
+  #   - ipBlock:
+  #       cidr: 172.17.0.0/16
+  #       except:
+  #       - 172.17.1.0/24
+  #   - namespaceSelector:
+  #       matchLabels:
+  #         project: my-project
+  #     podSelector:
+  #       matchLabels:
+  #         role: client
+  #   - podSelector: {}
+  #   ports:
+  #   - port: *targetPort
+  #     # endPort requires Kubernetes 1.25+, and a CNI that supports it, or it will be ignored. Must be equal or greater than `port.`
+  #     endPort: 8081
+  #     protocol: TCP
+  # - from:
+  #   - namespaceSelector:
+  #       # Another less intuitive approach still matching based on labels since matching by namespace name is not supported directly.
+  #       matchExpressions:
+  #       - key: namespace
+  #         operator: In
+  #         values: ["frontend", "backend"]
+  #   - namespaceSelector:
+  #       # Kubernetes 1.22+ sets an immutable label with the namespace name provided that the NamespaceDefaultLabelName feature gate is enabled.
+  #       matchLabels:
+  #         kubernetes.io/metadata.name: default
+
+  # -- egress may include a list of allowed egress rules. Each rule allows traffic which matches both the `to` and `ports`
+  # sections. The `to` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`.
+  # Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating.
+  # Note: Specifying `- {}` whitelists all outbound traffic and `{}` does the same but on a specific selector, and `- to: []`
+  # will block all outbound traffic. Allow policies will override deny policies.
+  # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
+  egress:
+  - {}
+  # - to:
+  #   - podSelector: {}
+  #   ports:
+  #   - port: 80
+  #     protocol: TCP
+  #   # Allow DNS resolution
+  #   - port: 53
+  #     protocol: UDP
+  #   - port: 53
+  #     protocol: TCP
+
+podDisruptionBudget:
+  # -- Indicates whether or not a PodDisruptionBudget resource is created.
+  create: false
+  # -- minAvailable is the number of pods from that set that must still be available after the eviction, even in
+  # the absence of the evicted pod. Only integer values are supported.
+  minAvailable: 1
+
+# -- configMap is used to store non-confidential data in key-value pairs.
+# Quoting is required if the value is 0.
+configMap:
+  KC_BOOTSTRAP_ADMIN_USERNAME: admin 
+  KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+  KC_CACHE: "ispn"
+  KC_DB: postgres
+  KC_DB_URL: jdbc:postgresql://my-keycloak-postgresql-hl:5432/keycloak?currentSchema=public
+  KC_DB_USERNAME: postgres
+  KC_DB_PASSWORD: password
+  KC_HEALTH_ENABLED: "true"
+  KC_HTTP_ENABLED: "true"
+  KC_HTTP_PORT: 8080
+  KC_HTTP_RELATIVE-PATH: /
+  KC_HTTPS_ENABLED: "false"
+  KC_HOSTNAME: keycloak.127.0.0.1.sslip.io
+  KC_PROXY-HEADERS: "xforwarded"
+  KC_SPI-ADMIN_REALM: "master"
+
+# -- secrets is used to store confidential data in key-value pairs.
+# Quoting is required if the value is 0.
+secrets: {}
+  # key: value
+
+# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
+# Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
+nodeSelector:
+  kubernetes.io/os: linux
+
+# -- affinity for pod scheduling.
+# Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
+affinity: {}
+  # podAntiAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #   - labelSelector:
+  #       matchExpressions:
+  #       - key: app
+  #         operator: In
+  #         values:
+  #         - app-name
+  #     topologyKey: "kubernetes.io/hostname"
+
+# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints.
+# Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
+tolerations: []
+# - key: "key"
+#   operator: "Equal|Exists"
+#   value: "value"
+#   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+
+postgresql:
+  # -- Indicates whether or not a PostgreSQL database is created.
+  enabled: true
+  auth:
+    username: postgres
+    password: password
+    database: keycloak
