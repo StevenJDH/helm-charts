@@ -1,6 +1,6 @@
 {{/*
 This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
-Copyright (C) 2025 Steven Jenkins De Haro.
+Copyright (C) 2025-2026 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,16 +19,14 @@ limitations under the License.
 {{- $cruiseControlEnabled := kindIs "map" ((.Values.kafka).cruiseControl) -}}
 {{- $kafkaExporterEnabled := kindIs "map" ((.Values.kafka).kafkaExporter) -}}
 {{- $metricsEnabled       := ((.Values.kafka).metricsEnabled)             -}}
-apiVersion: kafka.strimzi.io/v1beta2
+apiVersion: kafka.strimzi.io/v1
 kind: Kafka
 metadata:
   name: {{ include "shared-library.fullname" . }}
+  {{- with .Values.kafka.annotations }}
   annotations:
-    strimzi.io/node-pools: enabled
-    strimzi.io/kraft: enabled
-    {{- with .Values.kafka.annotations }}
     {{- toYaml . | nindent 4 }}
-    {{- end }}
+  {{- end }}
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
     {{- with .Values.kafka.labels }}

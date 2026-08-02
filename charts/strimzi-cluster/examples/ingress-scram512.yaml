@@ -1,5 +1,5 @@
 # This file is part of Strimzi Cluster Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2025 Steven Jenkins De Haro.
+# Copyright (C) 2025-2026 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,15 @@
 # limitations under the License.
 
 kafka:
+  rackTopology:
+    enabled: false
+  logging:
+    type: inline
+    loggers:
+      rootLogger.level: "INFO"
+      logger.orgapachekafka.level: "INFO"
+      logger.kafka.level: "INFO"
+      logger.authorizer.level: "INFO"
   listeners:
     - name: plain
       port: 9092
@@ -47,3 +56,48 @@ kafka:
         #   secretName: my-tls-secret
         #   certificate: tls.crt
         #   key: tls.key
+  clusterCa:
+    generateSecretOwnerReference: true
+  clientsCa:
+    generateSecretOwnerReference: true
+
+podMonitor:
+  create: false
+  labels:
+    release: kube-prometheus-stack
+
+scrapeConfigHeadlessServices:
+  create: false
+
+prometheusKafkaAlerts:
+  create: false
+
+nodePools:
+  broker:
+    enabled: false
+    annotations:
+      strimzi.io/next-node-ids: "[0-10]"
+  kraft-controller:
+    enabled: false
+    annotations:
+      strimzi.io/next-node-ids: "[11-20]"
+  dual-role-broker:
+    enabled: true
+
+testResources:
+  create: true
+
+k6:
+  loadTestScripts:
+    create: true
+  dashboard:
+    enabled: true
+
+strimzi-kafka-operator:
+  dashboards:
+    enabled: true
+
+strimzi-drain-cleaner:
+  enabled: false
+  certManager:
+    create: false

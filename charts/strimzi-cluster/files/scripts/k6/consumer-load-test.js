@@ -1,6 +1,6 @@
 /*
  * This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
- * Copyright (C) 2025 Steven Jenkins De Haro.
+ * Copyright (C) 2025-2026 Steven Jenkins De Haro.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@
 
 import { check } from "k6";
 import {
-  Reader,
+  Consumer,
   SchemaRegistry,
   SCHEMA_TYPE_JSON,
-  TLS_1_2
+  TLS_1_3
 } from "k6/x/kafka";
 
 // Reference: https://k6.io/docs/using-k6/k6-options/
@@ -33,24 +33,24 @@ export const options = {
     load_test: {
       exec: "load_test",
       executor: "constant-vus",
-      vus: __ENV.VUS,
+      vus: Number(__ENV.VUS),
       duration: __ENV.DURATION,
       gracefulStop: __ENV.GRACEFUL_STOP,
     },
   },
 };
 
-const reader = new Reader({
+const reader = new Consumer({
   brokers: [__ENV.BOOTSTRAP_URL],
-  groupID: __ENV.CONSUMER_GROUP,
+  groupId: __ENV.CONSUMER_GROUP,
   groupTopics: [__ENV.TOPIC],
   tls: {
     enableTls: true,
-    insecureSkipTLSVerify: false,
-    minVersion: TLS_1_2,
-    clientCertPem: __ENV.CERT_PATH,
-    clientKeyPem: __ENV.KEY_PATH,
-    serverCaPem: __ENV.CA_PATH,
+    insecureSkipTlsVerify: false,
+    minVersion: TLS_1_3,
+    clientCertPem: open(__ENV.CERT_PATH),
+    clientKeyPem: open(__ENV.KEY_PATH),
+    serverCaPem: open(__ENV.CA_PATH),
   },
 });
 
@@ -58,7 +58,7 @@ const schemaRegistry = new SchemaRegistry();
 
 export function load_test() {
   // Read 1 message only.
-  let messages = reader.consume({ limit: 1, expectTimeout: false });
+  let messages = reader.consume({ maxMessages: 1, expectTimeout: false });
 
   check(messages[0], {
     "Message has the expected value": (message) =>
@@ -72,6 +72,8 @@ export function load_test() {
     "Time of message is in past": (message) => new Date(message.time) < new Date(),
     "High watermark is gte zero": (message) => message.highWaterMark >= 0,
   });
+
+  reader.commitOffsets();
 }
 
 export function teardown(data) {

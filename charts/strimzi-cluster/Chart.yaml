@@ -1,5 +1,5 @@
 # This file is part of Strimzi Cluster Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2025 Steven Jenkins De Haro.
+# Copyright (C) 2025-2026 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,16 +30,16 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.0
+version: 0.2.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "0.45.0"
+appVersion: "0.51.0"
 
 # Includes pre-releases to support version schemes used like with AWS EKS as per https://github.com/helm/helm/issues/10375#issuecomment-974203557.
-kubeVersion: ">= 1.25.0-0"
+kubeVersion: ">= 1.30.0-0"
 
 home: https://github.com/StevenJDH/helm-charts
 
@@ -54,11 +54,11 @@ icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-c
 
 dependencies:
   - name: strimzi-kafka-operator
-    version: "0.45.0"
+    version: "0.51.0"
     repository: "oci://quay.io/strimzi-helm"
     condition: strimzi-kafka-operator.enabled
   - name: strimzi-drain-cleaner
-    version: "1.2.0"
+    version: "1.6.0"
     repository: "oci://quay.io/strimzi-helm"
     condition: strimzi-drain-cleaner.enabled
   - name: shared-library

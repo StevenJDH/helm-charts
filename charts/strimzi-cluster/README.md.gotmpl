@@ -1,8 +1,19 @@
-# Strimzi Cluster Helm Chart
+{{- template "chart.centeredHeader" "Strimzi Cluster Helm Chart" }}
 
-{{ template "chart.badgesSection" . }}
+{{ template "chart.centeredBadgesSection" . }}
 
+<p align="center">
+    <a href="#requirements"><b>Requirements</b></a> •
+    <a href="#usage-example"><b>Usage</b></a> •
+    <a href="#create-drain-cleaner-certificate-chain"><b>Drain Cleaner</b></a> •
+    <a href="#monitoring-with-prometheus-and-grafana"><b>Monitoring</b></a> •
+    <a href="#load-testing-the-cluster"><b>Load Testing</b></a> •
+    <a href="#values"><b>Chart Values</b></a>
+</p>
+
+<p align="center">
 {{ template "chart.description" . }}
+</p>
 
 {{ template "chart.sourcesSection" . }}
 
@@ -25,6 +36,9 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
     --create-namespace \
     --atomic
 ```
+
+> [!IMPORTANT]  
+> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
 
 > [!TIP]
 > To test Drain Cleaner, run the command `kubectl drain <node-name> --delete-emptydir-data --ignore-daemonsets --timeout=6000s --force` against a node with a broker, which will fail the first time because the strimzi cluster operator will take over for relocating those workloads. Then, rerun the command again after a few minutes, and it will work this time. For more info, see [Using the Strimzi Drain Cleaner](https://github.com/strimzi/drain-cleaner?tab=readme-ov-file#see-it-in-action).
@@ -67,14 +81,60 @@ base64 -w0 ca.crt > ca.crt.base64
 This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
 
 ```bash
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 68.1.0
-    -f prometheus-values.yaml \ # Check below for one of the options to use for this file.
+helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack --version 87.21.0
+    -f prometheus-values.yaml \ # TODO: Check below for one of the options to use for this file.
     --namespace monitoring \
     --create-namespace \
     --atomic
 ```
+
+> [!IMPORTANT]  
+> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang. For missing panel data, see [FAQ](https://github.com/StevenJDH/helm-charts/wiki/FAQ#how-to-fix-missing-panel-data-in-strimzis-dashboards) in the repo's wiki.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Strimzi Kafka - Dashboards - Grafana.png" width="260"
+        title="Strimzi Kafka Dashboard" alt="Strimzi Kafka Dashboard"
+      /><br>
+      <b>Strimzi Kafka Dashboard</b><br>
+      Kafka brokers overview.
+    </td>
+      <td align="center">
+      <img src="screenshots/Strimzi KRaft - Dashboards - Grafana.png" width="260"
+        title="Strimzi KRaft Dashboard" alt="Strimzi KRaft Dashboard"
+      /><br>
+      <b>Strimzi KRaft Dashboard</b><br>
+      KRaft controller metrics.
+    </td>
+    <td align="center">
+      <img src="screenshots/Strimzi Kafka Exporter - Dashboards - Grafana.png" width="260"
+        title="Strimzi Kafka Exporter Dashboard" alt="Strimzi Kafka Exporter Dashboard"
+      /><br>
+      <b>Strimzi Kafka Exporter Dashboard</b><br>
+      Consumer group insights.
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Strimzi Operators - Dashboards - Grafana.png" width="260"
+        title="Strimzi Operators Dashboard" alt="Strimzi Operators Dashboard"
+      /><br>
+      <b>Strimzi Operators Dashboard</b><br>
+      Operator health metrics.
+    </td>
+    <td align="center">
+      <img src="screenshots/Strimzi Cruise Control - Dashboards - Grafana.png" width="260"
+        title="Strimzi Cruise Control Dashboard" alt="Strimzi Cruise Control Dashboard"
+      /><br>
+      <b>Strimzi Cruise Control Dashboard</b><br>
+      Cluster balancing metrics.
+    </td>
+    <td align="center">
+      <a href="./screenshots/">More...</a>
+    </td>
+  </tr>
+</table>
 
 ### Option 1 - Using PodMonitor (Recommended)
 This recommended approach will automatically detect and directly collect metrics from Strimzi related pods.
@@ -84,6 +144,7 @@ This recommended approach will automatically detect and directly collect metrics
 ```yaml
 grafana:
   defaultDashboardsEnabled: false
+  adminUser: admin
   # Change adminPassword as needed.
   adminPassword: admin
 
@@ -107,12 +168,161 @@ prometheus:
     podMonitorNamespaceSelector: {}
       # matchLabels:
       #   monitoring: prometheus
+ 
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
 ```
 
-After the kube-prometheus-stack chart has been deployed or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
+After the kube-prometheus-stack chart has been deployed, or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
 
-### Option 2 - Using Headless Services
-This approach is more for compatibility reasons. For example, when using CRDs is not an option. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) chart instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) chart, `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` section is dropped.
+### Option 2 - Static Config
+This option replicates the behavior of Option 1 without relying on PodMonitor CRs.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  # Change adminPassword as needed.
+  adminUser: admin  
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: strimzi-kafka-resources-metrics
+      honor_timestamps: true
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      follow_redirects: true
+      enable_http2: true
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+          - strimzi
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_phase]
+        separator: ;
+        regex: (Failed|Succeeded)
+        replacement: $1
+        action: drop
+      - source_labels:
+        - __meta_kubernetes_pod_label_strimzi_io_kind
+        - __meta_kubernetes_pod_labelpresent_strimzi_io_kind
+        separator: ;
+        regex: (Kafka);true
+        replacement: $1
+        action: keep
+      - separator: ;
+        target_label: endpoint
+        replacement: tcp-prometheus
+        action: replace
+      - separator: ;
+        regex: __meta_kubernetes_pod_label_(strimzi_io_.+)
+        replacement: $1
+        action: labelmap
+      - source_labels: [__meta_kubernetes_namespace]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        separator: ;
+        regex: (.*)
+        target_label: kubernetes_pod_name
+        replacement: $1
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_node_name]
+        separator: ;
+        regex: (.*)
+        target_label: node_name
+        replacement: $1
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_host_ip]
+        separator: ;
+        regex: (.*)
+        target_label: node_ip
+        replacement: $1
+        action: replace       
+    - job_name: strimzi-cluster-operator-metrics
+      honor_timestamps: true
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      follow_redirects: true
+      enable_http2: true
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+          - strimzi
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_phase]
+        separator: ;
+        regex: (Failed|Succeeded)
+        replacement: $1
+        action: drop
+      - source_labels:
+        - __meta_kubernetes_pod_label_strimzi_io_kind
+        - __meta_kubernetes_pod_labelpresent_strimzi_io_kind
+        separator: ;
+        regex: (cluster-operator);true
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        separator: ;
+        regex: http
+        replacement: $1
+        action: keep
+    - job_name: strimzi-entity-operator-metrics
+      honor_timestamps: true
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      follow_redirects: true
+      enable_http2: true
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+          - strimzi
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_phase]
+        separator: ;
+        regex: (Failed|Succeeded)
+        replacement: $1
+        action: drop
+      - source_labels:
+        - __meta_kubernetes_pod_label_app_kubernetes_io_name
+        - __meta_kubernetes_pod_labelpresent_app_kubernetes_io_name
+        separator: ;
+        regex: (entity-operator);true
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        separator: ;
+        regex: healthcheck
+        replacement: $1
+        action: keep
+
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
+```
+
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
+
+### Option 3 - Using Headless Services
+This approach is more for compatibility reasons. For example, when using CRDs or Option 2 is not possible. If using [prometheus-community/prometheus](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) chart instead of the [prometheus-community/kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) chart, `prometheus.prometheusSpec.additionalScrapeConfigs` becomes `extraScrapeConfigs`, and the `grafana` and `crds` sections are dropped.
 
 **prometheus-values.yaml**
 
@@ -131,35 +341,6 @@ prometheus:
       dns_sd_configs:
       - names:
         - strimzi-broker-metrics-headless.strimzi.svc.cluster.local
-      relabelings:
-        - separator: ;
-          regex: __meta_kubernetes_pod_label_(strimzi_io_.+)
-          replacement: $1
-          action: labelmap
-        - sourceLabels: [__meta_kubernetes_namespace]
-          separator: ;
-          regex: (.*)
-          targetLabel: namespace
-          replacement: $1
-          action: replace
-        - sourceLabels: [__meta_kubernetes_pod_name]
-          separator: ;
-          regex: (.*)
-          targetLabel: kubernetes_pod_name
-          replacement: $1
-          action: replace
-        - sourceLabels: [__meta_kubernetes_pod_node_name]
-          separator: ;
-          regex: (.*)
-          targetLabel: node_name
-          replacement: $1
-          action: replace
-        - sourceLabels: [__meta_kubernetes_pod_host_ip]
-          separator: ;
-          regex: (.*)
-          targetLabel: node_ip
-          replacement: $1
-          action: replace
     - job_name: strimzi-kraft-controllers-metrics
       scrape_interval: 5s
       metrics_path: /metrics
@@ -190,15 +371,23 @@ prometheus:
       dns_sd_configs:
       - names:
         - strimzi-kafka-exporter-metrics-headless.strimzi.svc.cluster.local
+
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
 ```
 
 > [!NOTE]  
-> The above config assumes that the strimzi-cluster chart is deployed to the `strimzi` namespace. If not, then update to match. Also, the relabeling section hasn't been applied to every job for conciseness. To match Option 1's relabeling, apply to each job except for the two operators.
+> The above config assumes that the strimzi-cluster chart is deployed to the `strimzi` namespace. If not, then update to match. Also, with this approach, the official Strimzi dashboards and alerts won't work due to the absence of kubernetes metadata.
 
-After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `scrapeConfigHeadlessServices.create` to `true` and `strimzi-kafka-operator.dashboards.enabled` to `false` in the strimzi-cluster chart.
 
-### Optional - Enabling Prometheus alert rules
-Customize and consolidate the below with one of the options above if wanting to create alerts in a different namespace from where the kube-prometheus-stack chart is deployed. In many cases, the below is not needed. After, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart.
+### Optional - Enabling Prometheus Alert Rules
+
+![Strimzi Alerts](screenshots/Strimzi%20Alerts%20-%20Prometheus.png "Strimzi Alerts")
+
+To enable alerts, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart. If wanting to create alerts in a different namespace from where the kube-prometheus-stack chart is deployed, customize and consolidate the below with one of the options above, except Option 3. Otherwise, skip this configuration if not needed.
 
 ```yaml
 prometheus:
@@ -245,16 +434,16 @@ metadata:
 spec:
   restartPolicy: Never
   containers:
-    - image: mostafamoradian/xk6-kafka:latest
+    - image: mostafamoradian/xk6-kafka:2.1.0
       name: xk6-kafka
       # For sending Prometheus metrics, use:
       # command: ["k6", "run", "-o", "experimental-prometheus-rw", "/scripts/producer-load-test.js"]
       command: ["k6", "run", "/scripts/producer-load-test.js"]
       env:
         - name: BOOTSTRAP_URL
-          value: strimzi-cluster-kafka-bootstrap:9094
+          value: my-strimzi-cluster-kafka-bootstrap:9094
         - name: CLUSTER
-          value: strimzi-cluster
+          value: my-strimzi-cluster
         - name: TOPIC
           value: test-topic
         - name: CONSUMER_GROUP
@@ -302,7 +491,7 @@ spec:
         secretName: test-user
     - name: server-ca-volume
       secret:
-        secretName: strimzi-cluster-cluster-ca-cert
+        secretName: my-strimzi-cluster-cluster-ca-cert
     - name: k6-scripts-volume
       configMap:
         name: k6-scripts-config
@@ -325,6 +514,9 @@ kubectl delete -f k6-load-test.yaml
 When finished, in the `command` field of the pod, try switching `producer-load-test.js` for `consumer-load-test.js` to run another test, except this time using a consumer.
 
 ### Sending load testing results to Prometheus
+
+![xk6 Kafka Dashboard](screenshots/xk6-kafka-dashboard%20-%20Dashboards%20-%20Grafana.png "xk6 Kafka Dashboard")
+
 If `strimzi-kafka-operator.dashboards.enabled` was previously enabled as per the [Monitoring with Prometheus and Grafana](#monitoring-with-prometheus-and-grafana) section, then there would have been a dashboard called "Strimzi Kafka Exporter" created that would have useful information about the tests previously ran. However, the strmizi-cluster chart includes a specialized dashboard called "xk6-kafka-dashboard" that better represents the metrics collected from the load tests. To enable it, first update the kube-prometheus-stack chart with the configuration below to enable remote write receiver.
 
 ```yaml

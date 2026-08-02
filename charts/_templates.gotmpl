@@ -1,3 +1,24 @@
+{{- define "chart.centeredHeader" -}}
+<h1 align="center">{{ . }}</h1>
+{{- end }}
+
+{{- define "chart.centeredBadgesSection" -}}
+<p align="center">
+  <img
+    alt="Version: {{ .Version }}"
+    src="https://img.shields.io/badge/Version-{{ .Version }}-informational?style=flat-square"
+  />
+  <img
+    alt="Type: {{ .Type }}"
+    src="https://img.shields.io/badge/Type-{{ .Type }}-informational?style=flat-square"
+  />
+  <img
+    alt="AppVersion: {{ .AppVersion }}"
+    src="https://img.shields.io/badge/AppVersion-{{ .AppVersion }}-informational?style=flat-square"
+  />
+</p>
+{{- end }}
+
 {{ define "footer.signature" -}}
 // Steven Jenkins De Haro ("StevenJDH" on GitHub)
 {{- end }}

@@ -1,5 +1,5 @@
 # This file is part of Strimzi Cluster Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2025 Steven Jenkins De Haro.
+# Copyright (C) 2025-2026 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ fullnameOverride: ""
 
 kafka:
   # -- version is the version of Kafka to use.
-  version: 3.9.0
+  version: 4.2.0
   # -- annotations to be added to the Kafka resource.
   annotations: {}
   # -- labels to be added to the Kafka resource.
@@ -49,7 +49,7 @@ kafka:
     # applications auto-creating topics.
     auto.create.topics.enable: "false"
   # -- template allows to customize the configuration of the Kafka cluster.
-  # Reference: [KafkaClusterTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaClusterTemplate-reference).
+  # Reference: [KafkaClusterTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaClusterTemplate-reference).
   template: {}
   rackTopology:
     # -- Indicates whether or not to enable the rack-aware feature for the node pools to improve
@@ -63,13 +63,14 @@ kafka:
     # rack-aware feature.
     customKey: ""
   # -- logging allows to customize the logging configuration of the Kafka cluster.
-  # Reference: [Configuring logging levels](https://strimzi.io/docs/operators/0.45.0/deploying#external-logging_str).
+  # Reference: [Kafka logging reference](https://strimzi.io/docs/operators/0.51.0/configuring#property-kafka-logging-reference).
   logging: {}
     # type: inline
     # loggers:
-    #   kafka.root.logger.level: "INFO"
-    #   log4j.logger.kafka.request.logger: "WARN"
-    #   log4j.logger.kafka.authorizer.logger: "WARN"
+    #   rootLogger.level: "INFO"
+    #   logger.orgapachekafka.level: "INFO"
+    #   logger.kafka.level: "INFO"
+    #   logger.authorizer.level: "INFO"
 
   listeners:
     - # -- name is the unique name of the listener within given a Kafka cluster. It consists of
@@ -82,7 +83,7 @@ kafka:
       port: 9092
       # -- type is the type of listener. Supported values are `ingress`, `internal`, `route`
       # (OpenShift only), `loadbalancer`, `cluster-ip`, and `nodeport`.
-      # Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/0.45.0/deploying#configuration-points-listeners-str).
+      # Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/0.51.0/deploying#configuration-points-listeners-str).
       type: internal
       # -- tls indicates whether or not to enable TLS for the listener. For `route` and `ingress`
       # type listeners, TLS encryption must be always enabled.
@@ -97,7 +98,7 @@ kafka:
       port: 9094
       # -- type is the type of listener. Supported values are `ingress`, `internal`, `route`
       # (OpenShift only), `loadbalancer`, `cluster-ip`, and `nodeport`.
-      # Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/0.45.0/deploying#configuration-points-listeners-str).
+      # Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/0.51.0/deploying#configuration-points-listeners-str).
       type: internal
       # -- tls indicates whether or not to enable TLS for the listener. For `route` and `ingress`
       # type listeners, TLS encryption must be always enabled.
@@ -112,18 +113,16 @@ kafka:
         # service DNS domain (typically `*.cluster.local`). This makes them only accessible from within
         # the same namespace (e.g., `<cluster-name>-kafka-bootstrap:9092`). To enable cross-namespace
         # communication, set this to `true`.
-        # Reference: [Using fully-qualified DNS names](https://strimzi.io/docs/operators/0.45.0/configuring#property-listener-config-dns-reference).
+        # Reference: [Using fully-qualified DNS names](https://strimzi.io/docs/operators/0.51.0/configuring#property-listener-config-dns-reference).
         useServiceDnsDomain: true
   authorization:
     # -- type is the type of authorization to use on the Kafka brokers. Supported values are
-    # [simple](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationSimple-schema-reference),
-    # [opa](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationOpa-schema-reference),
-    # [keycloak](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationKeycloak-reference), and
-    # [custom](https://strimzi.io/docs/operators/0.45.0/configuring#type-KafkaAuthorizationCustom-schema-reference).
+    # [simple](https://strimzi.io/docs/operators/0.51.0/configuring#type-KafkaAuthorizationSimple-schema-reference) and
+    # [custom](https://strimzi.io/docs/operators/0.51.0/configuring#type-KafkaAuthorizationCustom-schema-reference).
     type: simple
     # -- superUsers is a list of users that are considered super users and can perform any operation
     # regardless of any access restrictions configured because the ACL rules aren't queried.
-    # Reference: [Designating super users](https://strimzi.io/docs/operators/0.45.0/deploying#designating_super_users).
+    # Reference: [Designating super users](https://strimzi.io/docs/operators/0.51.0/deploying#designating_super_users).
     superUsers: []
       # - "CN=my-super-user"
 
@@ -131,7 +130,7 @@ kafka:
     # -- generateCertificateAuthority indicates whether or not to generate a Certificate Authority for the cluster.
     # Setting this to `false` requires providing a Secret with the CA certificate, and there will be several
     # steps to consider for manually managing custom certificates and renewals.
-    # Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str).
+    # Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.51.0/full/deploying.html#security-using-your-own-certificates-str).
     generateCertificateAuthority: true
     # -- validityDays is the number of days generated certificates should be valid for.
     validityDays: 365
@@ -149,7 +148,7 @@ kafka:
     # -- generateCertificateAuthority indicates whether or not to generate a Certificate Authority for clients.
     # Setting this to `false` requires providing a Secret with the CA certificate, and there will be several
     # steps to consider for manually managing custom certificates and renewals.
-    # Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.45.0/full/deploying.html#security-using-your-own-certificates-str).
+    # Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.51.0/full/deploying.html#security-using-your-own-certificates-str).
     generateCertificateAuthority: true
     # -- validityDays is the number of days generated certificates should be valid for.
     validityDays: 365
@@ -172,13 +171,24 @@ kafka:
 
   entityOperator:
     # -- template allows to customize how the resources belonging to the Entity Operator are generated.
-    template: {}
-    #   pod: {}
+    # NOTE: The environment variable `STRIMZI_IGNORED_USERS_PATTERN` is set in
+    # `entityOperator.template.userOperatorContainer.env` by default to ignore the ACL rules for the
+    # `*` and `ANONYMOUS` users. When overriding the `env` section, be sure to redefine the environment
+    # variable to maintain the default behavior if needed.
+    # @default -- `{}`
+    template:
+      # pod: {}
 
+      # @ignored. User Operator does not ignore the ACL rules for the * and ANONYMOUS users by default anymore.
+      # Setting 'STRIMZI_IGNORED_USERS_PATTERN' re-enables this behavior.
+      userOperatorContainer:
+        env:
+          - name: STRIMZI_IGNORED_USERS_PATTERN
+            value: "^\\*|ANONYMOUS$" # Double \ needed for escaping.
     # -- topicOperator allows to customize the configuration of the Topic Operator. By Default, the Topic
     # Operator watches for KafkaTopic resources in the namespace of the Kafka cluster deployed by the
     # Cluster Operator.
-    # Reference: [EntityTopicOperatorSpec schema properties](https://strimzi.io/docs/operators/0.45.0/configuring#type-EntityTopicOperatorSpec-schema-reference).
+    # Reference: [EntityTopicOperatorSpec schema properties](https://strimzi.io/docs/operators/0.51.0/configuring#type-EntityTopicOperatorSpec-schema-reference).
     topicOperator: {}
       # watchedNamespace: my-topic-namespace
       # resources:
@@ -201,7 +211,7 @@ kafka:
     # -- userOperator allows to customize the configuration of the User Operator. By Default, the User
     # Operator watches for KafkaUser resources in the namespace of the Kafka cluster deployed by the
     # Cluster Operator.
-    # Reference: [EntityUserOperatorSpec schema properties](https://strimzi.io/docs/operators/0.45.0/configuring#type-EntityUserOperatorSpec-schema-reference).
+    # Reference: [EntityUserOperatorSpec schema properties](https://strimzi.io/docs/operators/0.51.0/configuring#type-EntityUserOperatorSpec-schema-reference).
     userOperator: {}
       # watchedNamespace: my-topic-namespace
       # resources:
@@ -224,7 +234,7 @@ kafka:
   # -- cruiseControl deploys the Cruise Control component to optimize Kafka when specified. Being present
   # and not null is enough to enable it. It will also enable `kafka.metricsEnabled` by default and configure
   # metrics for cruise control, so no need to configure here (e.g., `kafka.cruiseControl.metricsConfig`).
-  # Reference: [CruiseControlSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-CruiseControlSpec-reference).
+  # Reference: [CruiseControlSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-CruiseControlSpec-reference).
   cruiseControl: {}
     # template:
     #   pod: {}
@@ -233,7 +243,7 @@ kafka:
   # -- kafkaExporter is an optional component for extracting additional metrics data from Kafka brokers
   # related to offsets, consumer groups, consumer lag, and topics. For Kafka Exporter to be able to work
   # properly, consumer groups needs to be in use. Being present and not null is enough to enable it.
-  # Reference: [KafkaExporterSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaExporterSpec-reference)
+  # Reference: [KafkaExporterSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaExporterSpec-reference)
   kafkaExporter: {}
     # topicRegex: ".*"
     # groupRegex: ".*"
@@ -271,18 +281,18 @@ podMonitor:
 
 scrapeConfigHeadlessServices:
   # -- Indicates whether or not to create headless services to scrape Kafka related metrics. Setting
-  # is ignored if `podMonitor.create` is set to `true`. See
-  # [Option 2](#option-2---using-headless-services) under the Monitoring section of the README for
+  # is ignored if `podMonitor.create` is set to `true`. This is a compatibility feature that is meant
+  # only for custom setups and does not support Strimzi's official dashboards. See
+  # [Option 3](#option-3---using-headless-services) under the Monitoring section of the README for
   # more information.
   create: false
 
 prometheusKafkaAlerts:
   # -- Indicates whether or not to create PrometheusRules to define Kafka related alerts. Ensure to set
-  # `kafka.metricsEnabled` to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. Also,
-  # `podMonitor.create` or `scrapeConfigHeadlessServices.create` must be set to `true`.  See
-  # [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring
-  # section of the README for more information.
-  create: true
+  # `kafka.metricsEnabled` to `true`, or define the `kafka.cruiseControl` or `kafka.kafkaExporter`
+  # properties. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under
+  # the Monitoring section of the README for more information.
+  create: false
   # -- overrideNamespace allows to override the default `monitoring` namespace where the PrometheusRule
   # resource will be deployed. If deploying to a namespace where the prometheus operator isn't
   # located, some config changes will be required. See
@@ -302,6 +312,37 @@ cruiseControlRebalance:
   # -- Indicates whether or not to create a KafkaRebalance resource with an empty spec to use
   # the default goals from the Cruise Control configuration for optimizing the cluster workloads.
   create: true
+  # -- skipHardGoalCheck indicates whether or not to skip the check for hard goals. This can be
+  # useful when some of those hard goals are preventing a balance solution being found.
+  skipHardGoalCheck: false
+  # -- goals is a list, ordered by decreasing priority, to use for generating and executing the
+  # rebalance proposal. If an empty goals list is provided, the default goals are used. Exclude
+  # `RackAwareGoal` if `kafka.rackTopology.enabled` is set to `true`, and the number of domains
+  # is less than 3. Also, set skipHardGoalCheck to `true`.
+  # Reference: [Default Goals](https://github.com/linkedin/cruise-control#goals).
+  goals: []
+    # # - RackAwareGoal
+    # - RackAwareDistributionGoal
+    # - MinTopicLeadersPerBrokerGoal
+    # - ReplicaCapacityGoal
+    # - DiskCapacityGoal
+    # - NetworkInboundCapacityGoal
+    # - NetworkOutboundCapacityGoal
+    # - CpuCapacityGoal
+    # - ReplicaDistributionGoal
+    # - PotentialNwOutGoal
+    # - DiskUsageDistributionGoal
+    # - NetworkInboundUsageDistributionGoal
+    # - NetworkOutboundUsageDistributionGoal
+    # - CpuUsageDistributionGoal
+    # - LeaderReplicaDistributionGoal
+    # - LeaderBytesInDistributionGoal
+    # - TopicReplicaDistributionGoal
+    # - PreferredLeaderElectionGoal
+    # - KafkaAssignerDiskUsageDistributionGoal
+    # - IntraBrokerDiskCapacityGoal
+    # - IntraBrokerDiskUsageDistributionGoal
+
   annotations:
     # -- Triggers the rebalance directly without any further approval step (e.g.,
     # setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`).
@@ -332,7 +373,7 @@ nodePools:
     storage:
       # -- type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older
       # approach using `persistent-claim` directly.
-      # Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference).
+      # Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolSpec-reference).
       type: jbod
       volumes:
         - # -- id is the volume ID.
@@ -354,9 +395,29 @@ nodePools:
       # -Xms: 4096m
       # -Xmx: 4096m
     # -- template allows to customize how the resources belonging to this pool are generated.
-    # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference).
+    # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolTemplate-reference).
     template: {}
-      # pod: {}
+      # pod:
+        # # Strimzi will not automatically add the best-effort-affinity rules for spreading the
+        # # Kafka Pods between the zones even if 'kafka.rackTopology.enabled' is set to 'true'. To
+        # # guarantee enforcement with rackTopology, uncomment this section.
+        # # See 'cruiseControlRebalance.goals' if using less than 3 'minDomains'.
+        # topologySpreadConstraints:
+        # - maxSkew: 1
+        #   # Only enforced if all of the domains are available. Rackaware feature and
+        #   # Cruise Control Rebalancing goal depending on this.
+        #   minDomains: 3
+        #   topologyKey: topology.kubernetes.io/zone
+        #   # When using minDomains, set this as DoNotSchedule instead of ScheduleAnyway
+        #   # to enforce setting and to avoid Kubernetes warning.
+        #   whenUnsatisfiable: DoNotSchedule
+        #   labelSelector:
+        #     matchLabels:
+        #       app.kubernetes.io/instance: my-strimzi-cluster
+        #       strimzi.io/pool-name: broker
+        #       strimzi.io/cluster: my-strimzi-cluster
+        #       strimzi.io/kind: Kafka
+
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
@@ -381,7 +442,7 @@ nodePools:
     storage:
       # -- type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older
       # approach using `persistent-claim` directly.
-      # Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference).
+      # Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolSpec-reference).
       type: jbod
       volumes:
         - # -- id is the volume ID.
@@ -401,9 +462,29 @@ nodePools:
     # -- jvmOptions allows to customize the JVM options for the node pool pods.
     jvmOptions: {}
     # -- template allows to customize how the resources belonging to this pool are generated.
-    # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference).
+    # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolTemplate-reference).
     template: {}
-      # pod: {}
+      # pod:
+        # # Strimzi will not automatically add the best-effort-affinity rules for spreading the
+        # # Kafka Pods between the zones even if 'kafka.rackTopology.enabled' is set to 'true'. To
+        # # guarantee enforcement with rackTopology, uncomment this section.
+        # # See 'cruiseControlRebalance.goals' if using less than 3 'minDomains'.
+        # topologySpreadConstraints:
+        # - maxSkew: 1
+        #   # Only enforced if all of the domains are available. Rackaware feature and
+        #   # Cruise Control Rebalancing goal depending on this.
+        #   minDomains: 3
+        #   topologyKey: topology.kubernetes.io/zone
+        #   # When using minDomains, set this as DoNotSchedule instead of ScheduleAnyway
+        #   # to enforce setting and to avoid Kubernetes warning.
+        #   whenUnsatisfiable: DoNotSchedule
+        #   labelSelector:
+        #     matchLabels:
+        #       app.kubernetes.io/instance: my-strimzi-cluster
+        #       strimzi.io/pool-name: kraft-controller
+        #       strimzi.io/cluster: my-strimzi-cluster
+        #       strimzi.io/kind: Kafka
+
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
@@ -428,7 +509,7 @@ nodePools:
     storage:
       # -- type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older
       # approach using `persistent-claim` directly.
-      # Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolSpec-reference).
+      # Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolSpec-reference).
       type: jbod
       volumes:
         - # -- id is the volume ID.
@@ -448,7 +529,7 @@ nodePools:
     # -- jvmOptions allows to customize the JVM options for the node pool pods.
     jvmOptions: {}
     # -- template allows to customize how the resources belonging to this pool are generated.
-    # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.45.0/configuring.html#type-KafkaNodePoolTemplate-reference).
+    # Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolTemplate-reference).
     template: {}
       # pod: {}
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.

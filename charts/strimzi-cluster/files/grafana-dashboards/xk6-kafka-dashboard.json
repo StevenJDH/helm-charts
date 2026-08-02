@@ -4,7 +4,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.4.5"
+      "version": "13.1.1"
     },
     {
       "type": "panel",
@@ -2065,7 +2065,7 @@
           "y": 16
       },
       "id": 27,
-      "interval": ">1s",
+      "interval": "1s",
       "options": {
           "alertThreshold": true,
           "legend": {
@@ -3327,7 +3327,7 @@
           "y": 29
       },
       "id": 42,
-      "interval": ">1s",
+      "interval": "1s",
       "options": {
           "alertThreshold": true,
           "legend": {
