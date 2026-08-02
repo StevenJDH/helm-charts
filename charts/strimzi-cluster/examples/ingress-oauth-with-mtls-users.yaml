@@ -20,13 +20,15 @@ kafka:
     # The value should match the name of the kafka resource name.
     strimzi.authorization.kafka.cluster.name: my-strimzi-cluster
     strimzi.authorization.client.id: kafka
-    strimzi.authorization.token.endpoint.uri: http://my-keycloak.keycloak.svc.cluster.local/realms/strimzi/protocol/openid-connect/token
+    strimzi.authorization.token.endpoint.uri: http://my-keycloak-svc.keycloak.svc.cluster.local/realms/strimzi/protocol/openid-connect/token
     # Whether authorization decision should be delegated to the 'Simple' authorizer
     # if DENIED by Keycloak Authorization Services policies. Default value is false.
     # Set as true to support both OAuth and mTLS users.
-    strimzi.authorization.delegate.to.kafka.acl: "false"
+    strimzi.authorization.delegate.to.kafka.acl: "true"
+    
     # When empty, disables TLS hostname verification, otherwise, remove this property.
-    strimzi.authorization.ssl.endpoint.identification.algorithm: ""
+    #strimzi.authorization.ssl.endpoint.identification.algorithm: ""
+    
     # Trusted certificates for TLS connection to the Keycloak server when accessing
     # external Keycloak Urls that use https and not signed by trusted CA.
     # strimzi.authorization.ssl.truststore.location: /mnt/keycloak-certs/tls.crt
@@ -52,6 +54,15 @@ kafka:
       volumeMounts: []
     #   - name: keycloak-certs-vol
     #     mountPath: /mnt/keycloak-certs
+  rackTopology:
+    enabled: false
+  logging:
+    type: inline
+    loggers:
+      rootLogger.level: "INFO"
+      logger.orgapachekafka.level: "INFO"
+      logger.kafka.level: "INFO"
+      logger.authorizer.level: "INFO"
   listeners:
     - name: plain
       port: 9092
@@ -82,20 +93,21 @@ kafka:
           #   oauth.ssl.truststore.type="PEM"
           # An additional check in jaas config that can be used to control who in the realm has access to Kafka.
           #   oauth.custom.claim.check="'kafka-user' in @.realm_access.roles"
+          # When empty, disables TLS hostname verification, otherwise, remove this property jaas config.
+          #   oauth.ssl.endpoint.identification.algorithm=""
           oauthbearer.sasl.jaas.config: >-
-            org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required
-              unsecuredLoginStringClaim_sub="unused"
-              oauth.valid.issuer.uri="http://my-keycloak.keycloak.svc.cluster.local/realms/strimzi"
-              oauth.jwks.endpoint.uri="http://my-keycloak.keycloak.svc.cluster.local/realms/strimzi/protocol/openid-connect/certs"
-              oauth.username.claim="preferred_username"
-              oauth.enable.metrics="true"
-              oauth.ssl.endpoint.identification.algorithm="" ;
+            org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule
+            required unsecuredLoginStringClaim_sub="unused"
+            oauth.valid.issuer.uri="http://my-keycloak-svc.keycloak.svc.cluster.local/realms/strimzi"
+            oauth.jwks.endpoint.uri="http://my-keycloak-svc.keycloak.svc.cluster.local/realms/strimzi/protocol/openid-connect/certs"
+            oauth.username.claim="preferred_username"
+            oauth.enable.metrics="true" ;
           connections.max.reauth.ms: 3600000
       configuration:
-        class: nginx
-        hostTemplate: oauth-broker-{nodeId}.myingress.com
+        class: traefik
+        hostTemplate: oauth-broker-{nodeId}.127.0.0.1.sslip.io
         bootstrap:
-          host: oauth-bootstrap.myingress.com
+          host: oauth-bootstrap.127.0.0.1.sslip.io
         # Clients need to trust CA extracted with below command or specify a custom cert chain
         # as per below commented out section.
         # openssl s_client -connect oauth-broker-0.myingress.com:443 -servername oauth-broker-0.myingress.com -showcerts
@@ -105,7 +117,6 @@ kafka:
         #   secretName: my-tls-secret
         #   certificate: tls.crt
         #   key: tls.key
-
   authorization:
     # For a complete authorization example, import the following into Keycloak and adjust as needed:
     # https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/refs/heads/main/examples/security/keycloak-authorization/kafka-authz-realm.json
@@ -115,4 +126,50 @@ kafka:
     supportsAdminApi: true
     superUsers:
     - service-account-kafka
+    - service-account-test-user
     - CN=test-user
+  clusterCa:
+    generateSecretOwnerReference: true
+  clientsCa:
+    generateSecretOwnerReference: true
+
+podMonitor:
+  create: false
+  labels:
+    release: kube-prometheus-stack
+
+scrapeConfigHeadlessServices:
+  create: false
+
+prometheusKafkaAlerts:
+  create: false
+
+nodePools:
+  broker:
+    enabled: false
+    annotations:
+      strimzi.io/next-node-ids: "[0-10]"
+  kraft-controller:
+    enabled: false
+    annotations:
+      strimzi.io/next-node-ids: "[11-20]"
+  dual-role-broker:
+    enabled: true
+
+testResources:
+  create: true
+
+k6:
+  loadTestScripts:
+    create: true
+  dashboard:
+    enabled: true
+
+strimzi-kafka-operator:
+  dashboards:
+    enabled: true
+
+strimzi-drain-cleaner:
+  enabled: false
+  certManager:
+    create: false
