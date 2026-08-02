@@ -178,7 +178,7 @@ kafka:
     # @default -- `{}`
     template:
       # pod: {}
-      
+
       # @ignored. User Operator does not ignore the ACL rules for the * and ANONYMOUS users by default anymore.
       # Setting 'STRIMZI_IGNORED_USERS_PATTERN' re-enables this behavior.
       userOperatorContainer:
@@ -342,7 +342,7 @@ cruiseControlRebalance:
     # - KafkaAssignerDiskUsageDistributionGoal
     # - IntraBrokerDiskCapacityGoal
     # - IntraBrokerDiskUsageDistributionGoal
-    
+
   annotations:
     # -- Triggers the rebalance directly without any further approval step (e.g.,
     # setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`).
@@ -484,7 +484,7 @@ nodePools:
         #       strimzi.io/pool-name: kraft-controller
         #       strimzi.io/cluster: my-strimzi-cluster
         #       strimzi.io/kind: Kafka
-    
+
     # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
     # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
     resources: {}
