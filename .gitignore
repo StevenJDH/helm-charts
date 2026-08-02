@@ -1,5 +1,6 @@
 ### My additional ignores ###
 /[Rr]esources
+/*.wiki
 
 ### Helm ###
 # Chart dependencies
