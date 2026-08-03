@@ -21,7 +21,6 @@ metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
   name: {{ include "shared-library.fullname" . }}-realmimportcontroller-cluster-role
-  namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups:
       - k8s.keycloak.org

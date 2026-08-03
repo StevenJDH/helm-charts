@@ -21,7 +21,6 @@ metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
   name: {{ include "shared-library.fullname" . }}-clusterrole-binding
-  namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
