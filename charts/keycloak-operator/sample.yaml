@@ -12,6 +12,24 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   namespace: default
 ---
+# Source: keycloak-operator/templates/keycloak-operator-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-keycloak-operator-config
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.0
+    app.kubernetes.io/name: keycloak-operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.0"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+data:
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKCONTROLLER_NAMESPACES: "JOSDK_WATCH_CURRENT"
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKOIDCCLIENTCONTROLLER_NAMESPACES: "JOSDK_WATCH_CURRENT"
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKREALMIMPORTCONTROLLER_NAMESPACES: "JOSDK_WATCH_CURRENT"
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKSAMLCLIENTCONTROLLER_NAMESPACES: "JOSDK_WATCH_CURRENT"
+---
 # Source: keycloak-operator/templates/keycloak-operator-clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -23,7 +41,6 @@ metadata:
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
   name: example-keycloak-operator-clusterrole
-  namespace: default
 rules:
   - apiGroups:
       - config.openshift.io
@@ -43,7 +60,6 @@ metadata:
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
   name: example-keycloak-operator-controller-cluster-role
-  namespace: default
 rules:
   - apiGroups:
       - k8s.keycloak.org
@@ -141,7 +157,6 @@ metadata:
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
   name: example-keycloak-operator-oidcclientcontroller-cluster-role
-  namespace: default
 rules:
   - apiGroups:
       - k8s.keycloak.org
@@ -169,7 +184,6 @@ metadata:
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
   name: example-keycloak-operator-realmimportcontroller-cluster-role
-  namespace: default
 rules:
   - apiGroups:
       - k8s.keycloak.org
@@ -220,7 +234,6 @@ metadata:
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
   name: example-keycloak-operator-samlclientcontroller-cluster-role
-  namespace: default
 rules:
   - apiGroups:
       - k8s.keycloak.org
@@ -248,7 +261,6 @@ metadata:
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
   name: example-keycloak-operator-clusterrole-binding
-  namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
@@ -506,7 +518,7 @@ kind: Deployment
 metadata:
   name: example-keycloak-operator
   annotations:
-    rollme: "WRCdX"
+    rollme: "quNVh"
   labels:
     helm.sh/chart: keycloak-operator-0.1.0
     app.kubernetes.io/name: keycloak-operator
@@ -542,14 +554,9 @@ spec:
                   fieldPath: metadata.namespace
             - name: RELATED_IMAGE_KEYCLOAK
               value: quay.io/keycloak/keycloak:26.7.0
-            - name: QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKSAMLCLIENTCONTROLLER_NAMESPACES
-              value: JOSDK_WATCH_CURRENT
-            - name: QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKREALMIMPORTCONTROLLER_NAMESPACES
-              value: JOSDK_WATCH_CURRENT
-            - name: QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKCONTROLLER_NAMESPACES
-              value: JOSDK_WATCH_CURRENT
-            - name: QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKOIDCCLIENTCONTROLLER_NAMESPACES
-              value: JOSDK_WATCH_CURRENT
+          envFrom:
+          - configMapRef:
+              name: example-keycloak-operator-config
           startupProbe:
             failureThreshold: 3
             httpGet:
