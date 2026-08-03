@@ -64,6 +64,7 @@ For information on how to get started, see the [Operator Guide](https://www.keyc
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 | tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
 | updateStrategy | object | `{}` | The update strategy to apply to the Deployment resource. |
+| watchAllNamespaces | bool | `false` | watchAllNamespaces indicates whether or not the operator should watch all namespaces or just the namespace it is deployed in. If enabled, set the `configMap.quarkusOperatorSdkControllers*Namespaces` properties to `JOSDK_ALL_NAMESPACES` as needed. See the `configMap` section in the default values.yaml file for more information. |
 
 
 // Steven Jenkins De Haro ("StevenJDH" on GitHub)

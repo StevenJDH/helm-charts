@@ -15,18 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- if not .Values.watchAllNamespaces -}}
+{{- if .Values.watchAllNamespaces -}}
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
-  name: {{ include "shared-library.fullname" . }}-realmimportcontroller-role-binding
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "shared-library.fullname" . }}-oidcclientcontroller-cluster-role-binding
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: {{ include "shared-library.fullname" . }}-realmimportcontroller-cluster-role
+  name: {{ include "shared-library.fullname" . }}-oidcclientcontroller-cluster-role
 subjects:
   - kind: ServiceAccount
     name: {{ include "shared-library.serviceAccountName" . }}

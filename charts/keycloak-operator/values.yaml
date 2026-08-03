@@ -72,22 +72,21 @@ extraArgs: []
 # - --arg2
 # - value2
 
+# -- watchAllNamespaces indicates whether or not the operator should watch all namespaces or just the
+# namespace it is deployed in. If enabled, set the `configMap.quarkusOperatorSdkControllers*Namespaces`
+# properties to `JOSDK_ALL_NAMESPACES` as needed. See the `configMap` section in the default values.yaml
+# file for more information.
+watchAllNamespaces: false
+
 # @ignored. Additional environment variables to set.
 extraEnvs:
   - name: KUBERNETES_NAMESPACE
     valueFrom:
       fieldRef:
         fieldPath: metadata.namespace
+  # The Keycloak Operator image only supports the Keycloak version it targets.
   - name: RELATED_IMAGE_KEYCLOAK
     value: quay.io/keycloak/keycloak:26.7.0
-  - name: QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKSAMLCLIENTCONTROLLER_NAMESPACES
-    value: JOSDK_WATCH_CURRENT
-  - name: QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKREALMIMPORTCONTROLLER_NAMESPACES
-    value: JOSDK_WATCH_CURRENT
-  - name: QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKCONTROLLER_NAMESPACES
-    value: JOSDK_WATCH_CURRENT
-  - name: QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKOIDCCLIENTCONTROLLER_NAMESPACES
-    value: JOSDK_WATCH_CURRENT
 
 # @ignored
 podSecurityContext: {}
@@ -201,6 +200,21 @@ resources:
   requests:
     cpu: 300m
     memory: 450Mi
+
+# @ignored. Config not documented in README because it doesn't fit well in the table.
+configMap:
+  # Configures the namespace watch scope for the KeycloakSamlClient controller. Set `watchAllNamespaces` to `true`,
+  # and this property to `JOSDK_ALL_NAMESPACES` to watch in all namespaces.
+  quarkusOperatorSdkControllersKeycloaksamlclientcontrollerNamespaces: JOSDK_WATCH_CURRENT
+  # Configures the namespace watch scope for the KeycloakRealmImport controller. Set `watchAllNamespaces` to `true`,
+  # and this property to `JOSDK_ALL_NAMESPACES` to watch in all namespaces.
+  quarkusOperatorSdkControllersKeycloakrealmimportcontrollerNamespaces: JOSDK_WATCH_CURRENT
+  # Configures the namespace watch scope for the KeycloakController controller. Set `watchAllNamespaces` to `true`,
+  # and this property to `JOSDK_ALL_NAMESPACES` to watch in all namespaces.
+  quarkusOperatorSdkControllersKeycloakcontrollerNamespaces: JOSDK_WATCH_CURRENT
+  # Configures the namespace watch scope for the KeycloakOIDCClient controller. Set `watchAllNamespaces` to `true`,
+  # and this property to `JOSDK_ALL_NAMESPACES` to watch in all namespaces.
+  quarkusOperatorSdkControllersKeycloakoidcclientcontrollerNamespaces: JOSDK_WATCH_CURRENT
 
 # -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
 # Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
