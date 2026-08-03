@@ -8,7 +8,7 @@ Installs Keycloak.
 
 ## Source Code
 
-* <https://github.com/StevenJDH/keycloak>
+* <https://github.com/keycloak/keycloak>
 
 ## Requirements
 

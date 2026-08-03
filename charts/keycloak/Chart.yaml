@@ -1,4 +1,4 @@
-# This file is part of Strimzi Cluster Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# This file is part of Keycloak Helm Chart <https://github.com/StevenJDH/helm-charts>.
 # Copyright (C) 2025-2026 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ kubeVersion: ">= 1.30.0-0"
 home: https://github.com/StevenJDH/helm-charts
 
 sources:
-  - https://github.com/StevenJDH/keycloak
+  - https://github.com/keycloak/keycloak
 
 maintainers:
   - name: Steven Jenkins De Haro
