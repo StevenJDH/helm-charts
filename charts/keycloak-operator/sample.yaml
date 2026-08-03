@@ -22,7 +22,7 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloak-operator-clusterrole
+  name: example-keycloak-operator-clusterrole
   namespace: default
 rules:
   - apiGroups:
@@ -42,7 +42,7 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloakcontroller-cluster-role
+  name: example-keycloak-operator-controller-cluster-role
   namespace: default
 rules:
   - apiGroups:
@@ -140,7 +140,7 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloakoidcclientcontroller-cluster-role
+  name: example-keycloak-operator-oidcclientcontroller-cluster-role
   namespace: default
 rules:
   - apiGroups:
@@ -168,7 +168,7 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloakrealmimportcontroller-cluster-role
+  name: example-keycloak-operator-realmimportcontroller-cluster-role
   namespace: default
 rules:
   - apiGroups:
@@ -219,7 +219,7 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloaksamlclientcontroller-cluster-role
+  name: example-keycloak-operator-samlclientcontroller-cluster-role
   namespace: default
 rules:
   - apiGroups:
@@ -247,12 +247,12 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloak-operator-clusterrole-binding
+  name: example-keycloak-operator-clusterrole-binding
   namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: keycloak-operator-clusterrole
+  name: example-keycloak-operator-clusterrole
 subjects:
   - kind: ServiceAccount
     name: example-keycloak-operator
@@ -268,7 +268,7 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloak-operator-role
+  name: example-keycloak-operator-role
   namespace: default
 rules:
   - apiGroups:
@@ -363,12 +363,12 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloak-operator-role-binding
+  name: example-keycloak-operator-role-binding
   namespace: default
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
-  name: keycloak-operator-role
+  name: example-keycloak-operator-role
 subjects:
   - kind: ServiceAccount
     name: example-keycloak-operator
@@ -383,7 +383,7 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloak-operator-view
+  name: example-keycloak-operator-view
   namespace: default
 roleRef:
   kind: ClusterRole
@@ -403,12 +403,12 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloakcontroller-role-binding
+  name: example-keycloak-operator-controller-role-binding
   namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: keycloakcontroller-cluster-role
+  name: example-keycloak-operator-controller-cluster-role
 subjects:
   - kind: ServiceAccount
     name: example-keycloak-operator
@@ -423,12 +423,12 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloakoidcclientcontroller-role-binding
+  name: example-keycloak-operator-oidcclientcontroller-role-binding
   namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: keycloakoidcclientcontroller-cluster-role
+  name: example-keycloak-operator-oidcclientcontroller-cluster-role
 subjects:
   - kind: ServiceAccount
     name: example-keycloak-operator
@@ -443,12 +443,12 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloakrealmimportcontroller-role-binding
+  name: example-keycloak-operator-realmimportcontroller-role-binding
   namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: keycloakrealmimportcontroller-cluster-role
+  name: example-keycloak-operator-realmimportcontroller-cluster-role
 subjects:
   - kind: ServiceAccount
     name: example-keycloak-operator
@@ -463,12 +463,12 @@ metadata:
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: keycloaksamlclientcontroller-role-binding
+  name: example-keycloak-operator-samlclientcontroller-role-binding
   namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: keycloaksamlclientcontroller-cluster-role
+  name: example-keycloak-operator-samlclientcontroller-cluster-role
 subjects:
   - kind: ServiceAccount
     name: example-keycloak-operator
@@ -506,7 +506,7 @@ kind: Deployment
 metadata:
   name: example-keycloak-operator
   annotations:
-    rollme: "5a2II"
+    rollme: "WRCdX"
   labels:
     helm.sh/chart: keycloak-operator-0.1.0
     app.kubernetes.io/name: keycloak-operator

@@ -20,12 +20,12 @@ kind: RoleBinding
 metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
-  name: keycloakrealmimportcontroller-role-binding
+  name: {{ include "shared-library.fullname" . }}-realmimportcontroller-role-binding
   namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: keycloakrealmimportcontroller-cluster-role
+  name: {{ include "shared-library.fullname" . }}-realmimportcontroller-cluster-role
 subjects:
   - kind: ServiceAccount
     name: {{ include "shared-library.serviceAccountName" . }}

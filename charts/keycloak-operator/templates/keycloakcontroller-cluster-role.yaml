@@ -20,7 +20,7 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
-  name: keycloakcontroller-cluster-role
+  name: {{ include "shared-library.fullname" . }}-controller-cluster-role
   namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups:

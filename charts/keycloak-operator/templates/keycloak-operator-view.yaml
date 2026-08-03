@@ -20,7 +20,7 @@ kind: RoleBinding
 metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
-  name: keycloak-operator-view
+  name: {{ include "shared-library.fullname" . }}-view
   namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
