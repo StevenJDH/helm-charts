@@ -15,4 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- include "shared-library.configmap" . }}
+{{- include "shared-library.configmap" (list . "override.configmap") }}
+
+{{- define "override.configmap" -}}
+{{- $keycloakEnabled            := .Values.watchAllNamespacesFor.keycloak            -}}
+{{- $keycloakRealmImportEnabled := .Values.watchAllNamespacesFor.keycloakRealmImport -}}
+{{- $keycloakOIDCClientEnabled  := .Values.watchAllNamespacesFor.keycloakOIDCClient  -}}
+{{- $keycloakSAMLClientEnabled  := .Values.watchAllNamespacesFor.keycloakSAMLClient  -}}
+data:
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKCONTROLLER_NAMESPACES: {{ $keycloakEnabled | ternary "JOSDK_ALL_NAMESPACES" "JOSDK_WATCH_CURRENT" }}
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKREALMIMPORTCONTROLLER_NAMESPACES: {{ $keycloakRealmImportEnabled | ternary "JOSDK_ALL_NAMESPACES" "JOSDK_WATCH_CURRENT" }}
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKOIDCCLIENTCONTROLLER_NAMESPACES: {{ $keycloakOIDCClientEnabled | ternary "JOSDK_ALL_NAMESPACES" "JOSDK_WATCH_CURRENT" }}
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKSAMLCLIENTCONTROLLER_NAMESPACES: {{ $keycloakSAMLClientEnabled | ternary "JOSDK_ALL_NAMESPACES" "JOSDK_WATCH_CURRENT" }}
+{{- end -}}

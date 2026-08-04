@@ -15,7 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- if .Values.watchAllNamespaces -}}
+{{- $keycloakEnabled            := .Values.watchAllNamespacesFor.keycloak            -}}
+{{- $keycloakRealmImportEnabled := .Values.watchAllNamespacesFor.keycloakRealmImport -}}
+{{- $keycloakOIDCClientEnabled  := .Values.watchAllNamespacesFor.keycloakOIDCClient  -}}
+{{- $keycloakSAMLClientEnabled  := .Values.watchAllNamespacesFor.keycloakSAMLClient  -}}
+
+{{- if or $keycloakEnabled $keycloakRealmImportEnabled $keycloakOIDCClientEnabled $keycloakSAMLClientEnabled -}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:

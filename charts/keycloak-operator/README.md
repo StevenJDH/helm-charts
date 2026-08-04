@@ -38,6 +38,7 @@ For information on how to get started, see the [Operator Guide](https://www.keyc
 | affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
 | annotations | object | `{}` | annotations to be added to the Deployment resource. |
 | command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
+| configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. The `RELATED_IMAGE_KEYCLOAK` and `relatedImageKeycloak` values are reserved keys and should not be used. |
 | extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
 | extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
@@ -64,7 +65,10 @@ For information on how to get started, see the [Operator Guide](https://www.keyc
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 | tolerations | list | `[]` | tolerations allow the scheduler to schedule pods onto nodes with matching taints. Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration). |
 | updateStrategy | object | `{}` | The update strategy to apply to the Deployment resource. |
-| watchAllNamespaces | bool | `false` | watchAllNamespaces indicates whether or not the operator should watch all namespaces or just the namespace it is deployed in. If enabled, set the `configMap.quarkusOperatorSdkControllers*Namespaces` properties to `JOSDK_ALL_NAMESPACES` as needed. See the `configMap` section in the default values.yaml file for more information. |
+| watchAllNamespacesFor.keycloak | bool | `false` | keycloak is for indicating whether or not Keycloak resources will be watched in all namespaces. |
+| watchAllNamespacesFor.keycloakOIDCClient | bool | `false` | keycloakOIDCClient is for indicating whether or not KeycloakOIDCClient resources will be watched in all namespaces. |
+| watchAllNamespacesFor.keycloakRealmImport | bool | `false` | keycloakRealmImport is for indicating whether or not KeycloakRealmImport resources will be watched in all namespaces. |
+| watchAllNamespacesFor.keycloakSAMLClient | bool | `false` | keycloakSAMLClient is for indicating whether or not KeycloakSAMLClient resources will be watched in all namespaces. |
 
 
 // Steven Jenkins De Haro ("StevenJDH" on GitHub)
