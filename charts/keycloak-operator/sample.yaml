@@ -517,82 +517,84 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-keycloak-operator
   annotations:
-    rollme: "hKCZT"
+    rollme: wHksn
   labels:
-    helm.sh/chart: keycloak-operator-0.1.0
-    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak-operator
+    app.kubernetes.io/version: 26.7.0
+    helm.sh/chart: keycloak-operator-0.1.0
+  name: example-keycloak-operator
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: keycloak-operator
       app.kubernetes.io/instance: example
+      app.kubernetes.io/name: keycloak-operator
   template:
     metadata:
+      annotations:
+        checksum/config: 91858c0b17a3bcf2a6bde4beb3a0424c9602701eee2df206f5fc5f861978274a
       labels:
-        app.kubernetes.io/name: keycloak-operator
         app.kubernetes.io/instance: example
+        app.kubernetes.io/name: keycloak-operator
     spec:
-      serviceAccountName: example-keycloak-operator
       containers:
-        - name: keycloak-operator
-          image: "quay.io/keycloak/keycloak-operator:26.7.0"
-          imagePullPolicy: Always
-          ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
-          env:
-            - name: KUBERNETES_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-          envFrom:
-          - configMapRef:
-              name: example-keycloak-operator-config
-          startupProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /q/health/started
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 10
-          livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /q/health/live
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 10
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /q/health/ready
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 10
-          resources:
-            limits:
-              cpu: 700m
-              memory: 450Mi
-            requests:
-              cpu: 300m
-              memory: 450Mi
-      restartPolicy: Always
+      - env:
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        envFrom:
+        - configMapRef:
+            name: example-keycloak-operator-config
+        image: quay.io/keycloak/keycloak-operator:26.7.0
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/live
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        name: keycloak-operator
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/ready
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        resources:
+          limits:
+            cpu: 700m
+            memory: 450Mi
+          requests:
+            cpu: 300m
+            memory: 450Mi
+        startupProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/started
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
       nodeSelector:
         kubernetes.io/os: linux
+      restartPolicy: Always
+      serviceAccountName: example-keycloak-operator

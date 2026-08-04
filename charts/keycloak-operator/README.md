@@ -8,6 +8,7 @@ Installs the Keycloak operator for managing Keycloak instances declaratively.
 
 ## Source Code
 
+* <https://github.com/keycloak/keycloak/tree/main/operator>
 * <https://github.com/keycloak/keycloak-k8s-resources>
 
 ## Requirements
