@@ -3,6 +3,8 @@
 # negation (prefixed with !). Only one pattern per line.
 examples/
 screenshots/
+docs/
+scripts/
 sample.yaml
 *.gotmpl
 .DS_Store

@@ -19,7 +19,8 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
     --atomic
 ```
 
-For information on how to get started, see the [Operator Guide](https://www.keycloak.org/guides#operator).
+> [!TIP]
+> For information on how to get started, see the [Operator Guide](https://www.keycloak.org/guides#operator). Also, a full list of property references supported by the Keycloak Operator CRDs can be found under the [docs/crds](./docs/crds) folder. Currently, there are no official lists yet available, so these have been generated for convenience.
 
 {{ template "chart.valuesSection" . }}
 
