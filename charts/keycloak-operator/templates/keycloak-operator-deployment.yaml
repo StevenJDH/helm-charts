@@ -15,4 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- include "shared-library.deployment" . }}
+{{- include "shared-library.deployment" (list . "override.deployment") }}
+
+{{- define "override.deployment" -}}
+spec:
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include "shared-library.configmap" (list . "override.configmap") | sha256sum }}
+{{- end -}}
