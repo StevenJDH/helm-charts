@@ -44,6 +44,7 @@ kubeVersion: ">= 1.30.0-0"
 home: https://github.com/StevenJDH/helm-charts
 
 sources:
+  - https://github.com/keycloak/keycloak/tree/main/operator
   - https://github.com/keycloak/keycloak-k8s-resources
 
 maintainers:
