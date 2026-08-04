@@ -34,4 +34,5 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ include "shared-library.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
 {{- end -}}
