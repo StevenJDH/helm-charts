@@ -20,7 +20,7 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
-  name: {{ include "shared-library.fullname" . }}-samlclientcontroller-cluster-role
+  name: {{ include "keycloak-operator.rbacFullname" (list . "samlclientcontroller-cluster-role") }}
 rules:
   - apiGroups:
       - k8s.keycloak.org

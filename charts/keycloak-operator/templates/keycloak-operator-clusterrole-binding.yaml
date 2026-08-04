@@ -20,11 +20,11 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
-  name: {{ include "shared-library.fullname" . }}-clusterrole-binding
+  name: {{ include "keycloak-operator.rbacFullname" (list . "clusterrole-binding") }}
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: {{ include "shared-library.fullname" . }}-clusterrole
+  name: {{ include "keycloak-operator.rbacFullname" (list . "clusterrole") }}
 subjects:
   - kind: ServiceAccount
     name: {{ include "shared-library.serviceAccountName" . }}

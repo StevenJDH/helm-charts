@@ -15,16 +15,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    {{- include "shared-library.labels" . | nindent 4 }}
-  name: {{ include "keycloak-operator.rbacFullname" (list . "clusterrole") }}
-rules:
-  - apiGroups:
-      - config.openshift.io
-    resources:
-      - ingresses
-    verbs:
-      - get
+{{/*
+Create a fully qualified RBAC resource name.
+Prefixes the resource name with the chart's fullname and truncates the result
+to 63 characters to comply with Kubernetes DNS label length limits.
+*/}}
+{{- define "keycloak-operator.rbacFullname" -}}
+{{- $ctx := index . 0 -}}
+{{- $suffix := index . 1 -}}
+{{- printf "%s-%s" (include "shared-library.fullname" $ctx) $suffix | trunc 63 | trimSuffix "-" -}}
+{{- end -}}

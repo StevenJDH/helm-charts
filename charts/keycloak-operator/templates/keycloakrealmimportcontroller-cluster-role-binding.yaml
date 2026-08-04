@@ -26,11 +26,11 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
-  name: {{ include "shared-library.fullname" . }}-realmimportcontroller-cluster-role-binding
+  name: {{ include "keycloak-operator.rbacFullname" (list . "realmimportcontroller-cluster-role-binding") }}
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: {{ include "shared-library.fullname" . }}-realmimportcontroller-cluster-role
+  name: {{ include "keycloak-operator.rbacFullname" (list . "realmimportcontroller-cluster-role") }}
 subjects:
   - kind: ServiceAccount
     name: {{ include "shared-library.serviceAccountName" . }}

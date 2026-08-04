@@ -20,12 +20,12 @@ kind: RoleBinding
 metadata:
   labels:
     {{- include "shared-library.labels" . | nindent 4 }}
-  name: {{ include "shared-library.fullname" . }}-role-binding
+  name: {{ include "keycloak-operator.rbacFullname" (list . "role-binding") }}
   namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
-  name: {{ include "shared-library.fullname" . }}-role
+  name: {{ include "keycloak-operator.rbacFullname" (list . "role") }}
 subjects:
   - kind: ServiceAccount
     name: {{ include "shared-library.serviceAccountName" . }}
