@@ -138,16 +138,88 @@ extraEnvs: []
 #     name: secret-resource
 #     optional: false
 
+features: {}
+  # enabled:
+  #   - docker
+  #   - authorization
+  # disabled:
+  #   - admin
+  #   - step-up-authentication
+
+# -- truststores is used to configure the Keycloak truststores using Secrets or ConfigMaps containing PEM encoded
+# files, or PKCS12 files with extension .p12, .pfx, or .pkcs12.
+# See [Truststores](https://www.keycloak.org/operator/advanced-configuration#_truststores) for more information.
+truststores: {}
+  # my-truststore:
+  #   secret:
+  #     name: my-secret
+  # my-truststore2:
+  #   configMap:
+  #     name: my-config
+
+metrics:
+  # -- Indicates whether or not Keycloak metrics should be enabled. Before enabling this, make sure
+  # `serviceMonitor.enabled` is set `false`, otherwise, a ServiceMonitor resource will also be created.
+  enabled: false
+
+tracing:
+  # -- Indicates whether or not to enable OpenTelemetry tracing. Requires `metrics.enabled` to be `true`.
+  enabled: false
+  # -- compression is the OpenTelemetry method used to compress payloads. Possible values are: gzip, none.
+  compression: none
+  # -- endpoint is the OpenTelemetry endpoint to connect to.
+  endpoint: "http://otel-collector:4317"
+  # -- protocol is the OpenTelemetry protocol used for the transmitting the data.
+  protocol: "grpc"
+  # -- samplerRatio is the OpenTelemetry sampler ratio. Probability that a span will be sampled using a
+  # double type value. For example, 1.0 is equal to 100%.
+  samplerRatio: 0.1
+  # -- samplerType is the OpenTelemetry sampler to use for tracing.
+  samplerType: "traceidratio"
+
+telemetry:
+  # -- Indicates whether or not to enable OpenTelemetry metrics. Requires `metrics.enabled` to be
+  # `true`, and `features` to include `opentelemetry-metrics:v1`.
+  enabled: false
+  # -- endpoint is the OpenTelemetry endpoint to connect to.
+  endpoint: "http://otel-collector:4317"
+  # -- serviceName is the OpenTelemetry service name. Takes precedence over 'service.name' defined in
+  # `telemetry.resourceAttributes`.
+  serviceName: ""
+  # -- resourceAttributes is the OpenTelemetry resource attributes present in the exported telemetry
+  # data to characterize the telemetry producer.
+  resourceAttributes: {}
+    # service.namespace: keycloak
+    # deployment.environment: test
+
 # -- Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either
-# direct values or references to secrets. See [All configuration](https://www.keycloak.org/server/all-config) for details.
+# direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled` and
+# `telemetry-metrics-enabled` as these will be added when needed automatically.
+# See [All configuration](https://www.keycloak.org/server/all-config) for details.
 additionalOptions: []
-# - name: FOO
-#   value: bar
-# - name: FOO
+# - name: http-relative-path
+#   value: "/"
+# - name: log-console-level
 #   secret:
-#     key: FOO
-#     name: secret-resource
-#     optional: false
+#     name: my-logging-config
+#     key: log-console-level
+
+# -- podTemplate is a raw API representation that is used for the Deployment Template. This field is a temporary
+# workaround in case no supported field exists at the top level of the CR for a use case. However, no guarantee
+# exists that the Deployment will work as expected.
+podTemplate: {}
+  # metadata:
+  #   labels:
+  #     my-label: "keycloak"
+  # spec:
+  #   containers:
+  #     - volumeMounts:
+  #         - name: test-volume
+  #           mountPath: /mnt/test
+  #   volumes:
+  #     - name: test-volume
+  #       secret:
+  #         secretName: keycloak-additional-secret
 
 # -- priorityClassName is the name of the PriorityClass resource that indicates the
 # importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
@@ -291,122 +363,70 @@ resources: {}
   #   cpu: 1000m
 
 networkPolicy:
-  # -- Specifies whether a network policy should be created.
+  # -- Specifies whether a network policy should be created. By default, the operator automatically creates a NetworkPolicy
+  # resource to deny access to the clustering port of the Keycloak Pods. The HTTP(S) endpoint is open to traffic from any
+  # namespace and the outside world.
   # Note: This will have no effect unless the chosen CNI supports network policies like Calico, Weave, Cilium, Romana, etc.
-  enabled: false
-  # -- policyTypes indicates whether or not the given policy applies to ingress traffic to the selected pod, egress traffic
-  # from the selected pods, or both. If no policy types are specified, then by default, Ingress will always be set and
-  # Egress will be set if any egress rules are defined.
-  # Reference [The NetworkPolicy resource](https://kubernetes.io/docs/concepts/services-networking/network-policies/#networkpolicy-resource).
-  policyTypes:
-  - Ingress
-  - Egress
-  # -- ingress may include a list of allowed ingress rules. Each rule allows traffic which matches both the `from` and `ports`
-  # sections. The `from` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`.
-  # Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating.
-  # Note: Specifying `- {}` whitelists all inbound traffic and `{}` does the same but on a specific selector, and `- to: []`
-  # will block all inbound traffic. Allow policies will override deny policies.
+  enabled: true
+  # -- http is a list of source rules which should be able to access this endpoint (port 8080 by default). Items in this list
+  # are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not
+  # restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic
+  # matches at least one item in the from list. Due to security reasons, the HTTP endpoint is disabled by default, unless
+  # `devModeEnabled` is set to `true`.
   # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
-  ingress:
-  - {}
-  # - from:
-  #   - ipBlock:
-  #       cidr: 172.17.0.0/16
-  #       except:
-  #       - 172.17.1.0/24
-  #   - namespaceSelector:
-  #       matchLabels:
-  #         project: my-project
-  #     podSelector:
-  #       matchLabels:
-  #         role: client
-  #   - podSelector: {}
-  #   ports:
-  #   - port: *targetPort
-  #     # endPort requires Kubernetes 1.25+, and a CNI that supports it, or it will be ignored. Must be equal or greater than `port.`
-  #     endPort: 8081
-  #     protocol: TCP
-  # - from:
-  #   - namespaceSelector:
-  #       # Another less intuitive approach still matching based on labels since matching by namespace name is not supported directly.
-  #       matchExpressions:
-  #       - key: namespace
-  #         operator: In
-  #         values: ["frontend", "backend"]
-  #   - namespaceSelector:
-  #       # Kubernetes 1.22+ sets an immutable label with the namespace name provided that the NamespaceDefaultLabelName feature gate is enabled.
-  #       matchLabels:
-  #         kubernetes.io/metadata.name: default
+  http: []
+  # - ipBlock:
+  #     cidr: 172.17.0.0/16
+  #     except:
+  #     - 172.17.1.0/24
+  # - namespaceSelector:
+  #     matchLabels:
+  #       project: my-project
+  #   podSelector:
+  #     matchLabels:
+  #       role: client
+  # - podSelector: {}
 
-  # -- egress may include a list of allowed egress rules. Each rule allows traffic which matches both the `to` and `ports`
-  # sections. The `to` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`.
-  # Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating.
-  # Note: Specifying `- {}` whitelists all outbound traffic and `{}` does the same but on a specific selector, and `- to: []`
-  # will block all outbound traffic. Allow policies will override deny policies.
+  # -- https is a list of source rules which should be able to access this endpoint (port 8443 by default). Items in this list
+  # are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not
+  # restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic
+  # matches at least one item in the from list.
   # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
-  egress:
-  - {}
-  # - to:
-  #   - podSelector: {}
-  #   ports:
-  #   - port: 80
-  #     protocol: TCP
-  #   # Allow DNS resolution
-  #   - port: 53
-  #     protocol: UDP
-  #   - port: 53
-  #     protocol: TCP
+  https: []
+  # - ipBlock:
+  #     cidr: 172.17.0.0/16
+  #     except:
+  #     - 172.17.1.0/24
+  # - namespaceSelector:
+  #     matchLabels:
+  #       project: my-project
+  #   podSelector:
+  #     matchLabels:
+  #       role: client
+  # - podSelector: {}
 
-podDisruptionBudget:
-  # -- Indicates whether or not a PodDisruptionBudget resource is created.
-  create: false
-  # -- minAvailable is the number of pods from that set that must still be available after the eviction, even in
-  # the absence of the evicted pod. Only integer values are supported.
-  minAvailable: 1
-
-# -- configMap is used to store non-confidential data in key-value pairs.
-# Quoting is required if the value is 0.
-configMap:
-  KC_CACHE: "ispn"
-  KC_HEALTH_ENABLED: "true"
-  KC_HTTP_ENABLED: "true"
-  KC_HTTP_PORT: 8080
-  KC_HTTP_RELATIVE-PATH: /
-  KC_HTTPS_ENABLED: "false"
-  KC_PROXY-HEADERS: "xforwarded"
-  KC_SPI-ADMIN_REALM: "master"
+  # -- management is a list of source rules which should be able to access this endpoint (port 9000 by default). Items in this list
+  # are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not
+  # restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic
+  # matches at least one item in the from list.
+  # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
+  management: []
+  # - namespaceSelector:
+  #     # Another less intuitive approach still matching based on labels since matching by namespace name is not supported directly.
+  #     matchExpressions:
+  #     - key: namespace
+  #       operator: In
+  #       values: ["frontend", "backend"]
+  # - namespaceSelector:
+  #     # Kubernetes 1.22+ sets an immutable label with the namespace name provided that the NamespaceDefaultLabelName feature gate is enabled.
+  #     matchLabels:
+  #       kubernetes.io/metadata.name: default
 
 # -- secrets is used to store confidential data in key-value pairs.
 # Quoting is required if the value is 0.
 secrets:
   # TODO: add something here or make a custom secret.
   foo: bar
-
-# -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
-# Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
-nodeSelector:
-  kubernetes.io/os: linux
-
-# -- affinity for pod scheduling.
-# Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity).
-affinity: {}
-  # podAntiAffinity:
-  #   requiredDuringSchedulingIgnoredDuringExecution:
-  #   - labelSelector:
-  #       matchExpressions:
-  #       - key: app
-  #         operator: In
-  #         values:
-  #         - app-name
-  #     topologyKey: "kubernetes.io/hostname"
-
-# -- tolerations allow the scheduler to schedule pods onto nodes with matching taints.
-# Reference [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration).
-tolerations: []
-# - key: "key"
-#   operator: "Equal|Exists"
-#   value: "value"
-#   effect: "NoSchedule|PreferNoSchedule|NoExecute"
 
 keycloakOperator:
   # -- Indicates whether or not the Keycloak Operator is installed.
@@ -428,9 +448,13 @@ keycloakOperator:
 postgresql:
   # -- Indicates whether or not a PostgreSQL database is created.
   enabled: true
+  # @ignored. Override for postgresql chart name in helm common labels.
   nameOverride: "keycloak-postgresql"
   auth:
+    # -- username is the username for the database user.
     username: postgres
+    # -- password is the password for the database user. If unset, a random password
+    # is generated and stored in a secret.
     password: ""
     # -- database is the name of the database to use for Keycloak.
     database: keycloak

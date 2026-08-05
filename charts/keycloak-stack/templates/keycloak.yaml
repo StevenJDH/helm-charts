@@ -65,18 +65,93 @@ spec:
     {{- with .Values.db.poolMaxSize }}
     poolMaxSize: {{ . }}
     {{- end }}
+  transaction:
+    xaEnabled: false
   http:
     httpEnabled: {{ .Values.devModeEnabled }}
+    serviceName: ""    # overrides the default "example-kc-service"
+    labels: {}
+    annotations: {}
+    httpPort: 8080
+    httpsPort: 8443
+    tlsSecret: my-tls-secret
   hostname:
     hostname: {{ .Values.hostname.host }}
     strict: {{ .Values.devModeEnabled | ternary false true }}
+  proxy:
+    headers: xforwarded
+  features: {}
   serviceMonitor:
-    enabled: false
+    enabled: false # prevents creation when metrics-enabled is true.
+    interval: 30s
+    scrapeTimeout: 10s
+    labels: {}
+    annotations: {}
   {{- with .Values.extraEnvs }}
   env: 
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.additionalOptions }}
-  additionalOptions: 
+  resources:
+    requests:
+      cpu: 1200m
+      memory: 896Mi
+    limits:
+      cpu: 6
+      memory: 3Gi
+  readinessProbe:
+    periodSeconds: 20
+    failureThreshold: 5
+  livenessProbe:
+    periodSeconds: 20
+    failureThreshold: 5
+  startupProbe:
+    periodSeconds: 20
+    failureThreshold: 5
+  scheduling: {}
+  update: {}
+  networkPolicy:
+    enabled: {{ .Values.networkPolicy.enabled }}
+    {{- with .Values.networkPolicy.http }}
+    http:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.networkPolicy.https }}
+    https:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.networkPolicy.https }}
+    management:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- with .Values.truststores }}
+  truststores:
     {{- toYaml . | nindent 4 }}
+  {{- end }}
+  tracing:
+    enabled: {{ .Values.tracing.enabled }}
+    compression: {{ .Values.tracing.compression }}
+    endpoint: {{ .Values.tracing.endpoint }}
+    protocol: {{ .Values.tracing.protocol }}
+    samplerRatio: {{ .Values.tracing.samplerRatio }}
+    samplerType: {{ .Values.tracing.samplerType }}
+  telemetry:
+    enabled: {{ .Values.telemetry.enabled }}
+    endpoint: {{ .Values.telemetry.endpoint }}
+    serviceName: {{ .Values.telemetry.serviceName | quote }}
+    {{- with .Values.telemetry.resourceAttributes }}
+    resourceAttributes:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  additionalOptions:
+    - name: metrics-enabled
+      value: {{ .Values.metrics.enabled | quote }}
+    - name: telemetry-metrics-enabled
+      value: {{ .Values.telemetry.enabled | quote }}
+    {{- with .Values.additionalOptions }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.podTemplate }}
+  unsupported:
+    podTemplate:
+      {{- toYaml . | nindent 6 }}
   {{- end }}

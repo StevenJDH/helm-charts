@@ -89,7 +89,7 @@ metadata:
     helm.sh/chart: postgresql-18.8.0
 type: Opaque
 data:
-  postgres-password: "Y0t2cEJ1NWlhNXR5emFhN3d5TDdoajBG"
+  postgres-password: "Tkx6cW1FR2ZkbGE1Q24zSFR2aVkxeEtm"
   # We don't auto-generate metrics password when it's not provided as we do for other passwords
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
@@ -130,28 +130,6 @@ metadata:
     helm.sh/chart: keycloakOperator-0.1.0
   name: example-keycloakOperator-config
   namespace: default
----
-# Source: keycloak-stack/templates/configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: example-keycloak-stack-config
-  labels:
-    helm.sh/chart: keycloak-stack-0.1.0
-    app.kubernetes.io/name: keycloak-stack
-    app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "26.7.0"
-    app.kubernetes.io/managed-by: Helm
-  namespace: default
-data:
-  KC_CACHE: "ispn"
-  KC_HEALTH_ENABLED: "true"
-  KC_HTTPS_ENABLED: "false"
-  KC_HTTP_ENABLED: "true"
-  KC_HTTP_PORT: "8080"
-  KC_HTTP_RELATIVE_PATH: "/"
-  KC_PROXY_HEADERS: "xforwarded"
-  KC_SPI_ADMIN_REALM: "master"
 ---
 # Source: keycloak-stack/charts/keycloakOperator/templates/keycloak-operator-clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -695,7 +673,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    rollme: uh5pP
+    rollme: tojPK
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
@@ -996,10 +974,61 @@ spec:
     poolInitialSize: 1
     poolMinSize: 2
     poolMaxSize: 30
+  transaction:
+    xaEnabled: false
   http:
     httpEnabled: false
+    serviceName: ""    # overrides the default "example-kc-service"
+    labels: {}
+    annotations: {}
+    httpPort: 8080
+    httpsPort: 8443
+    tlsSecret: my-tls-secret
   hostname:
     hostname: keycloak.127.0.0.1.sslip.io
     strict: true
+  proxy:
+    headers: xforwarded
+  features: {}
   serviceMonitor:
+    enabled: false # prevents creation when metrics-enabled is true.
+    interval: 30s
+    scrapeTimeout: 10s
+    labels: {}
+    annotations: {}
+  resources:
+    requests:
+      cpu: 1200m
+      memory: 896Mi
+    limits:
+      cpu: 6
+      memory: 3Gi
+  readinessProbe:
+    periodSeconds: 20
+    failureThreshold: 5
+  livenessProbe:
+    periodSeconds: 20
+    failureThreshold: 5
+  startupProbe:
+    periodSeconds: 20
+    failureThreshold: 5
+  scheduling: {}
+  update: {}
+  networkPolicy:
+    enabled: true
+  tracing:
     enabled: false
+    compression: none
+    endpoint: http://otel-collector:4317
+    protocol: grpc
+    samplerRatio: 0.1
+    samplerType: traceidratio
+  telemetry:
+    enabled: false
+    endpoint: http://otel-collector:4317
+    serviceName: ""
+  additionalOptions:
+    - name: metrics-enabled
+      value: "false"
+    - name: telemetry-metrics-enabled
+      value: "false"
