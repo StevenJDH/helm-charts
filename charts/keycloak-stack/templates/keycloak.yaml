@@ -15,34 +15,68 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
+{{- $requiredMsg := include "shared-library.required-msg" . -}}
+
 apiVersion: k8s.keycloak.org/v2beta1
 kind: Keycloak
 metadata:
-  name: keycloak
+  name: {{ include "shared-library.fullname" . }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "shared-library.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
   bootstrapAdmin:
+    {{- if .Values.bootstrapAdmin.user.username }}
     user:
-      secret: keycloak-bootstrap-admin
+      secret: {{ template "shared-library.fullname" . }}-secret
+    {{- end }}
+    {{- if .Values.bootstrapAdmin.service.clientId }}
+    service:
+      secret: {{ template "shared-library.fullname" . }}-secret
+    {{- end }}
   db:
-    vendor: postgres
-    host: my-postgresql-hl
-    database: keycloak2
-    port: 5432
+    vendor: {{ .Values.postgresql.enabled | ternary (.Values.db.vendor | default "postgres") .Values.db.external.vendor }}
+    host: {{ .Values.postgresql.enabled | ternary (.Values.db.hostOverride | default (printf "%s-%s.%s.svc.cluster.local" .Release.Name "keycloak-postgresql-hl" .Release.Namespace)) .Values.db.external.host }}
+    database: {{ .Values.postgresql.enabled | ternary .Values.postgresql.auth.database .Values.db.external.database }}
+    port: {{ .Values.postgresql.enabled | ternary .Values.db.port .Values.db.external.port }}
+    usernameSecret:
+      name: {{ template "shared-library.fullname" . }}-secret
+      key: db-username
+    {{- if .Values.postgresql.enabled }}
     passwordSecret:
-      name: my-postgresql
+      name: {{ .Release.Name }}-keycloak-postgresql
       key: postgres-password
-    schema: public
-    poolInitialSize: 1
-    poolMinSize: 2
-    poolMaxSize: 30
+    {{- else }}
+    passwordSecret:
+      name: {{ template "shared-library.fullname" . }}-secret
+      key: db-password
+    {{- end }}
+    schema: {{ .Values.postgresql.enabled | ternary .Values.db.schema .Values.db.external.schema }}
+    {{- with .Values.db.poolInitialSize }}
+    poolInitialSize: {{ . }}
+    {{- end }}
+    {{- with .Values.db.poolMinSize }}
+    poolMinSize: {{ . }}
+    {{- end }}
+    {{- with .Values.db.poolMaxSize }}
+    poolMaxSize: {{ . }}
+    {{- end }}
   http:
-    httpEnabled: true
+    httpEnabled: {{ .Values.devModeEnabled }}
   hostname:
-    hostname: http://keycloak.127.0.0.1.sslip.io
-    strict: false
+    hostname: {{ .Values.hostname.host }}
+    strict: {{ .Values.devModeEnabled | ternary false true }}
   serviceMonitor:
     enabled: false
-  env:
-    - name: KC_DB_USERNAME
-      value: postgres
+  {{- with .Values.extraEnvs }}
+  env: 
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.additionalOptions }}
+  additionalOptions: 
+    {{- toYaml . | nindent 4 }}
+  {{- end }}

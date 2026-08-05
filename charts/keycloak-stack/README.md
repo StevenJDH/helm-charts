@@ -26,6 +26,7 @@ Kubernetes: `>= 1.30.0-0`
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
 helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.0 \
+    --set devModeEnabled=true
     --namespace example \
     --create-namespace \
     --atomic
@@ -35,17 +36,34 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| additionalOptions | list | `[]` | Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either direct values or references to secrets. See [All configuration](https://www.keycloak.org/server/all-config) for details. |
 | affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
 | annotations | object | `{}` | annotations to be added to the Deployment resource. |
-| command | list | `["/opt/keycloak/bin/kc.sh"]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
-| configMap | object | `{"KC_BOOTSTRAP_ADMIN_PASSWORD":"admin","KC_BOOTSTRAP_ADMIN_USERNAME":"admin","KC_CACHE":"ispn","KC_DB":"postgres","KC_DB_PASSWORD":"password","KC_DB_URL":"jdbc:postgresql://my-keycloak-postgresql-hl:5432/keycloak?currentSchema=public","KC_DB_USERNAME":"postgres","KC_HEALTH_ENABLED":"true","KC_HOSTNAME":"keycloak.127.0.0.1.sslip.io","KC_HTTPS_ENABLED":"false","KC_HTTP_ENABLED":"true","KC_HTTP_PORT":8080,"KC_HTTP_RELATIVE-PATH":"/","KC_PROXY-HEADERS":"xforwarded","KC_SPI-ADMIN_REALM":"master"}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. |
+| bootstrapAdmin.service.clientId | string | `""` | clientId is the client ID for the Keycloak bootstrap admin service account. |
+| bootstrapAdmin.service.clientSecret | string | `""` | clientSecret is the client secret for the Keycloak bootstrap admin service account. |
+| bootstrapAdmin.user.password | string | `"admin"` | password is the password for the Keycloak bootstrap admin user. |
+| bootstrapAdmin.user.username | string | `"admin"` | username is the username for the Keycloak bootstrap admin user. |
+| configMap | object | `{"KC_CACHE":"ispn","KC_HEALTH_ENABLED":"true","KC_HTTPS_ENABLED":"false","KC_HTTP_ENABLED":"true","KC_HTTP_PORT":8080,"KC_HTTP_RELATIVE-PATH":"/","KC_PROXY-HEADERS":"xforwarded","KC_SPI-ADMIN_REALM":"master"}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. |
 | containerPorts | object | `{}` | containerPort is the port or ports that the container listens on. |
-| extraArgs | list | `["start-dev"]` | Additional command line arguments to pass to the container. For production, use ["start"] and for development use ["start-dev"]. |
-| extraEnvs | list | `[]` | Additional environment variables to set. |
-| extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
-| extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
-| extraVolumes | list | `[]` | Additional volumes for the pod. |
+| db.external.auth.password | string | `""` | password is the password for the external database user. This setting is ignored if `postgresql.enabled` is `true`. |
+| db.external.auth.username | string | `""` | username is the username for the external database user. This setting is ignored if `postgresql.enabled` is `true`. |
+| db.external.database | string | `"keycloak"` | database is the name of the external database to use for Keycloak. This setting is ignored if `postgresql.enabled` is `true`. |
+| db.external.host | string | `""` | host is the hostname of the external database server. This setting is ignored if `postgresql.enabled` is `true`. |
+| db.external.port | int | `5432` | port is the port number of the external database server. This setting is ignored if `postgresql.enabled` is `true`. |
+| db.external.schema | string | `"public"` | schema is the name of the external database schema to use for Keycloak. This setting is ignored if `postgresql.enabled` is `true`. |
+| db.external.vendor | string | `"postgres"` | vendor is the external database vendor to use for Keycloak. Supported values are: postgres, mariadb, mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `true`. |
+| db.hostOverride | string | `""` | hostOverride is the hostname of the database server. If not set, it will be auto configured for the postgresql headless service of the managed database. This setting is ignored if `postgresql.enabled` is `false`. |
+| db.poolInitialSize | int | `1` | poolInitialSize is the initial number of connections that are created when the pool is started. |
+| db.poolMaxSize | int | `30` | poolMaxSize is the maximum number of connections that can be allocated from the pool at a given time. |
+| db.poolMinSize | int | `2` | poolMinSize is the minimum number of connections that are maintained in the pool. |
+| db.port | int | `5432` | port is the port number of the database server. This setting is ignored if `postgresql.enabled` is `false`. |
+| db.schema | string | `"public"` | schema is the name of the database schema to use for Keycloak. This setting is ignored if `postgresql.enabled` is `false`. |
+| db.vendor | string | `"postgres"` | vendor is the database vendor to use for Keycloak. Supported values are: postgres, mariadb, mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `false`. |
+| devModeEnabled | bool | `false` | Indicates whether or not Keycloak is running in development mode. This will disable features and configurations that are only suitable for development environments. |
+| extraEnvs | list | `[]` | Additional environment variables to set for the Keycloak server. These should be expressed as key-value pairs that can be either direct values or references to secrets.. Use the `additionalOptions` section for first-class options rather than KC_ values here. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
+| hostname.host | string | `"keycloak.127.0.0.1.sslip.io"` | host is the hostname for the Keycloak server. Applicable for Hostname v1 and v2. |
+| hostname.strict | bool | `true` | strict indicates whether the hostname should be treated as strict. This dynamically resolves the hostname from request headers. Applicable for Hostname v1 and v2. |
 | image.pullPolicy | string | `"Always"` | pullPolicy is the strategy for pulling images from a registry. |
 | image.pullSecret.password | string | `""` | password is the Docker password associated with the username with pull rights. |
 | image.pullSecret.username | string | `""` | username is the Docker username associated with the password. |
@@ -69,18 +87,18 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
 | networkPolicy.ingress | list | `[{}]` | ingress may include a list of allowed ingress rules. Each rule allows traffic which matches both the `from` and `ports` sections. The `from` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`. Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating. Note: Specifying `- {}` whitelists all inbound traffic and `{}` does the same but on a specific selector, and `- to: []` will block all inbound traffic. Allow policies will override deny policies. Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors). |
 | networkPolicy.policyTypes | list | `["Ingress","Egress"]` | policyTypes indicates whether or not the given policy applies to ingress traffic to the selected pod, egress traffic from the selected pods, or both. If no policy types are specified, then by default, Ingress will always be set and Egress will be set if any egress rules are defined. Reference [The NetworkPolicy resource](https://kubernetes.io/docs/concepts/services-networking/network-policies/#networkpolicy-resource). |
 | nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
-| podAnnotations | object | `{}` | podAnnotations are the annotations to be added to the deployment pods. |
 | podDisruptionBudget.create | bool | `false` | Indicates whether or not a PodDisruptionBudget resource is created. |
 | podDisruptionBudget.minAvailable | int | `1` | minAvailable is the number of pods from that set that must still be available after the eviction, even in the absence of the evicted pod. Only integer values are supported. |
-| postgresql.auth.database | string | `"keycloak"` |  |
-| postgresql.auth.password | string | `"password"` |  |
+| postgresql.auth.database | string | `"keycloak"` | database is the name of the database to use for Keycloak. |
+| postgresql.auth.password | string | `""` |  |
 | postgresql.auth.username | string | `"postgres"` |  |
 | postgresql.enabled | bool | `true` | Indicates whether or not a PostgreSQL database is created. |
+| postgresql.nameOverride | string | `"keycloak-postgresql"` |  |
 | priorityClassName | string | `""` | priorityClassName is the name of the PriorityClass resource that indicates the importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the scheduler tries to preempt (evict) lower priority Pods to make scheduling of the pending Pod possible. Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption). |
 | replicaCount | int | `1` | replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | restartPolicy | string | `"Always"` | restartPolicy defines how a pod will automatically repair itself when a problem arises. Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy). |
-| secrets | object | `{"password":"admin","username":"admin"}` | secrets is used to store confidential data in key-value pairs. Quoting is required if the value is 0. |
+| secrets | object | `{"foo":"bar"}` | secrets is used to store confidential data in key-value pairs. Quoting is required if the value is 0. |
 | service.annotations | object | `{}` | annotations to be added to the Service resource. |
 | service.appProtocol | bool | `true` | appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example, `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http`. See the following GitHub issue for more details [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions older than 1.20. |
 | service.clusterIP | string | `""` | clusterIP allows for customizing the cluster IP address of a service resource. |

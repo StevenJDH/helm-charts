@@ -37,6 +37,73 @@ nameOverride: ""
 # -- Override for generated resource names.
 fullnameOverride: ""
 
+bootstrapAdmin:
+  user:
+    # -- username is the username for the Keycloak bootstrap admin user.
+    username: admin
+    # -- password is the password for the Keycloak bootstrap admin user.
+    password: admin
+  service:
+    # -- clientId is the client ID for the Keycloak bootstrap admin service account.
+    clientId: ""
+    # -- clientSecret is the client secret for the Keycloak bootstrap admin service account.
+    clientSecret: ""
+
+hostname:
+  # -- host is the hostname for the Keycloak server. Applicable for Hostname v1 and v2.
+  host: "keycloak.127.0.0.1.sslip.io"
+  # -- strict indicates whether the hostname should be treated as strict. This dynamically
+  # resolves the hostname from request headers. Applicable for Hostname v1 and v2.
+  strict: true
+
+db:
+  # -- vendor is the database vendor to use for Keycloak. Supported values are: postgres, mariadb,
+  # mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `false`.
+  vendor: postgres
+  # -- hostOverride is the hostname of the database server. If not set, it will be auto configured for
+  # the postgresql headless service of the managed database. This setting is ignored if
+  # `postgresql.enabled` is `false`.
+  hostOverride: ""
+  # -- port is the port number of the database server. This setting is ignored if `postgresql.enabled`
+  # is `false`.
+  port: 5432
+  # -- schema is the name of the database schema to use for Keycloak. This setting is ignored if
+  # `postgresql.enabled` is `false`.
+  schema: public
+  # -- poolInitialSize is the initial number of connections that are created when the pool is started.
+  poolInitialSize: 1
+  # -- poolMinSize is the minimum number of connections that are maintained in the pool.
+  poolMinSize: 2
+  # -- poolMaxSize is the maximum number of connections that can be allocated from the pool at a given time.
+  poolMaxSize: 30
+  external:
+    # -- vendor is the external database vendor to use for Keycloak. Supported values are: postgres, mariadb,
+    # mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `true`.
+    vendor: postgres
+    # -- host is the hostname of the external database server. This setting is ignored if
+    # `postgresql.enabled` is `true`.
+    host: ""
+    # -- database is the name of the external database to use for Keycloak. This setting is ignored if
+    # `postgresql.enabled` is `true`.
+    database: "keycloak"
+    # -- port is the port number of the external database server. This setting is ignored if
+    # `postgresql.enabled` is `true`.
+    port: 5432
+    # -- schema is the name of the external database schema to use for Keycloak. This setting is ignored
+    # if `postgresql.enabled` is `true`.
+    schema: public
+    auth:
+      # -- username is the username for the external database user. This setting is ignored if
+      # `postgresql.enabled` is `true`.
+      username: ""
+      # -- password is the password for the external database user. This setting is ignored if
+      # `postgresql.enabled` is `true`.
+      password: ""
+
+# -- Indicates whether or not Keycloak is running in development mode. This will disable features and
+# configurations that are only suitable for development environments.
+devModeEnabled: false
+
 serviceAccount:
   # -- Specifies whether a service account should be created.
   create: true
@@ -49,9 +116,6 @@ serviceAccount:
 # -- annotations to be added to the Deployment resource.
 annotations: {}
 
-# -- podAnnotations are the annotations to be added to the deployment pods.
-podAnnotations: {}
-
 # -- restartPolicy defines how a pod will automatically repair itself when a problem arises.
 # Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy).
 restartPolicy: Always
@@ -62,38 +126,28 @@ updateStrategy: {}
   #   maxUnavailable: 1
   # type: RollingUpdate
 
-# -- command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands.
-command: ["/opt/keycloak/bin/kc.sh"]
-
-# -- Additional command line arguments to pass to the container. For production, use ["start"] and for development use ["start-dev"].
-extraArgs: ["start-dev"]
-# - --arg1
-# - value1
-# - --arg2
-# - value2
-
-# -- Additional environment variables to set.
+# -- Additional environment variables to set for the Keycloak server. These should be expressed as key-value pairs that
+# can be either direct values or references to secrets.. Use the `additionalOptions` section for first-class options
+# rather than KC_ values here.
 extraEnvs: []
 # - name: FOO
-#   valueFrom:
-#     secretKeyRef:
-#       key: FOO
-#       name: secret-resource
+#   value: bar
+# - name: FOO
+#   secret:
+#     key: FOO
+#     name: secret-resource
+#     optional: false
 
-# @ignored
-podSecurityContext: {}
-  # runAsNonRoot: true
-  # runAsUser: 10101
-  # seccompProfile:
-  #   type: RuntimeDefault
-
-# @ignored
-securityContext: {}
-  # readOnlyRootFilesystem: false
-  # allowPrivilegeEscalation: false
-  # capabilities:
-  #   drop:
-  #   - ALL
+# -- Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either
+# direct values or references to secrets. See [All configuration](https://www.keycloak.org/server/all-config) for details.
+additionalOptions: []
+# - name: FOO
+#   value: bar
+# - name: FOO
+#   secret:
+#     key: FOO
+#     name: secret-resource
+#     optional: false
 
 # -- priorityClassName is the name of the PriorityClass resource that indicates the
 # importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
@@ -142,22 +196,6 @@ health:
     # timeoutSeconds: 1
     # successThreshold: 1
     # failureThreshold: 3
-
-# -- Additional volumeMounts for the main container.
-extraVolumeMounts: []
-# - name: example-volume
-#   mountPath: /share/example
-
-# -- Additional volumes for the pod.
-extraVolumes: []
-# - name: example-volume
-#   emptyDir: {}
-
-# -- Containers, which are run before the app containers are started.
-extraInitContainers: []
-# - name: init-myservice
-#   image: busybox
-#   command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
 
 service:
   # -- type specifies what kind of Service resource to create.
@@ -329,27 +367,20 @@ podDisruptionBudget:
 # -- configMap is used to store non-confidential data in key-value pairs.
 # Quoting is required if the value is 0.
 configMap:
-  KC_BOOTSTRAP_ADMIN_USERNAME: admin 
-  KC_BOOTSTRAP_ADMIN_PASSWORD: admin
   KC_CACHE: "ispn"
-  KC_DB: postgres
-  KC_DB_URL: jdbc:postgresql://my-keycloak-postgresql-hl:5432/keycloak?currentSchema=public
-  KC_DB_USERNAME: postgres
-  KC_DB_PASSWORD: password
   KC_HEALTH_ENABLED: "true"
   KC_HTTP_ENABLED: "true"
   KC_HTTP_PORT: 8080
   KC_HTTP_RELATIVE-PATH: /
   KC_HTTPS_ENABLED: "false"
-  KC_HOSTNAME: keycloak.127.0.0.1.sslip.io
   KC_PROXY-HEADERS: "xforwarded"
   KC_SPI-ADMIN_REALM: "master"
 
 # -- secrets is used to store confidential data in key-value pairs.
 # Quoting is required if the value is 0.
 secrets:
-  username: admin
-  password: admin
+  # TODO: add something here or make a custom secret.
+  foo: bar
 
 # -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
 # Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
@@ -397,7 +428,9 @@ keycloakOperator:
 postgresql:
   # -- Indicates whether or not a PostgreSQL database is created.
   enabled: true
+  nameOverride: "keycloak-postgresql"
   auth:
     username: postgres
-    password: password
+    password: ""
+    # -- database is the name of the database to use for Keycloak.
     database: keycloak
