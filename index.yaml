@@ -202,6 +202,30 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/covid-tracker-0.1.0/covid-tracker-0.1.0.tgz
     version: 0.1.0
+  keycloak-operator:
+  - apiVersion: v2
+    appVersion: 26.7.0
+    created: "2026-08-05T00:26:34.839358744Z"
+    dependencies:
+    - name: shared-library
+      repository: https://StevenJDH.github.io/helm-charts
+      version: ^0.x
+    description: Installs the Keycloak operator for managing Keycloak instances declaratively.
+    digest: 4daf4498f9d2ae0f76367fb19e8a2a3fc2bdeadfd16b0427fff396d33273a893
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.30.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: keycloak-operator
+    sources:
+    - https://github.com/keycloak/keycloak/tree/main/operator
+    - https://github.com/keycloak/keycloak-k8s-resources
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/keycloak-operator-0.1.0/keycloak-operator-0.1.0.tgz
+    version: 0.1.0
   konga:
   - apiVersion: v2
     appVersion: 0.14.9
@@ -382,4 +406,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/strimzi-cluster-0.1.0/strimzi-cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2026-08-02T23:22:41.188169826Z"
+generated: "2026-08-05T00:26:34.839392667Z"
