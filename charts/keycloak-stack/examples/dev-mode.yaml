@@ -22,3 +22,7 @@ hostname:
   host: "keycloak.127.0.0.1.sslip.io"
 
 devModeEnabled: true
+
+postgresql:
+  auth:
+    password: "password"
