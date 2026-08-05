@@ -1,0 +1,28 @@
+# Keycloak Operator Helm Chart
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Usage example
+
+```bash
+helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
+helm repo update
+helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
+    --namespace example \
+    --create-namespace \
+    --atomic
+```
+
+> [!TIP]
+> For information on how to get started, see the [Operator Guide](https://www.keycloak.org/guides#operator). Also, a full list of property references supported by the Keycloak Operator CRDs can be found under the [docs/crds](./docs/crds) folder. Currently, there are no official lists yet available, so these have been generated for convenience.
+
+{{ template "chart.valuesSection" . }}
+
+
+{{ template "footer.signature" . }}
