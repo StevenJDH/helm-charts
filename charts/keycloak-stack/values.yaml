@@ -1,5 +1,5 @@
-# This file is part of Keycloak Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2023-2024 Steven Jenkins De Haro.
+# This file is part of Keycloak Stack Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2026 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -347,8 +347,9 @@ configMap:
 
 # -- secrets is used to store confidential data in key-value pairs.
 # Quoting is required if the value is 0.
-secrets: {}
-  # key: value
+secrets:
+  username: admin
+  password: admin
 
 # -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
 # Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
@@ -375,6 +376,23 @@ tolerations: []
 #   operator: "Equal|Exists"
 #   value: "value"
 #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+
+keycloakOperator:
+  # -- Indicates whether or not the Keycloak Operator is installed.
+  enabled: true
+  watchAllNamespacesFor:
+    # -- keycloak is for indicating whether or not Keycloak resources will be watched
+    # in all namespaces.
+    keycloak: false
+    # -- keycloakRealmImport is for indicating whether or not KeycloakRealmImport
+    # resources will be watched in all namespaces.
+    keycloakRealmImport: false
+    # -- keycloakOIDCClient is for indicating whether or not KeycloakOIDCClient
+    # resources will be watched in all namespaces.
+    keycloakOIDCClient: false
+    # -- keycloakSAMLClient is for indicating whether or not KeycloakSAMLClient
+    # resources will be watched in all namespaces.
+    keycloakSAMLClient: false
 
 postgresql:
   # -- Indicates whether or not a PostgreSQL database is created.

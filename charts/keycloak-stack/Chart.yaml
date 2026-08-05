@@ -1,5 +1,5 @@
-# This file is part of Keycloak Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2025-2026 Steven Jenkins De Haro.
+# This file is part of Keycloak Stack Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2026 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 # limitations under the License.
 
 apiVersion: v2
-name: keycloak
-description: Installs Keycloak.
+name: keycloak-stack
+description: Installs a fully managed Keycloak and its dependencies.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -36,7 +36,7 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "26.3.3"
+appVersion: "26.7.0"
 
 # Includes pre-releases to support version schemes used like with AWS EKS as per https://github.com/helm/helm/issues/10375#issuecomment-974203557.
 kubeVersion: ">= 1.30.0-0"
@@ -53,6 +53,11 @@ maintainers:
 icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
 
 dependencies:
+  - name: keycloak-operator
+    alias: keycloakOperator
+    version: "0.1.0"
+    repository: "https://StevenJDH.github.io/helm-charts"
+    condition: keycloakOperator.enabled
   - name: postgresql
     version: "18.8.0"
     repository: "oci://registry-1.docker.io/bitnamicharts"

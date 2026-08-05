@@ -1,10 +1,10 @@
 
 
-# Keycloak Helm Chart
+# Keycloak Stack Helm Chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.3.3](https://img.shields.io/badge/AppVersion-26.3.3-informational?style=flat-square) 
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.7.0](https://img.shields.io/badge/AppVersion-26.7.0-informational?style=flat-square) 
 
-Installs Keycloak.
+Installs a fully managed Keycloak and its dependencies.
 
 ## Source Code
 
@@ -16,6 +16,7 @@ Kubernetes: `>= 1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://StevenJDH.github.io/helm-charts | keycloakOperator(keycloak-operator) | 0.1.0 |
 | https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
 | oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.0 |
 
@@ -24,7 +25,7 @@ Kubernetes: `>= 1.30.0-0`
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-keycloak stevenjdh/keycloak --version 0.1.0 \
+helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.0 \
     --namespace example \
     --create-namespace \
     --atomic
@@ -57,6 +58,11 @@ helm upgrade --install my-keycloak stevenjdh/keycloak --version 0.1.0 \
 | ingress.hosts[0].paths[0].path | string | `"/"` | path is part of a list of one or more paths that are associated with a backend service. |
 | ingress.hosts[0].paths[0].pathType | string | `"Prefix"` | pathType is a field that can specify how Ingress paths should be matched. Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types). |
 | ingress.tls | list | `[]` | tls is a list of hosts that needs to explicitly match the host in the rules section. It also contains a secret with references to tls.crt and tls.key to use for TLS. |
+| keycloakOperator.enabled | bool | `true` | Indicates whether or not the Keycloak Operator is installed. |
+| keycloakOperator.watchAllNamespacesFor.keycloak | bool | `false` | keycloak is for indicating whether or not Keycloak resources will be watched in all namespaces. |
+| keycloakOperator.watchAllNamespacesFor.keycloakOIDCClient | bool | `false` | keycloakOIDCClient is for indicating whether or not KeycloakOIDCClient resources will be watched in all namespaces. |
+| keycloakOperator.watchAllNamespacesFor.keycloakRealmImport | bool | `false` | keycloakRealmImport is for indicating whether or not KeycloakRealmImport resources will be watched in all namespaces. |
+| keycloakOperator.watchAllNamespacesFor.keycloakSAMLClient | bool | `false` | keycloakSAMLClient is for indicating whether or not KeycloakSAMLClient resources will be watched in all namespaces. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | networkPolicy.egress | list | `[{}]` | egress may include a list of allowed egress rules. Each rule allows traffic which matches both the `to` and `ports` sections. The `to` section supports four kinds of selectors which are `podSelector`, `namespaceSelector`, and `ipBlock`. Both `namespaceSelector` and `podSelector` can be combined, but the semantics mean `and` instead of `or` when evaluating. Note: Specifying `- {}` whitelists all outbound traffic and `{}` does the same but on a specific selector, and `- to: []` will block all outbound traffic. Allow policies will override deny policies. Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors). |
 | networkPolicy.enabled | bool | `false` | Specifies whether a network policy should be created. Note: This will have no effect unless the chosen CNI supports network policies like Calico, Weave, Cilium, Romana, etc. |
@@ -74,7 +80,7 @@ helm upgrade --install my-keycloak stevenjdh/keycloak --version 0.1.0 \
 | replicaCount | int | `1` | replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | restartPolicy | string | `"Always"` | restartPolicy defines how a pod will automatically repair itself when a problem arises. Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy). |
-| secrets | object | `{}` | secrets is used to store confidential data in key-value pairs. Quoting is required if the value is 0. |
+| secrets | object | `{"password":"admin","username":"admin"}` | secrets is used to store confidential data in key-value pairs. Quoting is required if the value is 0. |
 | service.annotations | object | `{}` | annotations to be added to the Service resource. |
 | service.appProtocol | bool | `true` | appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example, `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http`. See the following GitHub issue for more details [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions older than 1.20. |
 | service.clusterIP | string | `""` | clusterIP allows for customizing the cluster IP address of a service resource. |
