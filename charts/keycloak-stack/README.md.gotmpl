@@ -20,7 +20,7 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
     --atomic
 ```
 
-{{ template "chart.valuesSection" . }}
+{{ template "chart.valuesSectionWrap" (dict "context" . "limit" 40) }}
 
 
 {{ template "footer.signature" . }}
