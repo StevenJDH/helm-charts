@@ -29,6 +29,22 @@ metadata:
     {{- include "shared-library.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- /*
+  Workaround to handle 0 properly when it is a number or a string.
+  Reference: https://github.com/helm/helm/issues/3164 
+  */}}
+  {{- if not (kindIs "invalid" .Values.instances) }}
+  instances: {{ .Values.instances }}
+  {{- else }}
+  instances: 1
+  {{- end }}
+  {{- with .Values.image }}
+  image: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   bootstrapAdmin:
     {{- if .Values.bootstrapAdmin.user.username }}
     user:
@@ -66,49 +82,103 @@ spec:
     poolMaxSize: {{ . }}
     {{- end }}
   transaction:
-    xaEnabled: false
+    xaEnabled: {{ .Values.transaction.xaEnabled }}
   http:
-    httpEnabled: {{ .Values.devModeEnabled }}
-    serviceName: ""    # overrides the default "example-kc-service"
-    labels: {}
-    annotations: {}
-    httpPort: 8080
-    httpsPort: 8443
-    tlsSecret: my-tls-secret
+    {{- with .Values.http.labels }}
+    labels:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.http.annotations }}
+    annotations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    httpEnabled: {{ .Values.devModeEnabled | ternary false .Values.http.httpEnabled }}
+    httpPort: {{ .Values.http.httpPort }}
+    httpsPort: {{ .Values.http.httpsPort }}
+    {{- with .Values.http.serviceName }}
+    serviceName: {{ . }}
+    {{- end }}
+    {{- with .Values.http.serviceHttpPort }}
+    serviceHttpPort: {{ . }}
+    {{- end }}
+    {{- with .Values.http.serviceHttpsPort }}
+    serviceHttpsPort: {{ . }}
+    {{- end }}
+    {{- if and .Values.ingress.enabled (not .Values.ingress.tlsSecret) }}
+    {{- with .Values.http.tlsSecret }}
+    tlsSecret: {{ . }}
+    {{- end }}
+    {{- end }}
   hostname:
     hostname: {{ .Values.hostname.host }}
-    strict: {{ .Values.devModeEnabled | ternary false true }}
+    strict: {{ .Values.devModeEnabled | ternary false .Values.hostname.strict }}
+  {{- /* Ensuring not a Passthrough scenario. */}}
+  {{- if not (and .Values.http.tlsSecret (not .Values.ingress.tlsSecret)) }}
+  {{- with .Values.proxy.headers }}
   proxy:
-    headers: xforwarded
-  features: {}
-  serviceMonitor:
-    enabled: false # prevents creation when metrics-enabled is true.
-    interval: 30s
-    scrapeTimeout: 10s
-    labels: {}
-    annotations: {}
+    headers: {{ . }}
+  {{- end }}
+  {{- end }}
+  ingress:
+    enabled: {{ .Values.ingress.enabled }}
+    {{- with .Values.ingress.labels }}
+    labels:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.ingress.annotations }}
+    annotations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.ingress.className }}
+    className: {{ . }}
+    {{- end }}
+    {{- with .Values.ingress.tlsSecret }}
+    tlsSecret: {{ . }}
+    {{- end }}
   {{- with .Values.extraEnvs }}
   env: 
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- with .Values.resources }}
   resources:
-    requests:
-      cpu: 1200m
-      memory: 896Mi
-    limits:
-      cpu: 6
-      memory: 3Gi
-  readinessProbe:
-    periodSeconds: 20
-    failureThreshold: 5
-  livenessProbe:
-    periodSeconds: 20
-    failureThreshold: 5
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  httpManagement:
+    port: {{ .Values.httpManagement.port }}
+  {{- with .Values.startupProbe }}
   startupProbe:
-    periodSeconds: 20
-    failureThreshold: 5
-  scheduling: {}
-  update: {}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.livenessProbe }}
+  livenessProbe:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.readinessProbe }}
+  readinessProbe:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.import.scheduling }}
+  import:
+    scheduling:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  {{- with .Values.scheduling }}
+  scheduling:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  update:
+    {{- with .Values.update.labels }}
+    labels:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.update.scheduling }}
+    scheduling:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    strategy: {{ .Values.update.strategy }}
+    {{- if eq .Values.update.strategy "Explicit" }}
+    revision: {{ .Values.update.revision }}
+    {{- end }}
   networkPolicy:
     enabled: {{ .Values.networkPolicy.enabled }}
     {{- with .Values.networkPolicy.http }}
@@ -127,6 +197,18 @@ spec:
   truststores:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  serviceMonitor:
+    enabled: {{ .Values.serviceMonitor.enabled }}
+    {{- with .Values.serviceMonitor.labels }}
+    labels:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.serviceMonitor.annotations }}
+    annotations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    interval: {{ .Values.serviceMonitor.interval }}
+    scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
   tracing:
     enabled: {{ .Values.tracing.enabled }}
     compression: {{ .Values.tracing.compression }}
@@ -142,6 +224,17 @@ spec:
     resourceAttributes:
       {{- toYaml . | nindent 6 }}
     {{- end }}
+  {{- if or .Values.features.enabled .Values.features.disabled }}
+  features:
+    {{- with .Values.features.enabled }}
+    enabled:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.features.disabled }}
+    disabled:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- end }}
   additionalOptions:
     - name: metrics-enabled
       value: {{ .Values.metrics.enabled | quote }}

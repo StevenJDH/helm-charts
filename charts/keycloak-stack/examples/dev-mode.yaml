@@ -23,6 +23,9 @@ hostname:
 
 devModeEnabled: true
 
+ingress:
+  className: traefik
+
 postgresql:
   auth:
     password: "password"

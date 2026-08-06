@@ -34,5 +34,8 @@ db:
 
 devModeEnabled: true
 
+ingress:
+  className: traefik
+
 postgresql:
   enabled: false

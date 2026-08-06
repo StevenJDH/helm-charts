@@ -13,24 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# -- replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to
-# increase availability when set to more than one.
-replicaCount: 1
+# -- instances is the number of Keycloak instances created to increase availability
+# when set to more than one.
+instances: 1
 
-image:
-  # -- repository holding the container image.
-  repository: "quay.io/keycloak/keycloak"
-  # -- pullPolicy is the strategy for pulling images from a registry.
-  pullPolicy: Always
-  # -- Overrides the image tag whose default is the chart appVersion.
-  tag: ""
-  pullSecret:
-    # @ignored. registry is the private docker container registry for pulling images.
-    registry: "index.docker.io/v1/"
-    # -- username is the Docker username associated with the password.
-    username: ""
-    # -- password is the Docker password associated with the username with pull rights.
-    password: ""
+# -- image is used to specify a custom Keycloak image to be used.
+image: ""
+
+# -- imagePullSecrets is a list of secrets for pulling an image from a private
+# container registry.
+imagePullSecrets: []
+# - name "my-pullsecret"
 
 # -- Override for chart name in helm common labels.
 nameOverride: ""
@@ -40,6 +33,7 @@ fullnameOverride: ""
 bootstrapAdmin:
   user:
     # -- username is the username for the Keycloak bootstrap admin user.
+    # See [Accessing the Admin Console](https://www.keycloak.org/operator/basic-deployment#_accessing_the_admin_console) for more information.
     username: admin
     # -- password is the password for the Keycloak bootstrap admin user.
     password: admin
@@ -49,16 +43,10 @@ bootstrapAdmin:
     # -- clientSecret is the client secret for the Keycloak bootstrap admin service account.
     clientSecret: ""
 
-hostname:
-  # -- host is the hostname for the Keycloak server. Applicable for Hostname v1 and v2.
-  host: "keycloak.127.0.0.1.sslip.io"
-  # -- strict indicates whether the hostname should be treated as strict. This dynamically
-  # resolves the hostname from request headers. Applicable for Hostname v1 and v2.
-  strict: true
-
 db:
   # -- vendor is the database vendor to use for Keycloak. Supported values are: postgres, mariadb,
   # mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `false`.
+  # See [Supported databases](https://www.keycloak.org/server/db#_supported_databases) for more information.
   vendor: postgres
   # -- hostOverride is the hostname of the database server. If not set, it will be auto configured for
   # the postgresql headless service of the managed database. This setting is ignored if
@@ -79,6 +67,7 @@ db:
   external:
     # -- vendor is the external database vendor to use for Keycloak. Supported values are: postgres, mariadb,
     # mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `true`.
+    # See [Supported databases](https://www.keycloak.org/server/db#_supported_databases) for more information.
     vendor: postgres
     # -- host is the hostname of the external database server. This setting is ignored if
     # `postgresql.enabled` is `true`.
@@ -100,9 +89,75 @@ db:
       # `postgresql.enabled` is `true`.
       password: ""
 
+transaction:
+  # -- Indicates whether or not Keycloak should use a non-XA datasource in case the database does not
+  # support XA transactions. If supported, then this option can be enabled.
+  # See [Using Database Vendors with XA transaction support](https://www.keycloak.org/server/db#_using_database_vendors_with_xa_transaction_support) for more information.
+  xaEnabled: false
+
+http:
+  # -- labels to be added to the Service resource.
+  labels: {}
+  # -- annotations to be added to the Service resource.
+  annotations: {}
+  # -- Indicates whether or not the HTTP listener is enabled, which is blocked by default. This
+  # setting is always `true` when `devModeEnabled` is `true`.
+  httpEnabled: false
+  # -- httpPort is the port used for HTTP connections.
+  httpPort: 8080
+  # -- httpsPort is the port used for HTTPS connections.
+  httpsPort: 8443
+  # -- serviceName is used to override the default Service resource name. When not set, the name
+  # defaults to the Keycloak CR name with a "-service" suffix.
+  serviceName: ""
+  # -- serviceHttpPort is the HTTP port exposed on the Kubernetes Service. When set, the Service
+  # will use this port while the pod still listens on `http.httpPort`. This setting is ignored when
+  # set to `0`.
+  serviceHttpPort: 0
+  # -- serviceHttpsPort is the HTTPS port exposed on the Kubernetes Service. When set, the Service
+  # will use this port while the pod still listens on `http.httpsPort`. This setting is ignored when
+  # set to `0`.
+  serviceHttpsPort: 0
+  # -- tlsSecret is a secret containing the TLS configuration for the Passthrough TLS scenario.
+  # Requires `ingress.enabled` set to `true` and `ingress.tlsSecret` must be unset.
+  # See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information.
+  tlsSecret: ""
+
+hostname:
+  # -- host is the hostname for the Keycloak server. Applicable for Hostname v1 and v2.
+  host: "keycloak.127.0.0.1.sslip.io"
+  # -- strict indicates whether the hostname should be treated as strict. This dynamically
+  # resolves the hostname from request headers. Applicable for Hostname v1 and v2. Disabled when
+  # `devModeEnabled` is set to `true`
+  strict: true
+
 # -- Indicates whether or not Keycloak is running in development mode. This will disable features and
 # configurations that are only suitable for development environments.
 devModeEnabled: false
+
+proxy:
+  # -- headers are the proxy headers that should be accepted by the server. Misconfiguration might
+  # leave the server exposed to security vulnerabilities. Check the load balancer or reverse proxy
+  # configuration in use to determine whether it utilizes the Forwarded (RFC 7239) or X-Forwarded-*
+  # (e.g., X-Forwarded-For) mechanism for header propagation. Use with Edge and Re-encrypt scenarios,
+  # but not Passthrough. Valid values are `forwarded` and `xforwarded`.
+  # See [Configuring a reverse proxy](https://www.keycloak.org/server/reverseproxy) for more information.
+  headers: ""
+
+ingress:
+  # -- Indicates whether or not an Ingress resource is created to enable outside access.
+  # See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information.
+  enabled: true
+  # -- labels to be added to the Ingress resource.
+  labels: {}
+  # -- annotations to be added to the Ingress resource.
+  annotations: {}
+  # -- className is the name of the Ingress class.
+  className: ""
+  # -- tlsSecret is a secret containing the TLS configuration for re-encrypt or TLS termination
+  # scenarios. See [TLS Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets)
+  # for more information.
+  tlsSecret: ""
 
 serviceAccount:
   # -- Specifies whether a service account should be created.
@@ -138,14 +193,6 @@ extraEnvs: []
 #     name: secret-resource
 #     optional: false
 
-features: {}
-  # enabled:
-  #   - docker
-  #   - authorization
-  # disabled:
-  #   - admin
-  #   - step-up-authentication
-
 # -- truststores is used to configure the Keycloak truststores using Secrets or ConfigMaps containing PEM encoded
 # files, or PKCS12 files with extension .p12, .pfx, or .pkcs12.
 # See [Truststores](https://www.keycloak.org/operator/advanced-configuration#_truststores) for more information.
@@ -161,6 +208,20 @@ metrics:
   # -- Indicates whether or not Keycloak metrics should be enabled. Before enabling this, make sure
   # `serviceMonitor.enabled` is set `false`, otherwise, a ServiceMonitor resource will also be created.
   enabled: false
+
+serviceMonitor:
+  # -- Indicates whether or not to create a ServiceMonitor for Keycloak. Requires that `metrics.enabled` be set to `true`.
+  enabled: false
+  # -- labels specifies additional labels for the ServiceMonitor.
+  labels: {}
+    # release: kube-prometheus-stack
+
+  # -- annotations specifies additional annotations for the ServiceMonitor.
+  annotations: {}
+  # -- interval is the frequency at which metrics should be scraped.
+  interval: 30s
+  # -- scrapeTimeout sets the scrape timeout for the ServiceMonitor.
+  scrapeTimeout: 10s
 
 tracing:
   # -- Indicates whether or not to enable OpenTelemetry tracing. Requires `metrics.enabled` to be `true`.
@@ -192,6 +253,16 @@ telemetry:
     # service.namespace: keycloak
     # deployment.environment: test
 
+features:
+  # -- enabled is used to enable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
+  enabled: []
+  # - docker
+  # - authorization
+  # -- disabled is used to disable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
+  disabled: []
+  # - admin
+  # - step-up-authentication
+
 # -- Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either
 # direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled` and
 # `telemetry-metrics-enabled` as these will be added when needed automatically.
@@ -221,146 +292,125 @@ podTemplate: {}
   #       secret:
   #         secretName: keycloak-additional-secret
 
-# -- priorityClassName is the name of the PriorityClass resource that indicates the
-# importance of a Pod relative to other Pods. If a Pod cannot be scheduled, the
-# scheduler tries to preempt (evict) lower priority Pods to make scheduling of the
-# pending Pod possible.
-# Reference [Pod Priority and Preemption](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption).
-priorityClassName: ""
-
-# -- containerPort is the port or ports that the container listens on.
-containerPorts: {}
-  # http: 8080
-  # actuator: 8081
-
-# @ignored. Startup, Liveness and readiness probes. Liveness probes do not wait
-# for readiness probes to succeed. If you want to wait before executing a liveness
-# probe you should use initialDelaySeconds or a startupProbe.
-# Reference [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes).
-health:
-  startupProbe: {}
-    # httpGet:
-    #   path: /actuator/health
-    #   port: actuator
-    #   scheme: HTTP
-    # initialDelaySeconds: 5
-    # periodSeconds: 5
-    # timeoutSeconds: 2
-    # successThreshold: 1
-    # failureThreshold: 5
-  livenessProbe: {}
-    # httpGet:
-    #   path: /actuator/health/liveness
-    #   port: actuator
-    #   scheme: HTTP
-    # initialDelaySeconds: 10
-    # periodSeconds: 10
-    # timeoutSeconds: 1
-    # successThreshold: 1
-    # failureThreshold: 5
-  readinessProbe: {}
-    # httpGet:
-    #   path: /actuator/health/readiness
-    #   port: actuator
-    #   scheme: HTTP
-    # initialDelaySeconds: 10
-    # periodSeconds: 10
-    # timeoutSeconds: 1
-    # successThreshold: 1
-    # failureThreshold: 3
-
-service:
-  # -- type specifies what kind of Service resource to create.
-  type: ClusterIP
-  # @ignored
-  port: 80
-  # @ignored
-  targetPort: &targetPort 8080
-  # @ignored
-  nodePort: 32080
-  # -- appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example,
-  # `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http`. See the following GitHub issue for more details
-  # [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions
-  # older than 1.20.
-  appProtocol: true
-  # -- annotations to be added to the Service resource.
-  annotations: {}
-  # -- clusterIP allows for customizing the cluster IP address of a service resource.
-  clusterIP: ""
-  # -- externalIPs is a list of IP addresses at which a service is available at.
-  # Reference [External IPs](https://kubernetes.io/docs/user-guide/services/#external-ips).
-  externalIPs: []
-  # -- loadBalancerIP is a field used by cloud providers to connect the resulting `LoadBalancer` created by a service resource to a
-  # pre-existing static IP. This field is deprecated as of Kubernetes 1.24.0 since it doesn't support dual-stack, but there is no
-  # replacement as of yet. Most likely cloud providers will adopt a provider specific annotation approach for this. Progress can be
-  # tracked here [kubernetes/enhancements#1992](https://github.com/kubernetes/enhancements/pull/1992).
-  # Reference [Type LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer).
-  loadBalancerIP: ""
-  # -- loadBalancerSourceRanges is a list of one or more internal or external IP address ranges. If not set, a Service will accept
-  # traffic from any IP address (0.0.0.0/0).
-  loadBalancerSourceRanges: []
-  # -- externalTrafficPolicy is an annotation set on a service resource. It defines how traffic incoming to a node is load balanced.
-  # `Cluster` is normally the default policy, but `Local` is often used to preserve the source IP of traffic coming into a cluster
-  # node. With Local, requests are load balanced equally across nodes irrespective of how many pods are on each node. When set to
-  # Cluster, both nodes and pods are taken into consideration. Applicable only when `service.type` is `NodePort` or `LoadBalancer`.
-  # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
-  externalTrafficPolicy: ""
-  # -- sessionAffinity ensures that connections from a particular client are passed to the same Pod each time based on the client's
-  # IP address. Must be either "None" or "ClientIP" if set.
-  # Reference [User space proxy mode](https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace).
-  sessionAffinity: "None"
-  # -- healthCheckNodePort specifies the health check node port (numeric port number) for the service. If healthCheckNodePort isn’t specified,
-  # the service controller allocates a port from your cluster’s NodePort range.
-  # Reference [Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip).
-  healthCheckNodePort: 0
-  # -- ipFamilyPolicy represents the dual-stack-ness requested or required by this Service. Possible values are SingleStack, PreferDualStack or RequireDualStack.
-  # The ipFamilies and clusterIPs fields depend on the value of this field.
-  # Reference [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack).
-  ipFamilyPolicy: "SingleStack"
-  # -- ipFamilies is a list of IP families (e.g. IPv4, IPv6) assigned to a service. This field is usually assigned automatically
-  # based on cluster configuration and the ipFamilyPolicy field. [IPv4/IPv6 dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack).
-  ipFamilies:
-  - IPv4
-
-ingress:
-  # -- Indicates whether or not an Ingress resource is created.
-  enabled: true
-  # -- className is the name of the Ingress class.
-  className: traefik
-  # -- annotations to be added to the Ingress resource.
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-
-  hosts:
-    - # -- host is the hostname of a request that must match exactly or use a wildcard as the subdomain.
-      host: "keycloak.127.0.0.1.sslip.io"
-      paths:
-        - # -- path is part of a list of one or more paths that are associated with a backend service.
-          path: /
-          # -- pathType is a field that can specify how Ingress paths should be matched.
-          # Reference [Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types).
-          pathType: Prefix
-  # -- tls is a list of hosts that needs to explicitly match the host in the rules section.
-  # It also contains a secret with references to tls.crt and tls.key to use for TLS.
-  tls: []
-  # - secretName: chart-example-tls
-  #   hosts:
-  #   - chart-example.local
-
-# -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+# -- Optionally request and limit how much CPU and memory (RAM) the container needs. When using a
+# KeycloakRealmImport resource, if no resource are configured there, these values here, or their
+# defaults, will be used.
 # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
 resources: {}
-  #  We usually recommend not to specify default resources and to leave this as a conscious
-  #  choice for the user. This also increases chances charts run on environments with little
-  #  resources, such as Minikube. If you do want to specify resources, uncomment the following
-  #  lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  #  The memory requests and limits are the actual default.
   # requests:
-  #   memory: 256Mi
-  #   cpu: 500m
+  #   memory: 1700Mi
+  #   cpu: 1200m
   # limits:
-  #   memory: 512Mi
-  #   cpu: 1000m
+  #   memory: 2Gi
+  #   cpu: 6000m
+
+httpManagement:
+  # -- port is the port of the management interface.
+  port: 9000
+
+# -- startupProbe configures the startup probe. Only a subnet of features are support by the CR.
+startupProbe: {}
+  # periodSeconds: 20
+  # failureThreshold: 5
+
+# -- livenessProbe configures the liveness probe. This type of probe does not wait for the readiness
+# probe to succeed. To make the the probe wait, use the `startupProbe`. Only a subnet of features
+# are support by the CR.
+livenessProbe: {}
+  # periodSeconds: 20
+  # failureThreshold: 5
+
+# -- readinessProbe configures the readiness probe. Only a subnet of features are support by the CR.
+readinessProbe: {}
+  # periodSeconds: 20
+  # failureThreshold: 5
+
+import:
+  # -- scheduling is used to configure Kubernetes affinity, tolerations, topology spread
+  # constraints, and the priority class name to fine tune the scheduling and placement of Pods.
+  scheduling: {}
+    # priorityClassName: custom-high
+    # affinity:
+    #   podAffinity:
+    #     preferredDuringSchedulingIgnoredDuringExecution:
+    #     - podAffinityTerm:
+    #         labelSelector:
+    #           matchLabels:
+    #             app: keycloak
+    #             app.kubernetes.io/managed-by: keycloak-operator
+    #             app.kubernetes.io/component: server
+    #             topologyKey: topology.kubernetes.io/zone
+    #           weight: 10
+    # tolerations:
+    # - key: "key"
+    #   operator: "Equal|Exists"
+    #   value: "value"
+    #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+    # topologySpreadConstraints:
+    # - maxSkew: 1
+    #   topologyKey: kubernetes.io/hostname
+    #   whenUnsatisfiable: DoNotSchedule
+
+# -- scheduling is used to configure Kubernetes affinity, tolerations, topology spread
+# constraints, and the priority class name to fine tune the scheduling and placement of Pods.
+scheduling: {}
+  # priorityClassName: custom-high
+  # affinity:
+  #   podAffinity:
+  #     preferredDuringSchedulingIgnoredDuringExecution:
+  #     - podAffinityTerm:
+  #         labelSelector:
+  #           matchLabels:
+  #             app: keycloak
+  #             app.kubernetes.io/managed-by: keycloak-operator
+  #             app.kubernetes.io/component: server
+  #             topologyKey: topology.kubernetes.io/zone
+  #           weight: 10
+  # tolerations:
+  # - key: "key"
+  #   operator: "Equal|Exists"
+  #   value: "value"
+  #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+  # topologySpreadConstraints:
+  # - maxSkew: 1
+  #   topologyKey: kubernetes.io/hostname
+  #   whenUnsatisfiable: DoNotSchedule
+
+update:
+  # -- labels is for setting additional labels on the Job created for the update.
+  labels: {}
+  # -- scheduling is used to configure Kubernetes affinity, tolerations, topology spread
+  # constraints, and the priority class name to fine tune the scheduling and placement of Pods.
+  scheduling: {}
+    # priorityClassName: custom-high
+    # affinity:
+    #   podAffinity:
+    #     preferredDuringSchedulingIgnoredDuringExecution:
+    #     - podAffinityTerm:
+    #         labelSelector:
+    #           matchLabels:
+    #             app: keycloak
+    #             app.kubernetes.io/managed-by: keycloak-operator
+    #             app.kubernetes.io/component: server
+    #             topologyKey: topology.kubernetes.io/zone
+    #           weight: 10
+    # tolerations:
+    # - key: "key"
+    #   operator: "Equal|Exists"
+    #   value: "value"
+    #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+    # topologySpreadConstraints:
+    # - maxSkew: 1
+    #   topologyKey: kubernetes.io/hostname
+    #   whenUnsatisfiable: DoNotSchedule
+
+  # -- strategy is the update strategy to use for updates. Valid values are `RecreateOnImageChange`, `Auto`, and `Explicit`. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
+  strategy: "RecreateOnImageChange"
+  # -- revision is used for when `update.strategy` is set to `Explicit` strategy, and is
+  # ignored for other strategies. The Keycloak Operator checks this value, and if it matches
+  # the previous deployment, it performs a rolling update. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
+  revision: "example-v1"
 
 networkPolicy:
   # -- Specifies whether a network policy should be created. By default, the operator automatically creates a NetworkPolicy

@@ -89,7 +89,7 @@ metadata:
     helm.sh/chart: postgresql-18.8.0
 type: Opaque
 data:
-  postgres-password: "Tkx6cW1FR2ZkbGE1Q24zSFR2aVkxeEtm"
+  postgres-password: "TWwxdUZSbnVnV2JQTkkwbk5DNWRPaWRv"
   # We don't auto-generate metrics password when it's not provided as we do for other passwords
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
@@ -673,7 +673,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    rollme: tojPK
+    rollme: G45mL
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
@@ -956,6 +956,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec:
+  instances: 1
   bootstrapAdmin:
     user:
       secret: example-keycloak-stack-secret
@@ -978,44 +979,23 @@ spec:
     xaEnabled: false
   http:
     httpEnabled: false
-    serviceName: ""    # overrides the default "example-kc-service"
-    labels: {}
-    annotations: {}
     httpPort: 8080
     httpsPort: 8443
-    tlsSecret: my-tls-secret
   hostname:
     hostname: keycloak.127.0.0.1.sslip.io
     strict: true
-  proxy:
-    headers: xforwarded
-  features: {}
-  serviceMonitor:
-    enabled: false # prevents creation when metrics-enabled is true.
-    interval: 30s
-    scrapeTimeout: 10s
-    labels: {}
-    annotations: {}
-  resources:
-    requests:
-      cpu: 1200m
-      memory: 896Mi
-    limits:
-      cpu: 6
-      memory: 3Gi
-  readinessProbe:
-    periodSeconds: 20
-    failureThreshold: 5
-  livenessProbe:
-    periodSeconds: 20
-    failureThreshold: 5
-  startupProbe:
-    periodSeconds: 20
-    failureThreshold: 5
-  scheduling: {}
-  update: {}
+  ingress:
+    enabled: true
+  httpManagement:
+    port: 9000
+  update:
+    strategy: RecreateOnImageChange
   networkPolicy:
     enabled: true
+  serviceMonitor:
+    enabled: false
+    interval: 30s
+    scrapeTimeout: 10s
   tracing:
     enabled: false
     compression: none
