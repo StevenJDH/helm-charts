@@ -45,6 +45,7 @@ spec:
   imagePullSecrets:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  startOptimized: {{ .Values.startOptimized }}
   bootstrapAdmin:
     {{- if .Values.bootstrapAdmin.user.username }}
     user:
@@ -54,6 +55,15 @@ spec:
     service:
       secret: {{ template "shared-library.fullname" . }}-secret
     {{- end }}
+  {{- with .Values.admin.tlsSecret }}
+  admin:
+    tlsSecret: {{ . }}
+  {{- end }}
+  {{- with .Values.cache.configMapFile }}
+  cache:
+    configMapFile:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
   db:
     vendor: {{ .Values.postgresql.enabled | ternary (.Values.db.vendor | default "postgres") .Values.db.external.vendor }}
     host: {{ .Values.postgresql.enabled | ternary (.Values.db.hostOverride | default (printf "%s-%s.%s.svc.cluster.local" .Release.Name "keycloak-postgresql-hl" .Release.Namespace)) .Values.db.external.host }}
@@ -111,7 +121,12 @@ spec:
     {{- end }}
   hostname:
     hostname: {{ .Values.hostname.host }}
+    {{- with .Values.hostname.adminHost }}
+    admin: {{ . }}
+    {{- end }}
     strict: {{ .Values.devModeEnabled | ternary false .Values.hostname.strict }}
+    backchannelDynamic: {{ .Values.hostname.backchannelDynamic }}
+  automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
   {{- /* Ensuring not a Passthrough scenario. */}}
   {{- if not (and .Values.http.tlsSecret (not .Values.ingress.tlsSecret)) }}
   {{- with .Values.proxy.headers }}

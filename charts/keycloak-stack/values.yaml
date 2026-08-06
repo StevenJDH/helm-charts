@@ -17,6 +17,14 @@
 # when set to more than one.
 instances: 1
 
+# -- Override for chart name in helm common labels.
+nameOverride: ""
+# -- Override for generated resource names.
+fullnameOverride: ""
+
+# -- annotations to be added to the Deployment resource.
+annotations: {}
+
 # -- image is used to specify a custom Keycloak image to be used.
 image: ""
 
@@ -25,23 +33,43 @@ image: ""
 imagePullSecrets: []
 # - name "my-pullsecret"
 
-# -- Override for chart name in helm common labels.
-nameOverride: ""
-# -- Override for generated resource names.
-fullnameOverride: ""
+# -- Indicates whether or not to start Keycloak in optimized mode with the
+# `--optimized` flag when using custom pre-augmented images. Keep disabled when
+# using non-optimized images or the official Keycloak image. When using an
+# optimized custom image, `health-enabled`, `metrics-enabled` and
+# `telemetry-metrics-enabled` options need to be explicitly set in the Dockerfile.
+# Any build time options passed through first-class fields or `additionalOptions`
+# will be ignored if not moved to the Dockerfile.
+# See [Best practice](https://www.keycloak.org/operator/customizing-keycloak#_best_practice) for more information.
+startOptimized: false
 
 bootstrapAdmin:
   user:
-    # -- username is the username for the Keycloak bootstrap admin user.
+    # -- username is the temporary username for the Keycloak bootstrap admin user.
     # See [Accessing the Admin Console](https://www.keycloak.org/operator/basic-deployment#_accessing_the_admin_console) for more information.
     username: admin
-    # -- password is the password for the Keycloak bootstrap admin user.
+    # -- password is the temporary password for the Keycloak bootstrap admin user.
     password: admin
   service:
     # -- clientId is the client ID for the Keycloak bootstrap admin service account.
     clientId: ""
     # -- clientSecret is the client secret for the Keycloak bootstrap admin service account.
     clientSecret: ""
+
+admin:
+  # -- tlsSecret specifies the TLS Secret containing the client certificate and private key
+  # used by the operator for mTLS connections to Keycloak.
+  # See [Managing Keycloak Clients](https://www.keycloak.org/operator/managing-clients) for more information.
+  tlsSecret: ""
+
+cache:
+  # -- configMapFile references a ConfigMap key containing a custom Infinispan cache
+  # configuration XML. When specified, Keycloak uses this file instead of the default
+  # cache configuration. See [Configuring caches](https://www.keycloak.org/server/caching#_configuring_caches) for more information.
+  configMapFile: {}
+    # key: cache-ispn.xml
+    # name: keycloak-cache-config
+    # optional: false
 
 db:
   # -- vendor is the database vendor to use for Keycloak. Supported values are: postgres, mariadb,
@@ -67,7 +95,9 @@ db:
   external:
     # -- vendor is the external database vendor to use for Keycloak. Supported values are: postgres, mariadb,
     # mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `true`.
-    # See [Supported databases](https://www.keycloak.org/server/db#_supported_databases) for more information.
+    # See [Supported databases](https://www.keycloak.org/server/db#_supported_databases)
+    # and [Preparing for PostgreSQL](https://www.keycloak.org/server/db#_preparing_for_postgresql) for
+    # more information.
     vendor: postgres
     # -- host is the hostname of the external database server. This setting is ignored if
     # `postgresql.enabled` is `true`.
@@ -126,14 +156,30 @@ http:
 hostname:
   # -- host is the hostname for the Keycloak server. Applicable for Hostname v1 and v2.
   host: "keycloak.127.0.0.1.sslip.io"
+  # -- adminHost is the hostname for the Admin Console and Admin REST API. If unset, the value
+  # of `hostname.host` is used. Applicable for Hostname v1 and v2.
+  # See [Exposing the Administration Console on a separate hostname](https://www.keycloak.org/server/hostname#administration-console-on-a-separate-hostname) for more information.
+  adminHost: ""
   # -- strict indicates whether the hostname should be treated as strict. This dynamically
   # resolves the hostname from request headers. Applicable for Hostname v1 and v2. Disabled when
   # `devModeEnabled` is set to `true`
   strict: true
+  # -- Indicates whether or not to enable dynamic backchannel URLs, allowing internal clients
+  # to access Keycloak through a different address than external clients. Applicable for Hostname v2.
+  # See [Utilizing an internal URL for communication among clients](https://www.keycloak.org/server/hostname#_utilizing_an_internal_url_for_communication_among_clients) for more information.
+  backchannelDynamic: false
 
 # -- Indicates whether or not Keycloak is running in development mode. This will disable features and
 # configurations that are only suitable for development environments.
 devModeEnabled: false
+
+# -- Indicates whether or not to automatically mount the Kubernetes ServiceAccount token into the
+# Keycloak pod. If set to `false`, this will also disable the Kubernetes CA truststore auto-discovery
+# logic. Keep this set to `true` if planning to use an external Infinispan cluster, the Kubernetes
+# ServiceAccount identity provider, or any custom provider logic that expects to implicitly use the
+# Kubernetes API.
+# See [Truststores](https://www.keycloak.org/operator/advanced-configuration#_truststores) for more information.
+automountServiceAccountToken: true
 
 proxy:
   # -- headers are the proxy headers that should be accepted by the server. Misconfiguration might
@@ -158,28 +204,6 @@ ingress:
   # scenarios. See [TLS Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets)
   # for more information.
   tlsSecret: ""
-
-serviceAccount:
-  # -- Specifies whether a service account should be created.
-  create: true
-  # -- annotations to be added to the Service Account resource.
-  annotations: {}
-  # -- The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template.
-  name: ""
-  
-# -- annotations to be added to the Deployment resource.
-annotations: {}
-
-# -- restartPolicy defines how a pod will automatically repair itself when a problem arises.
-# Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy).
-restartPolicy: Always
-
-# -- The update strategy to apply to the Deployment resource.
-updateStrategy: {}
-  # rollingUpdate:
-  #   maxUnavailable: 1
-  # type: RollingUpdate
 
 # -- Additional environment variables to set for the Keycloak server. These should be expressed as key-value pairs that
 # can be either direct values or references to secrets.. Use the `additionalOptions` section for first-class options
@@ -256,6 +280,7 @@ telemetry:
 features:
   # -- enabled is used to enable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
   enabled: []
+  # - client-admin-api
   # - docker
   # - authorization
   # -- disabled is used to disable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
@@ -297,13 +322,16 @@ podTemplate: {}
 # defaults, will be used.
 # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
 resources: {}
-  #  The memory requests and limits are the actual default.
+  # ## The memory requests and limits are the actual default.
   # requests:
   #   memory: 1700Mi
   #   cpu: 1200m
   # limits:
   #   memory: 2Gi
   #   cpu: 6000m
+  # claims:
+  # - name: example-keycloak-hsm-claim
+  #   request: example-hsm-device
 
 httpManagement:
   # -- port is the port of the management interface.
@@ -380,6 +408,12 @@ scheduling: {}
 update:
   # -- labels is for setting additional labels on the Job created for the update.
   labels: {}
+  # -- strategy is the update strategy to use for updates. Valid values are `RecreateOnImageChange`, `Auto`, and `Explicit`. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
+  strategy: "RecreateOnImageChange"
+  # -- revision is used for when `update.strategy` is set to `Explicit` strategy, and is
+  # ignored for other strategies. The Keycloak Operator checks this value, and if it matches
+  # the previous deployment, it performs a rolling update. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
+  revision: "example-v1"
   # -- scheduling is used to configure Kubernetes affinity, tolerations, topology spread
   # constraints, and the priority class name to fine tune the scheduling and placement of Pods.
   scheduling: {}
@@ -404,13 +438,6 @@ update:
     # - maxSkew: 1
     #   topologyKey: kubernetes.io/hostname
     #   whenUnsatisfiable: DoNotSchedule
-
-  # -- strategy is the update strategy to use for updates. Valid values are `RecreateOnImageChange`, `Auto`, and `Explicit`. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
-  strategy: "RecreateOnImageChange"
-  # -- revision is used for when `update.strategy` is set to `Explicit` strategy, and is
-  # ignored for other strategies. The Keycloak Operator checks this value, and if it matches
-  # the previous deployment, it performs a rolling update. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
-  revision: "example-v1"
 
 networkPolicy:
   # -- Specifies whether a network policy should be created. By default, the operator automatically creates a NetworkPolicy
@@ -481,6 +508,8 @@ secrets:
 keycloakOperator:
   # -- Indicates whether or not the Keycloak Operator is installed.
   enabled: true
+  # @ignored. Override for alias so original name is used for resources and labels.
+  nameOverride: keycloak-operator
   watchAllNamespacesFor:
     # -- keycloak is for indicating whether or not Keycloak resources will be watched
     # in all namespaces.
@@ -499,7 +528,7 @@ postgresql:
   # -- Indicates whether or not a PostgreSQL database is created.
   enabled: true
   # @ignored. Override for postgresql chart name in helm common labels.
-  nameOverride: "keycloak-postgresql"
+  nameOverride: keycloak-postgresql
   auth:
     # -- username is the username for the database user.
     username: postgres

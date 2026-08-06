@@ -52,10 +52,10 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: example-keycloakOperator
+  name: example-keycloak-operator
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
@@ -89,7 +89,7 @@ metadata:
     helm.sh/chart: postgresql-18.8.0
 type: Opaque
 data:
-  postgres-password: "TWwxdUZSbnVnV2JQTkkwbk5DNWRPaWRv"
+  postgres-password: "MDBuaEtiZk81ejFkSldNUDJvSkVEejVY"
   # We don't auto-generate metrics password when it's not provided as we do for other passwords
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
@@ -125,10 +125,10 @@ metadata:
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/version: 26.7.0
     helm.sh/chart: keycloakOperator-0.1.0
-  name: example-keycloakOperator-config
+  name: example-keycloak-operator-config
   namespace: default
 ---
 # Source: keycloak-stack/charts/keycloakOperator/templates/keycloak-operator-clusterrole.yaml
@@ -137,11 +137,11 @@ kind: ClusterRole
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-clusterrole
+  name: example-keycloak-operator-clusterrole
 rules:
   - apiGroups:
       - config.openshift.io
@@ -156,11 +156,11 @@ kind: ClusterRole
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-controller-cluster-role
+  name: example-keycloak-operator-controller-cluster-role
 rules:
   - apiGroups:
       - k8s.keycloak.org
@@ -253,11 +253,11 @@ kind: ClusterRole
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-oidcclientcontroller-cluster-role
+  name: example-keycloak-operator-oidcclientcontroller-cluster-role
 rules:
   - apiGroups:
       - k8s.keycloak.org
@@ -280,11 +280,11 @@ kind: ClusterRole
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-realmimportcontroller-cluster-role
+  name: example-keycloak-operator-realmimportcontroller-cluster-role
 rules:
   - apiGroups:
       - k8s.keycloak.org
@@ -330,11 +330,11 @@ kind: ClusterRole
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-samlclientcontroller-cluster-role
+  name: example-keycloak-operator-samlclientcontroller-cluster-role
 rules:
   - apiGroups:
       - k8s.keycloak.org
@@ -357,18 +357,18 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-clusterrole-binding
+  name: example-keycloak-operator-clusterrole-binding
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: example-keycloakOperator-clusterrole
+  name: example-keycloak-operator-clusterrole
 subjects:
   - kind: ServiceAccount
-    name: example-keycloakOperator
+    name: example-keycloak-operator
     namespace: default
 ---
 # Source: keycloak-stack/charts/keycloakOperator/templates/keycloak-operator-role.yaml
@@ -377,11 +377,11 @@ kind: Role
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-role
+  name: example-keycloak-operator-role
   namespace: default
 rules:
   - apiGroups:
@@ -472,19 +472,19 @@ kind: RoleBinding
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-role-binding
+  name: example-keycloak-operator-role-binding
   namespace: default
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
-  name: example-keycloakOperator-role
+  name: example-keycloak-operator-role
 subjects:
   - kind: ServiceAccount
-    name: example-keycloakOperator
+    name: example-keycloak-operator
 ---
 # Source: keycloak-stack/charts/keycloakOperator/templates/keycloak-operator-view.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -492,11 +492,11 @@ kind: RoleBinding
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-view
+  name: example-keycloak-operator-view
   namespace: default
 roleRef:
   kind: ClusterRole
@@ -504,7 +504,7 @@ roleRef:
   name: view
 subjects:
   - kind: ServiceAccount
-    name: example-keycloakOperator
+    name: example-keycloak-operator
 ---
 # Source: keycloak-stack/charts/keycloakOperator/templates/keycloakcontroller-role-binding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -512,19 +512,19 @@ kind: RoleBinding
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-controller-role-binding
+  name: example-keycloak-operator-controller-role-binding
   namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: example-keycloakOperator-controller-cluster-role
+  name: example-keycloak-operator-controller-cluster-role
 subjects:
   - kind: ServiceAccount
-    name: example-keycloakOperator
+    name: example-keycloak-operator
 ---
 # Source: keycloak-stack/charts/keycloakOperator/templates/keycloakoidcclientcontroller-role-binding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -532,19 +532,19 @@ kind: RoleBinding
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-oidcclientcontroller-role-binding
+  name: example-keycloak-operator-oidcclientcontroller-role-binding
   namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: example-keycloakOperator-oidcclientcontroller-cluster-role
+  name: example-keycloak-operator-oidcclientcontroller-cluster-role
 subjects:
   - kind: ServiceAccount
-    name: example-keycloakOperator
+    name: example-keycloak-operator
 ---
 # Source: keycloak-stack/charts/keycloakOperator/templates/keycloakrealmimportcontroller-role-binding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -552,19 +552,19 @@ kind: RoleBinding
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-realmimportcontroller-role-binding
+  name: example-keycloak-operator-realmimportcontroller-role-binding
   namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: example-keycloakOperator-realmimportcontroller-cluster-role
+  name: example-keycloak-operator-realmimportcontroller-cluster-role
 subjects:
   - kind: ServiceAccount
-    name: example-keycloakOperator
+    name: example-keycloak-operator
 ---
 # Source: keycloak-stack/charts/keycloakOperator/templates/keycloaksamlclientcontroller-role-binding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -572,28 +572,28 @@ kind: RoleBinding
 metadata:
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
-  name: example-keycloakOperator-samlclientcontroller-role-binding
+  name: example-keycloak-operator-samlclientcontroller-role-binding
   namespace: default
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
-  name: example-keycloakOperator-samlclientcontroller-cluster-role
+  name: example-keycloak-operator-samlclientcontroller-cluster-role
 subjects:
   - kind: ServiceAccount
-    name: example-keycloakOperator
+    name: example-keycloak-operator
 ---
 # Source: keycloak-stack/charts/keycloakOperator/templates/keycloak-operator-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-keycloakOperator-svc
+  name: example-keycloak-operator-svc
   labels:
     helm.sh/chart: keycloakOperator-0.1.0
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "26.7.0"
     app.kubernetes.io/managed-by: Helm
@@ -610,7 +610,7 @@ spec:
       name: http
       appProtocol: http
   selector:
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/instance: example
 ---
 # Source: keycloak-stack/charts/postgresql/templates/primary/svc-headless.yaml
@@ -673,28 +673,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    rollme: G45mL
+    rollme: JS0mX
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloakOperator
+    app.kubernetes.io/name: keycloak-operator
     app.kubernetes.io/version: 26.7.0
     helm.sh/chart: keycloakOperator-0.1.0
-  name: example-keycloakOperator
+  name: example-keycloak-operator
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/instance: example
-      app.kubernetes.io/name: keycloakOperator
+      app.kubernetes.io/name: keycloak-operator
   template:
     metadata:
       annotations:
-        checksum/config: 10d3c9e67ff14c26de0a89dd6480f1c9f6ffdefd688b7d635f59c49db250acc3
+        checksum/config: 872f91e686845c3c815d1d6de411f7ce2a2826cfefb196d82ebf0a43d1be04f1
       labels:
         app.kubernetes.io/instance: example
-        app.kubernetes.io/name: keycloakOperator
+        app.kubernetes.io/name: keycloak-operator
     spec:
       containers:
       - env:
@@ -704,7 +704,7 @@ spec:
               fieldPath: metadata.namespace
         envFrom:
         - configMapRef:
-            name: example-keycloakOperator-config
+            name: example-keycloak-operator-config
         image: quay.io/keycloak/keycloak-operator:26.7.0
         imagePullPolicy: Always
         livenessProbe:
@@ -752,7 +752,7 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
       restartPolicy: Always
-      serviceAccountName: example-keycloakOperator
+      serviceAccountName: example-keycloak-operator
 ---
 # Source: keycloak-stack/charts/postgresql/templates/primary/statefulset.yaml
 apiVersion: apps/v1
@@ -957,6 +957,7 @@ metadata:
   namespace: default
 spec:
   instances: 1
+  startOptimized: false
   bootstrapAdmin:
     user:
       secret: example-keycloak-stack-secret
@@ -984,6 +985,8 @@ spec:
   hostname:
     hostname: keycloak.127.0.0.1.sslip.io
     strict: true
+    backchannelDynamic: false
+  automountServiceAccountToken: true
   ingress:
     enabled: true
   httpManagement:

@@ -37,18 +37,21 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | additionalOptions | list | `[]` | Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled` and `telemetry-metrics-enabled` as these will be added when needed automatically. See [All configuration](https://www.keycloak.org/server/all-config) for details. |
+| admin.tlsSecret | string | `""` | tlsSecret specifies the TLS Secret containing the client certificate and private key used by the operator for mTLS connections to Keycloak. See [Managing Keycloak Clients](https://www.keycloak.org/operator/managing-clients) for more information. |
 | annotations | object | `{}` | annotations to be added to the Deployment resource. |
+| automountServiceAccountToken | bool | `true` | Indicates whether or not to automatically mount the Kubernetes ServiceAccount token into the Keycloak pod. If set to `false`, this will also disable the Kubernetes CA truststore auto-discovery logic. Keep this set to `true` if planning to use an external Infinispan cluster, the Kubernetes ServiceAccount identity provider, or any custom provider logic that expects to implicitly use the Kubernetes API. See [Truststores](https://www.keycloak.org/operator/advanced-configuration#_truststores) for more information. |
 | bootstrapAdmin.service.clientId | string | `""` | clientId is the client ID for the Keycloak bootstrap admin service account. |
 | bootstrapAdmin.service.clientSecret | string | `""` | clientSecret is the client secret for the Keycloak bootstrap admin service account. |
-| bootstrapAdmin.user.password | string | `"admin"` | password is the password for the Keycloak bootstrap admin user. |
-| bootstrapAdmin.user.username | string | `"admin"` | username is the username for the Keycloak bootstrap admin user. See [Accessing the Admin Console](https://www.keycloak.org/operator/basic-deployment#_accessing_the_admin_console) for more information. |
+| bootstrapAdmin.user.password | string | `"admin"` | password is the temporary password for the Keycloak bootstrap admin user. |
+| bootstrapAdmin.user.username | string | `"admin"` | username is the temporary username for the Keycloak bootstrap admin user. See [Accessing the Admin Console](https://www.keycloak.org/operator/basic-deployment#_accessing_the_admin_console) for more information. |
+| cache.configMapFile | object | `{}` | configMapFile references a ConfigMap key containing a custom Infinispan cache configuration XML. When specified, Keycloak uses this file instead of the default cache configuration. See [Configuring caches](https://www.keycloak.org/server/caching#_configuring_caches) for more information. |
 | db.external.auth.password | string | `""` | password is the password for the external database user. This setting is ignored if `postgresql.enabled` is `true`. |
 | db.external.auth.username | string | `""` | username is the username for the external database user. This setting is ignored if `postgresql.enabled` is `true`. |
 | db.external.database | string | `"keycloak"` | database is the name of the external database to use for Keycloak. This setting is ignored if `postgresql.enabled` is `true`. |
 | db.external.host | string | `""` | host is the hostname of the external database server. This setting is ignored if `postgresql.enabled` is `true`. |
 | db.external.port | int | `5432` | port is the port number of the external database server. This setting is ignored if `postgresql.enabled` is `true`. |
 | db.external.schema | string | `"public"` | schema is the name of the external database schema to use for Keycloak. This setting is ignored if `postgresql.enabled` is `true`. |
-| db.external.vendor | string | `"postgres"` | vendor is the external database vendor to use for Keycloak. Supported values are: postgres, mariadb, mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `true`. See [Supported databases](https://www.keycloak.org/server/db#_supported_databases) for more information. |
+| db.external.vendor | string | `"postgres"` | vendor is the external database vendor to use for Keycloak. Supported values are: postgres, mariadb, mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `true`. See [Supported databases](https://www.keycloak.org/server/db#_supported_databases) and [Preparing for PostgreSQL](https://www.keycloak.org/server/db#_preparing_for_postgresql) for more information. |
 | db.hostOverride | string | `""` | hostOverride is the hostname of the database server. If not set, it will be auto configured for the postgresql headless service of the managed database. This setting is ignored if `postgresql.enabled` is `false`. |
 | db.poolInitialSize | int | `1` | poolInitialSize is the initial number of connections that are created when the pool is started. |
 | db.poolMaxSize | int | `30` | poolMaxSize is the maximum number of connections that can be allocated from the pool at a given time. |
@@ -61,6 +64,8 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
 | features.disabled | list | `[]` | disabled is used to disable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information. |
 | features.enabled | list | `[]` | enabled is used to enable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
+| hostname.adminHost | string | `""` | adminHost is the hostname for the Admin Console and Admin REST API. If unset, the value of `hostname.host` is used. Applicable for Hostname v1 and v2. See [Exposing the Administration Console on a separate hostname](https://www.keycloak.org/server/hostname#administration-console-on-a-separate-hostname) for more information. |
+| hostname.backchannelDynamic | bool | `false` | Indicates whether or not to enable dynamic backchannel URLs, allowing internal clients to access Keycloak through a different address than external clients. Applicable for Hostname v2. See [Utilizing an internal URL for communication among clients](https://www.keycloak.org/server/hostname#_utilizing_an_internal_url_for_communication_among_clients) for more information. |
 | hostname.host | string | `"keycloak.127.0.0.1.sslip.io"` | host is the hostname for the Keycloak server. Applicable for Hostname v1 and v2. |
 | hostname.strict | bool | `true` | strict indicates whether the hostname should be treated as strict. This dynamically resolves the hostname from request headers. Applicable for Hostname v1 and v2. Disabled when `devModeEnabled` is set to `true` |
 | http.annotations | object | `{}` | annotations to be added to the Service resource. |
@@ -102,17 +107,14 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
 | proxy.headers | string | `""` | headers are the proxy headers that should be accepted by the server. Misconfiguration might leave the server exposed to security vulnerabilities. Check the load balancer or reverse proxy configuration in use to determine whether it utilizes the Forwarded (RFC 7239) or X-Forwarded-* (e.g., X-Forwarded-For) mechanism for header propagation. Use with Edge and Re-encrypt scenarios, but not Passthrough. Valid values are `forwarded` and `xforwarded`. See [Configuring a reverse proxy](https://www.keycloak.org/server/reverseproxy) for more information. |
 | readinessProbe | object | `{}` | readinessProbe configures the readiness probe. Only a subnet of features are support by the CR. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. When using a KeycloakRealmImport resource, if no resource are configured there, these values here, or their defaults, will be used. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
-| restartPolicy | string | `"Always"` | restartPolicy defines how a pod will automatically repair itself when a problem arises. Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy). |
 | scheduling | object | `{}` | scheduling is used to configure Kubernetes affinity, tolerations, topology spread constraints, and the priority class name to fine tune the scheduling and placement of Pods. |
 | secrets | object | `{"foo":"bar"}` | secrets is used to store confidential data in key-value pairs. Quoting is required if the value is 0. |
-| serviceAccount.annotations | object | `{}` | annotations to be added to the Service Account resource. |
-| serviceAccount.create | bool | `true` | Specifies whether a service account should be created. |
-| serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 | serviceMonitor.annotations | object | `{}` | annotations specifies additional annotations for the ServiceMonitor. |
 | serviceMonitor.enabled | bool | `false` | Indicates whether or not to create a ServiceMonitor for Keycloak. Requires that `metrics.enabled` be set to `true`. |
 | serviceMonitor.interval | string | `"30s"` | interval is the frequency at which metrics should be scraped. |
 | serviceMonitor.labels | object | `{}` | labels specifies additional labels for the ServiceMonitor. |
 | serviceMonitor.scrapeTimeout | string | `"10s"` | scrapeTimeout sets the scrape timeout for the ServiceMonitor. |
+| startOptimized | bool | `false` | Indicates whether or not to start Keycloak in optimized mode with the `--optimized` flag when using custom pre-augmented images. Keep disabled when using non-optimized images or the official Keycloak image. When using an optimized custom image, `health-enabled`, `metrics-enabled` and `telemetry-metrics-enabled` options need to be explicitly set in the Dockerfile. Any build time options passed through first-class fields or `additionalOptions` will be ignored if not moved to the Dockerfile. See [Best practice](https://www.keycloak.org/operator/customizing-keycloak#_best_practice) for more information. |
 | startupProbe | object | `{}` | startupProbe configures the startup probe. Only a subnet of features are support by the CR. |
 | telemetry.enabled | bool | `false` | Indicates whether or not to enable OpenTelemetry metrics. Requires `metrics.enabled` to be `true`, and `features` to include `opentelemetry-metrics:v1`. |
 | telemetry.endpoint | string | `"http://otel-collector:4317"` | endpoint is the OpenTelemetry endpoint to connect to. |
@@ -130,7 +132,6 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
 | update.revision | string | `"example-v1"` | revision is used for when `update.strategy` is set to `Explicit` strategy, and is ignored for other strategies. The Keycloak Operator checks this value, and if it matches the previous deployment, it performs a rolling update. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information. |
 | update.scheduling | object | `{}` | scheduling is used to configure Kubernetes affinity, tolerations, topology spread constraints, and the priority class name to fine tune the scheduling and placement of Pods. |
 | update.strategy | string | `"RecreateOnImageChange"` | strategy is the update strategy to use for updates. Valid values are `RecreateOnImageChange`, `Auto`, and `Explicit`. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information. |
-| updateStrategy | object | `{}` | The update strategy to apply to the Deployment resource. |
 
 
 // Steven Jenkins De Haro ("StevenJDH" on GitHub)
