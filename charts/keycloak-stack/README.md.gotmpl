@@ -20,6 +20,20 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
     --atomic
 ```
 
+## Monitoring with Prometheus and Grafana
+This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
+
+```bash
+helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack --version 87.21.0
+    -f prometheus-values.yaml \ # TODO: Check below for one of the options to use for this file.
+    --namespace monitoring \
+    --create-namespace \
+    --atomic
+```
+
+> [!IMPORTANT]  
+> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
+
 {{ template "chart.valuesSectionWrap" (dict "context" . "limit" 40) }}
 
 

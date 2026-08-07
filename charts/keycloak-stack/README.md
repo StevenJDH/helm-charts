@@ -16,7 +16,7 @@ Kubernetes: `>= 1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://StevenJDH.github.io/helm-charts | keycloakOperator(keycloak-operator) | 0.1.0 |
+| https://StevenJDH.github.io/helm-charts | keycloak-operator | 0.1.0 |
 | https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
 | oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.0 |
 
@@ -32,11 +32,25 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
     --atomic
 ```
 
+## Monitoring with Prometheus and Grafana
+This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
+
+```bash
+helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack --version 87.21.0
+    -f prometheus-values.yaml \ # TODO: Check below for one of the options to use for this file.
+    --namespace monitoring \
+    --create-namespace \
+    --atomic
+```
+
+> [!IMPORTANT]  
+> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
+
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| additionalOptions | list | `[]` | Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled` and `telemetry-metrics-enabled` as these will be added when needed automatically. See [All configuration](https://www.keycloak.org/server/all-config) for details. |
+| additionalOptions | list | `[]` | Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled`, `telemetry-metrics-enabled`, and `http-metrics-histograms-enabled` as these will be added when needed automatically. See [All configuration](https://www.keycloak.org/server/all-config) for details. |
 | admin.tlsSecret | string | `""` | tlsSecret specifies the TLS Secret containing the client certificate and private key used by the operator for mTLS connections to Keycloak. See [Managing Keycloak Clients](https://www.keycloak.org/operator/managing-clients) for more information. |
 | annotations | object | `{}` | annotations to be added to the Deployment resource. |
 | automountServiceAccountToken | bool | `true` | Indicates whether or not to automatically mount the Kubernetes ServiceAccount token into the Keycloak pod. If set to `false`, this will also disable the Kubernetes CA truststore auto-discovery logic. Keep this set to `true` if planning to use an external Infinispan cluster, the Kubernetes ServiceAccount identity provider, or any custom provider logic that expects to implicitly use the Kubernetes API. See [Truststores](https://www.keycloak.org/operator/advanced-configuration#_truststores) for more information. |
@@ -45,6 +59,8 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
 | bootstrapAdmin.user.password | string | `"admin"` | password is the temporary password for the Keycloak bootstrap admin user. |
 | bootstrapAdmin.user.username | string | `"admin"` | username is the temporary username for the Keycloak bootstrap admin user. See [Accessing the Admin Console](https://www.keycloak.org/operator/basic-deployment#_accessing_the_admin_console) for more information. |
 | cache.configMapFile | object | `{}` | configMapFile references a ConfigMap key containing a custom Infinispan cache configuration XML. When specified, Keycloak uses this file instead of the default cache configuration. See [Configuring caches](https://www.keycloak.org/server/caching#_configuring_caches) for more information. |
+| dashboards.enabled | bool | `false` | Indicates whether or not to deploy a set of Keycloak related Grafana dashboards that will be imported automatically. |
+| dashboards.namespace | string | `"monitoring"` | namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
 | db.external.auth.password | string | `""` | password is the password for the external database user. This setting is ignored if `postgresql.enabled` is `true`. |
 | db.external.auth.username | string | `""` | username is the username for the external database user. This setting is ignored if `postgresql.enabled` is `true`. |
 | db.external.database | string | `"keycloak"` | database is the name of the external database to use for Keycloak. This setting is ignored if `postgresql.enabled` is `true`. |
@@ -87,13 +103,13 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
 | ingress.labels | object | `{}` | labels to be added to the Ingress resource. |
 | ingress.tlsSecret | string | `""` | tlsSecret is a secret containing the TLS configuration for re-encrypt or TLS termination scenarios. See [TLS Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets) for more information. |
 | instances | int | `1` | instances is the number of Keycloak instances created to increase availability when set to more than one. |
-| keycloakOperator.enabled | bool | `true` | Indicates whether or not the Keycloak Operator is installed. |
-| keycloakOperator.&#8203;watchAllNamespacesFor.&#8203;keycloak | bool | `false` | keycloak is for indicating whether or not Keycloak resources will be watched in all namespaces. |
-| keycloakOperator.&#8203;watchAllNamespacesFor.&#8203;keycloakOIDCClient | bool | `false` | keycloakOIDCClient is for indicating whether or not KeycloakOIDCClient resources will be watched in all namespaces. |
-| keycloakOperator.&#8203;watchAllNamespacesFor.&#8203;keycloakRealmImport | bool | `false` | keycloakRealmImport is for indicating whether or not KeycloakRealmImport resources will be watched in all namespaces. |
-| keycloakOperator.&#8203;watchAllNamespacesFor.&#8203;keycloakSAMLClient | bool | `false` | keycloakSAMLClient is for indicating whether or not KeycloakSAMLClient resources will be watched in all namespaces. |
+| keycloak-operator.enabled | bool | `true` | Indicates whether or not the Keycloak Operator is installed. |
+| keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloak | bool | `false` | keycloak is for indicating whether or not Keycloak resources will be watched in all namespaces. |
+| keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloakOIDCClient | bool | `false` | keycloakOIDCClient is for indicating whether or not KeycloakOIDCClient resources will be watched in all namespaces. |
+| keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloakRealmImport | bool | `false` | keycloakRealmImport is for indicating whether or not KeycloakRealmImport resources will be watched in all namespaces. |
+| keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloakSAMLClient | bool | `false` | keycloakSAMLClient is for indicating whether or not KeycloakSAMLClient resources will be watched in all namespaces. |
 | livenessProbe | object | `{}` | livenessProbe configures the liveness probe. This type of probe does not wait for the readiness probe to succeed. To make the the probe wait, use the `startupProbe`. Only a subnet of features are support by the CR. |
-| metrics.enabled | bool | `false` | Indicates whether or not Keycloak metrics should be enabled. Before enabling this, make sure `serviceMonitor.enabled` is set `false`, otherwise, a ServiceMonitor resource will also be created. |
+| metrics.enabled | bool | `false` | Indicates whether or not Keycloak metrics should be enabled. Before enabling this, make sure `serviceMonitor.enabled` is set `false`, otherwise, a ServiceMonitor resource will also be created. This will also enabled the `http-metrics-histograms-enabled` option. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | networkPolicy.enabled | bool | `true` | Specifies whether a network policy should be created. By default, the operator automatically creates a NetworkPolicy resource to deny access to the clustering port of the Keycloak Pods. The HTTP(S) endpoint is open to traffic from any namespace and the outside world. Note: This will have no effect unless the chosen CNI supports network policies like Calico, Weave, Cilium, Romana, etc. |
 | networkPolicy.http | list | `[]` | http is a list of source rules which should be able to access this endpoint (port 8080 by default). Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list. Due to security reasons, the HTTP endpoint is disabled by default, unless `devModeEnabled` is set to `true`. Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors). |

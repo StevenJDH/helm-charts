@@ -255,6 +255,8 @@ spec:
       value: {{ .Values.metrics.enabled | quote }}
     - name: telemetry-metrics-enabled
       value: {{ .Values.telemetry.enabled | quote }}
+    - name: http-metrics-histograms-enabled
+      value: {{ .Values.metrics.enabled | ternary "true" "false" | quote }}
     {{- with .Values.additionalOptions }}
     {{- toYaml . | nindent 4 }}
     {{- end }}

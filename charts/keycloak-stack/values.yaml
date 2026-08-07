@@ -231,6 +231,7 @@ truststores: {}
 metrics:
   # -- Indicates whether or not Keycloak metrics should be enabled. Before enabling this, make sure
   # `serviceMonitor.enabled` is set `false`, otherwise, a ServiceMonitor resource will also be created.
+  # This will also enabled the `http-metrics-histograms-enabled` option.
   enabled: false
 
 serviceMonitor:
@@ -246,6 +247,14 @@ serviceMonitor:
   interval: 30s
   # -- scrapeTimeout sets the scrape timeout for the ServiceMonitor.
   scrapeTimeout: 10s
+
+dashboards:
+  # -- Indicates whether or not to deploy a set of Keycloak related Grafana dashboards that will be imported
+  # automatically.
+  enabled: false
+  # -- namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace
+  # as the Prometheus Operator and Grafana instance.
+  namespace: monitoring
 
 tracing:
   # -- Indicates whether or not to enable OpenTelemetry tracing. Requires `metrics.enabled` to be `true`.
@@ -289,8 +298,8 @@ features:
   # - step-up-authentication
 
 # -- Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either
-# direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled` and
-# `telemetry-metrics-enabled` as these will be added when needed automatically.
+# direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled`,
+# `telemetry-metrics-enabled`, and `http-metrics-histograms-enabled` as these will be added when needed automatically.
 # See [All configuration](https://www.keycloak.org/server/all-config) for details.
 additionalOptions: []
 # - name: http-relative-path
@@ -505,11 +514,9 @@ secrets:
   # TODO: add something here or make a custom secret.
   foo: bar
 
-keycloakOperator:
+keycloak-operator:
   # -- Indicates whether or not the Keycloak Operator is installed.
   enabled: true
-  # @ignored. Override for alias so original name is used for resources and labels.
-  nameOverride: keycloak-operator
   watchAllNamespacesFor:
     # -- keycloak is for indicating whether or not Keycloak resources will be watched
     # in all namespaces.

@@ -54,10 +54,9 @@ icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-c
 
 dependencies:
   - name: keycloak-operator
-    alias: keycloakOperator
     version: "0.1.0"
     repository: "https://StevenJDH.github.io/helm-charts"
-    condition: keycloakOperator.enabled
+    condition: keycloak-operator.enabled
   - name: postgresql
     version: "18.8.0"
     repository: "oci://registry-1.docker.io/bitnamicharts"
