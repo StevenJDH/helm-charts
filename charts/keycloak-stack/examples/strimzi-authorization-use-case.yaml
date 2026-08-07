@@ -1,0 +1,55 @@
+# This file is part of Keycloak Stack Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2026 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+bootstrapAdmin:
+  user:
+    username: admin
+    password: admin
+
+hostname:
+  host: "keycloak.127.0.0.1.sslip.io"
+
+devModeEnabled: true
+
+ingress:
+  className: traefik
+
+# This example covers the use case defined here:
+# - https://github.com/strimzi/strimzi-kafka-oauth/blob/main/examples/README-authz.md#using-keycloak-admin-console-to-configure-authorization
+# General information can be found here:
+# - https://github.com/strimzi/strimzi-kafka-oauth/blob/main/examples/kubernetes/README-keycloak-authorization.
+# - https://www.keycloak.org/docs/latest/authorization_services/index.html#_overview
+# A strimzi helm chart with examples for setting up Kafka easily:
+# - https://github.com/StevenJDH/helm-charts/tree/main/charts/strimzi-cluster
+# Original location of the kafka-authz-realm.json file:
+# - https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/refs/heads/main/examples/security/keycloak-authorization/kafka-authz-realm.json
+keycloakRealmImport:
+  enabled: true
+  realmContentFormat: json
+  # USAGE: Test with the below command. Path to json file might need to be updated.
+  #
+  # helm --install my-keycloak-stack stevenjdh/keycloak-stack --version x.x.x \
+  #     -f examples/strimzi-authorization-use-case.yaml \
+  #     --set-file keycloakRealmImport.realmContent=examples/resources/kafka-authz-realm.json \
+  #     --namespace example \
+  #     --create-namespace \
+  #     --atomic
+  #
+  realmContent: |
+    USE THE COMMAND ABOVE OR PASTE THE CONTENT
+
+postgresql:
+  auth:
+    password: "password"

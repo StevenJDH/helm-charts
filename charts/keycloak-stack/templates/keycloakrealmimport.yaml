@@ -1,0 +1,54 @@
+{{/*
+This file is part of Keycloak Stack Helm Chart <https://github.com/StevenJDH/helm-charts>.
+Copyright (C) 2026 Steven Jenkins De Haro.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+{{- if ((.Values.keycloakRealmImport).enabled) -}}
+{{- $realm := .Values.keycloakRealmImport.realm -}}
+{{- $content := .Values.keycloakRealmImport.realmContent -}}
+{{- $format := lower (.Values.keycloakRealmImport.realmContentFormat | default "json") -}}
+apiVersion: k8s.keycloak.org/v2beta1
+kind: KeycloakRealmImport
+metadata:
+  name: {{ include "shared-library.fullname" . }}-realm-import
+  namespace: {{ .Release.Namespace }}
+spec:
+  keycloakCRName: {{ include "shared-library.fullname" . }}
+  {{- with .Values.keycloakRealmImport.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.keycloakRealmImport.placeholders }}
+  placeholders:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.keycloakRealmImport.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  realm:
+  {{- if and $realm $content }}
+  {{- fail "The keycloakRealmImport 'realm' and 'realmContentFormat' properties cannot be used together." }}
+  {{- end }}
+  {{- if  $realm }}
+    {{- toYaml $realm | nindent 4 }}
+  {{- else if eq $format "json" }}
+    {{- $content | fromJson | toYaml | nindent 4 }}
+  {{- else if eq $format "yaml" }}
+    {{- $content | fromYaml | toYaml | nindent 4 }}
+  {{- else }}
+    {{- fail (printf "Unsupported realmContentFormat %q. Supported values are 'json' and 'yaml'." $format) }}
+  {{- end }}
+{{- end -}}

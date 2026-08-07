@@ -327,7 +327,7 @@ podTemplate: {}
   #         secretName: keycloak-additional-secret
 
 # -- Optionally request and limit how much CPU and memory (RAM) the container needs. When using a
-# KeycloakRealmImport resource, if no resource are configured there, these values here, or their
+# KeycloakRealmImport resource, if no resources are configured there, these values here, or their
 # defaults, will be used.
 # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
 resources: {}
@@ -513,6 +513,74 @@ networkPolicy:
 secrets:
   # TODO: add something here or make a custom secret.
   foo: bar
+
+keycloakRealmImport:
+  # -- Indicates whether or not to import a realm backup or configuration.
+  enabled: false
+  # -- labels to be added to the Job created for the import.
+  labels: {}
+  # --  placeholders is used to replace ENV variable placeholders in the
+  # realm import. For example, if 'realm' property has ${REALM_NAME}, then
+  # 'REALM_NAME: production' will perform a substitution.
+  placeholders: {}
+    # REALM_NAME: production
+    # APP_HOST: app.example.com
+  
+  # -- Optionally request and limit how much CPU and memory (RAM) the import job needs.
+  # If no resources are configured, the values from the Keycloak resource, or their
+  # defaults, will be used. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+  resources: {}
+    # requests:
+    #   memory: 1700Mi
+    #   cpu: 1200m
+    # limits:
+    #   memory: 2Gi
+    #   cpu: 6000m
+    # claims:
+    # - name: example-keycloak-hsm-claim
+    #   request: example-hsm-device
+
+  # -- realmContentFormat specifies the format of the content provided via
+  # `keycloakRealmImport.realmContent`. Supported values are `json` and `yaml`.
+  # This setting is ignored unless `keycloakRealmImport.realmContent` is defined.
+  realmContentFormat: json
+  # -- realmContent contains a realm backup provided as raw `JSON` or `YAML` content.
+  # This is primarily intended for use with Helm's `--set-file` option, but supports
+  # inline when using a pipe. However, please use the dedicate inline property
+  # `keycloakRealmImport.realm` if inline is needed. The format must match
+  # `keycloakRealmImport.realmContentFormat`. This setting cannot be used when
+  # `keycloakRealmImport.realm` is defined.
+  realmContent: ""
+  # realmContent: |
+  #   id: myrealm
+  #   realm: myrealm
+  #   enabled: true
+  #   displayName: My Realm
+  #   clients:
+  #   - clientId: my-client
+  #     enabled: true
+  #     publicClient: true
+  #   roles:
+  #     realm:
+  #     - name: user
+  #     - name: admin
+
+  # -- realm allows for defining the realm configuration inline. The structure is
+  # the same as any realm backup converted to YAML. This setting cannot be used
+  # when `keycloakRealmImport.realmContent` is defined.
+  realm: {}
+    # id: myrealm
+    # realm: myrealm
+    # enabled: true
+    # displayName: My Realm
+    # clients:
+    # - clientId: my-client
+    #   enabled: true
+    #   publicClient: true
+    # roles:
+    #   realm:
+    #   - name: user
+    #   - name: admin
 
 keycloak-operator:
   # -- Indicates whether or not the Keycloak Operator is installed.
