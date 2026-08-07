@@ -150,6 +150,10 @@ spec:
     {{- with .Values.ingress.tlsSecret }}
     tlsSecret: {{ . }}
     {{- end }}
+  {{- with .Values.truststores }}
+  truststores:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- with .Values.extraEnvs }}
   env: 
     {{- toYaml . | nindent 4 }}
@@ -208,10 +212,6 @@ spec:
     management:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-  {{- with .Values.truststores }}
-  truststores:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
   serviceMonitor:
     enabled: {{ .Values.serviceMonitor.enabled }}
     {{- with .Values.serviceMonitor.labels }}
