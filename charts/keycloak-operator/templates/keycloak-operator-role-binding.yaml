@@ -1,5 +1,5 @@
 {{/*
-This file is part of Keycloak Operator <https://github.com/StevenJDH/helm-charts>.
+This file is part of Keycloak Operator Helm Chart <https://github.com/StevenJDH/helm-charts>.
 Copyright (C) 2026 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
