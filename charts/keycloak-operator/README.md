@@ -1,8 +1,6 @@
-
-
 # Keycloak Operator Helm Chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.7.0](https://img.shields.io/badge/AppVersion-26.7.0-informational?style=flat-square) 
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.7.1](https://img.shields.io/badge/AppVersion-26.7.1-informational?style=flat-square) 
 
 Installs the Keycloak operator for managing Keycloak instances declaratively.
 
@@ -24,7 +22,7 @@ Kubernetes: `>= 1.30.0-0`
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-keycloak-operator stevenjdh/keycloak-operator --version 0.1.0 \
+helm upgrade --install my-keycloak-operator stevenjdh/keycloak-operator --version 0.1.1 \
     --namespace example \
     --create-namespace \
     --atomic

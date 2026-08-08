@@ -211,7 +211,7 @@ resources:
 # @default -- `{}`
 configMap:
   # @ignored. The Keycloak Operator image only supports the Keycloak version it targets.
-  relatedImageKeycloak: quay.io/keycloak/keycloak:26.7.0
+  relatedImageKeycloak: quay.io/keycloak/keycloak:26.7.1
 
 # -- nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options.
 # Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection).
