@@ -38,7 +38,7 @@ Kubernetes: `>= 1.30.0-0`
 |------------|------|---------|
 | https://StevenJDH.github.io/helm-charts | keycloak-operator | 0.1.1 |
 | https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
-| oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.0 |
+| oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.7 |
 
 ## Usage example
 

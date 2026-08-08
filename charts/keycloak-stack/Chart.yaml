@@ -58,7 +58,7 @@ dependencies:
     repository: "https://StevenJDH.github.io/helm-charts"
     condition: keycloak-operator.enabled
   - name: postgresql
-    version: "18.8.0"
+    version: "18.8.7"
     repository: "oci://registry-1.docker.io/bitnamicharts"
     condition: postgresql.enabled
   - name: shared-library
