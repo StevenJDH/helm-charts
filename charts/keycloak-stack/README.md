@@ -10,8 +10,8 @@
     src="https://img.shields.io/badge/Type-application-informational?style=flat-square"
   />
   <img
-    alt="AppVersion: 26.7.0"
-    src="https://img.shields.io/badge/AppVersion-26.7.0-informational?style=flat-square"
+    alt="AppVersion: 26.7.1"
+    src="https://img.shields.io/badge/AppVersion-26.7.1-informational?style=flat-square"
   />
 </p>
 
@@ -36,7 +36,7 @@ Kubernetes: `>= 1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://StevenJDH.github.io/helm-charts | keycloak-operator | 0.1.0 |
+| https://StevenJDH.github.io/helm-charts | keycloak-operator | 0.1.1 |
 | https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
 | oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.0 |
 
@@ -151,7 +151,7 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 | readinessProbe | object | `{}` | readinessProbe configures the readiness probe. Only a subnet of features are support by the CR. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. When using a KeycloakRealmImport resource, if no resources are configured there, these values here, or their defaults, will be used. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | scheduling | object | `{}` | scheduling is used to configure Kubernetes affinity, tolerations, topology spread constraints, and the priority class name to fine tune the scheduling and placement of Pods. |
-| secrets | object | `{"foo":"bar"}` | secrets is used to store confidential data in key-value pairs. Quoting is required if the value is 0. |
+| secrets | object | `{}` | secrets is used to store confidential data in key-value pairs. Can be used by other properties such as `additionalOptions` that can reference keys without having to provide a pre-existing secret resource. |
 | serviceMonitor.annotations | object | `{}` | annotations specifies additional annotations for the ServiceMonitor. |
 | serviceMonitor.enabled | bool | `false` | Indicates whether or not to create a ServiceMonitor for Keycloak. Requires that `metrics.enabled` be set to `true`. |
 | serviceMonitor.interval | string | `"30s"` | interval is the frequency at which metrics should be scraped. |

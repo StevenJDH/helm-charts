@@ -89,28 +89,27 @@ metadata:
     helm.sh/chart: postgresql-18.8.0
 type: Opaque
 data:
-  postgres-password: "aEY0UVltZkJaSG9LbWlWR25FQmtxRjB5"
+  postgres-password: "TXo5Wk91RXluWVZmSHdjaWNJVHA1RDRt"
   # We don't auto-generate metrics password when it's not provided as we do for other passwords
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
-# Source: keycloak-stack/templates/secret.yaml
+# Source: keycloak-stack/templates/keycloak-secret.yaml
 apiVersion: v1
-data:
-  FOO: YmFy
-  db-username: cG9zdGdyZXM=
-  password: YWRtaW4=
-  username: YWRtaW4=
 kind: Secret
 metadata:
-  labels:
-    app.kubernetes.io/instance: example
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloak-stack
-    app.kubernetes.io/version: 26.7.0
-    helm.sh/chart: keycloak-stack-0.1.0
   name: example-keycloak-stack-secret
+  labels:
+    helm.sh/chart: keycloak-stack-0.1.0
+    app.kubernetes.io/name: keycloak-stack
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
   namespace: default
 type: Opaque
+data:
+  username: "YWRtaW4="
+  password: "YWRtaW4="
+  db-username: "cG9zdGdyZXM="
 ---
 # Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-configmap.yaml
 apiVersion: v1
@@ -673,7 +672,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    rollme: uNHHr
+    rollme: pzEj7
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
@@ -952,7 +951,7 @@ metadata:
     helm.sh/chart: keycloak-stack-0.1.0
     app.kubernetes.io/name: keycloak-stack
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "26.7.0"
+    app.kubernetes.io/version: "26.7.1"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec:

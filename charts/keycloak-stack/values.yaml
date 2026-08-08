@@ -508,11 +508,10 @@ podTemplate: {}
   #       secret:
   #         secretName: keycloak-additional-secret
 
-# -- secrets is used to store confidential data in key-value pairs.
-# Quoting is required if the value is 0.
-secrets:
-  # TODO: add something here or make a custom secret.
-  foo: bar
+# -- secrets is used to store confidential data in key-value pairs. Can be used by other
+# properties such as `additionalOptions` that can reference keys without having to provide
+# a pre-existing secret resource.
+secrets: {}
 
 keycloakRealmImport:
   # -- Indicates whether or not to import a realm backup or configuration.
