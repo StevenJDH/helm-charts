@@ -204,6 +204,29 @@ entries:
     version: 0.1.0
   keycloak-operator:
   - apiVersion: v2
+    appVersion: 26.7.1
+    created: "2026-08-08T17:20:05.741122834Z"
+    dependencies:
+    - name: shared-library
+      repository: https://StevenJDH.github.io/helm-charts
+      version: ^0.x
+    description: Installs the Keycloak operator for managing Keycloak instances declaratively.
+    digest: 7b84b472aaf1ee8e85604659c0e905cde850d12c737e6843f1737d48784fa53e
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.30.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: keycloak-operator
+    sources:
+    - https://github.com/keycloak/keycloak/tree/main/operator
+    - https://github.com/keycloak/keycloak-k8s-resources
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/keycloak-operator-0.1.1/keycloak-operator-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 26.7.0
     created: "2026-08-05T00:26:34.839358744Z"
     dependencies:
@@ -406,4 +429,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/strimzi-cluster-0.1.0/strimzi-cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2026-08-05T00:26:34.839392667Z"
+generated: "2026-08-08T17:20:05.741156517Z"
