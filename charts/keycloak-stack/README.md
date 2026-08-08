@@ -1,10 +1,30 @@
+<h1 align="center">Keycloak Stack Helm Chart</h1>
 
+<p align="center">
+  <img
+    alt="Version: 0.1.0"
+    src="https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square"
+  />
+  <img
+    alt="Type: application"
+    src="https://img.shields.io/badge/Type-application-informational?style=flat-square"
+  />
+  <img
+    alt="AppVersion: 26.7.0"
+    src="https://img.shields.io/badge/AppVersion-26.7.0-informational?style=flat-square"
+  />
+</p>
 
-# Keycloak Stack Helm Chart
+<p align="center">
+    <a href="#requirements"><b>Requirements</b></a> •
+    <a href="#usage-example"><b>Usage</b></a> •
+    <a href="#monitoring-with-prometheus-and-grafana"><b>Monitoring</b></a> •
+    <a href="#values"><b>Chart Values</b></a>
+</p>
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.7.0](https://img.shields.io/badge/AppVersion-26.7.0-informational?style=flat-square) 
-
+<p align="center">
 Installs a fully managed Keycloak and its dependencies.
+</p>
 
 ## Source Code
 
