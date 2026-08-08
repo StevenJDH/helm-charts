@@ -2,2593 +2,2598 @@
 
 This generated document lists the configurable properties available under `spec` for the `KeycloakRealmImport` custom resource.
 
-## Reference
+## v2beta1 Reference
 
-| Property path | Type | Description |
-|---------------|------|-------------|
-| `spec.keycloakCRName` | string | The name of the Keycloak CR to reference, in the same namespace.  |
-| `spec.labels` | map<string,string> | Optionally set to add additional labels to the Job created for the import.  |
-| `spec.placeholders` | map<string,object> | Optionally set to replace ENV variable placeholders in the realm import.  |
-| `spec.realm.accessCodeLifespan` | integer |   |
-| `spec.realm.accessCodeLifespanLogin` | integer |   |
-| `spec.realm.accessCodeLifespanUserAction` | integer |   |
-| `spec.realm.accessTokenLifespan` | integer |   |
-| `spec.realm.accessTokenLifespanForImplicitFlow` | integer |   |
-| `spec.realm.accountTheme` | string |   |
-| `spec.realm.actionTokenGeneratedByAdminLifespan` | integer |   |
-| `spec.realm.actionTokenGeneratedByUserLifespan` | integer |   |
-| `spec.realm.adminEventsDetailsEnabled` | boolean |   |
-| `spec.realm.adminEventsEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.access` | map<string,boolean> |   |
-| `spec.realm.adminPermissionsClient.adminUrl` | string |   |
-| `spec.realm.adminPermissionsClient.alwaysDisplayInConsole` | boolean |   |
-| `spec.realm.adminPermissionsClient.attributes` | map<string,string> |   |
-| `spec.realm.adminPermissionsClient.authenticationFlowBindingOverrides` | map<string,string> |   |
-| `spec.realm.adminPermissionsClient.authorizationServicesEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.allowRemoteResourceManagement` | boolean |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.clientId` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.decisionStrategy` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].config` | map<string,string> |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].decisionStrategy` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].description` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].logic` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].owner` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].policies` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourceType` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resources` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[]._id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].type` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopes` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].iconUri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].type` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policyEnforcementMode` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[]._id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].attributes` | map<string,array> |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].icon_uri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].owner.id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].owner.name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].iconUri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].type` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].uris` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].iconUri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].name` | string |   |
-| `spec.realm.adminPermissionsClient.baseUrl` | string |   |
-| `spec.realm.adminPermissionsClient.bearerOnly` | boolean |   |
-| `spec.realm.adminPermissionsClient.clientAuthenticatorType` | string |   |
-| `spec.realm.adminPermissionsClient.clientId` | string |   |
-| `spec.realm.adminPermissionsClient.clientTemplate` | string |   |
-| `spec.realm.adminPermissionsClient.consentRequired` | boolean |   |
-| `spec.realm.adminPermissionsClient.defaultClientScopes` | array[string] |   |
-| `spec.realm.adminPermissionsClient.defaultRoles` | array[string] |   |
-| `spec.realm.adminPermissionsClient.description` | string |   |
-| `spec.realm.adminPermissionsClient.directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.directGrantsOnly` | boolean |   |
-| `spec.realm.adminPermissionsClient.enabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.frontchannelLogout` | boolean |   |
-| `spec.realm.adminPermissionsClient.fullScopeAllowed` | boolean |   |
-| `spec.realm.adminPermissionsClient.id` | string |   |
-| `spec.realm.adminPermissionsClient.implicitFlowEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.name` | string |   |
-| `spec.realm.adminPermissionsClient.nodeReRegistrationTimeout` | integer |   |
-| `spec.realm.adminPermissionsClient.notBefore` | integer |   |
-| `spec.realm.adminPermissionsClient.optionalClientScopes` | array[string] |   |
-| `spec.realm.adminPermissionsClient.origin` | string |   |
-| `spec.realm.adminPermissionsClient.protocol` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers` | array[object] |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].consentText` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].id` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].name` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].protocol` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.adminPermissionsClient.publicClient` | boolean |   |
-| `spec.realm.adminPermissionsClient.redirectUris` | array[string] |   |
-| `spec.realm.adminPermissionsClient.registeredNodes` | map<string,integer> |   |
-| `spec.realm.adminPermissionsClient.registrationAccessToken` | string |   |
-| `spec.realm.adminPermissionsClient.rootUrl` | string |   |
-| `spec.realm.adminPermissionsClient.secret` | string |   |
-| `spec.realm.adminPermissionsClient.serviceAccountsEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.standardFlowEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.surrogateAuthRequired` | boolean |   |
-| `spec.realm.adminPermissionsClient.type` | string |   |
-| `spec.realm.adminPermissionsClient.useTemplateConfig` | boolean |   |
-| `spec.realm.adminPermissionsClient.useTemplateMappers` | boolean |   |
-| `spec.realm.adminPermissionsClient.useTemplateScope` | boolean |   |
-| `spec.realm.adminPermissionsClient.webOrigins` | array[string] |   |
-| `spec.realm.adminPermissionsEnabled` | boolean |   |
-| `spec.realm.adminTheme` | string |   |
-| `spec.realm.applicationScopeMappings` | map<string,array> |   |
-| `spec.realm.applications` | array[object] |   |
-| `spec.realm.applications[].access` | map<string,boolean> |   |
-| `spec.realm.applications[].adminUrl` | string |   |
-| `spec.realm.applications[].alwaysDisplayInConsole` | boolean |   |
-| `spec.realm.applications[].attributes` | map<string,string> |   |
-| `spec.realm.applications[].authenticationFlowBindingOverrides` | map<string,string> |   |
-| `spec.realm.applications[].authorizationServicesEnabled` | boolean |   |
-| `spec.realm.applications[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
-| `spec.realm.applications[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
-| `spec.realm.applications[].authorizationSettings.clientId` | string |   |
-| `spec.realm.applications[].authorizationSettings.decisionStrategy` | string |   |
-| `spec.realm.applications[].authorizationSettings.id` | string |   |
-| `spec.realm.applications[].authorizationSettings.name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].config` | map<string,string> |   |
-| `spec.realm.applications[].authorizationSettings.policies[].decisionStrategy` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].description` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].logic` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].owner` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].policies` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourceType` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resources` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].type` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopes` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].type` | string |   |
-| `spec.realm.applications[].authorizationSettings.policyEnforcementMode` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.resources[]._id` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].attributes` | map<string,array> |   |
-| `spec.realm.applications[].authorizationSettings.resources[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].icon_uri` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].owner.id` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].owner.name` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].type` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].uris` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.scopes` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.scopes[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.scopes[].iconUri` | string |   |
-| `spec.realm.applications[].authorizationSettings.scopes[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.scopes[].name` | string |   |
-| `spec.realm.applications[].baseUrl` | string |   |
-| `spec.realm.applications[].bearerOnly` | boolean |   |
-| `spec.realm.applications[].claims.address` | boolean |   |
-| `spec.realm.applications[].claims.email` | boolean |   |
-| `spec.realm.applications[].claims.gender` | boolean |   |
-| `spec.realm.applications[].claims.locale` | boolean |   |
-| `spec.realm.applications[].claims.name` | boolean |   |
-| `spec.realm.applications[].claims.phone` | boolean |   |
-| `spec.realm.applications[].claims.picture` | boolean |   |
-| `spec.realm.applications[].claims.profile` | boolean |   |
-| `spec.realm.applications[].claims.username` | boolean |   |
-| `spec.realm.applications[].claims.website` | boolean |   |
-| `spec.realm.applications[].clientAuthenticatorType` | string |   |
-| `spec.realm.applications[].clientId` | string |   |
-| `spec.realm.applications[].clientTemplate` | string |   |
-| `spec.realm.applications[].consentRequired` | boolean |   |
-| `spec.realm.applications[].defaultClientScopes` | array[string] |   |
-| `spec.realm.applications[].defaultRoles` | array[string] |   |
-| `spec.realm.applications[].description` | string |   |
-| `spec.realm.applications[].directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.applications[].directGrantsOnly` | boolean |   |
-| `spec.realm.applications[].enabled` | boolean |   |
-| `spec.realm.applications[].frontchannelLogout` | boolean |   |
-| `spec.realm.applications[].fullScopeAllowed` | boolean |   |
-| `spec.realm.applications[].id` | string |   |
-| `spec.realm.applications[].implicitFlowEnabled` | boolean |   |
-| `spec.realm.applications[].name` | string |   |
-| `spec.realm.applications[].nodeReRegistrationTimeout` | integer |   |
-| `spec.realm.applications[].notBefore` | integer |   |
-| `spec.realm.applications[].optionalClientScopes` | array[string] |   |
-| `spec.realm.applications[].origin` | string |   |
-| `spec.realm.applications[].protocol` | string |   |
-| `spec.realm.applications[].protocolMappers` | array[object] |   |
-| `spec.realm.applications[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.applications[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.applications[].protocolMappers[].consentText` | string |   |
-| `spec.realm.applications[].protocolMappers[].id` | string |   |
-| `spec.realm.applications[].protocolMappers[].name` | string |   |
-| `spec.realm.applications[].protocolMappers[].protocol` | string |   |
-| `spec.realm.applications[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.applications[].publicClient` | boolean |   |
-| `spec.realm.applications[].redirectUris` | array[string] |   |
-| `spec.realm.applications[].registeredNodes` | map<string,integer> |   |
-| `spec.realm.applications[].registrationAccessToken` | string |   |
-| `spec.realm.applications[].rootUrl` | string |   |
-| `spec.realm.applications[].secret` | string |   |
-| `spec.realm.applications[].serviceAccountsEnabled` | boolean |   |
-| `spec.realm.applications[].standardFlowEnabled` | boolean |   |
-| `spec.realm.applications[].surrogateAuthRequired` | boolean |   |
-| `spec.realm.applications[].type` | string |   |
-| `spec.realm.applications[].useTemplateConfig` | boolean |   |
-| `spec.realm.applications[].useTemplateMappers` | boolean |   |
-| `spec.realm.applications[].useTemplateScope` | boolean |   |
-| `spec.realm.applications[].webOrigins` | array[string] |   |
-| `spec.realm.attributes` | map<string,string> |   |
-| `spec.realm.authenticationFlows` | array[object] |   |
-| `spec.realm.authenticationFlows[].alias` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions` | array[object] |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].authenticator` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].authenticatorConfig` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].authenticatorFlow` | boolean |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].autheticatorFlow` | boolean |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].flowAlias` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].priority` | integer |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].requirement` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].userSetupAllowed` | boolean |   |
-| `spec.realm.authenticationFlows[].builtIn` | boolean |   |
-| `spec.realm.authenticationFlows[].description` | string |   |
-| `spec.realm.authenticationFlows[].id` | string |   |
-| `spec.realm.authenticationFlows[].providerId` | string |   |
-| `spec.realm.authenticationFlows[].topLevel` | boolean |   |
-| `spec.realm.authenticatorConfig` | array[object] |   |
-| `spec.realm.authenticatorConfig[].alias` | string |   |
-| `spec.realm.authenticatorConfig[].config` | map<string,string> |   |
-| `spec.realm.authenticatorConfig[].id` | string |   |
-| `spec.realm.browserFlow` | string |   |
-| `spec.realm.browserSecurityHeaders` | map<string,string> |   |
-| `spec.realm.bruteForceProtected` | boolean |   |
-| `spec.realm.bruteForceStrategy` | string |   |
-| `spec.realm.certificate` | string |   |
-| `spec.realm.clientAuthenticationFlow` | string |   |
-| `spec.realm.clientOfflineSessionIdleTimeout` | integer |   |
-| `spec.realm.clientOfflineSessionMaxLifespan` | integer |   |
-| `spec.realm.clientPolicies` | object |   |
-| `spec.realm.clientProfiles` | object |   |
-| `spec.realm.clientScopeMappings` | map<string,array> |   |
-| `spec.realm.clientScopes` | array[object] |   |
-| `spec.realm.clientScopes[].attributes` | map<string,string> |   |
-| `spec.realm.clientScopes[].description` | string |   |
-| `spec.realm.clientScopes[].id` | string |   |
-| `spec.realm.clientScopes[].name` | string |   |
-| `spec.realm.clientScopes[].protocol` | string |   |
-| `spec.realm.clientScopes[].protocolMappers` | array[object] |   |
-| `spec.realm.clientScopes[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.clientScopes[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.clientScopes[].protocolMappers[].consentText` | string |   |
-| `spec.realm.clientScopes[].protocolMappers[].id` | string |   |
-| `spec.realm.clientScopes[].protocolMappers[].name` | string |   |
-| `spec.realm.clientScopes[].protocolMappers[].protocol` | string |   |
-| `spec.realm.clientScopes[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.clientSessionIdleTimeout` | integer |   |
-| `spec.realm.clientSessionMaxLifespan` | integer |   |
-| `spec.realm.clientTemplates` | array[object] |   |
-| `spec.realm.clientTemplates[].attributes` | map<string,string> |   |
-| `spec.realm.clientTemplates[].bearerOnly` | boolean |   |
-| `spec.realm.clientTemplates[].consentRequired` | boolean |   |
-| `spec.realm.clientTemplates[].description` | string |   |
-| `spec.realm.clientTemplates[].directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.clientTemplates[].frontchannelLogout` | boolean |   |
-| `spec.realm.clientTemplates[].fullScopeAllowed` | boolean |   |
-| `spec.realm.clientTemplates[].id` | string |   |
-| `spec.realm.clientTemplates[].implicitFlowEnabled` | boolean |   |
-| `spec.realm.clientTemplates[].name` | string |   |
-| `spec.realm.clientTemplates[].protocol` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers` | array[object] |   |
-| `spec.realm.clientTemplates[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.clientTemplates[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.clientTemplates[].protocolMappers[].consentText` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers[].id` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers[].name` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers[].protocol` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.clientTemplates[].publicClient` | boolean |   |
-| `spec.realm.clientTemplates[].serviceAccountsEnabled` | boolean |   |
-| `spec.realm.clientTemplates[].standardFlowEnabled` | boolean |   |
-| `spec.realm.clients` | array[object] |   |
-| `spec.realm.clients[].access` | map<string,boolean> |   |
-| `spec.realm.clients[].adminUrl` | string |   |
-| `spec.realm.clients[].alwaysDisplayInConsole` | boolean |   |
-| `spec.realm.clients[].attributes` | map<string,string> |   |
-| `spec.realm.clients[].authenticationFlowBindingOverrides` | map<string,string> |   |
-| `spec.realm.clients[].authorizationServicesEnabled` | boolean |   |
-| `spec.realm.clients[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
-| `spec.realm.clients[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
-| `spec.realm.clients[].authorizationSettings.clientId` | string |   |
-| `spec.realm.clients[].authorizationSettings.decisionStrategy` | string |   |
-| `spec.realm.clients[].authorizationSettings.id` | string |   |
-| `spec.realm.clients[].authorizationSettings.name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].config` | map<string,string> |   |
-| `spec.realm.clients[].authorizationSettings.policies[].decisionStrategy` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].description` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].logic` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].owner` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].policies` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourceType` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resources` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].type` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopes` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].type` | string |   |
-| `spec.realm.clients[].authorizationSettings.policyEnforcementMode` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.resources[]._id` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].attributes` | map<string,array> |   |
-| `spec.realm.clients[].authorizationSettings.resources[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].icon_uri` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].owner.id` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].owner.name` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].type` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].uris` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.scopes` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.scopes[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.scopes[].iconUri` | string |   |
-| `spec.realm.clients[].authorizationSettings.scopes[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.scopes[].name` | string |   |
-| `spec.realm.clients[].baseUrl` | string |   |
-| `spec.realm.clients[].bearerOnly` | boolean |   |
-| `spec.realm.clients[].clientAuthenticatorType` | string |   |
-| `spec.realm.clients[].clientId` | string |   |
-| `spec.realm.clients[].clientTemplate` | string |   |
-| `spec.realm.clients[].consentRequired` | boolean |   |
-| `spec.realm.clients[].defaultClientScopes` | array[string] |   |
-| `spec.realm.clients[].defaultRoles` | array[string] |   |
-| `spec.realm.clients[].description` | string |   |
-| `spec.realm.clients[].directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.clients[].directGrantsOnly` | boolean |   |
-| `spec.realm.clients[].enabled` | boolean |   |
-| `spec.realm.clients[].frontchannelLogout` | boolean |   |
-| `spec.realm.clients[].fullScopeAllowed` | boolean |   |
-| `spec.realm.clients[].id` | string |   |
-| `spec.realm.clients[].implicitFlowEnabled` | boolean |   |
-| `spec.realm.clients[].name` | string |   |
-| `spec.realm.clients[].nodeReRegistrationTimeout` | integer |   |
-| `spec.realm.clients[].notBefore` | integer |   |
-| `spec.realm.clients[].optionalClientScopes` | array[string] |   |
-| `spec.realm.clients[].origin` | string |   |
-| `spec.realm.clients[].protocol` | string |   |
-| `spec.realm.clients[].protocolMappers` | array[object] |   |
-| `spec.realm.clients[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.clients[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.clients[].protocolMappers[].consentText` | string |   |
-| `spec.realm.clients[].protocolMappers[].id` | string |   |
-| `spec.realm.clients[].protocolMappers[].name` | string |   |
-| `spec.realm.clients[].protocolMappers[].protocol` | string |   |
-| `spec.realm.clients[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.clients[].publicClient` | boolean |   |
-| `spec.realm.clients[].redirectUris` | array[string] |   |
-| `spec.realm.clients[].registeredNodes` | map<string,integer> |   |
-| `spec.realm.clients[].registrationAccessToken` | string |   |
-| `spec.realm.clients[].rootUrl` | string |   |
-| `spec.realm.clients[].secret` | string |   |
-| `spec.realm.clients[].serviceAccountsEnabled` | boolean |   |
-| `spec.realm.clients[].standardFlowEnabled` | boolean |   |
-| `spec.realm.clients[].surrogateAuthRequired` | boolean |   |
-| `spec.realm.clients[].type` | string |   |
-| `spec.realm.clients[].useTemplateConfig` | boolean |   |
-| `spec.realm.clients[].useTemplateMappers` | boolean |   |
-| `spec.realm.clients[].useTemplateScope` | boolean |   |
-| `spec.realm.clients[].webOrigins` | array[string] |   |
-| `spec.realm.codeSecret` | string |   |
-| `spec.realm.components` | map<string,array> |   |
-| `spec.realm.defaultDefaultClientScopes` | array[string] |   |
-| `spec.realm.defaultGroups` | array[string] |   |
-| `spec.realm.defaultLocale` | string |   |
-| `spec.realm.defaultOptionalClientScopes` | array[string] |   |
-| `spec.realm.defaultRole.attributes` | map<string,array> |   |
-| `spec.realm.defaultRole.clientRole` | boolean |   |
-| `spec.realm.defaultRole.composite` | boolean |   |
-| `spec.realm.defaultRole.composites.application` | map<string,array> |   |
-| `spec.realm.defaultRole.composites.client` | map<string,array> |   |
-| `spec.realm.defaultRole.composites.realm` | array[string] |   |
-| `spec.realm.defaultRole.containerId` | string |   |
-| `spec.realm.defaultRole.description` | string |   |
-| `spec.realm.defaultRole.id` | string |   |
-| `spec.realm.defaultRole.name` | string |   |
-| `spec.realm.defaultRole.scopeParamRequired` | boolean |   |
-| `spec.realm.defaultRoles` | array[string] |   |
-| `spec.realm.defaultSignatureAlgorithm` | string |   |
-| `spec.realm.directGrantFlow` | string |   |
-| `spec.realm.displayName` | string |   |
-| `spec.realm.displayNameHtml` | string |   |
-| `spec.realm.dockerAuthenticationFlow` | string |   |
-| `spec.realm.duplicateEmailsAllowed` | boolean |   |
-| `spec.realm.editUsernameAllowed` | boolean |   |
-| `spec.realm.emailTheme` | string |   |
-| `spec.realm.enabled` | boolean |   |
-| `spec.realm.enabledEventTypes` | array[string] |   |
-| `spec.realm.eventsEnabled` | boolean |   |
-| `spec.realm.eventsExpiration` | integer |   |
-| `spec.realm.eventsListeners` | array[string] |   |
-| `spec.realm.failureFactor` | integer |   |
-| `spec.realm.federatedUsers` | array[object] |   |
-| `spec.realm.federatedUsers[].access` | map<string,boolean> |   |
-| `spec.realm.federatedUsers[].applicationRoles` | map<string,array> |   |
-| `spec.realm.federatedUsers[].attributes` | map<string,array> |   |
-| `spec.realm.federatedUsers[].clientConsents` | array[object] |   |
-| `spec.realm.federatedUsers[].clientConsents[].clientId` | string |   |
-| `spec.realm.federatedUsers[].clientConsents[].createdDate` | integer |   |
-| `spec.realm.federatedUsers[].clientConsents[].grantedClientScopes` | array[string] |   |
-| `spec.realm.federatedUsers[].clientConsents[].grantedRealmRoles` | array[string] |   |
-| `spec.realm.federatedUsers[].clientConsents[].lastUpdatedDate` | integer |   |
-| `spec.realm.federatedUsers[].clientRoles` | map<string,array> |   |
-| `spec.realm.federatedUsers[].createdTimestamp` | integer |   |
-| `spec.realm.federatedUsers[].credentials` | array[object] |   |
-| `spec.realm.federatedUsers[].credentials[].algorithm` | string |   |
-| `spec.realm.federatedUsers[].credentials[].config` | map<string,array> |   |
-| `spec.realm.federatedUsers[].credentials[].counter` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].createdDate` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].credentialData` | string |   |
-| `spec.realm.federatedUsers[].credentials[].device` | string |   |
-| `spec.realm.federatedUsers[].credentials[].digits` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].federationLink` | string |   |
-| `spec.realm.federatedUsers[].credentials[].hashIterations` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].hashedSaltedValue` | string |   |
-| `spec.realm.federatedUsers[].credentials[].id` | string |   |
-| `spec.realm.federatedUsers[].credentials[].period` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].priority` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].salt` | string |   |
-| `spec.realm.federatedUsers[].credentials[].secretData` | string |   |
-| `spec.realm.federatedUsers[].credentials[].temporary` | boolean |   |
-| `spec.realm.federatedUsers[].credentials[].type` | string |   |
-| `spec.realm.federatedUsers[].credentials[].userLabel` | string |   |
-| `spec.realm.federatedUsers[].credentials[].value` | string |   |
-| `spec.realm.federatedUsers[].disableableCredentialTypes` | array[string] |   |
-| `spec.realm.federatedUsers[].email` | string |   |
-| `spec.realm.federatedUsers[].emailVerified` | boolean |   |
-| `spec.realm.federatedUsers[].enabled` | boolean |   |
-| `spec.realm.federatedUsers[].federatedIdentities` | array[object] |   |
-| `spec.realm.federatedUsers[].federatedIdentities[].identityProvider` | string |   |
-| `spec.realm.federatedUsers[].federatedIdentities[].userId` | string |   |
-| `spec.realm.federatedUsers[].federatedIdentities[].userName` | string |   |
-| `spec.realm.federatedUsers[].federationLink` | string |   |
-| `spec.realm.federatedUsers[].firstName` | string |   |
-| `spec.realm.federatedUsers[].groups` | array[string] |   |
-| `spec.realm.federatedUsers[].id` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials` | array[object] |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientId` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientName` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].credentialType` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].expiresAt` | integer |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].id` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].issuedAt` | integer |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].revision` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].userId` | string |   |
-| `spec.realm.federatedUsers[].lastName` | string |   |
-| `spec.realm.federatedUsers[].notBefore` | integer |   |
-| `spec.realm.federatedUsers[].origin` | string |   |
-| `spec.realm.federatedUsers[].realmRoles` | array[string] |   |
-| `spec.realm.federatedUsers[].requiredActions` | array[string] |   |
-| `spec.realm.federatedUsers[].self` | string |   |
-| `spec.realm.federatedUsers[].serviceAccountClientId` | string |   |
-| `spec.realm.federatedUsers[].socialLinks` | array[object] |   |
-| `spec.realm.federatedUsers[].socialLinks[].socialProvider` | string |   |
-| `spec.realm.federatedUsers[].socialLinks[].socialUserId` | string |   |
-| `spec.realm.federatedUsers[].socialLinks[].socialUsername` | string |   |
-| `spec.realm.federatedUsers[].totp` | boolean |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes` | array[object] |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].defaultValue` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].displayName` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].group` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].multivalued` | boolean |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].name` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].readOnly` | boolean |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].required` | boolean |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups` | array[object] |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups[].displayDescription` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups[].displayHeader` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups[].name` | string |   |
-| `spec.realm.federatedUsers[].username` | string |   |
-| `spec.realm.federatedUsers[].verifiableCredentials` | array[object] |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].createdDate` | integer |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].credentialConfigurationId` | string |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].credentialScopeName` | string |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].revision` | string |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].updatedDate` | integer |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].userAttributes` | map<string,array> |   |
-| `spec.realm.firstBrokerLoginFlow` | string |   |
-| `spec.realm.groups` | array[object] |   |
-| `spec.realm.groups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].description` | string |   |
-| `spec.realm.groups[].id` | string |   |
-| `spec.realm.groups[].name` | string |   |
-| `spec.realm.groups[].parentId` | string |   |
-| `spec.realm.groups[].path` | string |   |
-| `spec.realm.groups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.id` | string |   |
-| `spec.realm.identityProviderMappers` | array[object] |   |
-| `spec.realm.identityProviderMappers[].config` | map<string,string> |   |
-| `spec.realm.identityProviderMappers[].id` | string |   |
-| `spec.realm.identityProviderMappers[].identityProviderAlias` | string |   |
-| `spec.realm.identityProviderMappers[].identityProviderMapper` | string |   |
-| `spec.realm.identityProviderMappers[].name` | string |   |
-| `spec.realm.identityProviders` | array[object] |   |
-| `spec.realm.identityProviders[].addReadTokenRoleOnCreate` | boolean |   |
-| `spec.realm.identityProviders[].alias` | string |   |
-| `spec.realm.identityProviders[].authenticateByDefault` | boolean |   |
-| `spec.realm.identityProviders[].config` | map<string,string> |   |
-| `spec.realm.identityProviders[].displayName` | string |   |
-| `spec.realm.identityProviders[].enabled` | boolean |   |
-| `spec.realm.identityProviders[].firstBrokerLoginFlowAlias` | string |   |
-| `spec.realm.identityProviders[].hideOnLogin` | boolean |   |
-| `spec.realm.identityProviders[].internalId` | string |   |
-| `spec.realm.identityProviders[].linkOnly` | boolean |   |
-| `spec.realm.identityProviders[].organizationId` | string |   |
-| `spec.realm.identityProviders[].postBrokerLoginFlowAlias` | string |   |
-| `spec.realm.identityProviders[].providerId` | string |   |
-| `spec.realm.identityProviders[].storeToken` | boolean |   |
-| `spec.realm.identityProviders[].trustEmail` | boolean |   |
-| `spec.realm.identityProviders[].types` | array[string] |   |
-| `spec.realm.identityProviders[].updateProfileFirstLoginMode` | string |   |
-| `spec.realm.internationalizationEnabled` | boolean |   |
-| `spec.realm.keycloakVersion` | string |   |
-| `spec.realm.localizationTexts` | map<string,object> |   |
-| `spec.realm.loginTheme` | string |   |
-| `spec.realm.loginWithEmailAllowed` | boolean |   |
-| `spec.realm.maxDeltaTimeSeconds` | integer |   |
-| `spec.realm.maxFailureWaitSeconds` | integer |   |
-| `spec.realm.maxSecondaryAuthFailures` | integer |   |
-| `spec.realm.maxTemporaryLockouts` | integer |   |
-| `spec.realm.minimumQuickLoginWaitSeconds` | integer |   |
-| `spec.realm.notBefore` | integer |   |
-| `spec.realm.oauth2DeviceCodeLifespan` | integer |   |
-| `spec.realm.oauth2DevicePollingInterval` | integer |   |
-| `spec.realm.oauthClients` | array[object] |   |
-| `spec.realm.oauthClients[].access` | map<string,boolean> |   |
-| `spec.realm.oauthClients[].adminUrl` | string |   |
-| `spec.realm.oauthClients[].alwaysDisplayInConsole` | boolean |   |
-| `spec.realm.oauthClients[].attributes` | map<string,string> |   |
-| `spec.realm.oauthClients[].authenticationFlowBindingOverrides` | map<string,string> |   |
-| `spec.realm.oauthClients[].authorizationServicesEnabled` | boolean |   |
-| `spec.realm.oauthClients[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
-| `spec.realm.oauthClients[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
-| `spec.realm.oauthClients[].authorizationSettings.clientId` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.decisionStrategy` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].config` | map<string,string> |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].decisionStrategy` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].description` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].logic` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].owner` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].policies` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourceType` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resources` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].type` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopes` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].type` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policyEnforcementMode` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[]._id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].attributes` | map<string,array> |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].icon_uri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].owner.id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].owner.name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].type` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].uris` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes[].iconUri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes[].name` | string |   |
-| `spec.realm.oauthClients[].baseUrl` | string |   |
-| `spec.realm.oauthClients[].bearerOnly` | boolean |   |
-| `spec.realm.oauthClients[].claims.address` | boolean |   |
-| `spec.realm.oauthClients[].claims.email` | boolean |   |
-| `spec.realm.oauthClients[].claims.gender` | boolean |   |
-| `spec.realm.oauthClients[].claims.locale` | boolean |   |
-| `spec.realm.oauthClients[].claims.name` | boolean |   |
-| `spec.realm.oauthClients[].claims.phone` | boolean |   |
-| `spec.realm.oauthClients[].claims.picture` | boolean |   |
-| `spec.realm.oauthClients[].claims.profile` | boolean |   |
-| `spec.realm.oauthClients[].claims.username` | boolean |   |
-| `spec.realm.oauthClients[].claims.website` | boolean |   |
-| `spec.realm.oauthClients[].clientAuthenticatorType` | string |   |
-| `spec.realm.oauthClients[].clientId` | string |   |
-| `spec.realm.oauthClients[].clientTemplate` | string |   |
-| `spec.realm.oauthClients[].consentRequired` | boolean |   |
-| `spec.realm.oauthClients[].defaultClientScopes` | array[string] |   |
-| `spec.realm.oauthClients[].defaultRoles` | array[string] |   |
-| `spec.realm.oauthClients[].description` | string |   |
-| `spec.realm.oauthClients[].directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.oauthClients[].directGrantsOnly` | boolean |   |
-| `spec.realm.oauthClients[].enabled` | boolean |   |
-| `spec.realm.oauthClients[].frontchannelLogout` | boolean |   |
-| `spec.realm.oauthClients[].fullScopeAllowed` | boolean |   |
-| `spec.realm.oauthClients[].id` | string |   |
-| `spec.realm.oauthClients[].implicitFlowEnabled` | boolean |   |
-| `spec.realm.oauthClients[].name` | string |   |
-| `spec.realm.oauthClients[].nodeReRegistrationTimeout` | integer |   |
-| `spec.realm.oauthClients[].notBefore` | integer |   |
-| `spec.realm.oauthClients[].optionalClientScopes` | array[string] |   |
-| `spec.realm.oauthClients[].origin` | string |   |
-| `spec.realm.oauthClients[].protocol` | string |   |
-| `spec.realm.oauthClients[].protocolMappers` | array[object] |   |
-| `spec.realm.oauthClients[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.oauthClients[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.oauthClients[].protocolMappers[].consentText` | string |   |
-| `spec.realm.oauthClients[].protocolMappers[].id` | string |   |
-| `spec.realm.oauthClients[].protocolMappers[].name` | string |   |
-| `spec.realm.oauthClients[].protocolMappers[].protocol` | string |   |
-| `spec.realm.oauthClients[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.oauthClients[].publicClient` | boolean |   |
-| `spec.realm.oauthClients[].redirectUris` | array[string] |   |
-| `spec.realm.oauthClients[].registeredNodes` | map<string,integer> |   |
-| `spec.realm.oauthClients[].registrationAccessToken` | string |   |
-| `spec.realm.oauthClients[].rootUrl` | string |   |
-| `spec.realm.oauthClients[].secret` | string |   |
-| `spec.realm.oauthClients[].serviceAccountsEnabled` | boolean |   |
-| `spec.realm.oauthClients[].standardFlowEnabled` | boolean |   |
-| `spec.realm.oauthClients[].surrogateAuthRequired` | boolean |   |
-| `spec.realm.oauthClients[].type` | string |   |
-| `spec.realm.oauthClients[].useTemplateConfig` | boolean |   |
-| `spec.realm.oauthClients[].useTemplateMappers` | boolean |   |
-| `spec.realm.oauthClients[].useTemplateScope` | boolean |   |
-| `spec.realm.oauthClients[].webOrigins` | array[string] |   |
-| `spec.realm.offlineSessionIdleTimeout` | integer |   |
-| `spec.realm.offlineSessionMaxLifespan` | integer |   |
-| `spec.realm.offlineSessionMaxLifespanEnabled` | boolean |   |
-| `spec.realm.organizations` | array[object] |   |
-| `spec.realm.organizations[].alias` | string |   |
-| `spec.realm.organizations[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].description` | string |   |
-| `spec.realm.organizations[].domains` | array[object] |   |
-| `spec.realm.organizations[].domains[].name` | string |   |
-| `spec.realm.organizations[].domains[].verified` | boolean |   |
-| `spec.realm.organizations[].enabled` | boolean |   |
-| `spec.realm.organizations[].groups` | array[object] |   |
-| `spec.realm.organizations[].groups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].description` | string |   |
-| `spec.realm.organizations[].groups[].id` | string |   |
-| `spec.realm.organizations[].groups[].name` | string |   |
-| `spec.realm.organizations[].groups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].path` | string |   |
-| `spec.realm.organizations[].groups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].id` | string |   |
-| `spec.realm.organizations[].identityProviders` | array[object] |   |
-| `spec.realm.organizations[].identityProviders[].addReadTokenRoleOnCreate` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].alias` | string |   |
-| `spec.realm.organizations[].identityProviders[].authenticateByDefault` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].config` | map<string,string> |   |
-| `spec.realm.organizations[].identityProviders[].displayName` | string |   |
-| `spec.realm.organizations[].identityProviders[].enabled` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].firstBrokerLoginFlowAlias` | string |   |
-| `spec.realm.organizations[].identityProviders[].hideOnLogin` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].internalId` | string |   |
-| `spec.realm.organizations[].identityProviders[].linkOnly` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].organizationId` | string |   |
-| `spec.realm.organizations[].identityProviders[].postBrokerLoginFlowAlias` | string |   |
-| `spec.realm.organizations[].identityProviders[].providerId` | string |   |
-| `spec.realm.organizations[].identityProviders[].storeToken` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].trustEmail` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].types` | array[string] |   |
-| `spec.realm.organizations[].identityProviders[].updateProfileFirstLoginMode` | string |   |
-| `spec.realm.organizations[].members` | array[object] |   |
-| `spec.realm.organizations[].members[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].members[].applicationRoles` | map<string,array> |   |
-| `spec.realm.organizations[].members[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].members[].clientConsents` | array[object] |   |
-| `spec.realm.organizations[].members[].clientConsents[].clientId` | string |   |
-| `spec.realm.organizations[].members[].clientConsents[].createdDate` | integer |   |
-| `spec.realm.organizations[].members[].clientConsents[].grantedClientScopes` | array[string] |   |
-| `spec.realm.organizations[].members[].clientConsents[].grantedRealmRoles` | array[string] |   |
-| `spec.realm.organizations[].members[].clientConsents[].lastUpdatedDate` | integer |   |
-| `spec.realm.organizations[].members[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].members[].createdTimestamp` | integer |   |
-| `spec.realm.organizations[].members[].credentials` | array[object] |   |
-| `spec.realm.organizations[].members[].credentials[].algorithm` | string |   |
-| `spec.realm.organizations[].members[].credentials[].config` | map<string,array> |   |
-| `spec.realm.organizations[].members[].credentials[].counter` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].createdDate` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].credentialData` | string |   |
-| `spec.realm.organizations[].members[].credentials[].device` | string |   |
-| `spec.realm.organizations[].members[].credentials[].digits` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].federationLink` | string |   |
-| `spec.realm.organizations[].members[].credentials[].hashIterations` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].hashedSaltedValue` | string |   |
-| `spec.realm.organizations[].members[].credentials[].id` | string |   |
-| `spec.realm.organizations[].members[].credentials[].period` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].priority` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].salt` | string |   |
-| `spec.realm.organizations[].members[].credentials[].secretData` | string |   |
-| `spec.realm.organizations[].members[].credentials[].temporary` | boolean |   |
-| `spec.realm.organizations[].members[].credentials[].type` | string |   |
-| `spec.realm.organizations[].members[].credentials[].userLabel` | string |   |
-| `spec.realm.organizations[].members[].credentials[].value` | string |   |
-| `spec.realm.organizations[].members[].disableableCredentialTypes` | array[string] |   |
-| `spec.realm.organizations[].members[].email` | string |   |
-| `spec.realm.organizations[].members[].emailVerified` | boolean |   |
-| `spec.realm.organizations[].members[].enabled` | boolean |   |
-| `spec.realm.organizations[].members[].federatedIdentities` | array[object] |   |
-| `spec.realm.organizations[].members[].federatedIdentities[].identityProvider` | string |   |
-| `spec.realm.organizations[].members[].federatedIdentities[].userId` | string |   |
-| `spec.realm.organizations[].members[].federatedIdentities[].userName` | string |   |
-| `spec.realm.organizations[].members[].federationLink` | string |   |
-| `spec.realm.organizations[].members[].firstName` | string |   |
-| `spec.realm.organizations[].members[].groups` | array[string] |   |
-| `spec.realm.organizations[].members[].id` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials` | array[object] |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientId` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientName` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].credentialType` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].expiresAt` | integer |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].id` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].issuedAt` | integer |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].revision` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].userId` | string |   |
-| `spec.realm.organizations[].members[].lastName` | string |   |
-| `spec.realm.organizations[].members[].membershipType` | string |   |
-| `spec.realm.organizations[].members[].notBefore` | integer |   |
-| `spec.realm.organizations[].members[].origin` | string |   |
-| `spec.realm.organizations[].members[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].members[].requiredActions` | array[string] |   |
-| `spec.realm.organizations[].members[].self` | string |   |
-| `spec.realm.organizations[].members[].serviceAccountClientId` | string |   |
-| `spec.realm.organizations[].members[].socialLinks` | array[object] |   |
-| `spec.realm.organizations[].members[].socialLinks[].socialProvider` | string |   |
-| `spec.realm.organizations[].members[].socialLinks[].socialUserId` | string |   |
-| `spec.realm.organizations[].members[].socialLinks[].socialUsername` | string |   |
-| `spec.realm.organizations[].members[].totp` | boolean |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes` | array[object] |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].defaultValue` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].displayName` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].group` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].multivalued` | boolean |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].name` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].readOnly` | boolean |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].required` | boolean |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups` | array[object] |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups[].displayDescription` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups[].displayHeader` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups[].name` | string |   |
-| `spec.realm.organizations[].members[].username` | string |   |
-| `spec.realm.organizations[].members[].verifiableCredentials` | array[object] |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].createdDate` | integer |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].credentialConfigurationId` | string |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].credentialScopeName` | string |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].revision` | string |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].updatedDate` | integer |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].userAttributes` | map<string,array> |   |
-| `spec.realm.organizations[].name` | string |   |
-| `spec.realm.organizations[].redirectUrl` | string |   |
-| `spec.realm.organizationsEnabled` | boolean |   |
-| `spec.realm.otpPolicyAlgorithm` | string |   |
-| `spec.realm.otpPolicyCodeReusable` | boolean |   |
-| `spec.realm.otpPolicyDigits` | integer |   |
-| `spec.realm.otpPolicyInitialCounter` | integer |   |
-| `spec.realm.otpPolicyLookAheadWindow` | integer |   |
-| `spec.realm.otpPolicyPeriod` | integer |   |
-| `spec.realm.otpPolicyType` | string |   |
-| `spec.realm.otpSupportedApplications` | array[string] |   |
-| `spec.realm.passwordCredentialGrantAllowed` | boolean |   |
-| `spec.realm.passwordPolicy` | string |   |
-| `spec.realm.permanentLockout` | boolean |   |
-| `spec.realm.privateKey` | string |   |
-| `spec.realm.protocolMappers` | array[object] |   |
-| `spec.realm.protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.protocolMappers[].consentText` | string |   |
-| `spec.realm.protocolMappers[].id` | string |   |
-| `spec.realm.protocolMappers[].name` | string |   |
-| `spec.realm.protocolMappers[].protocol` | string |   |
-| `spec.realm.protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.publicKey` | string |   |
-| `spec.realm.quickLoginCheckMilliSeconds` | integer |   |
-| `spec.realm.realm` | string |   |
-| `spec.realm.refreshTokenMaxReuse` | integer |   |
-| `spec.realm.registrationAllowed` | boolean |   |
-| `spec.realm.registrationEmailAsUsername` | boolean |   |
-| `spec.realm.registrationFlow` | string |   |
-| `spec.realm.rememberMe` | boolean |   |
-| `spec.realm.requiredActions` | array[object] |   |
-| `spec.realm.requiredActions[].alias` | string |   |
-| `spec.realm.requiredActions[].config` | map<string,string> |   |
-| `spec.realm.requiredActions[].defaultAction` | boolean |   |
-| `spec.realm.requiredActions[].enabled` | boolean |   |
-| `spec.realm.requiredActions[].name` | string |   |
-| `spec.realm.requiredActions[].priority` | integer |   |
-| `spec.realm.requiredActions[].providerId` | string |   |
-| `spec.realm.requiredCredentials` | array[string] |   |
-| `spec.realm.resetCredentialsFlow` | string |   |
-| `spec.realm.resetPasswordAllowed` | boolean |   |
-| `spec.realm.revokeRefreshToken` | boolean |   |
-| `spec.realm.roles.application` | map<string,array> |   |
-| `spec.realm.roles.client` | map<string,array> |   |
-| `spec.realm.roles.realm` | array[object] |   |
-| `spec.realm.roles.realm[].attributes` | map<string,array> |   |
-| `spec.realm.roles.realm[].clientRole` | boolean |   |
-| `spec.realm.roles.realm[].composite` | boolean |   |
-| `spec.realm.roles.realm[].composites.application` | map<string,array> |   |
-| `spec.realm.roles.realm[].composites.client` | map<string,array> |   |
-| `spec.realm.roles.realm[].composites.realm` | array[string] |   |
-| `spec.realm.roles.realm[].containerId` | string |   |
-| `spec.realm.roles.realm[].description` | string |   |
-| `spec.realm.roles.realm[].id` | string |   |
-| `spec.realm.roles.realm[].name` | string |   |
-| `spec.realm.roles.realm[].scopeParamRequired` | boolean |   |
-| `spec.realm.scimApiEnabled` | boolean |   |
-| `spec.realm.scopeMappings` | array[object] |   |
-| `spec.realm.scopeMappings[].client` | string |   |
-| `spec.realm.scopeMappings[].clientScope` | string |   |
-| `spec.realm.scopeMappings[].clientTemplate` | string |   |
-| `spec.realm.scopeMappings[].roles` | array[string] |   |
-| `spec.realm.scopeMappings[].self` | string |   |
-| `spec.realm.smtpServer` | map<string,string> |   |
-| `spec.realm.social` | boolean |   |
-| `spec.realm.socialProviders` | map<string,string> |   |
-| `spec.realm.sslRequired` | string |   |
-| `spec.realm.ssoSessionIdleTimeout` | integer |   |
-| `spec.realm.ssoSessionIdleTimeoutRememberMe` | integer |   |
-| `spec.realm.ssoSessionMaxLifespan` | integer |   |
-| `spec.realm.ssoSessionMaxLifespanRememberMe` | integer |   |
-| `spec.realm.supportedLocales` | array[string] |   |
-| `spec.realm.updateProfileOnInitialSocialLogin` | boolean |   |
-| `spec.realm.userFederationMappers` | array[object] |   |
-| `spec.realm.userFederationMappers[].config` | map<string,string> |   |
-| `spec.realm.userFederationMappers[].federationMapperType` | string |   |
-| `spec.realm.userFederationMappers[].federationProviderDisplayName` | string |   |
-| `spec.realm.userFederationMappers[].id` | string |   |
-| `spec.realm.userFederationMappers[].name` | string |   |
-| `spec.realm.userFederationProviders` | array[object] |   |
-| `spec.realm.userFederationProviders[].changedSyncPeriod` | integer |   |
-| `spec.realm.userFederationProviders[].config` | map<string,string> |   |
-| `spec.realm.userFederationProviders[].displayName` | string |   |
-| `spec.realm.userFederationProviders[].fullSyncPeriod` | integer |   |
-| `spec.realm.userFederationProviders[].id` | string |   |
-| `spec.realm.userFederationProviders[].lastSync` | integer |   |
-| `spec.realm.userFederationProviders[].priority` | integer |   |
-| `spec.realm.userFederationProviders[].providerName` | string |   |
-| `spec.realm.userManagedAccessAllowed` | boolean |   |
-| `spec.realm.users` | array[object] |   |
-| `spec.realm.users[].access` | map<string,boolean> |   |
-| `spec.realm.users[].applicationRoles` | map<string,array> |   |
-| `spec.realm.users[].attributes` | map<string,array> |   |
-| `spec.realm.users[].clientConsents` | array[object] |   |
-| `spec.realm.users[].clientConsents[].clientId` | string |   |
-| `spec.realm.users[].clientConsents[].createdDate` | integer |   |
-| `spec.realm.users[].clientConsents[].grantedClientScopes` | array[string] |   |
-| `spec.realm.users[].clientConsents[].grantedRealmRoles` | array[string] |   |
-| `spec.realm.users[].clientConsents[].lastUpdatedDate` | integer |   |
-| `spec.realm.users[].clientRoles` | map<string,array> |   |
-| `spec.realm.users[].createdTimestamp` | integer |   |
-| `spec.realm.users[].credentials` | array[object] |   |
-| `spec.realm.users[].credentials[].algorithm` | string |   |
-| `spec.realm.users[].credentials[].config` | map<string,array> |   |
-| `spec.realm.users[].credentials[].counter` | integer |   |
-| `spec.realm.users[].credentials[].createdDate` | integer |   |
-| `spec.realm.users[].credentials[].credentialData` | string |   |
-| `spec.realm.users[].credentials[].device` | string |   |
-| `spec.realm.users[].credentials[].digits` | integer |   |
-| `spec.realm.users[].credentials[].federationLink` | string |   |
-| `spec.realm.users[].credentials[].hashIterations` | integer |   |
-| `spec.realm.users[].credentials[].hashedSaltedValue` | string |   |
-| `spec.realm.users[].credentials[].id` | string |   |
-| `spec.realm.users[].credentials[].period` | integer |   |
-| `spec.realm.users[].credentials[].priority` | integer |   |
-| `spec.realm.users[].credentials[].salt` | string |   |
-| `spec.realm.users[].credentials[].secretData` | string |   |
-| `spec.realm.users[].credentials[].temporary` | boolean |   |
-| `spec.realm.users[].credentials[].type` | string |   |
-| `spec.realm.users[].credentials[].userLabel` | string |   |
-| `spec.realm.users[].credentials[].value` | string |   |
-| `spec.realm.users[].disableableCredentialTypes` | array[string] |   |
-| `spec.realm.users[].email` | string |   |
-| `spec.realm.users[].emailVerified` | boolean |   |
-| `spec.realm.users[].enabled` | boolean |   |
-| `spec.realm.users[].federatedIdentities` | array[object] |   |
-| `spec.realm.users[].federatedIdentities[].identityProvider` | string |   |
-| `spec.realm.users[].federatedIdentities[].userId` | string |   |
-| `spec.realm.users[].federatedIdentities[].userName` | string |   |
-| `spec.realm.users[].federationLink` | string |   |
-| `spec.realm.users[].firstName` | string |   |
-| `spec.realm.users[].groups` | array[string] |   |
-| `spec.realm.users[].id` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials` | array[object] |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].clientId` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].clientName` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].credentialType` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].expiresAt` | integer |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].id` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].issuedAt` | integer |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].revision` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].userId` | string |   |
-| `spec.realm.users[].lastName` | string |   |
-| `spec.realm.users[].notBefore` | integer |   |
-| `spec.realm.users[].origin` | string |   |
-| `spec.realm.users[].realmRoles` | array[string] |   |
-| `spec.realm.users[].requiredActions` | array[string] |   |
-| `spec.realm.users[].self` | string |   |
-| `spec.realm.users[].serviceAccountClientId` | string |   |
-| `spec.realm.users[].socialLinks` | array[object] |   |
-| `spec.realm.users[].socialLinks[].socialProvider` | string |   |
-| `spec.realm.users[].socialLinks[].socialUserId` | string |   |
-| `spec.realm.users[].socialLinks[].socialUsername` | string |   |
-| `spec.realm.users[].totp` | boolean |   |
-| `spec.realm.users[].userProfileMetadata.attributes` | array[object] |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].defaultValue` | string |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].displayName` | string |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].group` | string |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].multivalued` | boolean |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].name` | string |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].readOnly` | boolean |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].required` | boolean |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
-| `spec.realm.users[].userProfileMetadata.groups` | array[object] |   |
-| `spec.realm.users[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
-| `spec.realm.users[].userProfileMetadata.groups[].displayDescription` | string |   |
-| `spec.realm.users[].userProfileMetadata.groups[].displayHeader` | string |   |
-| `spec.realm.users[].userProfileMetadata.groups[].name` | string |   |
-| `spec.realm.users[].username` | string |   |
-| `spec.realm.users[].verifiableCredentials` | array[object] |   |
-| `spec.realm.users[].verifiableCredentials[].createdDate` | integer |   |
-| `spec.realm.users[].verifiableCredentials[].credentialConfigurationId` | string |   |
-| `spec.realm.users[].verifiableCredentials[].credentialScopeName` | string |   |
-| `spec.realm.users[].verifiableCredentials[].revision` | string |   |
-| `spec.realm.users[].verifiableCredentials[].updatedDate` | integer |   |
-| `spec.realm.users[].verifiableCredentials[].userAttributes` | map<string,array> |   |
-| `spec.realm.verifiableCredentialsEnabled` | boolean |   |
-| `spec.realm.verifyEmail` | boolean |   |
-| `spec.realm.waitIncrementSeconds` | integer |   |
-| `spec.realm.webAuthnPolicyAcceptableAaguids` | array[string] |   |
-| `spec.realm.webAuthnPolicyAttestationConveyancePreference` | string |   |
-| `spec.realm.webAuthnPolicyAuthenticatorAttachment` | string |   |
-| `spec.realm.webAuthnPolicyAvoidSameAuthenticatorRegister` | boolean |   |
-| `spec.realm.webAuthnPolicyCreateTimeout` | integer |   |
-| `spec.realm.webAuthnPolicyExtraOrigins` | array[string] |   |
-| `spec.realm.webAuthnPolicyPasswordlessAcceptableAaguids` | array[string] |   |
-| `spec.realm.webAuthnPolicyPasswordlessAttestationConveyancePreference` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessAuthenticatorAttachment` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister` | boolean |   |
-| `spec.realm.webAuthnPolicyPasswordlessCreateTimeout` | integer |   |
-| `spec.realm.webAuthnPolicyPasswordlessExtraOrigins` | array[string] |   |
-| `spec.realm.webAuthnPolicyPasswordlessMediation` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessPasskeysEnabled` | boolean |   |
-| `spec.realm.webAuthnPolicyPasswordlessRequireResidentKey` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessResidentKey` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessRpEntityName` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessRpId` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessSignatureAlgorithms` | array[string] |   |
-| `spec.realm.webAuthnPolicyPasswordlessUserVerificationRequirement` | string |   |
-| `spec.realm.webAuthnPolicyRequireResidentKey` | string |   |
-| `spec.realm.webAuthnPolicyResidentKey` | string |   |
-| `spec.realm.webAuthnPolicyRpEntityName` | string |   |
-| `spec.realm.webAuthnPolicyRpId` | string |   |
-| `spec.realm.webAuthnPolicySignatureAlgorithms` | array[string] |   |
-| `spec.realm.webAuthnPolicyUserVerificationRequirement` | string |   |
-| `spec.resources.claims` | array[object] |   |
-| `spec.resources.claims[].name` | string |   |
-| `spec.resources.claims[].request` | string |   |
-| `spec.resources.limits` | map<string,any> |   |
-| `spec.resources.requests` | map<string,any> |   |
-| `spec.keycloakCRName` | string | The name of the Keycloak CR to reference, in the same namespace.  |
-| `spec.labels` | map<string,string> | Optionally set to add additional labels to the Job created for the import.  |
-| `spec.placeholders` | map<string,object> | Optionally set to replace ENV variable placeholders in the realm import.  |
-| `spec.realm.accessCodeLifespan` | integer |   |
-| `spec.realm.accessCodeLifespanLogin` | integer |   |
-| `spec.realm.accessCodeLifespanUserAction` | integer |   |
-| `spec.realm.accessTokenLifespan` | integer |   |
-| `spec.realm.accessTokenLifespanForImplicitFlow` | integer |   |
-| `spec.realm.accountTheme` | string |   |
-| `spec.realm.actionTokenGeneratedByAdminLifespan` | integer |   |
-| `spec.realm.actionTokenGeneratedByUserLifespan` | integer |   |
-| `spec.realm.adminEventsDetailsEnabled` | boolean |   |
-| `spec.realm.adminEventsEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.access` | map<string,boolean> |   |
-| `spec.realm.adminPermissionsClient.adminUrl` | string |   |
-| `spec.realm.adminPermissionsClient.alwaysDisplayInConsole` | boolean |   |
-| `spec.realm.adminPermissionsClient.attributes` | map<string,string> |   |
-| `spec.realm.adminPermissionsClient.authenticationFlowBindingOverrides` | map<string,string> |   |
-| `spec.realm.adminPermissionsClient.authorizationServicesEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.allowRemoteResourceManagement` | boolean |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.clientId` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.decisionStrategy` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].config` | map<string,string> |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].decisionStrategy` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].description` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].logic` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].owner` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].policies` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourceType` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resources` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[]._id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].type` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopes` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].iconUri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policies[].type` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.policyEnforcementMode` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[]._id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].attributes` | map<string,array> |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].icon_uri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].owner.id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].owner.name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].iconUri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].name` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].type` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.resources[].uris` | array[string] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes` | array[object] |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].displayName` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].iconUri` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].id` | string |   |
-| `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].name` | string |   |
-| `spec.realm.adminPermissionsClient.baseUrl` | string |   |
-| `spec.realm.adminPermissionsClient.bearerOnly` | boolean |   |
-| `spec.realm.adminPermissionsClient.clientAuthenticatorType` | string |   |
-| `spec.realm.adminPermissionsClient.clientId` | string |   |
-| `spec.realm.adminPermissionsClient.clientTemplate` | string |   |
-| `spec.realm.adminPermissionsClient.consentRequired` | boolean |   |
-| `spec.realm.adminPermissionsClient.defaultClientScopes` | array[string] |   |
-| `spec.realm.adminPermissionsClient.defaultRoles` | array[string] |   |
-| `spec.realm.adminPermissionsClient.description` | string |   |
-| `spec.realm.adminPermissionsClient.directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.directGrantsOnly` | boolean |   |
-| `spec.realm.adminPermissionsClient.enabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.frontchannelLogout` | boolean |   |
-| `spec.realm.adminPermissionsClient.fullScopeAllowed` | boolean |   |
-| `spec.realm.adminPermissionsClient.id` | string |   |
-| `spec.realm.adminPermissionsClient.implicitFlowEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.name` | string |   |
-| `spec.realm.adminPermissionsClient.nodeReRegistrationTimeout` | integer |   |
-| `spec.realm.adminPermissionsClient.notBefore` | integer |   |
-| `spec.realm.adminPermissionsClient.optionalClientScopes` | array[string] |   |
-| `spec.realm.adminPermissionsClient.origin` | string |   |
-| `spec.realm.adminPermissionsClient.protocol` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers` | array[object] |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].consentText` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].id` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].name` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].protocol` | string |   |
-| `spec.realm.adminPermissionsClient.protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.adminPermissionsClient.publicClient` | boolean |   |
-| `spec.realm.adminPermissionsClient.redirectUris` | array[string] |   |
-| `spec.realm.adminPermissionsClient.registeredNodes` | map<string,integer> |   |
-| `spec.realm.adminPermissionsClient.registrationAccessToken` | string |   |
-| `spec.realm.adminPermissionsClient.rootUrl` | string |   |
-| `spec.realm.adminPermissionsClient.secret` | string |   |
-| `spec.realm.adminPermissionsClient.serviceAccountsEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.standardFlowEnabled` | boolean |   |
-| `spec.realm.adminPermissionsClient.surrogateAuthRequired` | boolean |   |
-| `spec.realm.adminPermissionsClient.type` | string |   |
-| `spec.realm.adminPermissionsClient.useTemplateConfig` | boolean |   |
-| `spec.realm.adminPermissionsClient.useTemplateMappers` | boolean |   |
-| `spec.realm.adminPermissionsClient.useTemplateScope` | boolean |   |
-| `spec.realm.adminPermissionsClient.webOrigins` | array[string] |   |
-| `spec.realm.adminPermissionsEnabled` | boolean |   |
-| `spec.realm.adminTheme` | string |   |
-| `spec.realm.applicationScopeMappings` | map<string,array> |   |
-| `spec.realm.applications` | array[object] |   |
-| `spec.realm.applications[].access` | map<string,boolean> |   |
-| `spec.realm.applications[].adminUrl` | string |   |
-| `spec.realm.applications[].alwaysDisplayInConsole` | boolean |   |
-| `spec.realm.applications[].attributes` | map<string,string> |   |
-| `spec.realm.applications[].authenticationFlowBindingOverrides` | map<string,string> |   |
-| `spec.realm.applications[].authorizationServicesEnabled` | boolean |   |
-| `spec.realm.applications[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
-| `spec.realm.applications[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
-| `spec.realm.applications[].authorizationSettings.clientId` | string |   |
-| `spec.realm.applications[].authorizationSettings.decisionStrategy` | string |   |
-| `spec.realm.applications[].authorizationSettings.id` | string |   |
-| `spec.realm.applications[].authorizationSettings.name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].config` | map<string,string> |   |
-| `spec.realm.applications[].authorizationSettings.policies[].decisionStrategy` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].description` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].logic` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].owner` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].policies` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourceType` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resources` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].type` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopes` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].scopesData[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.policies[].type` | string |   |
-| `spec.realm.applications[].authorizationSettings.policyEnforcementMode` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.resources[]._id` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].attributes` | map<string,array> |   |
-| `spec.realm.applications[].authorizationSettings.resources[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].icon_uri` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].owner.id` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].owner.name` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].scopes[].name` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].type` | string |   |
-| `spec.realm.applications[].authorizationSettings.resources[].uris` | array[string] |   |
-| `spec.realm.applications[].authorizationSettings.scopes` | array[object] |   |
-| `spec.realm.applications[].authorizationSettings.scopes[].displayName` | string |   |
-| `spec.realm.applications[].authorizationSettings.scopes[].iconUri` | string |   |
-| `spec.realm.applications[].authorizationSettings.scopes[].id` | string |   |
-| `spec.realm.applications[].authorizationSettings.scopes[].name` | string |   |
-| `spec.realm.applications[].baseUrl` | string |   |
-| `spec.realm.applications[].bearerOnly` | boolean |   |
-| `spec.realm.applications[].claims.address` | boolean |   |
-| `spec.realm.applications[].claims.email` | boolean |   |
-| `spec.realm.applications[].claims.gender` | boolean |   |
-| `spec.realm.applications[].claims.locale` | boolean |   |
-| `spec.realm.applications[].claims.name` | boolean |   |
-| `spec.realm.applications[].claims.phone` | boolean |   |
-| `spec.realm.applications[].claims.picture` | boolean |   |
-| `spec.realm.applications[].claims.profile` | boolean |   |
-| `spec.realm.applications[].claims.username` | boolean |   |
-| `spec.realm.applications[].claims.website` | boolean |   |
-| `spec.realm.applications[].clientAuthenticatorType` | string |   |
-| `spec.realm.applications[].clientId` | string |   |
-| `spec.realm.applications[].clientTemplate` | string |   |
-| `spec.realm.applications[].consentRequired` | boolean |   |
-| `spec.realm.applications[].defaultClientScopes` | array[string] |   |
-| `spec.realm.applications[].defaultRoles` | array[string] |   |
-| `spec.realm.applications[].description` | string |   |
-| `spec.realm.applications[].directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.applications[].directGrantsOnly` | boolean |   |
-| `spec.realm.applications[].enabled` | boolean |   |
-| `spec.realm.applications[].frontchannelLogout` | boolean |   |
-| `spec.realm.applications[].fullScopeAllowed` | boolean |   |
-| `spec.realm.applications[].id` | string |   |
-| `spec.realm.applications[].implicitFlowEnabled` | boolean |   |
-| `spec.realm.applications[].name` | string |   |
-| `spec.realm.applications[].nodeReRegistrationTimeout` | integer |   |
-| `spec.realm.applications[].notBefore` | integer |   |
-| `spec.realm.applications[].optionalClientScopes` | array[string] |   |
-| `spec.realm.applications[].origin` | string |   |
-| `spec.realm.applications[].protocol` | string |   |
-| `spec.realm.applications[].protocolMappers` | array[object] |   |
-| `spec.realm.applications[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.applications[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.applications[].protocolMappers[].consentText` | string |   |
-| `spec.realm.applications[].protocolMappers[].id` | string |   |
-| `spec.realm.applications[].protocolMappers[].name` | string |   |
-| `spec.realm.applications[].protocolMappers[].protocol` | string |   |
-| `spec.realm.applications[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.applications[].publicClient` | boolean |   |
-| `spec.realm.applications[].redirectUris` | array[string] |   |
-| `spec.realm.applications[].registeredNodes` | map<string,integer> |   |
-| `spec.realm.applications[].registrationAccessToken` | string |   |
-| `spec.realm.applications[].rootUrl` | string |   |
-| `spec.realm.applications[].secret` | string |   |
-| `spec.realm.applications[].serviceAccountsEnabled` | boolean |   |
-| `spec.realm.applications[].standardFlowEnabled` | boolean |   |
-| `spec.realm.applications[].surrogateAuthRequired` | boolean |   |
-| `spec.realm.applications[].type` | string |   |
-| `spec.realm.applications[].useTemplateConfig` | boolean |   |
-| `spec.realm.applications[].useTemplateMappers` | boolean |   |
-| `spec.realm.applications[].useTemplateScope` | boolean |   |
-| `spec.realm.applications[].webOrigins` | array[string] |   |
-| `spec.realm.attributes` | map<string,string> |   |
-| `spec.realm.authenticationFlows` | array[object] |   |
-| `spec.realm.authenticationFlows[].alias` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions` | array[object] |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].authenticator` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].authenticatorConfig` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].authenticatorFlow` | boolean |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].autheticatorFlow` | boolean |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].flowAlias` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].priority` | integer |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].requirement` | string |   |
-| `spec.realm.authenticationFlows[].authenticationExecutions[].userSetupAllowed` | boolean |   |
-| `spec.realm.authenticationFlows[].builtIn` | boolean |   |
-| `spec.realm.authenticationFlows[].description` | string |   |
-| `spec.realm.authenticationFlows[].id` | string |   |
-| `spec.realm.authenticationFlows[].providerId` | string |   |
-| `spec.realm.authenticationFlows[].topLevel` | boolean |   |
-| `spec.realm.authenticatorConfig` | array[object] |   |
-| `spec.realm.authenticatorConfig[].alias` | string |   |
-| `spec.realm.authenticatorConfig[].config` | map<string,string> |   |
-| `spec.realm.authenticatorConfig[].id` | string |   |
-| `spec.realm.browserFlow` | string |   |
-| `spec.realm.browserSecurityHeaders` | map<string,string> |   |
-| `spec.realm.bruteForceProtected` | boolean |   |
-| `spec.realm.bruteForceStrategy` | string |   |
-| `spec.realm.certificate` | string |   |
-| `spec.realm.clientAuthenticationFlow` | string |   |
-| `spec.realm.clientOfflineSessionIdleTimeout` | integer |   |
-| `spec.realm.clientOfflineSessionMaxLifespan` | integer |   |
-| `spec.realm.clientPolicies` | object |   |
-| `spec.realm.clientProfiles` | object |   |
-| `spec.realm.clientScopeMappings` | map<string,array> |   |
-| `spec.realm.clientScopes` | array[object] |   |
-| `spec.realm.clientScopes[].attributes` | map<string,string> |   |
-| `spec.realm.clientScopes[].description` | string |   |
-| `spec.realm.clientScopes[].id` | string |   |
-| `spec.realm.clientScopes[].name` | string |   |
-| `spec.realm.clientScopes[].protocol` | string |   |
-| `spec.realm.clientScopes[].protocolMappers` | array[object] |   |
-| `spec.realm.clientScopes[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.clientScopes[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.clientScopes[].protocolMappers[].consentText` | string |   |
-| `spec.realm.clientScopes[].protocolMappers[].id` | string |   |
-| `spec.realm.clientScopes[].protocolMappers[].name` | string |   |
-| `spec.realm.clientScopes[].protocolMappers[].protocol` | string |   |
-| `spec.realm.clientScopes[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.clientSessionIdleTimeout` | integer |   |
-| `spec.realm.clientSessionMaxLifespan` | integer |   |
-| `spec.realm.clientTemplates` | array[object] |   |
-| `spec.realm.clientTemplates[].attributes` | map<string,string> |   |
-| `spec.realm.clientTemplates[].bearerOnly` | boolean |   |
-| `spec.realm.clientTemplates[].consentRequired` | boolean |   |
-| `spec.realm.clientTemplates[].description` | string |   |
-| `spec.realm.clientTemplates[].directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.clientTemplates[].frontchannelLogout` | boolean |   |
-| `spec.realm.clientTemplates[].fullScopeAllowed` | boolean |   |
-| `spec.realm.clientTemplates[].id` | string |   |
-| `spec.realm.clientTemplates[].implicitFlowEnabled` | boolean |   |
-| `spec.realm.clientTemplates[].name` | string |   |
-| `spec.realm.clientTemplates[].protocol` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers` | array[object] |   |
-| `spec.realm.clientTemplates[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.clientTemplates[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.clientTemplates[].protocolMappers[].consentText` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers[].id` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers[].name` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers[].protocol` | string |   |
-| `spec.realm.clientTemplates[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.clientTemplates[].publicClient` | boolean |   |
-| `spec.realm.clientTemplates[].serviceAccountsEnabled` | boolean |   |
-| `spec.realm.clientTemplates[].standardFlowEnabled` | boolean |   |
-| `spec.realm.clients` | array[object] |   |
-| `spec.realm.clients[].access` | map<string,boolean> |   |
-| `spec.realm.clients[].adminUrl` | string |   |
-| `spec.realm.clients[].alwaysDisplayInConsole` | boolean |   |
-| `spec.realm.clients[].attributes` | map<string,string> |   |
-| `spec.realm.clients[].authenticationFlowBindingOverrides` | map<string,string> |   |
-| `spec.realm.clients[].authorizationServicesEnabled` | boolean |   |
-| `spec.realm.clients[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
-| `spec.realm.clients[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
-| `spec.realm.clients[].authorizationSettings.clientId` | string |   |
-| `spec.realm.clients[].authorizationSettings.decisionStrategy` | string |   |
-| `spec.realm.clients[].authorizationSettings.id` | string |   |
-| `spec.realm.clients[].authorizationSettings.name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].config` | map<string,string> |   |
-| `spec.realm.clients[].authorizationSettings.policies[].decisionStrategy` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].description` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].logic` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].owner` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].policies` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourceType` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resources` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].type` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopes` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].scopesData[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.policies[].type` | string |   |
-| `spec.realm.clients[].authorizationSettings.policyEnforcementMode` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.resources[]._id` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].attributes` | map<string,array> |   |
-| `spec.realm.clients[].authorizationSettings.resources[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].icon_uri` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].owner.id` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].owner.name` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].scopes[].name` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].type` | string |   |
-| `spec.realm.clients[].authorizationSettings.resources[].uris` | array[string] |   |
-| `spec.realm.clients[].authorizationSettings.scopes` | array[object] |   |
-| `spec.realm.clients[].authorizationSettings.scopes[].displayName` | string |   |
-| `spec.realm.clients[].authorizationSettings.scopes[].iconUri` | string |   |
-| `spec.realm.clients[].authorizationSettings.scopes[].id` | string |   |
-| `spec.realm.clients[].authorizationSettings.scopes[].name` | string |   |
-| `spec.realm.clients[].baseUrl` | string |   |
-| `spec.realm.clients[].bearerOnly` | boolean |   |
-| `spec.realm.clients[].clientAuthenticatorType` | string |   |
-| `spec.realm.clients[].clientId` | string |   |
-| `spec.realm.clients[].clientTemplate` | string |   |
-| `spec.realm.clients[].consentRequired` | boolean |   |
-| `spec.realm.clients[].defaultClientScopes` | array[string] |   |
-| `spec.realm.clients[].defaultRoles` | array[string] |   |
-| `spec.realm.clients[].description` | string |   |
-| `spec.realm.clients[].directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.clients[].directGrantsOnly` | boolean |   |
-| `spec.realm.clients[].enabled` | boolean |   |
-| `spec.realm.clients[].frontchannelLogout` | boolean |   |
-| `spec.realm.clients[].fullScopeAllowed` | boolean |   |
-| `spec.realm.clients[].id` | string |   |
-| `spec.realm.clients[].implicitFlowEnabled` | boolean |   |
-| `spec.realm.clients[].name` | string |   |
-| `spec.realm.clients[].nodeReRegistrationTimeout` | integer |   |
-| `spec.realm.clients[].notBefore` | integer |   |
-| `spec.realm.clients[].optionalClientScopes` | array[string] |   |
-| `spec.realm.clients[].origin` | string |   |
-| `spec.realm.clients[].protocol` | string |   |
-| `spec.realm.clients[].protocolMappers` | array[object] |   |
-| `spec.realm.clients[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.clients[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.clients[].protocolMappers[].consentText` | string |   |
-| `spec.realm.clients[].protocolMappers[].id` | string |   |
-| `spec.realm.clients[].protocolMappers[].name` | string |   |
-| `spec.realm.clients[].protocolMappers[].protocol` | string |   |
-| `spec.realm.clients[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.clients[].publicClient` | boolean |   |
-| `spec.realm.clients[].redirectUris` | array[string] |   |
-| `spec.realm.clients[].registeredNodes` | map<string,integer> |   |
-| `spec.realm.clients[].registrationAccessToken` | string |   |
-| `spec.realm.clients[].rootUrl` | string |   |
-| `spec.realm.clients[].secret` | string |   |
-| `spec.realm.clients[].serviceAccountsEnabled` | boolean |   |
-| `spec.realm.clients[].standardFlowEnabled` | boolean |   |
-| `spec.realm.clients[].surrogateAuthRequired` | boolean |   |
-| `spec.realm.clients[].type` | string |   |
-| `spec.realm.clients[].useTemplateConfig` | boolean |   |
-| `spec.realm.clients[].useTemplateMappers` | boolean |   |
-| `spec.realm.clients[].useTemplateScope` | boolean |   |
-| `spec.realm.clients[].webOrigins` | array[string] |   |
-| `spec.realm.codeSecret` | string |   |
-| `spec.realm.components` | map<string,array> |   |
-| `spec.realm.defaultDefaultClientScopes` | array[string] |   |
-| `spec.realm.defaultGroups` | array[string] |   |
-| `spec.realm.defaultLocale` | string |   |
-| `spec.realm.defaultOptionalClientScopes` | array[string] |   |
-| `spec.realm.defaultRole.attributes` | map<string,array> |   |
-| `spec.realm.defaultRole.clientRole` | boolean |   |
-| `spec.realm.defaultRole.composite` | boolean |   |
-| `spec.realm.defaultRole.composites.application` | map<string,array> |   |
-| `spec.realm.defaultRole.composites.client` | map<string,array> |   |
-| `spec.realm.defaultRole.composites.realm` | array[string] |   |
-| `spec.realm.defaultRole.containerId` | string |   |
-| `spec.realm.defaultRole.description` | string |   |
-| `spec.realm.defaultRole.id` | string |   |
-| `spec.realm.defaultRole.name` | string |   |
-| `spec.realm.defaultRole.scopeParamRequired` | boolean |   |
-| `spec.realm.defaultRoles` | array[string] |   |
-| `spec.realm.defaultSignatureAlgorithm` | string |   |
-| `spec.realm.directGrantFlow` | string |   |
-| `spec.realm.displayName` | string |   |
-| `spec.realm.displayNameHtml` | string |   |
-| `spec.realm.dockerAuthenticationFlow` | string |   |
-| `spec.realm.duplicateEmailsAllowed` | boolean |   |
-| `spec.realm.editUsernameAllowed` | boolean |   |
-| `spec.realm.emailTheme` | string |   |
-| `spec.realm.enabled` | boolean |   |
-| `spec.realm.enabledEventTypes` | array[string] |   |
-| `spec.realm.eventsEnabled` | boolean |   |
-| `spec.realm.eventsExpiration` | integer |   |
-| `spec.realm.eventsListeners` | array[string] |   |
-| `spec.realm.failureFactor` | integer |   |
-| `spec.realm.federatedUsers` | array[object] |   |
-| `spec.realm.federatedUsers[].access` | map<string,boolean> |   |
-| `spec.realm.federatedUsers[].applicationRoles` | map<string,array> |   |
-| `spec.realm.federatedUsers[].attributes` | map<string,array> |   |
-| `spec.realm.federatedUsers[].clientConsents` | array[object] |   |
-| `spec.realm.federatedUsers[].clientConsents[].clientId` | string |   |
-| `spec.realm.federatedUsers[].clientConsents[].createdDate` | integer |   |
-| `spec.realm.federatedUsers[].clientConsents[].grantedClientScopes` | array[string] |   |
-| `spec.realm.federatedUsers[].clientConsents[].grantedRealmRoles` | array[string] |   |
-| `spec.realm.federatedUsers[].clientConsents[].lastUpdatedDate` | integer |   |
-| `spec.realm.federatedUsers[].clientRoles` | map<string,array> |   |
-| `spec.realm.federatedUsers[].createdTimestamp` | integer |   |
-| `spec.realm.federatedUsers[].credentials` | array[object] |   |
-| `spec.realm.federatedUsers[].credentials[].algorithm` | string |   |
-| `spec.realm.federatedUsers[].credentials[].config` | map<string,array> |   |
-| `spec.realm.federatedUsers[].credentials[].counter` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].createdDate` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].credentialData` | string |   |
-| `spec.realm.federatedUsers[].credentials[].device` | string |   |
-| `spec.realm.federatedUsers[].credentials[].digits` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].federationLink` | string |   |
-| `spec.realm.federatedUsers[].credentials[].hashIterations` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].hashedSaltedValue` | string |   |
-| `spec.realm.federatedUsers[].credentials[].id` | string |   |
-| `spec.realm.federatedUsers[].credentials[].period` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].priority` | integer |   |
-| `spec.realm.federatedUsers[].credentials[].salt` | string |   |
-| `spec.realm.federatedUsers[].credentials[].secretData` | string |   |
-| `spec.realm.federatedUsers[].credentials[].temporary` | boolean |   |
-| `spec.realm.federatedUsers[].credentials[].type` | string |   |
-| `spec.realm.federatedUsers[].credentials[].userLabel` | string |   |
-| `spec.realm.federatedUsers[].credentials[].value` | string |   |
-| `spec.realm.federatedUsers[].disableableCredentialTypes` | array[string] |   |
-| `spec.realm.federatedUsers[].email` | string |   |
-| `spec.realm.federatedUsers[].emailVerified` | boolean |   |
-| `spec.realm.federatedUsers[].enabled` | boolean |   |
-| `spec.realm.federatedUsers[].federatedIdentities` | array[object] |   |
-| `spec.realm.federatedUsers[].federatedIdentities[].identityProvider` | string |   |
-| `spec.realm.federatedUsers[].federatedIdentities[].userId` | string |   |
-| `spec.realm.federatedUsers[].federatedIdentities[].userName` | string |   |
-| `spec.realm.federatedUsers[].federationLink` | string |   |
-| `spec.realm.federatedUsers[].firstName` | string |   |
-| `spec.realm.federatedUsers[].groups` | array[string] |   |
-| `spec.realm.federatedUsers[].id` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials` | array[object] |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientId` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientName` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].credentialType` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].expiresAt` | integer |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].id` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].issuedAt` | integer |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].revision` | string |   |
-| `spec.realm.federatedUsers[].issuedVerifiableCredentials[].userId` | string |   |
-| `spec.realm.federatedUsers[].lastName` | string |   |
-| `spec.realm.federatedUsers[].notBefore` | integer |   |
-| `spec.realm.federatedUsers[].origin` | string |   |
-| `spec.realm.federatedUsers[].realmRoles` | array[string] |   |
-| `spec.realm.federatedUsers[].requiredActions` | array[string] |   |
-| `spec.realm.federatedUsers[].self` | string |   |
-| `spec.realm.federatedUsers[].serviceAccountClientId` | string |   |
-| `spec.realm.federatedUsers[].socialLinks` | array[object] |   |
-| `spec.realm.federatedUsers[].socialLinks[].socialProvider` | string |   |
-| `spec.realm.federatedUsers[].socialLinks[].socialUserId` | string |   |
-| `spec.realm.federatedUsers[].socialLinks[].socialUsername` | string |   |
-| `spec.realm.federatedUsers[].totp` | boolean |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes` | array[object] |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].defaultValue` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].displayName` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].group` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].multivalued` | boolean |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].name` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].readOnly` | boolean |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].required` | boolean |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups` | array[object] |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups[].displayDescription` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups[].displayHeader` | string |   |
-| `spec.realm.federatedUsers[].userProfileMetadata.groups[].name` | string |   |
-| `spec.realm.federatedUsers[].username` | string |   |
-| `spec.realm.federatedUsers[].verifiableCredentials` | array[object] |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].createdDate` | integer |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].credentialConfigurationId` | string |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].credentialScopeName` | string |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].revision` | string |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].updatedDate` | integer |   |
-| `spec.realm.federatedUsers[].verifiableCredentials[].userAttributes` | map<string,array> |   |
-| `spec.realm.firstBrokerLoginFlow` | string |   |
-| `spec.realm.groups` | array[object] |   |
-| `spec.realm.groups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].description` | string |   |
-| `spec.realm.groups[].id` | string |   |
-| `spec.realm.groups[].name` | string |   |
-| `spec.realm.groups[].parentId` | string |   |
-| `spec.realm.groups[].path` | string |   |
-| `spec.realm.groups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.id` | string |   |
-| `spec.realm.identityProviderMappers` | array[object] |   |
-| `spec.realm.identityProviderMappers[].config` | map<string,string> |   |
-| `spec.realm.identityProviderMappers[].id` | string |   |
-| `spec.realm.identityProviderMappers[].identityProviderAlias` | string |   |
-| `spec.realm.identityProviderMappers[].identityProviderMapper` | string |   |
-| `spec.realm.identityProviderMappers[].name` | string |   |
-| `spec.realm.identityProviders` | array[object] |   |
-| `spec.realm.identityProviders[].addReadTokenRoleOnCreate` | boolean |   |
-| `spec.realm.identityProviders[].alias` | string |   |
-| `spec.realm.identityProviders[].authenticateByDefault` | boolean |   |
-| `spec.realm.identityProviders[].config` | map<string,string> |   |
-| `spec.realm.identityProviders[].displayName` | string |   |
-| `spec.realm.identityProviders[].enabled` | boolean |   |
-| `spec.realm.identityProviders[].firstBrokerLoginFlowAlias` | string |   |
-| `spec.realm.identityProviders[].hideOnLogin` | boolean |   |
-| `spec.realm.identityProviders[].internalId` | string |   |
-| `spec.realm.identityProviders[].linkOnly` | boolean |   |
-| `spec.realm.identityProviders[].organizationId` | string |   |
-| `spec.realm.identityProviders[].postBrokerLoginFlowAlias` | string |   |
-| `spec.realm.identityProviders[].providerId` | string |   |
-| `spec.realm.identityProviders[].storeToken` | boolean |   |
-| `spec.realm.identityProviders[].trustEmail` | boolean |   |
-| `spec.realm.identityProviders[].types` | array[string] |   |
-| `spec.realm.identityProviders[].updateProfileFirstLoginMode` | string |   |
-| `spec.realm.internationalizationEnabled` | boolean |   |
-| `spec.realm.keycloakVersion` | string |   |
-| `spec.realm.localizationTexts` | map<string,object> |   |
-| `spec.realm.loginTheme` | string |   |
-| `spec.realm.loginWithEmailAllowed` | boolean |   |
-| `spec.realm.maxDeltaTimeSeconds` | integer |   |
-| `spec.realm.maxFailureWaitSeconds` | integer |   |
-| `spec.realm.maxSecondaryAuthFailures` | integer |   |
-| `spec.realm.maxTemporaryLockouts` | integer |   |
-| `spec.realm.minimumQuickLoginWaitSeconds` | integer |   |
-| `spec.realm.notBefore` | integer |   |
-| `spec.realm.oauth2DeviceCodeLifespan` | integer |   |
-| `spec.realm.oauth2DevicePollingInterval` | integer |   |
-| `spec.realm.oauthClients` | array[object] |   |
-| `spec.realm.oauthClients[].access` | map<string,boolean> |   |
-| `spec.realm.oauthClients[].adminUrl` | string |   |
-| `spec.realm.oauthClients[].alwaysDisplayInConsole` | boolean |   |
-| `spec.realm.oauthClients[].attributes` | map<string,string> |   |
-| `spec.realm.oauthClients[].authenticationFlowBindingOverrides` | map<string,string> |   |
-| `spec.realm.oauthClients[].authorizationServicesEnabled` | boolean |   |
-| `spec.realm.oauthClients[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
-| `spec.realm.oauthClients[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
-| `spec.realm.oauthClients[].authorizationSettings.clientId` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.decisionStrategy` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].config` | map<string,string> |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].decisionStrategy` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].description` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].logic` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].owner` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].policies` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourceType` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resources` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].type` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopes` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policies[].type` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.policyEnforcementMode` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[]._id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].attributes` | map<string,array> |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].icon_uri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].owner.id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].owner.name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].name` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].type` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.resources[].uris` | array[string] |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes` | array[object] |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes[].displayName` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes[].iconUri` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes[].id` | string |   |
-| `spec.realm.oauthClients[].authorizationSettings.scopes[].name` | string |   |
-| `spec.realm.oauthClients[].baseUrl` | string |   |
-| `spec.realm.oauthClients[].bearerOnly` | boolean |   |
-| `spec.realm.oauthClients[].claims.address` | boolean |   |
-| `spec.realm.oauthClients[].claims.email` | boolean |   |
-| `spec.realm.oauthClients[].claims.gender` | boolean |   |
-| `spec.realm.oauthClients[].claims.locale` | boolean |   |
-| `spec.realm.oauthClients[].claims.name` | boolean |   |
-| `spec.realm.oauthClients[].claims.phone` | boolean |   |
-| `spec.realm.oauthClients[].claims.picture` | boolean |   |
-| `spec.realm.oauthClients[].claims.profile` | boolean |   |
-| `spec.realm.oauthClients[].claims.username` | boolean |   |
-| `spec.realm.oauthClients[].claims.website` | boolean |   |
-| `spec.realm.oauthClients[].clientAuthenticatorType` | string |   |
-| `spec.realm.oauthClients[].clientId` | string |   |
-| `spec.realm.oauthClients[].clientTemplate` | string |   |
-| `spec.realm.oauthClients[].consentRequired` | boolean |   |
-| `spec.realm.oauthClients[].defaultClientScopes` | array[string] |   |
-| `spec.realm.oauthClients[].defaultRoles` | array[string] |   |
-| `spec.realm.oauthClients[].description` | string |   |
-| `spec.realm.oauthClients[].directAccessGrantsEnabled` | boolean |   |
-| `spec.realm.oauthClients[].directGrantsOnly` | boolean |   |
-| `spec.realm.oauthClients[].enabled` | boolean |   |
-| `spec.realm.oauthClients[].frontchannelLogout` | boolean |   |
-| `spec.realm.oauthClients[].fullScopeAllowed` | boolean |   |
-| `spec.realm.oauthClients[].id` | string |   |
-| `spec.realm.oauthClients[].implicitFlowEnabled` | boolean |   |
-| `spec.realm.oauthClients[].name` | string |   |
-| `spec.realm.oauthClients[].nodeReRegistrationTimeout` | integer |   |
-| `spec.realm.oauthClients[].notBefore` | integer |   |
-| `spec.realm.oauthClients[].optionalClientScopes` | array[string] |   |
-| `spec.realm.oauthClients[].origin` | string |   |
-| `spec.realm.oauthClients[].protocol` | string |   |
-| `spec.realm.oauthClients[].protocolMappers` | array[object] |   |
-| `spec.realm.oauthClients[].protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.oauthClients[].protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.oauthClients[].protocolMappers[].consentText` | string |   |
-| `spec.realm.oauthClients[].protocolMappers[].id` | string |   |
-| `spec.realm.oauthClients[].protocolMappers[].name` | string |   |
-| `spec.realm.oauthClients[].protocolMappers[].protocol` | string |   |
-| `spec.realm.oauthClients[].protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.oauthClients[].publicClient` | boolean |   |
-| `spec.realm.oauthClients[].redirectUris` | array[string] |   |
-| `spec.realm.oauthClients[].registeredNodes` | map<string,integer> |   |
-| `spec.realm.oauthClients[].registrationAccessToken` | string |   |
-| `spec.realm.oauthClients[].rootUrl` | string |   |
-| `spec.realm.oauthClients[].secret` | string |   |
-| `spec.realm.oauthClients[].serviceAccountsEnabled` | boolean |   |
-| `spec.realm.oauthClients[].standardFlowEnabled` | boolean |   |
-| `spec.realm.oauthClients[].surrogateAuthRequired` | boolean |   |
-| `spec.realm.oauthClients[].type` | string |   |
-| `spec.realm.oauthClients[].useTemplateConfig` | boolean |   |
-| `spec.realm.oauthClients[].useTemplateMappers` | boolean |   |
-| `spec.realm.oauthClients[].useTemplateScope` | boolean |   |
-| `spec.realm.oauthClients[].webOrigins` | array[string] |   |
-| `spec.realm.offlineSessionIdleTimeout` | integer |   |
-| `spec.realm.offlineSessionMaxLifespan` | integer |   |
-| `spec.realm.offlineSessionMaxLifespanEnabled` | boolean |   |
-| `spec.realm.organizations` | array[object] |   |
-| `spec.realm.organizations[].alias` | string |   |
-| `spec.realm.organizations[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].description` | string |   |
-| `spec.realm.organizations[].domains` | array[object] |   |
-| `spec.realm.organizations[].domains[].name` | string |   |
-| `spec.realm.organizations[].domains[].verified` | boolean |   |
-| `spec.realm.organizations[].enabled` | boolean |   |
-| `spec.realm.organizations[].groups` | array[object] |   |
-| `spec.realm.organizations[].groups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].description` | string |   |
-| `spec.realm.organizations[].groups[].id` | string |   |
-| `spec.realm.organizations[].groups[].name` | string |   |
-| `spec.realm.organizations[].groups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].path` | string |   |
-| `spec.realm.organizations[].groups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
-| `spec.realm.organizations[].id` | string |   |
-| `spec.realm.organizations[].identityProviders` | array[object] |   |
-| `spec.realm.organizations[].identityProviders[].addReadTokenRoleOnCreate` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].alias` | string |   |
-| `spec.realm.organizations[].identityProviders[].authenticateByDefault` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].config` | map<string,string> |   |
-| `spec.realm.organizations[].identityProviders[].displayName` | string |   |
-| `spec.realm.organizations[].identityProviders[].enabled` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].firstBrokerLoginFlowAlias` | string |   |
-| `spec.realm.organizations[].identityProviders[].hideOnLogin` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].internalId` | string |   |
-| `spec.realm.organizations[].identityProviders[].linkOnly` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].organizationId` | string |   |
-| `spec.realm.organizations[].identityProviders[].postBrokerLoginFlowAlias` | string |   |
-| `spec.realm.organizations[].identityProviders[].providerId` | string |   |
-| `spec.realm.organizations[].identityProviders[].storeToken` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].trustEmail` | boolean |   |
-| `spec.realm.organizations[].identityProviders[].types` | array[string] |   |
-| `spec.realm.organizations[].identityProviders[].updateProfileFirstLoginMode` | string |   |
-| `spec.realm.organizations[].members` | array[object] |   |
-| `spec.realm.organizations[].members[].access` | map<string,boolean> |   |
-| `spec.realm.organizations[].members[].applicationRoles` | map<string,array> |   |
-| `spec.realm.organizations[].members[].attributes` | map<string,array> |   |
-| `spec.realm.organizations[].members[].clientConsents` | array[object] |   |
-| `spec.realm.organizations[].members[].clientConsents[].clientId` | string |   |
-| `spec.realm.organizations[].members[].clientConsents[].createdDate` | integer |   |
-| `spec.realm.organizations[].members[].clientConsents[].grantedClientScopes` | array[string] |   |
-| `spec.realm.organizations[].members[].clientConsents[].grantedRealmRoles` | array[string] |   |
-| `spec.realm.organizations[].members[].clientConsents[].lastUpdatedDate` | integer |   |
-| `spec.realm.organizations[].members[].clientRoles` | map<string,array> |   |
-| `spec.realm.organizations[].members[].createdTimestamp` | integer |   |
-| `spec.realm.organizations[].members[].credentials` | array[object] |   |
-| `spec.realm.organizations[].members[].credentials[].algorithm` | string |   |
-| `spec.realm.organizations[].members[].credentials[].config` | map<string,array> |   |
-| `spec.realm.organizations[].members[].credentials[].counter` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].createdDate` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].credentialData` | string |   |
-| `spec.realm.organizations[].members[].credentials[].device` | string |   |
-| `spec.realm.organizations[].members[].credentials[].digits` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].federationLink` | string |   |
-| `spec.realm.organizations[].members[].credentials[].hashIterations` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].hashedSaltedValue` | string |   |
-| `spec.realm.organizations[].members[].credentials[].id` | string |   |
-| `spec.realm.organizations[].members[].credentials[].period` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].priority` | integer |   |
-| `spec.realm.organizations[].members[].credentials[].salt` | string |   |
-| `spec.realm.organizations[].members[].credentials[].secretData` | string |   |
-| `spec.realm.organizations[].members[].credentials[].temporary` | boolean |   |
-| `spec.realm.organizations[].members[].credentials[].type` | string |   |
-| `spec.realm.organizations[].members[].credentials[].userLabel` | string |   |
-| `spec.realm.organizations[].members[].credentials[].value` | string |   |
-| `spec.realm.organizations[].members[].disableableCredentialTypes` | array[string] |   |
-| `spec.realm.organizations[].members[].email` | string |   |
-| `spec.realm.organizations[].members[].emailVerified` | boolean |   |
-| `spec.realm.organizations[].members[].enabled` | boolean |   |
-| `spec.realm.organizations[].members[].federatedIdentities` | array[object] |   |
-| `spec.realm.organizations[].members[].federatedIdentities[].identityProvider` | string |   |
-| `spec.realm.organizations[].members[].federatedIdentities[].userId` | string |   |
-| `spec.realm.organizations[].members[].federatedIdentities[].userName` | string |   |
-| `spec.realm.organizations[].members[].federationLink` | string |   |
-| `spec.realm.organizations[].members[].firstName` | string |   |
-| `spec.realm.organizations[].members[].groups` | array[string] |   |
-| `spec.realm.organizations[].members[].id` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials` | array[object] |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientId` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientName` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].credentialType` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].expiresAt` | integer |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].id` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].issuedAt` | integer |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].revision` | string |   |
-| `spec.realm.organizations[].members[].issuedVerifiableCredentials[].userId` | string |   |
-| `spec.realm.organizations[].members[].lastName` | string |   |
-| `spec.realm.organizations[].members[].membershipType` | string |   |
-| `spec.realm.organizations[].members[].notBefore` | integer |   |
-| `spec.realm.organizations[].members[].origin` | string |   |
-| `spec.realm.organizations[].members[].realmRoles` | array[string] |   |
-| `spec.realm.organizations[].members[].requiredActions` | array[string] |   |
-| `spec.realm.organizations[].members[].self` | string |   |
-| `spec.realm.organizations[].members[].serviceAccountClientId` | string |   |
-| `spec.realm.organizations[].members[].socialLinks` | array[object] |   |
-| `spec.realm.organizations[].members[].socialLinks[].socialProvider` | string |   |
-| `spec.realm.organizations[].members[].socialLinks[].socialUserId` | string |   |
-| `spec.realm.organizations[].members[].socialLinks[].socialUsername` | string |   |
-| `spec.realm.organizations[].members[].totp` | boolean |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes` | array[object] |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].defaultValue` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].displayName` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].group` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].multivalued` | boolean |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].name` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].readOnly` | boolean |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].required` | boolean |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups` | array[object] |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups[].displayDescription` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups[].displayHeader` | string |   |
-| `spec.realm.organizations[].members[].userProfileMetadata.groups[].name` | string |   |
-| `spec.realm.organizations[].members[].username` | string |   |
-| `spec.realm.organizations[].members[].verifiableCredentials` | array[object] |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].createdDate` | integer |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].credentialConfigurationId` | string |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].credentialScopeName` | string |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].revision` | string |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].updatedDate` | integer |   |
-| `spec.realm.organizations[].members[].verifiableCredentials[].userAttributes` | map<string,array> |   |
-| `spec.realm.organizations[].name` | string |   |
-| `spec.realm.organizations[].redirectUrl` | string |   |
-| `spec.realm.organizationsEnabled` | boolean |   |
-| `spec.realm.otpPolicyAlgorithm` | string |   |
-| `spec.realm.otpPolicyCodeReusable` | boolean |   |
-| `spec.realm.otpPolicyDigits` | integer |   |
-| `spec.realm.otpPolicyInitialCounter` | integer |   |
-| `spec.realm.otpPolicyLookAheadWindow` | integer |   |
-| `spec.realm.otpPolicyPeriod` | integer |   |
-| `spec.realm.otpPolicyType` | string |   |
-| `spec.realm.otpSupportedApplications` | array[string] |   |
-| `spec.realm.passwordCredentialGrantAllowed` | boolean |   |
-| `spec.realm.passwordPolicy` | string |   |
-| `spec.realm.permanentLockout` | boolean |   |
-| `spec.realm.privateKey` | string |   |
-| `spec.realm.protocolMappers` | array[object] |   |
-| `spec.realm.protocolMappers[].config` | map<string,string> |   |
-| `spec.realm.protocolMappers[].consentRequired` | boolean |   |
-| `spec.realm.protocolMappers[].consentText` | string |   |
-| `spec.realm.protocolMappers[].id` | string |   |
-| `spec.realm.protocolMappers[].name` | string |   |
-| `spec.realm.protocolMappers[].protocol` | string |   |
-| `spec.realm.protocolMappers[].protocolMapper` | string |   |
-| `spec.realm.publicKey` | string |   |
-| `spec.realm.quickLoginCheckMilliSeconds` | integer |   |
-| `spec.realm.realm` | string |   |
-| `spec.realm.refreshTokenMaxReuse` | integer |   |
-| `spec.realm.registrationAllowed` | boolean |   |
-| `spec.realm.registrationEmailAsUsername` | boolean |   |
-| `spec.realm.registrationFlow` | string |   |
-| `spec.realm.rememberMe` | boolean |   |
-| `spec.realm.requiredActions` | array[object] |   |
-| `spec.realm.requiredActions[].alias` | string |   |
-| `spec.realm.requiredActions[].config` | map<string,string> |   |
-| `spec.realm.requiredActions[].defaultAction` | boolean |   |
-| `spec.realm.requiredActions[].enabled` | boolean |   |
-| `spec.realm.requiredActions[].name` | string |   |
-| `spec.realm.requiredActions[].priority` | integer |   |
-| `spec.realm.requiredActions[].providerId` | string |   |
-| `spec.realm.requiredCredentials` | array[string] |   |
-| `spec.realm.resetCredentialsFlow` | string |   |
-| `spec.realm.resetPasswordAllowed` | boolean |   |
-| `spec.realm.revokeRefreshToken` | boolean |   |
-| `spec.realm.roles.application` | map<string,array> |   |
-| `spec.realm.roles.client` | map<string,array> |   |
-| `spec.realm.roles.realm` | array[object] |   |
-| `spec.realm.roles.realm[].attributes` | map<string,array> |   |
-| `spec.realm.roles.realm[].clientRole` | boolean |   |
-| `spec.realm.roles.realm[].composite` | boolean |   |
-| `spec.realm.roles.realm[].composites.application` | map<string,array> |   |
-| `spec.realm.roles.realm[].composites.client` | map<string,array> |   |
-| `spec.realm.roles.realm[].composites.realm` | array[string] |   |
-| `spec.realm.roles.realm[].containerId` | string |   |
-| `spec.realm.roles.realm[].description` | string |   |
-| `spec.realm.roles.realm[].id` | string |   |
-| `spec.realm.roles.realm[].name` | string |   |
-| `spec.realm.roles.realm[].scopeParamRequired` | boolean |   |
-| `spec.realm.scimApiEnabled` | boolean |   |
-| `spec.realm.scopeMappings` | array[object] |   |
-| `spec.realm.scopeMappings[].client` | string |   |
-| `spec.realm.scopeMappings[].clientScope` | string |   |
-| `spec.realm.scopeMappings[].clientTemplate` | string |   |
-| `spec.realm.scopeMappings[].roles` | array[string] |   |
-| `spec.realm.scopeMappings[].self` | string |   |
-| `spec.realm.smtpServer` | map<string,string> |   |
-| `spec.realm.social` | boolean |   |
-| `spec.realm.socialProviders` | map<string,string> |   |
-| `spec.realm.sslRequired` | string |   |
-| `spec.realm.ssoSessionIdleTimeout` | integer |   |
-| `spec.realm.ssoSessionIdleTimeoutRememberMe` | integer |   |
-| `spec.realm.ssoSessionMaxLifespan` | integer |   |
-| `spec.realm.ssoSessionMaxLifespanRememberMe` | integer |   |
-| `spec.realm.supportedLocales` | array[string] |   |
-| `spec.realm.updateProfileOnInitialSocialLogin` | boolean |   |
-| `spec.realm.userFederationMappers` | array[object] |   |
-| `spec.realm.userFederationMappers[].config` | map<string,string> |   |
-| `spec.realm.userFederationMappers[].federationMapperType` | string |   |
-| `spec.realm.userFederationMappers[].federationProviderDisplayName` | string |   |
-| `spec.realm.userFederationMappers[].id` | string |   |
-| `spec.realm.userFederationMappers[].name` | string |   |
-| `spec.realm.userFederationProviders` | array[object] |   |
-| `spec.realm.userFederationProviders[].changedSyncPeriod` | integer |   |
-| `spec.realm.userFederationProviders[].config` | map<string,string> |   |
-| `spec.realm.userFederationProviders[].displayName` | string |   |
-| `spec.realm.userFederationProviders[].fullSyncPeriod` | integer |   |
-| `spec.realm.userFederationProviders[].id` | string |   |
-| `spec.realm.userFederationProviders[].lastSync` | integer |   |
-| `spec.realm.userFederationProviders[].priority` | integer |   |
-| `spec.realm.userFederationProviders[].providerName` | string |   |
-| `spec.realm.userManagedAccessAllowed` | boolean |   |
-| `spec.realm.users` | array[object] |   |
-| `spec.realm.users[].access` | map<string,boolean> |   |
-| `spec.realm.users[].applicationRoles` | map<string,array> |   |
-| `spec.realm.users[].attributes` | map<string,array> |   |
-| `spec.realm.users[].clientConsents` | array[object] |   |
-| `spec.realm.users[].clientConsents[].clientId` | string |   |
-| `spec.realm.users[].clientConsents[].createdDate` | integer |   |
-| `spec.realm.users[].clientConsents[].grantedClientScopes` | array[string] |   |
-| `spec.realm.users[].clientConsents[].grantedRealmRoles` | array[string] |   |
-| `spec.realm.users[].clientConsents[].lastUpdatedDate` | integer |   |
-| `spec.realm.users[].clientRoles` | map<string,array> |   |
-| `spec.realm.users[].createdTimestamp` | integer |   |
-| `spec.realm.users[].credentials` | array[object] |   |
-| `spec.realm.users[].credentials[].algorithm` | string |   |
-| `spec.realm.users[].credentials[].config` | map<string,array> |   |
-| `spec.realm.users[].credentials[].counter` | integer |   |
-| `spec.realm.users[].credentials[].createdDate` | integer |   |
-| `spec.realm.users[].credentials[].credentialData` | string |   |
-| `spec.realm.users[].credentials[].device` | string |   |
-| `spec.realm.users[].credentials[].digits` | integer |   |
-| `spec.realm.users[].credentials[].federationLink` | string |   |
-| `spec.realm.users[].credentials[].hashIterations` | integer |   |
-| `spec.realm.users[].credentials[].hashedSaltedValue` | string |   |
-| `spec.realm.users[].credentials[].id` | string |   |
-| `spec.realm.users[].credentials[].period` | integer |   |
-| `spec.realm.users[].credentials[].priority` | integer |   |
-| `spec.realm.users[].credentials[].salt` | string |   |
-| `spec.realm.users[].credentials[].secretData` | string |   |
-| `spec.realm.users[].credentials[].temporary` | boolean |   |
-| `spec.realm.users[].credentials[].type` | string |   |
-| `spec.realm.users[].credentials[].userLabel` | string |   |
-| `spec.realm.users[].credentials[].value` | string |   |
-| `spec.realm.users[].disableableCredentialTypes` | array[string] |   |
-| `spec.realm.users[].email` | string |   |
-| `spec.realm.users[].emailVerified` | boolean |   |
-| `spec.realm.users[].enabled` | boolean |   |
-| `spec.realm.users[].federatedIdentities` | array[object] |   |
-| `spec.realm.users[].federatedIdentities[].identityProvider` | string |   |
-| `spec.realm.users[].federatedIdentities[].userId` | string |   |
-| `spec.realm.users[].federatedIdentities[].userName` | string |   |
-| `spec.realm.users[].federationLink` | string |   |
-| `spec.realm.users[].firstName` | string |   |
-| `spec.realm.users[].groups` | array[string] |   |
-| `spec.realm.users[].id` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials` | array[object] |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].clientId` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].clientName` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].credentialType` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].expiresAt` | integer |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].id` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].issuedAt` | integer |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].revision` | string |   |
-| `spec.realm.users[].issuedVerifiableCredentials[].userId` | string |   |
-| `spec.realm.users[].lastName` | string |   |
-| `spec.realm.users[].notBefore` | integer |   |
-| `spec.realm.users[].origin` | string |   |
-| `spec.realm.users[].realmRoles` | array[string] |   |
-| `spec.realm.users[].requiredActions` | array[string] |   |
-| `spec.realm.users[].self` | string |   |
-| `spec.realm.users[].serviceAccountClientId` | string |   |
-| `spec.realm.users[].socialLinks` | array[object] |   |
-| `spec.realm.users[].socialLinks[].socialProvider` | string |   |
-| `spec.realm.users[].socialLinks[].socialUserId` | string |   |
-| `spec.realm.users[].socialLinks[].socialUsername` | string |   |
-| `spec.realm.users[].totp` | boolean |   |
-| `spec.realm.users[].userProfileMetadata.attributes` | array[object] |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].defaultValue` | string |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].displayName` | string |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].group` | string |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].multivalued` | boolean |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].name` | string |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].readOnly` | boolean |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].required` | boolean |   |
-| `spec.realm.users[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
-| `spec.realm.users[].userProfileMetadata.groups` | array[object] |   |
-| `spec.realm.users[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
-| `spec.realm.users[].userProfileMetadata.groups[].displayDescription` | string |   |
-| `spec.realm.users[].userProfileMetadata.groups[].displayHeader` | string |   |
-| `spec.realm.users[].userProfileMetadata.groups[].name` | string |   |
-| `spec.realm.users[].username` | string |   |
-| `spec.realm.users[].verifiableCredentials` | array[object] |   |
-| `spec.realm.users[].verifiableCredentials[].createdDate` | integer |   |
-| `spec.realm.users[].verifiableCredentials[].credentialConfigurationId` | string |   |
-| `spec.realm.users[].verifiableCredentials[].credentialScopeName` | string |   |
-| `spec.realm.users[].verifiableCredentials[].revision` | string |   |
-| `spec.realm.users[].verifiableCredentials[].updatedDate` | integer |   |
-| `spec.realm.users[].verifiableCredentials[].userAttributes` | map<string,array> |   |
-| `spec.realm.verifiableCredentialsEnabled` | boolean |   |
-| `spec.realm.verifyEmail` | boolean |   |
-| `spec.realm.waitIncrementSeconds` | integer |   |
-| `spec.realm.webAuthnPolicyAcceptableAaguids` | array[string] |   |
-| `spec.realm.webAuthnPolicyAttestationConveyancePreference` | string |   |
-| `spec.realm.webAuthnPolicyAuthenticatorAttachment` | string |   |
-| `spec.realm.webAuthnPolicyAvoidSameAuthenticatorRegister` | boolean |   |
-| `spec.realm.webAuthnPolicyCreateTimeout` | integer |   |
-| `spec.realm.webAuthnPolicyExtraOrigins` | array[string] |   |
-| `spec.realm.webAuthnPolicyPasswordlessAcceptableAaguids` | array[string] |   |
-| `spec.realm.webAuthnPolicyPasswordlessAttestationConveyancePreference` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessAuthenticatorAttachment` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister` | boolean |   |
-| `spec.realm.webAuthnPolicyPasswordlessCreateTimeout` | integer |   |
-| `spec.realm.webAuthnPolicyPasswordlessExtraOrigins` | array[string] |   |
-| `spec.realm.webAuthnPolicyPasswordlessMediation` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessPasskeysEnabled` | boolean |   |
-| `spec.realm.webAuthnPolicyPasswordlessRequireResidentKey` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessResidentKey` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessRpEntityName` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessRpId` | string |   |
-| `spec.realm.webAuthnPolicyPasswordlessSignatureAlgorithms` | array[string] |   |
-| `spec.realm.webAuthnPolicyPasswordlessUserVerificationRequirement` | string |   |
-| `spec.realm.webAuthnPolicyRequireResidentKey` | string |   |
-| `spec.realm.webAuthnPolicyResidentKey` | string |   |
-| `spec.realm.webAuthnPolicyRpEntityName` | string |   |
-| `spec.realm.webAuthnPolicyRpId` | string |   |
-| `spec.realm.webAuthnPolicySignatureAlgorithms` | array[string] |   |
-| `spec.realm.webAuthnPolicyUserVerificationRequirement` | string |   |
-| `spec.resources.claims` | array[object] |   |
-| `spec.resources.claims[].name` | string |   |
-| `spec.resources.claims[].request` | string |   |
-| `spec.resources.limits` | map<string,any> |   |
-| `spec.resources.requests` | map<string,any> |   |
+| Version | Property path | Type | Description |
+|---------|---------------|------|-------------|
+| `v2beta1` | `spec.keycloakCRName` | string | The name of the Keycloak CR to reference, in the same namespace.  |
+| `v2beta1` | `spec.labels` | map<string,string> | Optionally set to add additional labels to the Job created for the import.  |
+| `v2beta1` | `spec.placeholders` | map<string,object> | Optionally set to replace ENV variable placeholders in the realm import.  |
+| `v2beta1` | `spec.realm.accessCodeLifespan` | integer |   |
+| `v2beta1` | `spec.realm.accessCodeLifespanLogin` | integer |   |
+| `v2beta1` | `spec.realm.accessCodeLifespanUserAction` | integer |   |
+| `v2beta1` | `spec.realm.accessTokenLifespan` | integer |   |
+| `v2beta1` | `spec.realm.accessTokenLifespanForImplicitFlow` | integer |   |
+| `v2beta1` | `spec.realm.accountTheme` | string |   |
+| `v2beta1` | `spec.realm.actionTokenGeneratedByAdminLifespan` | integer |   |
+| `v2beta1` | `spec.realm.actionTokenGeneratedByUserLifespan` | integer |   |
+| `v2beta1` | `spec.realm.adminEventsDetailsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.adminEventsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.adminUrl` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.alwaysDisplayInConsole` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.attributes` | map<string,string> |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authenticationFlowBindingOverrides` | map<string,string> |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationServicesEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.allowRemoteResourceManagement` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.clientId` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.decisionStrategy` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies` | array[object] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].decisionStrategy` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].description` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].logic` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].owner` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].policies` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourceType` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resources` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData` | array[object] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[]._id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].displayName` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].type` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopes` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData` | array[object] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].displayName` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].type` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.policyEnforcementMode` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources` | array[object] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[]._id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].displayName` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].icon_uri` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].owner.id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].owner.name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].type` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].uris` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.baseUrl` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.bearerOnly` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.clientAuthenticatorType` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.clientId` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.clientTemplate` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.defaultClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.defaultRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.description` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.directAccessGrantsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.directGrantsOnly` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.enabled` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.frontchannelLogout` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.fullScopeAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.implicitFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.nodeReRegistrationTimeout` | integer |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.notBefore` | integer |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.optionalClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.origin` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.protocol` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.protocolMappers` | array[object] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.protocolMappers[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.protocolMappers[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.protocolMappers[].consentText` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.protocolMappers[].id` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.protocolMappers[].name` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.protocolMappers[].protocol` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.protocolMappers[].protocolMapper` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.publicClient` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.redirectUris` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.registeredNodes` | map<string,integer> |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.registrationAccessToken` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.rootUrl` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.secret` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.serviceAccountsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.standardFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.surrogateAuthRequired` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.type` | string |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.useTemplateConfig` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.useTemplateMappers` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.useTemplateScope` | boolean |   |
+| `v2beta1` | `spec.realm.adminPermissionsClient.webOrigins` | array[string] |   |
+| `v2beta1` | `spec.realm.adminPermissionsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.adminTheme` | string |   |
+| `v2beta1` | `spec.realm.applicationScopeMappings` | map<string,array> |   |
+| `v2beta1` | `spec.realm.applications` | array[object] |   |
+| `v2beta1` | `spec.realm.applications[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.applications[].adminUrl` | string |   |
+| `v2beta1` | `spec.realm.applications[].alwaysDisplayInConsole` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].attributes` | map<string,string> |   |
+| `v2beta1` | `spec.realm.applications[].authenticationFlowBindingOverrides` | map<string,string> |   |
+| `v2beta1` | `spec.realm.applications[].authorizationServicesEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.clientId` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.decisionStrategy` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.name` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies` | array[object] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].decisionStrategy` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].description` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].logic` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].name` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].owner` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].policies` | array[string] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourceType` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resources` | array[string] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData` | array[object] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].name` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].type` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].scopes` | array[string] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData` | array[object] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData[].id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData[].name` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policies[].type` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.policyEnforcementMode` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources` | array[object] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[]._id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].displayName` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].icon_uri` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].name` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].owner.id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].owner.name` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].type` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.resources[].uris` | array[string] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.applications[].authorizationSettings.scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.applications[].baseUrl` | string |   |
+| `v2beta1` | `spec.realm.applications[].bearerOnly` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.address` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.email` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.gender` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.locale` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.name` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.phone` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.picture` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.profile` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.username` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].claims.website` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].clientAuthenticatorType` | string |   |
+| `v2beta1` | `spec.realm.applications[].clientId` | string |   |
+| `v2beta1` | `spec.realm.applications[].clientTemplate` | string |   |
+| `v2beta1` | `spec.realm.applications[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].defaultClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.applications[].defaultRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.applications[].description` | string |   |
+| `v2beta1` | `spec.realm.applications[].directAccessGrantsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].directGrantsOnly` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].frontchannelLogout` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].fullScopeAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].id` | string |   |
+| `v2beta1` | `spec.realm.applications[].implicitFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].name` | string |   |
+| `v2beta1` | `spec.realm.applications[].nodeReRegistrationTimeout` | integer |   |
+| `v2beta1` | `spec.realm.applications[].notBefore` | integer |   |
+| `v2beta1` | `spec.realm.applications[].optionalClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.applications[].origin` | string |   |
+| `v2beta1` | `spec.realm.applications[].protocol` | string |   |
+| `v2beta1` | `spec.realm.applications[].protocolMappers` | array[object] |   |
+| `v2beta1` | `spec.realm.applications[].protocolMappers[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.applications[].protocolMappers[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].protocolMappers[].consentText` | string |   |
+| `v2beta1` | `spec.realm.applications[].protocolMappers[].id` | string |   |
+| `v2beta1` | `spec.realm.applications[].protocolMappers[].name` | string |   |
+| `v2beta1` | `spec.realm.applications[].protocolMappers[].protocol` | string |   |
+| `v2beta1` | `spec.realm.applications[].protocolMappers[].protocolMapper` | string |   |
+| `v2beta1` | `spec.realm.applications[].publicClient` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].redirectUris` | array[string] |   |
+| `v2beta1` | `spec.realm.applications[].registeredNodes` | map<string,integer> |   |
+| `v2beta1` | `spec.realm.applications[].registrationAccessToken` | string |   |
+| `v2beta1` | `spec.realm.applications[].rootUrl` | string |   |
+| `v2beta1` | `spec.realm.applications[].secret` | string |   |
+| `v2beta1` | `spec.realm.applications[].serviceAccountsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].standardFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].surrogateAuthRequired` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].type` | string |   |
+| `v2beta1` | `spec.realm.applications[].useTemplateConfig` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].useTemplateMappers` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].useTemplateScope` | boolean |   |
+| `v2beta1` | `spec.realm.applications[].webOrigins` | array[string] |   |
+| `v2beta1` | `spec.realm.attributes` | map<string,string> |   |
+| `v2beta1` | `spec.realm.authenticationFlows` | array[object] |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].alias` | string |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].authenticationExecutions` | array[object] |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].authenticationExecutions[].authenticator` | string |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].authenticationExecutions[].authenticatorConfig` | string |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].authenticationExecutions[].authenticatorFlow` | boolean |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].authenticationExecutions[].autheticatorFlow` | boolean |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].authenticationExecutions[].flowAlias` | string |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].authenticationExecutions[].priority` | integer |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].authenticationExecutions[].requirement` | string |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].authenticationExecutions[].userSetupAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].builtIn` | boolean |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].description` | string |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].id` | string |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].providerId` | string |   |
+| `v2beta1` | `spec.realm.authenticationFlows[].topLevel` | boolean |   |
+| `v2beta1` | `spec.realm.authenticatorConfig` | array[object] |   |
+| `v2beta1` | `spec.realm.authenticatorConfig[].alias` | string |   |
+| `v2beta1` | `spec.realm.authenticatorConfig[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.authenticatorConfig[].id` | string |   |
+| `v2beta1` | `spec.realm.browserFlow` | string |   |
+| `v2beta1` | `spec.realm.browserSecurityHeaders` | map<string,string> |   |
+| `v2beta1` | `spec.realm.bruteForceProtected` | boolean |   |
+| `v2beta1` | `spec.realm.bruteForceStrategy` | string |   |
+| `v2beta1` | `spec.realm.certificate` | string |   |
+| `v2beta1` | `spec.realm.clientAuthenticationFlow` | string |   |
+| `v2beta1` | `spec.realm.clientOfflineSessionIdleTimeout` | integer |   |
+| `v2beta1` | `spec.realm.clientOfflineSessionMaxLifespan` | integer |   |
+| `v2beta1` | `spec.realm.clientPolicies` | object |   |
+| `v2beta1` | `spec.realm.clientProfiles` | object |   |
+| `v2beta1` | `spec.realm.clientScopeMappings` | map<string,array> |   |
+| `v2beta1` | `spec.realm.clientScopes` | array[object] |   |
+| `v2beta1` | `spec.realm.clientScopes[].attributes` | map<string,string> |   |
+| `v2beta1` | `spec.realm.clientScopes[].description` | string |   |
+| `v2beta1` | `spec.realm.clientScopes[].id` | string |   |
+| `v2beta1` | `spec.realm.clientScopes[].name` | string |   |
+| `v2beta1` | `spec.realm.clientScopes[].protocol` | string |   |
+| `v2beta1` | `spec.realm.clientScopes[].protocolMappers` | array[object] |   |
+| `v2beta1` | `spec.realm.clientScopes[].protocolMappers[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.clientScopes[].protocolMappers[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.clientScopes[].protocolMappers[].consentText` | string |   |
+| `v2beta1` | `spec.realm.clientScopes[].protocolMappers[].id` | string |   |
+| `v2beta1` | `spec.realm.clientScopes[].protocolMappers[].name` | string |   |
+| `v2beta1` | `spec.realm.clientScopes[].protocolMappers[].protocol` | string |   |
+| `v2beta1` | `spec.realm.clientScopes[].protocolMappers[].protocolMapper` | string |   |
+| `v2beta1` | `spec.realm.clientSessionIdleTimeout` | integer |   |
+| `v2beta1` | `spec.realm.clientSessionMaxLifespan` | integer |   |
+| `v2beta1` | `spec.realm.clientTemplates` | array[object] |   |
+| `v2beta1` | `spec.realm.clientTemplates[].attributes` | map<string,string> |   |
+| `v2beta1` | `spec.realm.clientTemplates[].bearerOnly` | boolean |   |
+| `v2beta1` | `spec.realm.clientTemplates[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.clientTemplates[].description` | string |   |
+| `v2beta1` | `spec.realm.clientTemplates[].directAccessGrantsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.clientTemplates[].frontchannelLogout` | boolean |   |
+| `v2beta1` | `spec.realm.clientTemplates[].fullScopeAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.clientTemplates[].id` | string |   |
+| `v2beta1` | `spec.realm.clientTemplates[].implicitFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.clientTemplates[].name` | string |   |
+| `v2beta1` | `spec.realm.clientTemplates[].protocol` | string |   |
+| `v2beta1` | `spec.realm.clientTemplates[].protocolMappers` | array[object] |   |
+| `v2beta1` | `spec.realm.clientTemplates[].protocolMappers[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.clientTemplates[].protocolMappers[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.clientTemplates[].protocolMappers[].consentText` | string |   |
+| `v2beta1` | `spec.realm.clientTemplates[].protocolMappers[].id` | string |   |
+| `v2beta1` | `spec.realm.clientTemplates[].protocolMappers[].name` | string |   |
+| `v2beta1` | `spec.realm.clientTemplates[].protocolMappers[].protocol` | string |   |
+| `v2beta1` | `spec.realm.clientTemplates[].protocolMappers[].protocolMapper` | string |   |
+| `v2beta1` | `spec.realm.clientTemplates[].publicClient` | boolean |   |
+| `v2beta1` | `spec.realm.clientTemplates[].serviceAccountsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.clientTemplates[].standardFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.clients` | array[object] |   |
+| `v2beta1` | `spec.realm.clients[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.clients[].adminUrl` | string |   |
+| `v2beta1` | `spec.realm.clients[].alwaysDisplayInConsole` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].attributes` | map<string,string> |   |
+| `v2beta1` | `spec.realm.clients[].authenticationFlowBindingOverrides` | map<string,string> |   |
+| `v2beta1` | `spec.realm.clients[].authorizationServicesEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.clientId` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.decisionStrategy` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.name` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies` | array[object] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].decisionStrategy` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].description` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].logic` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].name` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].owner` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].policies` | array[string] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourceType` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resources` | array[string] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData` | array[object] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].name` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].type` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].scopes` | array[string] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData` | array[object] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData[].id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData[].name` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policies[].type` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.policyEnforcementMode` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources` | array[object] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[]._id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].displayName` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].icon_uri` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].name` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].owner.id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].owner.name` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].type` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.resources[].uris` | array[string] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.clients[].authorizationSettings.scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.clients[].baseUrl` | string |   |
+| `v2beta1` | `spec.realm.clients[].bearerOnly` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].clientAuthenticatorType` | string |   |
+| `v2beta1` | `spec.realm.clients[].clientId` | string |   |
+| `v2beta1` | `spec.realm.clients[].clientTemplate` | string |   |
+| `v2beta1` | `spec.realm.clients[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].defaultClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.clients[].defaultRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.clients[].description` | string |   |
+| `v2beta1` | `spec.realm.clients[].directAccessGrantsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].directGrantsOnly` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].frontchannelLogout` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].fullScopeAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].id` | string |   |
+| `v2beta1` | `spec.realm.clients[].implicitFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].name` | string |   |
+| `v2beta1` | `spec.realm.clients[].nodeReRegistrationTimeout` | integer |   |
+| `v2beta1` | `spec.realm.clients[].notBefore` | integer |   |
+| `v2beta1` | `spec.realm.clients[].optionalClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.clients[].origin` | string |   |
+| `v2beta1` | `spec.realm.clients[].protocol` | string |   |
+| `v2beta1` | `spec.realm.clients[].protocolMappers` | array[object] |   |
+| `v2beta1` | `spec.realm.clients[].protocolMappers[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.clients[].protocolMappers[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].protocolMappers[].consentText` | string |   |
+| `v2beta1` | `spec.realm.clients[].protocolMappers[].id` | string |   |
+| `v2beta1` | `spec.realm.clients[].protocolMappers[].name` | string |   |
+| `v2beta1` | `spec.realm.clients[].protocolMappers[].protocol` | string |   |
+| `v2beta1` | `spec.realm.clients[].protocolMappers[].protocolMapper` | string |   |
+| `v2beta1` | `spec.realm.clients[].publicClient` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].redirectUris` | array[string] |   |
+| `v2beta1` | `spec.realm.clients[].registeredNodes` | map<string,integer> |   |
+| `v2beta1` | `spec.realm.clients[].registrationAccessToken` | string |   |
+| `v2beta1` | `spec.realm.clients[].rootUrl` | string |   |
+| `v2beta1` | `spec.realm.clients[].secret` | string |   |
+| `v2beta1` | `spec.realm.clients[].serviceAccountsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].standardFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].surrogateAuthRequired` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].type` | string |   |
+| `v2beta1` | `spec.realm.clients[].useTemplateConfig` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].useTemplateMappers` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].useTemplateScope` | boolean |   |
+| `v2beta1` | `spec.realm.clients[].webOrigins` | array[string] |   |
+| `v2beta1` | `spec.realm.codeSecret` | string |   |
+| `v2beta1` | `spec.realm.components` | map<string,array> |   |
+| `v2beta1` | `spec.realm.defaultDefaultClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.defaultGroups` | array[string] |   |
+| `v2beta1` | `spec.realm.defaultLocale` | string |   |
+| `v2beta1` | `spec.realm.defaultOptionalClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.defaultRole.attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.defaultRole.clientRole` | boolean |   |
+| `v2beta1` | `spec.realm.defaultRole.composite` | boolean |   |
+| `v2beta1` | `spec.realm.defaultRole.composites.application` | map<string,array> |   |
+| `v2beta1` | `spec.realm.defaultRole.composites.client` | map<string,array> |   |
+| `v2beta1` | `spec.realm.defaultRole.composites.realm` | array[string] |   |
+| `v2beta1` | `spec.realm.defaultRole.containerId` | string |   |
+| `v2beta1` | `spec.realm.defaultRole.description` | string |   |
+| `v2beta1` | `spec.realm.defaultRole.id` | string |   |
+| `v2beta1` | `spec.realm.defaultRole.name` | string |   |
+| `v2beta1` | `spec.realm.defaultRole.scopeParamRequired` | boolean |   |
+| `v2beta1` | `spec.realm.defaultRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.defaultSignatureAlgorithm` | string |   |
+| `v2beta1` | `spec.realm.directGrantFlow` | string |   |
+| `v2beta1` | `spec.realm.displayName` | string |   |
+| `v2beta1` | `spec.realm.displayNameHtml` | string |   |
+| `v2beta1` | `spec.realm.dockerAuthenticationFlow` | string |   |
+| `v2beta1` | `spec.realm.duplicateEmailsAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.editUsernameAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.emailTheme` | string |   |
+| `v2beta1` | `spec.realm.enabled` | boolean |   |
+| `v2beta1` | `spec.realm.enabledEventTypes` | array[string] |   |
+| `v2beta1` | `spec.realm.eventsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.eventsExpiration` | integer |   |
+| `v2beta1` | `spec.realm.eventsListeners` | array[string] |   |
+| `v2beta1` | `spec.realm.failureFactor` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers` | array[object] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.federatedUsers[].applicationRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.federatedUsers[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.federatedUsers[].clientConsents` | array[object] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].clientConsents[].clientId` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].clientConsents[].createdDate` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].clientConsents[].grantedClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].clientConsents[].grantedRealmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].clientConsents[].lastUpdatedDate` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.federatedUsers[].createdTimestamp` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials` | array[object] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].algorithm` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].config` | map<string,array> |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].counter` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].createdDate` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].credentialData` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].device` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].digits` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].federationLink` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].hashIterations` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].hashedSaltedValue` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].id` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].period` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].priority` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].salt` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].secretData` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].temporary` | boolean |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].type` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].userLabel` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].credentials[].value` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].disableableCredentialTypes` | array[string] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].email` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].emailVerified` | boolean |   |
+| `v2beta1` | `spec.realm.federatedUsers[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.federatedUsers[].federatedIdentities` | array[object] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].federatedIdentities[].identityProvider` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].federatedIdentities[].userId` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].federatedIdentities[].userName` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].federationLink` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].firstName` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].groups` | array[string] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].id` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials` | array[object] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientId` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientName` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].credentialType` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].expiresAt` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].id` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].issuedAt` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].revision` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].userId` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].lastName` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].notBefore` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].origin` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].requiredActions` | array[string] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].self` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].serviceAccountClientId` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].socialLinks` | array[object] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].socialLinks[].socialProvider` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].socialLinks[].socialUserId` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].socialLinks[].socialUsername` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].totp` | boolean |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes` | array[object] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].defaultValue` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].group` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].multivalued` | boolean |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].name` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].readOnly` | boolean |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].required` | boolean |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.groups` | array[object] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.groups[].displayDescription` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.groups[].displayHeader` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].userProfileMetadata.groups[].name` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].username` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].verifiableCredentials` | array[object] |   |
+| `v2beta1` | `spec.realm.federatedUsers[].verifiableCredentials[].createdDate` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].verifiableCredentials[].credentialConfigurationId` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].verifiableCredentials[].credentialScopeName` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].verifiableCredentials[].revision` | string |   |
+| `v2beta1` | `spec.realm.federatedUsers[].verifiableCredentials[].updatedDate` | integer |   |
+| `v2beta1` | `spec.realm.federatedUsers[].verifiableCredentials[].userAttributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.firstBrokerLoginFlow` | string |   |
+| `v2beta1` | `spec.realm.groups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.id` | string |   |
+| `v2beta1` | `spec.realm.identityProviderMappers` | array[object] |   |
+| `v2beta1` | `spec.realm.identityProviderMappers[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.identityProviderMappers[].id` | string |   |
+| `v2beta1` | `spec.realm.identityProviderMappers[].identityProviderAlias` | string |   |
+| `v2beta1` | `spec.realm.identityProviderMappers[].identityProviderMapper` | string |   |
+| `v2beta1` | `spec.realm.identityProviderMappers[].name` | string |   |
+| `v2beta1` | `spec.realm.identityProviders` | array[object] |   |
+| `v2beta1` | `spec.realm.identityProviders[].addReadTokenRoleOnCreate` | boolean |   |
+| `v2beta1` | `spec.realm.identityProviders[].alias` | string |   |
+| `v2beta1` | `spec.realm.identityProviders[].authenticateByDefault` | boolean |   |
+| `v2beta1` | `spec.realm.identityProviders[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.identityProviders[].displayName` | string |   |
+| `v2beta1` | `spec.realm.identityProviders[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.identityProviders[].firstBrokerLoginFlowAlias` | string |   |
+| `v2beta1` | `spec.realm.identityProviders[].hideOnLogin` | boolean |   |
+| `v2beta1` | `spec.realm.identityProviders[].internalId` | string |   |
+| `v2beta1` | `spec.realm.identityProviders[].linkOnly` | boolean |   |
+| `v2beta1` | `spec.realm.identityProviders[].organizationId` | string |   |
+| `v2beta1` | `spec.realm.identityProviders[].postBrokerLoginFlowAlias` | string |   |
+| `v2beta1` | `spec.realm.identityProviders[].providerId` | string |   |
+| `v2beta1` | `spec.realm.identityProviders[].storeToken` | boolean |   |
+| `v2beta1` | `spec.realm.identityProviders[].trustEmail` | boolean |   |
+| `v2beta1` | `spec.realm.identityProviders[].types` | array[string] |   |
+| `v2beta1` | `spec.realm.identityProviders[].updateProfileFirstLoginMode` | string |   |
+| `v2beta1` | `spec.realm.internationalizationEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.keycloakVersion` | string |   |
+| `v2beta1` | `spec.realm.localizationTexts` | map<string,object> |   |
+| `v2beta1` | `spec.realm.loginTheme` | string |   |
+| `v2beta1` | `spec.realm.loginWithEmailAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.maxDeltaTimeSeconds` | integer |   |
+| `v2beta1` | `spec.realm.maxFailureWaitSeconds` | integer |   |
+| `v2beta1` | `spec.realm.maxSecondaryAuthFailures` | integer |   |
+| `v2beta1` | `spec.realm.maxTemporaryLockouts` | integer |   |
+| `v2beta1` | `spec.realm.minimumQuickLoginWaitSeconds` | integer |   |
+| `v2beta1` | `spec.realm.notBefore` | integer |   |
+| `v2beta1` | `spec.realm.oauth2DeviceCodeLifespan` | integer |   |
+| `v2beta1` | `spec.realm.oauth2DevicePollingInterval` | integer |   |
+| `v2beta1` | `spec.realm.oauthClients` | array[object] |   |
+| `v2beta1` | `spec.realm.oauthClients[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.oauthClients[].adminUrl` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].alwaysDisplayInConsole` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].attributes` | map<string,string> |   |
+| `v2beta1` | `spec.realm.oauthClients[].authenticationFlowBindingOverrides` | map<string,string> |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationServicesEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.clientId` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.decisionStrategy` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies` | array[object] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].decisionStrategy` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].description` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].logic` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].owner` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].policies` | array[string] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourceType` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resources` | array[string] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData` | array[object] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].type` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopes` | array[string] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData` | array[object] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policies[].type` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.policyEnforcementMode` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources` | array[object] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[]._id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].displayName` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].icon_uri` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].owner.id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].owner.name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].type` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.resources[].uris` | array[string] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.scopes` | array[object] |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.scopes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.scopes[].iconUri` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.scopes[].id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].authorizationSettings.scopes[].name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].baseUrl` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].bearerOnly` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.address` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.email` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.gender` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.locale` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.name` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.phone` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.picture` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.profile` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.username` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].claims.website` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].clientAuthenticatorType` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].clientId` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].clientTemplate` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].defaultClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.oauthClients[].defaultRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.oauthClients[].description` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].directAccessGrantsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].directGrantsOnly` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].frontchannelLogout` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].fullScopeAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].implicitFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].nodeReRegistrationTimeout` | integer |   |
+| `v2beta1` | `spec.realm.oauthClients[].notBefore` | integer |   |
+| `v2beta1` | `spec.realm.oauthClients[].optionalClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.oauthClients[].origin` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].protocol` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].protocolMappers` | array[object] |   |
+| `v2beta1` | `spec.realm.oauthClients[].protocolMappers[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.oauthClients[].protocolMappers[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].protocolMappers[].consentText` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].protocolMappers[].id` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].protocolMappers[].name` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].protocolMappers[].protocol` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].protocolMappers[].protocolMapper` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].publicClient` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].redirectUris` | array[string] |   |
+| `v2beta1` | `spec.realm.oauthClients[].registeredNodes` | map<string,integer> |   |
+| `v2beta1` | `spec.realm.oauthClients[].registrationAccessToken` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].rootUrl` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].secret` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].serviceAccountsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].standardFlowEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].surrogateAuthRequired` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].type` | string |   |
+| `v2beta1` | `spec.realm.oauthClients[].useTemplateConfig` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].useTemplateMappers` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].useTemplateScope` | boolean |   |
+| `v2beta1` | `spec.realm.oauthClients[].webOrigins` | array[string] |   |
+| `v2beta1` | `spec.realm.offlineSessionIdleTimeout` | integer |   |
+| `v2beta1` | `spec.realm.offlineSessionMaxLifespan` | integer |   |
+| `v2beta1` | `spec.realm.offlineSessionMaxLifespanEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.organizations` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].alias` | string |   |
+| `v2beta1` | `spec.realm.organizations[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].domains` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].domains[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].domains[].verified` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].groups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].addReadTokenRoleOnCreate` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].alias` | string |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].authenticateByDefault` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].displayName` | string |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].firstBrokerLoginFlowAlias` | string |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].hideOnLogin` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].internalId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].linkOnly` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].organizationId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].postBrokerLoginFlowAlias` | string |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].providerId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].storeToken` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].trustEmail` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].types` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].identityProviders[].updateProfileFirstLoginMode` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.organizations[].members[].applicationRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].members[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].members[].clientConsents` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].clientConsents[].clientId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].clientConsents[].createdDate` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].clientConsents[].grantedClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].clientConsents[].grantedRealmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].clientConsents[].lastUpdatedDate` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].members[].createdTimestamp` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].algorithm` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].config` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].counter` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].createdDate` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].credentialData` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].device` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].digits` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].federationLink` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].hashIterations` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].hashedSaltedValue` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].period` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].priority` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].salt` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].secretData` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].temporary` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].type` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].userLabel` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].credentials[].value` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].disableableCredentialTypes` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].email` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].emailVerified` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].members[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].members[].federatedIdentities` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].federatedIdentities[].identityProvider` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].federatedIdentities[].userId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].federatedIdentities[].userName` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].federationLink` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].firstName` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].groups` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientName` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].credentialType` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].expiresAt` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].id` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].issuedAt` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].revision` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].userId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].lastName` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].membershipType` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].notBefore` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].origin` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].requiredActions` | array[string] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].self` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].serviceAccountClientId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].socialLinks` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].socialLinks[].socialProvider` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].socialLinks[].socialUserId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].socialLinks[].socialUsername` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].totp` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].defaultValue` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].group` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].multivalued` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].readOnly` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].required` | boolean |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.groups` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.groups[].displayDescription` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.groups[].displayHeader` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].userProfileMetadata.groups[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].username` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].verifiableCredentials` | array[object] |   |
+| `v2beta1` | `spec.realm.organizations[].members[].verifiableCredentials[].createdDate` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].verifiableCredentials[].credentialConfigurationId` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].verifiableCredentials[].credentialScopeName` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].verifiableCredentials[].revision` | string |   |
+| `v2beta1` | `spec.realm.organizations[].members[].verifiableCredentials[].updatedDate` | integer |   |
+| `v2beta1` | `spec.realm.organizations[].members[].verifiableCredentials[].userAttributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.organizations[].name` | string |   |
+| `v2beta1` | `spec.realm.organizations[].redirectUrl` | string |   |
+| `v2beta1` | `spec.realm.organizationsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.otpPolicyAlgorithm` | string |   |
+| `v2beta1` | `spec.realm.otpPolicyCodeReusable` | boolean |   |
+| `v2beta1` | `spec.realm.otpPolicyDigits` | integer |   |
+| `v2beta1` | `spec.realm.otpPolicyInitialCounter` | integer |   |
+| `v2beta1` | `spec.realm.otpPolicyLookAheadWindow` | integer |   |
+| `v2beta1` | `spec.realm.otpPolicyPeriod` | integer |   |
+| `v2beta1` | `spec.realm.otpPolicyType` | string |   |
+| `v2beta1` | `spec.realm.otpSupportedApplications` | array[string] |   |
+| `v2beta1` | `spec.realm.passwordCredentialGrantAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.passwordPolicy` | string |   |
+| `v2beta1` | `spec.realm.permanentLockout` | boolean |   |
+| `v2beta1` | `spec.realm.privateKey` | string |   |
+| `v2beta1` | `spec.realm.protocolMappers` | array[object] |   |
+| `v2beta1` | `spec.realm.protocolMappers[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.protocolMappers[].consentRequired` | boolean |   |
+| `v2beta1` | `spec.realm.protocolMappers[].consentText` | string |   |
+| `v2beta1` | `spec.realm.protocolMappers[].id` | string |   |
+| `v2beta1` | `spec.realm.protocolMappers[].name` | string |   |
+| `v2beta1` | `spec.realm.protocolMappers[].protocol` | string |   |
+| `v2beta1` | `spec.realm.protocolMappers[].protocolMapper` | string |   |
+| `v2beta1` | `spec.realm.publicKey` | string |   |
+| `v2beta1` | `spec.realm.quickLoginCheckMilliSeconds` | integer |   |
+| `v2beta1` | `spec.realm.realm` | string |   |
+| `v2beta1` | `spec.realm.refreshTokenMaxReuse` | integer |   |
+| `v2beta1` | `spec.realm.registrationAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.registrationEmailAsUsername` | boolean |   |
+| `v2beta1` | `spec.realm.registrationFlow` | string |   |
+| `v2beta1` | `spec.realm.rememberMe` | boolean |   |
+| `v2beta1` | `spec.realm.requiredActions` | array[object] |   |
+| `v2beta1` | `spec.realm.requiredActions[].alias` | string |   |
+| `v2beta1` | `spec.realm.requiredActions[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.requiredActions[].defaultAction` | boolean |   |
+| `v2beta1` | `spec.realm.requiredActions[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.requiredActions[].name` | string |   |
+| `v2beta1` | `spec.realm.requiredActions[].priority` | integer |   |
+| `v2beta1` | `spec.realm.requiredActions[].providerId` | string |   |
+| `v2beta1` | `spec.realm.requiredCredentials` | array[string] |   |
+| `v2beta1` | `spec.realm.resetCredentialsFlow` | string |   |
+| `v2beta1` | `spec.realm.resetPasswordAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.revokeRefreshToken` | boolean |   |
+| `v2beta1` | `spec.realm.roles.application` | map<string,array> |   |
+| `v2beta1` | `spec.realm.roles.client` | map<string,array> |   |
+| `v2beta1` | `spec.realm.roles.realm` | array[object] |   |
+| `v2beta1` | `spec.realm.roles.realm[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.roles.realm[].clientRole` | boolean |   |
+| `v2beta1` | `spec.realm.roles.realm[].composite` | boolean |   |
+| `v2beta1` | `spec.realm.roles.realm[].composites.application` | map<string,array> |   |
+| `v2beta1` | `spec.realm.roles.realm[].composites.client` | map<string,array> |   |
+| `v2beta1` | `spec.realm.roles.realm[].composites.realm` | array[string] |   |
+| `v2beta1` | `spec.realm.roles.realm[].containerId` | string |   |
+| `v2beta1` | `spec.realm.roles.realm[].description` | string |   |
+| `v2beta1` | `spec.realm.roles.realm[].id` | string |   |
+| `v2beta1` | `spec.realm.roles.realm[].name` | string |   |
+| `v2beta1` | `spec.realm.roles.realm[].scopeParamRequired` | boolean |   |
+| `v2beta1` | `spec.realm.scimApiEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.scopeMappings` | array[object] |   |
+| `v2beta1` | `spec.realm.scopeMappings[].client` | string |   |
+| `v2beta1` | `spec.realm.scopeMappings[].clientScope` | string |   |
+| `v2beta1` | `spec.realm.scopeMappings[].clientTemplate` | string |   |
+| `v2beta1` | `spec.realm.scopeMappings[].roles` | array[string] |   |
+| `v2beta1` | `spec.realm.scopeMappings[].self` | string |   |
+| `v2beta1` | `spec.realm.smtpServer` | map<string,string> |   |
+| `v2beta1` | `spec.realm.social` | boolean |   |
+| `v2beta1` | `spec.realm.socialProviders` | map<string,string> |   |
+| `v2beta1` | `spec.realm.sslRequired` | string |   |
+| `v2beta1` | `spec.realm.ssoSessionIdleTimeout` | integer |   |
+| `v2beta1` | `spec.realm.ssoSessionIdleTimeoutRememberMe` | integer |   |
+| `v2beta1` | `spec.realm.ssoSessionMaxLifespan` | integer |   |
+| `v2beta1` | `spec.realm.ssoSessionMaxLifespanRememberMe` | integer |   |
+| `v2beta1` | `spec.realm.supportedLocales` | array[string] |   |
+| `v2beta1` | `spec.realm.updateProfileOnInitialSocialLogin` | boolean |   |
+| `v2beta1` | `spec.realm.userFederationMappers` | array[object] |   |
+| `v2beta1` | `spec.realm.userFederationMappers[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.userFederationMappers[].federationMapperType` | string |   |
+| `v2beta1` | `spec.realm.userFederationMappers[].federationProviderDisplayName` | string |   |
+| `v2beta1` | `spec.realm.userFederationMappers[].id` | string |   |
+| `v2beta1` | `spec.realm.userFederationMappers[].name` | string |   |
+| `v2beta1` | `spec.realm.userFederationProviders` | array[object] |   |
+| `v2beta1` | `spec.realm.userFederationProviders[].changedSyncPeriod` | integer |   |
+| `v2beta1` | `spec.realm.userFederationProviders[].config` | map<string,string> |   |
+| `v2beta1` | `spec.realm.userFederationProviders[].displayName` | string |   |
+| `v2beta1` | `spec.realm.userFederationProviders[].fullSyncPeriod` | integer |   |
+| `v2beta1` | `spec.realm.userFederationProviders[].id` | string |   |
+| `v2beta1` | `spec.realm.userFederationProviders[].lastSync` | integer |   |
+| `v2beta1` | `spec.realm.userFederationProviders[].priority` | integer |   |
+| `v2beta1` | `spec.realm.userFederationProviders[].providerName` | string |   |
+| `v2beta1` | `spec.realm.userManagedAccessAllowed` | boolean |   |
+| `v2beta1` | `spec.realm.users` | array[object] |   |
+| `v2beta1` | `spec.realm.users[].access` | map<string,boolean> |   |
+| `v2beta1` | `spec.realm.users[].applicationRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.users[].attributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.users[].clientConsents` | array[object] |   |
+| `v2beta1` | `spec.realm.users[].clientConsents[].clientId` | string |   |
+| `v2beta1` | `spec.realm.users[].clientConsents[].createdDate` | integer |   |
+| `v2beta1` | `spec.realm.users[].clientConsents[].grantedClientScopes` | array[string] |   |
+| `v2beta1` | `spec.realm.users[].clientConsents[].grantedRealmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.users[].clientConsents[].lastUpdatedDate` | integer |   |
+| `v2beta1` | `spec.realm.users[].clientRoles` | map<string,array> |   |
+| `v2beta1` | `spec.realm.users[].createdTimestamp` | integer |   |
+| `v2beta1` | `spec.realm.users[].credentials` | array[object] |   |
+| `v2beta1` | `spec.realm.users[].credentials[].algorithm` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].config` | map<string,array> |   |
+| `v2beta1` | `spec.realm.users[].credentials[].counter` | integer |   |
+| `v2beta1` | `spec.realm.users[].credentials[].createdDate` | integer |   |
+| `v2beta1` | `spec.realm.users[].credentials[].credentialData` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].device` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].digits` | integer |   |
+| `v2beta1` | `spec.realm.users[].credentials[].federationLink` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].hashIterations` | integer |   |
+| `v2beta1` | `spec.realm.users[].credentials[].hashedSaltedValue` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].id` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].period` | integer |   |
+| `v2beta1` | `spec.realm.users[].credentials[].priority` | integer |   |
+| `v2beta1` | `spec.realm.users[].credentials[].salt` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].secretData` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].temporary` | boolean |   |
+| `v2beta1` | `spec.realm.users[].credentials[].type` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].userLabel` | string |   |
+| `v2beta1` | `spec.realm.users[].credentials[].value` | string |   |
+| `v2beta1` | `spec.realm.users[].disableableCredentialTypes` | array[string] |   |
+| `v2beta1` | `spec.realm.users[].email` | string |   |
+| `v2beta1` | `spec.realm.users[].emailVerified` | boolean |   |
+| `v2beta1` | `spec.realm.users[].enabled` | boolean |   |
+| `v2beta1` | `spec.realm.users[].federatedIdentities` | array[object] |   |
+| `v2beta1` | `spec.realm.users[].federatedIdentities[].identityProvider` | string |   |
+| `v2beta1` | `spec.realm.users[].federatedIdentities[].userId` | string |   |
+| `v2beta1` | `spec.realm.users[].federatedIdentities[].userName` | string |   |
+| `v2beta1` | `spec.realm.users[].federationLink` | string |   |
+| `v2beta1` | `spec.realm.users[].firstName` | string |   |
+| `v2beta1` | `spec.realm.users[].groups` | array[string] |   |
+| `v2beta1` | `spec.realm.users[].id` | string |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials` | array[object] |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials[].clientId` | string |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials[].clientName` | string |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials[].credentialType` | string |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials[].expiresAt` | integer |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials[].id` | string |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials[].issuedAt` | integer |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials[].revision` | string |   |
+| `v2beta1` | `spec.realm.users[].issuedVerifiableCredentials[].userId` | string |   |
+| `v2beta1` | `spec.realm.users[].lastName` | string |   |
+| `v2beta1` | `spec.realm.users[].notBefore` | integer |   |
+| `v2beta1` | `spec.realm.users[].origin` | string |   |
+| `v2beta1` | `spec.realm.users[].realmRoles` | array[string] |   |
+| `v2beta1` | `spec.realm.users[].requiredActions` | array[string] |   |
+| `v2beta1` | `spec.realm.users[].self` | string |   |
+| `v2beta1` | `spec.realm.users[].serviceAccountClientId` | string |   |
+| `v2beta1` | `spec.realm.users[].socialLinks` | array[object] |   |
+| `v2beta1` | `spec.realm.users[].socialLinks[].socialProvider` | string |   |
+| `v2beta1` | `spec.realm.users[].socialLinks[].socialUserId` | string |   |
+| `v2beta1` | `spec.realm.users[].socialLinks[].socialUsername` | string |   |
+| `v2beta1` | `spec.realm.users[].totp` | boolean |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes` | array[object] |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes[].defaultValue` | string |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes[].displayName` | string |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes[].group` | string |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes[].multivalued` | boolean |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes[].name` | string |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes[].readOnly` | boolean |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes[].required` | boolean |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.groups` | array[object] |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.groups[].displayDescription` | string |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.groups[].displayHeader` | string |   |
+| `v2beta1` | `spec.realm.users[].userProfileMetadata.groups[].name` | string |   |
+| `v2beta1` | `spec.realm.users[].username` | string |   |
+| `v2beta1` | `spec.realm.users[].verifiableCredentials` | array[object] |   |
+| `v2beta1` | `spec.realm.users[].verifiableCredentials[].createdDate` | integer |   |
+| `v2beta1` | `spec.realm.users[].verifiableCredentials[].credentialConfigurationId` | string |   |
+| `v2beta1` | `spec.realm.users[].verifiableCredentials[].credentialScopeName` | string |   |
+| `v2beta1` | `spec.realm.users[].verifiableCredentials[].revision` | string |   |
+| `v2beta1` | `spec.realm.users[].verifiableCredentials[].updatedDate` | integer |   |
+| `v2beta1` | `spec.realm.users[].verifiableCredentials[].userAttributes` | map<string,array> |   |
+| `v2beta1` | `spec.realm.verifiableCredentialsEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.verifyEmail` | boolean |   |
+| `v2beta1` | `spec.realm.waitIncrementSeconds` | integer |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyAcceptableAaguids` | array[string] |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyAttestationConveyancePreference` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyAuthenticatorAttachment` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyAvoidSameAuthenticatorRegister` | boolean |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyCreateTimeout` | integer |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyExtraOrigins` | array[string] |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessAcceptableAaguids` | array[string] |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessAttestationConveyancePreference` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessAuthenticatorAttachment` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister` | boolean |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessCreateTimeout` | integer |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessExtraOrigins` | array[string] |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessMediation` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessPasskeysEnabled` | boolean |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessRequireResidentKey` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessResidentKey` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessRpEntityName` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessRpId` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessSignatureAlgorithms` | array[string] |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyPasswordlessUserVerificationRequirement` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyRequireResidentKey` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyResidentKey` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyRpEntityName` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyRpId` | string |   |
+| `v2beta1` | `spec.realm.webAuthnPolicySignatureAlgorithms` | array[string] |   |
+| `v2beta1` | `spec.realm.webAuthnPolicyUserVerificationRequirement` | string |   |
+| `v2beta1` | `spec.resources.claims` | array[object] |   |
+| `v2beta1` | `spec.resources.claims[].name` | string |   |
+| `v2beta1` | `spec.resources.claims[].request` | string |   |
+| `v2beta1` | `spec.resources.limits` | map<string,any> |   |
+| `v2beta1` | `spec.resources.requests` | map<string,any> |   |
+
+## v2alpha1 Reference
+
+| Version | Property path | Type | Description |
+|---------|---------------|------|-------------|
+| `v2alpha1` | `spec.keycloakCRName` | string | The name of the Keycloak CR to reference, in the same namespace.  |
+| `v2alpha1` | `spec.labels` | map<string,string> | Optionally set to add additional labels to the Job created for the import.  |
+| `v2alpha1` | `spec.placeholders` | map<string,object> | Optionally set to replace ENV variable placeholders in the realm import.  |
+| `v2alpha1` | `spec.realm.accessCodeLifespan` | integer |   |
+| `v2alpha1` | `spec.realm.accessCodeLifespanLogin` | integer |   |
+| `v2alpha1` | `spec.realm.accessCodeLifespanUserAction` | integer |   |
+| `v2alpha1` | `spec.realm.accessTokenLifespan` | integer |   |
+| `v2alpha1` | `spec.realm.accessTokenLifespanForImplicitFlow` | integer |   |
+| `v2alpha1` | `spec.realm.accountTheme` | string |   |
+| `v2alpha1` | `spec.realm.actionTokenGeneratedByAdminLifespan` | integer |   |
+| `v2alpha1` | `spec.realm.actionTokenGeneratedByUserLifespan` | integer |   |
+| `v2alpha1` | `spec.realm.adminEventsDetailsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.adminEventsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.adminUrl` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.alwaysDisplayInConsole` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.attributes` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authenticationFlowBindingOverrides` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationServicesEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.allowRemoteResourceManagement` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.clientId` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.decisionStrategy` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies` | array[object] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].decisionStrategy` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].description` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].logic` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].owner` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].policies` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourceType` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resources` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData` | array[object] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[]._id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].type` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData` | array[object] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].scopesData[].name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policies[].type` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.policyEnforcementMode` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources` | array[object] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[]._id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].icon_uri` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].owner.id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].owner.name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].type` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.resources[].uris` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.authorizationSettings.scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.baseUrl` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.bearerOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.clientAuthenticatorType` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.clientId` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.clientTemplate` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.defaultClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.defaultRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.description` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.directAccessGrantsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.directGrantsOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.frontchannelLogout` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.fullScopeAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.implicitFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.nodeReRegistrationTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.notBefore` | integer |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.optionalClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.origin` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.protocol` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.protocolMappers` | array[object] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.protocolMappers[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.protocolMappers[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.protocolMappers[].consentText` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.protocolMappers[].id` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.protocolMappers[].name` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.protocolMappers[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.protocolMappers[].protocolMapper` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.publicClient` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.redirectUris` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.registeredNodes` | map<string,integer> |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.registrationAccessToken` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.rootUrl` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.secret` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.serviceAccountsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.standardFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.surrogateAuthRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.type` | string |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.useTemplateConfig` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.useTemplateMappers` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.useTemplateScope` | boolean |   |
+| `v2alpha1` | `spec.realm.adminPermissionsClient.webOrigins` | array[string] |   |
+| `v2alpha1` | `spec.realm.adminPermissionsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.adminTheme` | string |   |
+| `v2alpha1` | `spec.realm.applicationScopeMappings` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.applications` | array[object] |   |
+| `v2alpha1` | `spec.realm.applications[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.applications[].adminUrl` | string |   |
+| `v2alpha1` | `spec.realm.applications[].alwaysDisplayInConsole` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].attributes` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.applications[].authenticationFlowBindingOverrides` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationServicesEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.clientId` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.decisionStrategy` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies` | array[object] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].decisionStrategy` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].description` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].logic` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].owner` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].policies` | array[string] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourceType` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resources` | array[string] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData` | array[object] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].type` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].scopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData` | array[object] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData[].id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].scopesData[].name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policies[].type` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.policyEnforcementMode` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources` | array[object] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[]._id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].icon_uri` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].owner.id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].owner.name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].type` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.resources[].uris` | array[string] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].authorizationSettings.scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].baseUrl` | string |   |
+| `v2alpha1` | `spec.realm.applications[].bearerOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.address` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.email` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.gender` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.locale` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.name` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.phone` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.picture` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.profile` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.username` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].claims.website` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].clientAuthenticatorType` | string |   |
+| `v2alpha1` | `spec.realm.applications[].clientId` | string |   |
+| `v2alpha1` | `spec.realm.applications[].clientTemplate` | string |   |
+| `v2alpha1` | `spec.realm.applications[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].defaultClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.applications[].defaultRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.applications[].description` | string |   |
+| `v2alpha1` | `spec.realm.applications[].directAccessGrantsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].directGrantsOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].frontchannelLogout` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].fullScopeAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].implicitFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].nodeReRegistrationTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.applications[].notBefore` | integer |   |
+| `v2alpha1` | `spec.realm.applications[].optionalClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.applications[].origin` | string |   |
+| `v2alpha1` | `spec.realm.applications[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.applications[].protocolMappers` | array[object] |   |
+| `v2alpha1` | `spec.realm.applications[].protocolMappers[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.applications[].protocolMappers[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].protocolMappers[].consentText` | string |   |
+| `v2alpha1` | `spec.realm.applications[].protocolMappers[].id` | string |   |
+| `v2alpha1` | `spec.realm.applications[].protocolMappers[].name` | string |   |
+| `v2alpha1` | `spec.realm.applications[].protocolMappers[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.applications[].protocolMappers[].protocolMapper` | string |   |
+| `v2alpha1` | `spec.realm.applications[].publicClient` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].redirectUris` | array[string] |   |
+| `v2alpha1` | `spec.realm.applications[].registeredNodes` | map<string,integer> |   |
+| `v2alpha1` | `spec.realm.applications[].registrationAccessToken` | string |   |
+| `v2alpha1` | `spec.realm.applications[].rootUrl` | string |   |
+| `v2alpha1` | `spec.realm.applications[].secret` | string |   |
+| `v2alpha1` | `spec.realm.applications[].serviceAccountsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].standardFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].surrogateAuthRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].type` | string |   |
+| `v2alpha1` | `spec.realm.applications[].useTemplateConfig` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].useTemplateMappers` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].useTemplateScope` | boolean |   |
+| `v2alpha1` | `spec.realm.applications[].webOrigins` | array[string] |   |
+| `v2alpha1` | `spec.realm.attributes` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.authenticationFlows` | array[object] |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].alias` | string |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].authenticationExecutions` | array[object] |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].authenticationExecutions[].authenticator` | string |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].authenticationExecutions[].authenticatorConfig` | string |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].authenticationExecutions[].authenticatorFlow` | boolean |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].authenticationExecutions[].autheticatorFlow` | boolean |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].authenticationExecutions[].flowAlias` | string |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].authenticationExecutions[].priority` | integer |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].authenticationExecutions[].requirement` | string |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].authenticationExecutions[].userSetupAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].builtIn` | boolean |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].description` | string |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].id` | string |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].providerId` | string |   |
+| `v2alpha1` | `spec.realm.authenticationFlows[].topLevel` | boolean |   |
+| `v2alpha1` | `spec.realm.authenticatorConfig` | array[object] |   |
+| `v2alpha1` | `spec.realm.authenticatorConfig[].alias` | string |   |
+| `v2alpha1` | `spec.realm.authenticatorConfig[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.authenticatorConfig[].id` | string |   |
+| `v2alpha1` | `spec.realm.browserFlow` | string |   |
+| `v2alpha1` | `spec.realm.browserSecurityHeaders` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.bruteForceProtected` | boolean |   |
+| `v2alpha1` | `spec.realm.bruteForceStrategy` | string |   |
+| `v2alpha1` | `spec.realm.certificate` | string |   |
+| `v2alpha1` | `spec.realm.clientAuthenticationFlow` | string |   |
+| `v2alpha1` | `spec.realm.clientOfflineSessionIdleTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.clientOfflineSessionMaxLifespan` | integer |   |
+| `v2alpha1` | `spec.realm.clientPolicies` | object |   |
+| `v2alpha1` | `spec.realm.clientProfiles` | object |   |
+| `v2alpha1` | `spec.realm.clientScopeMappings` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.clientScopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.clientScopes[].attributes` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.clientScopes[].description` | string |   |
+| `v2alpha1` | `spec.realm.clientScopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.clientScopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.clientScopes[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.clientScopes[].protocolMappers` | array[object] |   |
+| `v2alpha1` | `spec.realm.clientScopes[].protocolMappers[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.clientScopes[].protocolMappers[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.clientScopes[].protocolMappers[].consentText` | string |   |
+| `v2alpha1` | `spec.realm.clientScopes[].protocolMappers[].id` | string |   |
+| `v2alpha1` | `spec.realm.clientScopes[].protocolMappers[].name` | string |   |
+| `v2alpha1` | `spec.realm.clientScopes[].protocolMappers[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.clientScopes[].protocolMappers[].protocolMapper` | string |   |
+| `v2alpha1` | `spec.realm.clientSessionIdleTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.clientSessionMaxLifespan` | integer |   |
+| `v2alpha1` | `spec.realm.clientTemplates` | array[object] |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].attributes` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].bearerOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].description` | string |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].directAccessGrantsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].frontchannelLogout` | boolean |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].fullScopeAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].id` | string |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].implicitFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].name` | string |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].protocolMappers` | array[object] |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].protocolMappers[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].protocolMappers[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].protocolMappers[].consentText` | string |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].protocolMappers[].id` | string |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].protocolMappers[].name` | string |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].protocolMappers[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].protocolMappers[].protocolMapper` | string |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].publicClient` | boolean |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].serviceAccountsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clientTemplates[].standardFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clients` | array[object] |   |
+| `v2alpha1` | `spec.realm.clients[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.clients[].adminUrl` | string |   |
+| `v2alpha1` | `spec.realm.clients[].alwaysDisplayInConsole` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].attributes` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.clients[].authenticationFlowBindingOverrides` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationServicesEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.clientId` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.decisionStrategy` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies` | array[object] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].decisionStrategy` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].description` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].logic` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].owner` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].policies` | array[string] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourceType` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resources` | array[string] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData` | array[object] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].type` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].scopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData` | array[object] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData[].id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].scopesData[].name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policies[].type` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.policyEnforcementMode` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources` | array[object] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[]._id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].icon_uri` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].owner.id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].owner.name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].type` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.resources[].uris` | array[string] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].authorizationSettings.scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].baseUrl` | string |   |
+| `v2alpha1` | `spec.realm.clients[].bearerOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].clientAuthenticatorType` | string |   |
+| `v2alpha1` | `spec.realm.clients[].clientId` | string |   |
+| `v2alpha1` | `spec.realm.clients[].clientTemplate` | string |   |
+| `v2alpha1` | `spec.realm.clients[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].defaultClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.clients[].defaultRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.clients[].description` | string |   |
+| `v2alpha1` | `spec.realm.clients[].directAccessGrantsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].directGrantsOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].frontchannelLogout` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].fullScopeAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].implicitFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].nodeReRegistrationTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.clients[].notBefore` | integer |   |
+| `v2alpha1` | `spec.realm.clients[].optionalClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.clients[].origin` | string |   |
+| `v2alpha1` | `spec.realm.clients[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.clients[].protocolMappers` | array[object] |   |
+| `v2alpha1` | `spec.realm.clients[].protocolMappers[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.clients[].protocolMappers[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].protocolMappers[].consentText` | string |   |
+| `v2alpha1` | `spec.realm.clients[].protocolMappers[].id` | string |   |
+| `v2alpha1` | `spec.realm.clients[].protocolMappers[].name` | string |   |
+| `v2alpha1` | `spec.realm.clients[].protocolMappers[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.clients[].protocolMappers[].protocolMapper` | string |   |
+| `v2alpha1` | `spec.realm.clients[].publicClient` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].redirectUris` | array[string] |   |
+| `v2alpha1` | `spec.realm.clients[].registeredNodes` | map<string,integer> |   |
+| `v2alpha1` | `spec.realm.clients[].registrationAccessToken` | string |   |
+| `v2alpha1` | `spec.realm.clients[].rootUrl` | string |   |
+| `v2alpha1` | `spec.realm.clients[].secret` | string |   |
+| `v2alpha1` | `spec.realm.clients[].serviceAccountsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].standardFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].surrogateAuthRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].type` | string |   |
+| `v2alpha1` | `spec.realm.clients[].useTemplateConfig` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].useTemplateMappers` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].useTemplateScope` | boolean |   |
+| `v2alpha1` | `spec.realm.clients[].webOrigins` | array[string] |   |
+| `v2alpha1` | `spec.realm.codeSecret` | string |   |
+| `v2alpha1` | `spec.realm.components` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.defaultDefaultClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.defaultGroups` | array[string] |   |
+| `v2alpha1` | `spec.realm.defaultLocale` | string |   |
+| `v2alpha1` | `spec.realm.defaultOptionalClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.defaultRole.attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.defaultRole.clientRole` | boolean |   |
+| `v2alpha1` | `spec.realm.defaultRole.composite` | boolean |   |
+| `v2alpha1` | `spec.realm.defaultRole.composites.application` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.defaultRole.composites.client` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.defaultRole.composites.realm` | array[string] |   |
+| `v2alpha1` | `spec.realm.defaultRole.containerId` | string |   |
+| `v2alpha1` | `spec.realm.defaultRole.description` | string |   |
+| `v2alpha1` | `spec.realm.defaultRole.id` | string |   |
+| `v2alpha1` | `spec.realm.defaultRole.name` | string |   |
+| `v2alpha1` | `spec.realm.defaultRole.scopeParamRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.defaultRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.defaultSignatureAlgorithm` | string |   |
+| `v2alpha1` | `spec.realm.directGrantFlow` | string |   |
+| `v2alpha1` | `spec.realm.displayName` | string |   |
+| `v2alpha1` | `spec.realm.displayNameHtml` | string |   |
+| `v2alpha1` | `spec.realm.dockerAuthenticationFlow` | string |   |
+| `v2alpha1` | `spec.realm.duplicateEmailsAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.editUsernameAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.emailTheme` | string |   |
+| `v2alpha1` | `spec.realm.enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.enabledEventTypes` | array[string] |   |
+| `v2alpha1` | `spec.realm.eventsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.eventsExpiration` | integer |   |
+| `v2alpha1` | `spec.realm.eventsListeners` | array[string] |   |
+| `v2alpha1` | `spec.realm.failureFactor` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers` | array[object] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].applicationRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].clientConsents` | array[object] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].clientConsents[].clientId` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].clientConsents[].createdDate` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].clientConsents[].grantedClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].clientConsents[].grantedRealmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].clientConsents[].lastUpdatedDate` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].createdTimestamp` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials` | array[object] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].algorithm` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].config` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].counter` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].createdDate` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].credentialData` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].device` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].digits` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].federationLink` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].hashIterations` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].hashedSaltedValue` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].id` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].period` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].priority` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].salt` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].secretData` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].temporary` | boolean |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].type` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].userLabel` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].credentials[].value` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].disableableCredentialTypes` | array[string] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].email` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].emailVerified` | boolean |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].federatedIdentities` | array[object] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].federatedIdentities[].identityProvider` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].federatedIdentities[].userId` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].federatedIdentities[].userName` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].federationLink` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].firstName` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].groups` | array[string] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].id` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials` | array[object] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientId` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].clientName` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].credentialType` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].expiresAt` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].id` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].issuedAt` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].revision` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].issuedVerifiableCredentials[].userId` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].lastName` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].notBefore` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].origin` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].requiredActions` | array[string] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].self` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].serviceAccountClientId` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].socialLinks` | array[object] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].socialLinks[].socialProvider` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].socialLinks[].socialUserId` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].socialLinks[].socialUsername` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].totp` | boolean |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes` | array[object] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].defaultValue` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].group` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].multivalued` | boolean |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].name` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].readOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].required` | boolean |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.groups` | array[object] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.groups[].displayDescription` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.groups[].displayHeader` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].userProfileMetadata.groups[].name` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].username` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].verifiableCredentials` | array[object] |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].verifiableCredentials[].createdDate` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].verifiableCredentials[].credentialConfigurationId` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].verifiableCredentials[].credentialScopeName` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].verifiableCredentials[].revision` | string |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].verifiableCredentials[].updatedDate` | integer |   |
+| `v2alpha1` | `spec.realm.federatedUsers[].verifiableCredentials[].userAttributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.firstBrokerLoginFlow` | string |   |
+| `v2alpha1` | `spec.realm.groups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.id` | string |   |
+| `v2alpha1` | `spec.realm.identityProviderMappers` | array[object] |   |
+| `v2alpha1` | `spec.realm.identityProviderMappers[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.identityProviderMappers[].id` | string |   |
+| `v2alpha1` | `spec.realm.identityProviderMappers[].identityProviderAlias` | string |   |
+| `v2alpha1` | `spec.realm.identityProviderMappers[].identityProviderMapper` | string |   |
+| `v2alpha1` | `spec.realm.identityProviderMappers[].name` | string |   |
+| `v2alpha1` | `spec.realm.identityProviders` | array[object] |   |
+| `v2alpha1` | `spec.realm.identityProviders[].addReadTokenRoleOnCreate` | boolean |   |
+| `v2alpha1` | `spec.realm.identityProviders[].alias` | string |   |
+| `v2alpha1` | `spec.realm.identityProviders[].authenticateByDefault` | boolean |   |
+| `v2alpha1` | `spec.realm.identityProviders[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.identityProviders[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.identityProviders[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.identityProviders[].firstBrokerLoginFlowAlias` | string |   |
+| `v2alpha1` | `spec.realm.identityProviders[].hideOnLogin` | boolean |   |
+| `v2alpha1` | `spec.realm.identityProviders[].internalId` | string |   |
+| `v2alpha1` | `spec.realm.identityProviders[].linkOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.identityProviders[].organizationId` | string |   |
+| `v2alpha1` | `spec.realm.identityProviders[].postBrokerLoginFlowAlias` | string |   |
+| `v2alpha1` | `spec.realm.identityProviders[].providerId` | string |   |
+| `v2alpha1` | `spec.realm.identityProviders[].storeToken` | boolean |   |
+| `v2alpha1` | `spec.realm.identityProviders[].trustEmail` | boolean |   |
+| `v2alpha1` | `spec.realm.identityProviders[].types` | array[string] |   |
+| `v2alpha1` | `spec.realm.identityProviders[].updateProfileFirstLoginMode` | string |   |
+| `v2alpha1` | `spec.realm.internationalizationEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.keycloakVersion` | string |   |
+| `v2alpha1` | `spec.realm.localizationTexts` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.loginTheme` | string |   |
+| `v2alpha1` | `spec.realm.loginWithEmailAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.maxDeltaTimeSeconds` | integer |   |
+| `v2alpha1` | `spec.realm.maxFailureWaitSeconds` | integer |   |
+| `v2alpha1` | `spec.realm.maxSecondaryAuthFailures` | integer |   |
+| `v2alpha1` | `spec.realm.maxTemporaryLockouts` | integer |   |
+| `v2alpha1` | `spec.realm.minimumQuickLoginWaitSeconds` | integer |   |
+| `v2alpha1` | `spec.realm.notBefore` | integer |   |
+| `v2alpha1` | `spec.realm.oauth2DeviceCodeLifespan` | integer |   |
+| `v2alpha1` | `spec.realm.oauth2DevicePollingInterval` | integer |   |
+| `v2alpha1` | `spec.realm.oauthClients` | array[object] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.oauthClients[].adminUrl` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].alwaysDisplayInConsole` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].attributes` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authenticationFlowBindingOverrides` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationServicesEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.allowRemoteResourceManagement` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.authorizationSchema.resourceTypes` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.clientId` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.decisionStrategy` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies` | array[object] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].decisionStrategy` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].description` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].logic` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].owner` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].policies` | array[string] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourceType` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resources` | array[string] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData` | array[object] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[]._id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].icon_uri` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].owner.id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].owner.name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].ownerManagedAccess` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].type` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].resourcesData[].uris` | array[string] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData` | array[object] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].scopesData[].name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policies[].type` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.policyEnforcementMode` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources` | array[object] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[]._id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].icon_uri` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].owner.id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].owner.name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].ownerManagedAccess` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].type` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.resources[].uris` | array[string] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.scopes` | array[object] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.scopes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.scopes[].iconUri` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.scopes[].id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].authorizationSettings.scopes[].name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].baseUrl` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].bearerOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.address` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.email` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.gender` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.locale` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.name` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.phone` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.picture` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.profile` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.username` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].claims.website` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].clientAuthenticatorType` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].clientId` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].clientTemplate` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].defaultClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].defaultRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].description` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].directAccessGrantsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].directGrantsOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].frontchannelLogout` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].fullScopeAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].implicitFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].nodeReRegistrationTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.oauthClients[].notBefore` | integer |   |
+| `v2alpha1` | `spec.realm.oauthClients[].optionalClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].origin` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].protocolMappers` | array[object] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].protocolMappers[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.oauthClients[].protocolMappers[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].protocolMappers[].consentText` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].protocolMappers[].id` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].protocolMappers[].name` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].protocolMappers[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].protocolMappers[].protocolMapper` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].publicClient` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].redirectUris` | array[string] |   |
+| `v2alpha1` | `spec.realm.oauthClients[].registeredNodes` | map<string,integer> |   |
+| `v2alpha1` | `spec.realm.oauthClients[].registrationAccessToken` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].rootUrl` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].secret` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].serviceAccountsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].standardFlowEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].surrogateAuthRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].type` | string |   |
+| `v2alpha1` | `spec.realm.oauthClients[].useTemplateConfig` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].useTemplateMappers` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].useTemplateScope` | boolean |   |
+| `v2alpha1` | `spec.realm.oauthClients[].webOrigins` | array[string] |   |
+| `v2alpha1` | `spec.realm.offlineSessionIdleTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.offlineSessionMaxLifespan` | integer |   |
+| `v2alpha1` | `spec.realm.offlineSessionMaxLifespanEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].alias` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].domains` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].domains[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].domains[].verified` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].groups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].description` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].parentId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].path` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].groups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroups[].subGroupCount` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].addReadTokenRoleOnCreate` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].alias` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].authenticateByDefault` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].firstBrokerLoginFlowAlias` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].hideOnLogin` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].internalId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].linkOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].organizationId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].postBrokerLoginFlowAlias` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].providerId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].storeToken` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].trustEmail` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].types` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].identityProviders[].updateProfileFirstLoginMode` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].applicationRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].clientConsents` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].clientConsents[].clientId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].clientConsents[].createdDate` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].clientConsents[].grantedClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].clientConsents[].grantedRealmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].clientConsents[].lastUpdatedDate` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].createdTimestamp` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].algorithm` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].config` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].counter` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].createdDate` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].credentialData` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].device` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].digits` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].federationLink` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].hashIterations` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].hashedSaltedValue` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].period` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].priority` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].salt` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].secretData` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].temporary` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].type` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].userLabel` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].credentials[].value` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].disableableCredentialTypes` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].email` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].emailVerified` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].federatedIdentities` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].federatedIdentities[].identityProvider` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].federatedIdentities[].userId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].federatedIdentities[].userName` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].federationLink` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].firstName` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].groups` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].clientName` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].credentialType` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].expiresAt` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].id` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].issuedAt` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].revision` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].issuedVerifiableCredentials[].userId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].lastName` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].membershipType` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].notBefore` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].origin` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].requiredActions` | array[string] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].self` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].serviceAccountClientId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].socialLinks` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].socialLinks[].socialProvider` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].socialLinks[].socialUserId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].socialLinks[].socialUsername` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].totp` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].defaultValue` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].group` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].multivalued` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].readOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].required` | boolean |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.groups` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.groups[].displayDescription` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.groups[].displayHeader` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].userProfileMetadata.groups[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].username` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].verifiableCredentials` | array[object] |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].verifiableCredentials[].createdDate` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].verifiableCredentials[].credentialConfigurationId` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].verifiableCredentials[].credentialScopeName` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].verifiableCredentials[].revision` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].verifiableCredentials[].updatedDate` | integer |   |
+| `v2alpha1` | `spec.realm.organizations[].members[].verifiableCredentials[].userAttributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.organizations[].name` | string |   |
+| `v2alpha1` | `spec.realm.organizations[].redirectUrl` | string |   |
+| `v2alpha1` | `spec.realm.organizationsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.otpPolicyAlgorithm` | string |   |
+| `v2alpha1` | `spec.realm.otpPolicyCodeReusable` | boolean |   |
+| `v2alpha1` | `spec.realm.otpPolicyDigits` | integer |   |
+| `v2alpha1` | `spec.realm.otpPolicyInitialCounter` | integer |   |
+| `v2alpha1` | `spec.realm.otpPolicyLookAheadWindow` | integer |   |
+| `v2alpha1` | `spec.realm.otpPolicyPeriod` | integer |   |
+| `v2alpha1` | `spec.realm.otpPolicyType` | string |   |
+| `v2alpha1` | `spec.realm.otpSupportedApplications` | array[string] |   |
+| `v2alpha1` | `spec.realm.passwordCredentialGrantAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.passwordPolicy` | string |   |
+| `v2alpha1` | `spec.realm.permanentLockout` | boolean |   |
+| `v2alpha1` | `spec.realm.privateKey` | string |   |
+| `v2alpha1` | `spec.realm.protocolMappers` | array[object] |   |
+| `v2alpha1` | `spec.realm.protocolMappers[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.protocolMappers[].consentRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.protocolMappers[].consentText` | string |   |
+| `v2alpha1` | `spec.realm.protocolMappers[].id` | string |   |
+| `v2alpha1` | `spec.realm.protocolMappers[].name` | string |   |
+| `v2alpha1` | `spec.realm.protocolMappers[].protocol` | string |   |
+| `v2alpha1` | `spec.realm.protocolMappers[].protocolMapper` | string |   |
+| `v2alpha1` | `spec.realm.publicKey` | string |   |
+| `v2alpha1` | `spec.realm.quickLoginCheckMilliSeconds` | integer |   |
+| `v2alpha1` | `spec.realm.realm` | string |   |
+| `v2alpha1` | `spec.realm.refreshTokenMaxReuse` | integer |   |
+| `v2alpha1` | `spec.realm.registrationAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.registrationEmailAsUsername` | boolean |   |
+| `v2alpha1` | `spec.realm.registrationFlow` | string |   |
+| `v2alpha1` | `spec.realm.rememberMe` | boolean |   |
+| `v2alpha1` | `spec.realm.requiredActions` | array[object] |   |
+| `v2alpha1` | `spec.realm.requiredActions[].alias` | string |   |
+| `v2alpha1` | `spec.realm.requiredActions[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.requiredActions[].defaultAction` | boolean |   |
+| `v2alpha1` | `spec.realm.requiredActions[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.requiredActions[].name` | string |   |
+| `v2alpha1` | `spec.realm.requiredActions[].priority` | integer |   |
+| `v2alpha1` | `spec.realm.requiredActions[].providerId` | string |   |
+| `v2alpha1` | `spec.realm.requiredCredentials` | array[string] |   |
+| `v2alpha1` | `spec.realm.resetCredentialsFlow` | string |   |
+| `v2alpha1` | `spec.realm.resetPasswordAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.revokeRefreshToken` | boolean |   |
+| `v2alpha1` | `spec.realm.roles.application` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.roles.client` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.roles.realm` | array[object] |   |
+| `v2alpha1` | `spec.realm.roles.realm[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.roles.realm[].clientRole` | boolean |   |
+| `v2alpha1` | `spec.realm.roles.realm[].composite` | boolean |   |
+| `v2alpha1` | `spec.realm.roles.realm[].composites.application` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.roles.realm[].composites.client` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.roles.realm[].composites.realm` | array[string] |   |
+| `v2alpha1` | `spec.realm.roles.realm[].containerId` | string |   |
+| `v2alpha1` | `spec.realm.roles.realm[].description` | string |   |
+| `v2alpha1` | `spec.realm.roles.realm[].id` | string |   |
+| `v2alpha1` | `spec.realm.roles.realm[].name` | string |   |
+| `v2alpha1` | `spec.realm.roles.realm[].scopeParamRequired` | boolean |   |
+| `v2alpha1` | `spec.realm.scimApiEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.scopeMappings` | array[object] |   |
+| `v2alpha1` | `spec.realm.scopeMappings[].client` | string |   |
+| `v2alpha1` | `spec.realm.scopeMappings[].clientScope` | string |   |
+| `v2alpha1` | `spec.realm.scopeMappings[].clientTemplate` | string |   |
+| `v2alpha1` | `spec.realm.scopeMappings[].roles` | array[string] |   |
+| `v2alpha1` | `spec.realm.scopeMappings[].self` | string |   |
+| `v2alpha1` | `spec.realm.smtpServer` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.social` | boolean |   |
+| `v2alpha1` | `spec.realm.socialProviders` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.sslRequired` | string |   |
+| `v2alpha1` | `spec.realm.ssoSessionIdleTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.ssoSessionIdleTimeoutRememberMe` | integer |   |
+| `v2alpha1` | `spec.realm.ssoSessionMaxLifespan` | integer |   |
+| `v2alpha1` | `spec.realm.ssoSessionMaxLifespanRememberMe` | integer |   |
+| `v2alpha1` | `spec.realm.supportedLocales` | array[string] |   |
+| `v2alpha1` | `spec.realm.updateProfileOnInitialSocialLogin` | boolean |   |
+| `v2alpha1` | `spec.realm.userFederationMappers` | array[object] |   |
+| `v2alpha1` | `spec.realm.userFederationMappers[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.userFederationMappers[].federationMapperType` | string |   |
+| `v2alpha1` | `spec.realm.userFederationMappers[].federationProviderDisplayName` | string |   |
+| `v2alpha1` | `spec.realm.userFederationMappers[].id` | string |   |
+| `v2alpha1` | `spec.realm.userFederationMappers[].name` | string |   |
+| `v2alpha1` | `spec.realm.userFederationProviders` | array[object] |   |
+| `v2alpha1` | `spec.realm.userFederationProviders[].changedSyncPeriod` | integer |   |
+| `v2alpha1` | `spec.realm.userFederationProviders[].config` | map<string,string> |   |
+| `v2alpha1` | `spec.realm.userFederationProviders[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.userFederationProviders[].fullSyncPeriod` | integer |   |
+| `v2alpha1` | `spec.realm.userFederationProviders[].id` | string |   |
+| `v2alpha1` | `spec.realm.userFederationProviders[].lastSync` | integer |   |
+| `v2alpha1` | `spec.realm.userFederationProviders[].priority` | integer |   |
+| `v2alpha1` | `spec.realm.userFederationProviders[].providerName` | string |   |
+| `v2alpha1` | `spec.realm.userManagedAccessAllowed` | boolean |   |
+| `v2alpha1` | `spec.realm.users` | array[object] |   |
+| `v2alpha1` | `spec.realm.users[].access` | map<string,boolean> |   |
+| `v2alpha1` | `spec.realm.users[].applicationRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.users[].attributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.users[].clientConsents` | array[object] |   |
+| `v2alpha1` | `spec.realm.users[].clientConsents[].clientId` | string |   |
+| `v2alpha1` | `spec.realm.users[].clientConsents[].createdDate` | integer |   |
+| `v2alpha1` | `spec.realm.users[].clientConsents[].grantedClientScopes` | array[string] |   |
+| `v2alpha1` | `spec.realm.users[].clientConsents[].grantedRealmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.users[].clientConsents[].lastUpdatedDate` | integer |   |
+| `v2alpha1` | `spec.realm.users[].clientRoles` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.users[].createdTimestamp` | integer |   |
+| `v2alpha1` | `spec.realm.users[].credentials` | array[object] |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].algorithm` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].config` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].counter` | integer |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].createdDate` | integer |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].credentialData` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].device` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].digits` | integer |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].federationLink` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].hashIterations` | integer |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].hashedSaltedValue` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].id` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].period` | integer |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].priority` | integer |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].salt` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].secretData` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].temporary` | boolean |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].type` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].userLabel` | string |   |
+| `v2alpha1` | `spec.realm.users[].credentials[].value` | string |   |
+| `v2alpha1` | `spec.realm.users[].disableableCredentialTypes` | array[string] |   |
+| `v2alpha1` | `spec.realm.users[].email` | string |   |
+| `v2alpha1` | `spec.realm.users[].emailVerified` | boolean |   |
+| `v2alpha1` | `spec.realm.users[].enabled` | boolean |   |
+| `v2alpha1` | `spec.realm.users[].federatedIdentities` | array[object] |   |
+| `v2alpha1` | `spec.realm.users[].federatedIdentities[].identityProvider` | string |   |
+| `v2alpha1` | `spec.realm.users[].federatedIdentities[].userId` | string |   |
+| `v2alpha1` | `spec.realm.users[].federatedIdentities[].userName` | string |   |
+| `v2alpha1` | `spec.realm.users[].federationLink` | string |   |
+| `v2alpha1` | `spec.realm.users[].firstName` | string |   |
+| `v2alpha1` | `spec.realm.users[].groups` | array[string] |   |
+| `v2alpha1` | `spec.realm.users[].id` | string |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials` | array[object] |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials[].clientBaseUrl` | string |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials[].clientId` | string |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials[].clientName` | string |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials[].credentialType` | string |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials[].expiresAt` | integer |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials[].id` | string |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials[].issuedAt` | integer |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials[].revision` | string |   |
+| `v2alpha1` | `spec.realm.users[].issuedVerifiableCredentials[].userId` | string |   |
+| `v2alpha1` | `spec.realm.users[].lastName` | string |   |
+| `v2alpha1` | `spec.realm.users[].notBefore` | integer |   |
+| `v2alpha1` | `spec.realm.users[].origin` | string |   |
+| `v2alpha1` | `spec.realm.users[].realmRoles` | array[string] |   |
+| `v2alpha1` | `spec.realm.users[].requiredActions` | array[string] |   |
+| `v2alpha1` | `spec.realm.users[].self` | string |   |
+| `v2alpha1` | `spec.realm.users[].serviceAccountClientId` | string |   |
+| `v2alpha1` | `spec.realm.users[].socialLinks` | array[object] |   |
+| `v2alpha1` | `spec.realm.users[].socialLinks[].socialProvider` | string |   |
+| `v2alpha1` | `spec.realm.users[].socialLinks[].socialUserId` | string |   |
+| `v2alpha1` | `spec.realm.users[].socialLinks[].socialUsername` | string |   |
+| `v2alpha1` | `spec.realm.users[].totp` | boolean |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes` | array[object] |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes[].annotations` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes[].defaultValue` | string |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes[].displayName` | string |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes[].group` | string |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes[].multivalued` | boolean |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes[].name` | string |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes[].readOnly` | boolean |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes[].required` | boolean |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.attributes[].validators` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.groups` | array[object] |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.groups[].annotations` | map<string,object> |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.groups[].displayDescription` | string |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.groups[].displayHeader` | string |   |
+| `v2alpha1` | `spec.realm.users[].userProfileMetadata.groups[].name` | string |   |
+| `v2alpha1` | `spec.realm.users[].username` | string |   |
+| `v2alpha1` | `spec.realm.users[].verifiableCredentials` | array[object] |   |
+| `v2alpha1` | `spec.realm.users[].verifiableCredentials[].createdDate` | integer |   |
+| `v2alpha1` | `spec.realm.users[].verifiableCredentials[].credentialConfigurationId` | string |   |
+| `v2alpha1` | `spec.realm.users[].verifiableCredentials[].credentialScopeName` | string |   |
+| `v2alpha1` | `spec.realm.users[].verifiableCredentials[].revision` | string |   |
+| `v2alpha1` | `spec.realm.users[].verifiableCredentials[].updatedDate` | integer |   |
+| `v2alpha1` | `spec.realm.users[].verifiableCredentials[].userAttributes` | map<string,array> |   |
+| `v2alpha1` | `spec.realm.verifiableCredentialsEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.verifyEmail` | boolean |   |
+| `v2alpha1` | `spec.realm.waitIncrementSeconds` | integer |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyAcceptableAaguids` | array[string] |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyAttestationConveyancePreference` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyAuthenticatorAttachment` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyAvoidSameAuthenticatorRegister` | boolean |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyCreateTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyExtraOrigins` | array[string] |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessAcceptableAaguids` | array[string] |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessAttestationConveyancePreference` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessAuthenticatorAttachment` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister` | boolean |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessCreateTimeout` | integer |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessExtraOrigins` | array[string] |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessMediation` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessPasskeysEnabled` | boolean |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessRequireResidentKey` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessResidentKey` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessRpEntityName` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessRpId` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessSignatureAlgorithms` | array[string] |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyPasswordlessUserVerificationRequirement` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyRequireResidentKey` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyResidentKey` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyRpEntityName` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyRpId` | string |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicySignatureAlgorithms` | array[string] |   |
+| `v2alpha1` | `spec.realm.webAuthnPolicyUserVerificationRequirement` | string |   |
+| `v2alpha1` | `spec.resources.claims` | array[object] |   |
+| `v2alpha1` | `spec.resources.claims[].name` | string |   |
+| `v2alpha1` | `spec.resources.claims[].request` | string |   |
+| `v2alpha1` | `spec.resources.limits` | map<string,any> |   |
+| `v2alpha1` | `spec.resources.requests` | map<string,any> |   |

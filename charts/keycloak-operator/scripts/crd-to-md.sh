@@ -41,12 +41,9 @@ cat >"$OUT" <<EOF
 # [PLACEHOLDER] CRD Reference
 
 This generated document lists the configurable properties available under \`spec\` for the \`[PLACEHOLDER]\` custom resource.
-
-## Reference
-
-| Property path | Type | Description |
-|---------------|------|-------------|
 EOF
+
+current_version=""
 
 yq -o=json '.' "$CRD" |
 jq -r '
@@ -154,12 +151,14 @@ def walk($path):
 
 .spec.versions[]
 | select(.schema != null)
+| .name as $version
 | .schema.openAPIV3Schema.properties.spec
 | walk("spec")
+| [$version] + .
 | @tsv
 
 ' |
-while IFS=$'\t' read -r path type description
+while IFS=$'\t' read -r version path type description
 do
   # Replace CR/LF/TAB with spaces
   description=${description//$'\r'/ }
@@ -174,10 +173,23 @@ do
   # Escape markdown table pipes
   description=${description//|/\\|}
 
-  printf '| `%s` | %s | %s |\n' \
-      "$path" \
-      "$type" \
-      "$description"
+if [[ "$version" != "$current_version" ]]; then
+    current_version="$version"
+
+    cat >> "$OUT" <<EOF
+
+## $version Reference
+
+| Version | Property path | Type | Description |
+|---------|---------------|------|-------------|
+EOF
+fi
+
+printf '| `%s` | `%s` | %s | %s |\n' \
+    "$version" \
+    "$path" \
+    "$type" \
+    "$description"
 done >> "$OUT"
 
 echo "Generated $OUT"

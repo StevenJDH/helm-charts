@@ -2,2715 +2,2720 @@
 
 This generated document lists the configurable properties available under `spec` for the `Keycloak` custom resource.
 
-## Reference
+## v2beta1 Reference
 
-| Property path | Type | Description |
-|---------------|------|-------------|
-| `spec.additionalOptions` | array[object] | Configuration of the Keycloak server. expressed as a keys (reference: https://www.keycloak.org/server/all-config) and values that can be either direct values or references to secrets.  |
-| `spec.additionalOptions[].name` | string |   |
-| `spec.additionalOptions[].secret.key` | string |   |
-| `spec.additionalOptions[].secret.name` | string |   |
-| `spec.additionalOptions[].secret.optional` | boolean |   |
-| `spec.additionalOptions[].value` | string |   |
-| `spec.admin.tlsSecret` | string | If mTLS is required, this references a secret containing the client TLS configuration for the admin client. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
-| `spec.automountServiceAccountToken` | boolean | Set this to to false to disable automounting the default ServiceAccount Token and Service CA. This is enabled by default.  |
-| `spec.bootstrapAdmin.service.secret` | string | Name of the Secret that contains the client-id and client-secret keys  |
-| `spec.bootstrapAdmin.user.secret` | string | Name of the Secret that contains the username and password keys  |
-| `spec.cache.configMapFile.key` | string |   |
-| `spec.cache.configMapFile.name` | string |   |
-| `spec.cache.configMapFile.optional` | boolean |   |
-| `spec.db.database` | string | Sets the database name of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
-| `spec.db.host` | string | Sets the hostname of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
-| `spec.db.passwordSecret.key` | string |   |
-| `spec.db.passwordSecret.name` | string |   |
-| `spec.db.passwordSecret.optional` | boolean |   |
-| `spec.db.poolInitialSize` | integer | The initial size of the connection pool.  |
-| `spec.db.poolMaxSize` | integer | The maximum size of the connection pool.  |
-| `spec.db.poolMinSize` | integer | The minimal size of the connection pool.  |
-| `spec.db.port` | integer | Sets the port of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
-| `spec.db.schema` | string | The database schema to be used.  |
-| `spec.db.url` | string | The full database JDBC URL. If not provided, a default URL is set based on the selected database vendor. For instance, if using 'postgres', the default JDBC URL would be 'jdbc:postgresql://localhost/keycloak'.  |
-| `spec.db.usernameSecret.key` | string |   |
-| `spec.db.usernameSecret.name` | string |   |
-| `spec.db.usernameSecret.optional` | boolean |   |
-| `spec.db.vendor` | string | The database vendor.  |
-| `spec.env` | array[object] | Environment variables for the Keycloak server. Values can be either direct values or references to secrets. Use additionalOptions for first-class options rather than KC_ values here.  |
-| `spec.env[].name` | string |   |
-| `spec.env[].secret.key` | string |   |
-| `spec.env[].secret.name` | string |   |
-| `spec.env[].secret.optional` | boolean |   |
-| `spec.env[].value` | string |   |
-| `spec.features.disabled` | array[string] | Disabled Keycloak features  |
-| `spec.features.enabled` | array[string] | Enabled Keycloak features  |
-| `spec.hostname.admin` | string | The hostname for accessing the administration console. Applicable for Hostname v1 and v2.  |
-| `spec.hostname.adminUrl` | string | DEPRECATED. Sets the base URL for accessing the administration console, including scheme, host, port and path. Applicable for Hostname v1.  |
-| `spec.hostname.backchannelDynamic` | boolean | Enables dynamic resolving of backchannel URLs, including hostname, scheme, port and context path. Set to true if your application accesses Keycloak via a private network. Applicable for Hostname v2.  |
-| `spec.hostname.hostname` | string | Hostname for the Keycloak server. Applicable for Hostname v1 and v2.  |
-| `spec.hostname.strict` | boolean | Disables dynamically resolving the hostname from request headers. Applicable for Hostname v1 and v2.  |
-| `spec.hostname.strictBackchannel` | boolean | DEPRECATED. By default backchannel URLs are dynamically resolved from request headers to allow internal and external applications. Applicable for Hostname v1.  |
-| `spec.http.annotations` | map<string,string> | Annotations to be appended to the Service object  |
-| `spec.http.httpEnabled` | boolean | Enables the HTTP listener.  |
-| `spec.http.httpPort` | integer | The used HTTP port.  |
-| `spec.http.httpsPort` | integer | The used HTTPS port.  |
-| `spec.http.labels` | map<string,string> | Labels to be appended to the Service object  |
-| `spec.http.serviceHttpPort` | integer | The HTTP port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on httpPort.  |
-| `spec.http.serviceHttpsPort` | integer | The HTTPS port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on httpsPort.  |
-| `spec.http.serviceName` | string | The name of the Kubernetes Service. When not set, the name defaults to the Keycloak CR name with a "-service" suffix.  |
-| `spec.http.tlsSecret` | string | A secret containing the TLS configuration for HTTPS. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
-| `spec.httpManagement.port` | integer | Port of the management interface.  |
-| `spec.image` | string | Custom Keycloak image to be used.  |
-| `spec.imagePullSecrets` | array[object] | Secret(s) that might be used when pulling an image from a private container image registry or repository.  |
-| `spec.imagePullSecrets[].name` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.import.scheduling.priorityClassName` | string |   |
-| `spec.import.scheduling.tolerations` | array[object] |   |
-| `spec.import.scheduling.tolerations[].effect` | string |   |
-| `spec.import.scheduling.tolerations[].key` | string |   |
-| `spec.import.scheduling.tolerations[].operator` | string |   |
-| `spec.import.scheduling.tolerations[].tolerationSeconds` | integer |   |
-| `spec.import.scheduling.tolerations[].value` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints` | array[object] |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
-| `spec.import.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
-| `spec.import.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
-| `spec.ingress.annotations` | map<string,string> | Additional annotations to be appended to the Ingress object  |
-| `spec.ingress.className` | string |   |
-| `spec.ingress.enabled` | boolean |   |
-| `spec.ingress.labels` | map<string,string> | Additional labels to be appended to the Ingress object  |
-| `spec.ingress.tlsSecret` | string | A secret containing the TLS configuration for re-encrypt or TLS termination scenarios. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
-| `spec.instances` | integer | Number of Keycloak instances. Default is 1.  |
-| `spec.livenessProbe.failureThreshold` | integer |   |
-| `spec.livenessProbe.periodSeconds` | integer |   |
-| `spec.networkPolicy.enabled` | boolean | Enables or disables the ingress traffic control.  |
-| `spec.networkPolicy.http` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
-| `spec.networkPolicy.http[].ipBlock.cidr` | string |   |
-| `spec.networkPolicy.http[].ipBlock.except` | array[string] |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.http[].podSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.http[].podSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.http[].podSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.http[].podSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.http[].podSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.https` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
-| `spec.networkPolicy.https[].ipBlock.cidr` | string |   |
-| `spec.networkPolicy.https[].ipBlock.except` | array[string] |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.https[].podSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.https[].podSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.https[].podSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.https[].podSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.https[].podSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.management` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
-| `spec.networkPolicy.management[].ipBlock.cidr` | string |   |
-| `spec.networkPolicy.management[].ipBlock.except` | array[string] |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.management[].podSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.management[].podSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.management[].podSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.management[].podSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.management[].podSelector.matchLabels` | map<string,string> |   |
-| `spec.proxy.headers` | string | The proxy headers that should be accepted by the server. Misconfiguration might leave the server exposed to security vulnerabilities.  |
-| `spec.readinessProbe.failureThreshold` | integer |   |
-| `spec.readinessProbe.periodSeconds` | integer |   |
-| `spec.resources.claims` | array[object] |   |
-| `spec.resources.claims[].name` | string |   |
-| `spec.resources.claims[].request` | string |   |
-| `spec.resources.limits` | map<string,any> |   |
-| `spec.resources.requests` | map<string,any> |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.scheduling.priorityClassName` | string |   |
-| `spec.scheduling.tolerations` | array[object] |   |
-| `spec.scheduling.tolerations[].effect` | string |   |
-| `spec.scheduling.tolerations[].key` | string |   |
-| `spec.scheduling.tolerations[].operator` | string |   |
-| `spec.scheduling.tolerations[].tolerationSeconds` | integer |   |
-| `spec.scheduling.tolerations[].value` | string |   |
-| `spec.scheduling.topologySpreadConstraints` | array[object] |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
-| `spec.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
-| `spec.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
-| `spec.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
-| `spec.serviceMonitor.annotations` | map<string,string> | Annotations to be appended to the Service object  |
-| `spec.serviceMonitor.enabled` | boolean | Enables or disables the creation of the ServiceMonitor.  |
-| `spec.serviceMonitor.interval` | string | Interval at which metrics should be scraped  |
-| `spec.serviceMonitor.labels` | map<string,string> | Labels to be appended to the Service object  |
-| `spec.serviceMonitor.scrapeTimeout` | string | Timeout after which the scrape is ended  |
-| `spec.startOptimized` | boolean | Set to force the behavior of the --optimized flag for the start command. If left unspecified the operator will assume custom images have already been augmented.  |
-| `spec.startupProbe.failureThreshold` | integer |   |
-| `spec.startupProbe.periodSeconds` | integer |   |
-| `spec.telemetry.endpoint` | string | OpenTelemetry endpoint to connect to.  |
-| `spec.telemetry.protocol` | string | OpenTelemetry protocol used for the telemetry data (default 'grpc'). For more information, check the OpenTelemetry guide.  |
-| `spec.telemetry.resourceAttributes` | map<string,string> | OpenTelemetry resource attributes present in the exported telemetry data to characterize the telemetry producer.  |
-| `spec.telemetry.serviceName` | string | OpenTelemetry service name. Takes precedence over 'service.name' defined in the 'resourceAttributes' map.  |
-| `spec.tracing.compression` | string | OpenTelemetry compression method used to compress payloads. If unset, compression is disabled. Possible values are: gzip, none.  |
-| `spec.tracing.enabled` | boolean | Enables the OpenTelemetry tracing.  |
-| `spec.tracing.endpoint` | string | OpenTelemetry endpoint to connect to.  |
-| `spec.tracing.protocol` | string | OpenTelemetry protocol used for the telemetry data (default 'grpc'). For more information, check the Tracing guide.  |
-| `spec.tracing.resourceAttributes` | map<string,string> | DEPRECATED - use the 'telemetry.resourceAttributes' instead. OpenTelemetry resource attributes present in the exported trace to characterize the telemetry producer.  |
-| `spec.tracing.samplerRatio` | number | OpenTelemetry sampler ratio. Probability that a span will be sampled. Expected double value in interval [0,1].  |
-| `spec.tracing.samplerType` | string | OpenTelemetry sampler to use for tracing (default 'traceidratio'). For more information, check the Tracing guide.  |
-| `spec.tracing.serviceName` | string | DEPRECATED - use the 'telemetry.serviceName' instead. OpenTelemetry service name. Takes precedence over 'service.name' defined in the 'resourceAttributes' map.  |
-| `spec.transaction.xaEnabled` | boolean | Determine whether Keycloak should use a non-XA datasource in case the database does not support XA transactions.  |
-| `spec.truststores` | map<string,object> | In this section you can configure Keycloak truststores.  |
-| `spec.unsupported.podTemplate.metadata.annotations` | map<string,string> |   |
-| `spec.unsupported.podTemplate.metadata.creationTimestamp` | string |   |
-| `spec.unsupported.podTemplate.metadata.deletionGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.metadata.deletionTimestamp` | string |   |
-| `spec.unsupported.podTemplate.metadata.finalizers` | array[string] |   |
-| `spec.unsupported.podTemplate.metadata.generateName` | string |   |
-| `spec.unsupported.podTemplate.metadata.generation` | integer |   |
-| `spec.unsupported.podTemplate.metadata.labels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.metadata.managedFields` | array[object] |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].apiVersion` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].fieldsType` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].fieldsV1` | object |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].manager` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].operation` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].subresource` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].time` | string |   |
-| `spec.unsupported.podTemplate.metadata.name` | string |   |
-| `spec.unsupported.podTemplate.metadata.namespace` | string |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences` | array[object] |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].apiVersion` | string |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].blockOwnerDeletion` | boolean |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].controller` | boolean |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].kind` | string |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].name` | string |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].uid` | string |   |
-| `spec.unsupported.podTemplate.metadata.resourceVersion` | string |   |
-| `spec.unsupported.podTemplate.metadata.selfLink` | string |   |
-| `spec.unsupported.podTemplate.metadata.uid` | string |   |
-| `spec.unsupported.podTemplate.spec.activeDeadlineSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.automountServiceAccountToken` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].args` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].env` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].configMapRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].configMapRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].prefix` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].secretRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].image` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].imagePullPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.stopSignal` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].containerPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].hostIP` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].hostPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].protocol` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].resizePolicy` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].resizePolicy[].resourceName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].resizePolicy[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.claims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.claims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.claims[].request` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].action` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].exitCodes.operator` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.allowPrivilegeEscalation` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.appArmorProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.appArmorProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.capabilities.add` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.capabilities.drop` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.privileged` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.procMount` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.readOnlyRootFilesystem` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsNonRoot` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsUser` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.level` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.role` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.type` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.user` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seccompProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seccompProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.hostProcess` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.runAsUserName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].stdin` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].stdinOnce` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].terminationMessagePath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].terminationMessagePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].tty` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeDevices` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeDevices[].devicePath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeDevices[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].mountPath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].mountPropagation` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].recursiveReadOnly` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].subPath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].subPathExpr` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].workingDir` | string |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.nameservers` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.options` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.options[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.options[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.searches` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.dnsPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.enableServiceLinks` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].args` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].configMapRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].configMapRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].prefix` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].secretRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].image` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].imagePullPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.stopSignal` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].containerPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].hostIP` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].hostPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].protocol` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy[].resourceName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims[].request` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].action` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].exitCodes.operator` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.allowPrivilegeEscalation` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.appArmorProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.appArmorProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.capabilities.add` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.capabilities.drop` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.privileged` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.procMount` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.readOnlyRootFilesystem` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsNonRoot` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsUser` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.level` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.role` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.type` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.user` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seccompProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seccompProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.hostProcess` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.runAsUserName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].stdin` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].stdinOnce` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].targetContainerName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].terminationMessagePath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].terminationMessagePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].tty` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices[].devicePath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].mountPath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].mountPropagation` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].recursiveReadOnly` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].subPath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].subPathExpr` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].workingDir` | string |   |
-| `spec.unsupported.podTemplate.spec.hostAliases` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.hostAliases[].hostnames` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.hostAliases[].ip` | string |   |
-| `spec.unsupported.podTemplate.spec.hostIPC` | boolean |   |
-| `spec.unsupported.podTemplate.spec.hostNetwork` | boolean |   |
-| `spec.unsupported.podTemplate.spec.hostPID` | boolean |   |
-| `spec.unsupported.podTemplate.spec.hostUsers` | boolean |   |
-| `spec.unsupported.podTemplate.spec.hostname` | string |   |
-| `spec.unsupported.podTemplate.spec.hostnameOverride` | string |   |
-| `spec.unsupported.podTemplate.spec.imagePullSecrets` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.imagePullSecrets[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].args` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].configMapRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].configMapRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].prefix` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].secretRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].image` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].imagePullPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.stopSignal` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].containerPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].hostIP` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].hostPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].protocol` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy[].resourceName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.claims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.claims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.claims[].request` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].action` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].exitCodes.operator` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.allowPrivilegeEscalation` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.appArmorProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.appArmorProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.capabilities.add` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.capabilities.drop` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.privileged` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.procMount` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.readOnlyRootFilesystem` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsNonRoot` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsUser` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.level` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.role` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.type` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.user` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seccompProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seccompProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.hostProcess` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.runAsUserName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].stdin` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].stdinOnce` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].terminationMessagePath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].terminationMessagePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].tty` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices[].devicePath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].mountPath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].mountPropagation` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].recursiveReadOnly` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].subPath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].subPathExpr` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].workingDir` | string |   |
-| `spec.unsupported.podTemplate.spec.nodeName` | string |   |
-| `spec.unsupported.podTemplate.spec.nodeSelector` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.os.name` | string |   |
-| `spec.unsupported.podTemplate.spec.overhead` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.preemptionPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.priority` | integer |   |
-| `spec.unsupported.podTemplate.spec.priorityClassName` | string |   |
-| `spec.unsupported.podTemplate.spec.readinessGates` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.readinessGates[].conditionType` | string |   |
-| `spec.unsupported.podTemplate.spec.resourceClaims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.resourceClaims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.resourceClaims[].resourceClaimName` | string |   |
-| `spec.unsupported.podTemplate.spec.resourceClaims[].resourceClaimTemplateName` | string |   |
-| `spec.unsupported.podTemplate.spec.resources.claims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.resources.claims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.resources.claims[].request` | string |   |
-| `spec.unsupported.podTemplate.spec.resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.runtimeClassName` | string |   |
-| `spec.unsupported.podTemplate.spec.schedulerName` | string |   |
-| `spec.unsupported.podTemplate.spec.schedulingGates` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.schedulingGates[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.appArmorProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.appArmorProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.fsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.securityContext.fsGroupChangePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.runAsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.securityContext.runAsNonRoot` | boolean |   |
-| `spec.unsupported.podTemplate.spec.securityContext.runAsUser` | integer |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxChangePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.level` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.role` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.type` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.user` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seccompProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seccompProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.supplementalGroups` | array[integer] |   |
-| `spec.unsupported.podTemplate.spec.securityContext.supplementalGroupsPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.sysctls` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.securityContext.sysctls[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.sysctls[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.hostProcess` | boolean |   |
-| `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.runAsUserName` | string |   |
-| `spec.unsupported.podTemplate.spec.serviceAccount` | string |   |
-| `spec.unsupported.podTemplate.spec.serviceAccountName` | string |   |
-| `spec.unsupported.podTemplate.spec.setHostnameAsFQDN` | boolean |   |
-| `spec.unsupported.podTemplate.spec.shareProcessNamespace` | boolean |   |
-| `spec.unsupported.podTemplate.spec.subdomain` | string |   |
-| `spec.unsupported.podTemplate.spec.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.tolerations` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].effect` | string |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].tolerationSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].maxSkew` | integer |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].minDomains` | integer |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.partition` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.volumeID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.cachingMode` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.diskName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.diskURI` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.kind` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureFile.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureFile.secretName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureFile.shareName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.monitors` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.secretFile` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.user` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cinder.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cinder.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cinder.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cinder.volumeID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.defaultMode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.driver` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.nodePublishSecretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.volumeAttributes` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.defaultMode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].emptyDir.medium` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].emptyDir.sizeLimit` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.annotations` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.creationTimestamp` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.deletionGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.deletionTimestamp` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.finalizers` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.generateName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.generation` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.labels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].fieldsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].fieldsV1` | object |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].manager` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].operation` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].subresource` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].time` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.namespace` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].blockOwnerDeletion` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].controller` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].kind` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].uid` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.resourceVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.selfLink` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.uid` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.accessModes` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.apiGroup` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.kind` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.apiGroup` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.kind` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.namespace` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.storageClassName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeAttributesClassName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeMode` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.lun` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.targetWWNs` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.wwids` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.driver` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.options` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flocker.datasetName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flocker.datasetUUID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.partition` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.pdName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gitRepo.directory` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gitRepo.repository` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gitRepo.revision` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].glusterfs.endpoints` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].glusterfs.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].glusterfs.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].hostPath.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].hostPath.type` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].image.pullPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].image.reference` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.chapAuthDiscovery` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.chapAuthSession` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.initiatorName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.iqn` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.iscsiInterface` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.lun` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.portals` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.targetPortal` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].nfs.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].nfs.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].nfs.server` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].persistentVolumeClaim.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].photonPersistentDisk.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].photonPersistentDisk.pdID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.volumeID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.defaultMode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.signerName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.certificateChainPath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.credentialBundlePath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.keyPath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.keyType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.maxExpirationSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.signerName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.audience` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.expirationSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.group` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.registry` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.tenant` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.user` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.volume` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.image` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.keyring` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.monitors` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.pool` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.user` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.gateway` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.protectionDomain` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.sslEnabled` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.storageMode` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.storagePool` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.system` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.defaultMode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.items[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.secretName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.volumeNamespace` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.storagePolicyID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.storagePolicyName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.volumePath` | string |   |
-| `spec.update.labels` | map<string,string> | Optionally set to add additional labels to the Job created for the update.  |
-| `spec.update.revision` | string | When use the Explicit strategy, the revision signals if a rolling update can be used or not.  |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.update.scheduling.priorityClassName` | string |   |
-| `spec.update.scheduling.tolerations` | array[object] |   |
-| `spec.update.scheduling.tolerations[].effect` | string |   |
-| `spec.update.scheduling.tolerations[].key` | string |   |
-| `spec.update.scheduling.tolerations[].operator` | string |   |
-| `spec.update.scheduling.tolerations[].tolerationSeconds` | integer |   |
-| `spec.update.scheduling.tolerations[].value` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints` | array[object] |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
-| `spec.update.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
-| `spec.update.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
-| `spec.update.strategy` | string | Sets the update strategy to use.  |
-| `spec.additionalOptions` | array[object] | Configuration of the Keycloak server. expressed as a keys (reference: https://www.keycloak.org/server/all-config) and values that can be either direct values or references to secrets.  |
-| `spec.additionalOptions[].name` | string |   |
-| `spec.additionalOptions[].secret.key` | string |   |
-| `spec.additionalOptions[].secret.name` | string |   |
-| `spec.additionalOptions[].secret.optional` | boolean |   |
-| `spec.additionalOptions[].value` | string |   |
-| `spec.admin.tlsSecret` | string | If mTLS is required, this references a secret containing the client TLS configuration for the admin client. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
-| `spec.automountServiceAccountToken` | boolean | Set this to to false to disable automounting the default ServiceAccount Token and Service CA. This is enabled by default.  |
-| `spec.bootstrapAdmin.service.secret` | string | Name of the Secret that contains the client-id and client-secret keys  |
-| `spec.bootstrapAdmin.user.secret` | string | Name of the Secret that contains the username and password keys  |
-| `spec.cache.configMapFile.key` | string |   |
-| `spec.cache.configMapFile.name` | string |   |
-| `spec.cache.configMapFile.optional` | boolean |   |
-| `spec.db.database` | string | Sets the database name of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
-| `spec.db.host` | string | Sets the hostname of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
-| `spec.db.passwordSecret.key` | string |   |
-| `spec.db.passwordSecret.name` | string |   |
-| `spec.db.passwordSecret.optional` | boolean |   |
-| `spec.db.poolInitialSize` | integer | The initial size of the connection pool.  |
-| `spec.db.poolMaxSize` | integer | The maximum size of the connection pool.  |
-| `spec.db.poolMinSize` | integer | The minimal size of the connection pool.  |
-| `spec.db.port` | integer | Sets the port of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
-| `spec.db.schema` | string | The database schema to be used.  |
-| `spec.db.url` | string | The full database JDBC URL. If not provided, a default URL is set based on the selected database vendor. For instance, if using 'postgres', the default JDBC URL would be 'jdbc:postgresql://localhost/keycloak'.  |
-| `spec.db.usernameSecret.key` | string |   |
-| `spec.db.usernameSecret.name` | string |   |
-| `spec.db.usernameSecret.optional` | boolean |   |
-| `spec.db.vendor` | string | The database vendor.  |
-| `spec.env` | array[object] | Environment variables for the Keycloak server. Values can be either direct values or references to secrets. Use additionalOptions for first-class options rather than KC_ values here.  |
-| `spec.env[].name` | string |   |
-| `spec.env[].secret.key` | string |   |
-| `spec.env[].secret.name` | string |   |
-| `spec.env[].secret.optional` | boolean |   |
-| `spec.env[].value` | string |   |
-| `spec.features.disabled` | array[string] | Disabled Keycloak features  |
-| `spec.features.enabled` | array[string] | Enabled Keycloak features  |
-| `spec.hostname.admin` | string | The hostname for accessing the administration console. Applicable for Hostname v1 and v2.  |
-| `spec.hostname.adminUrl` | string | DEPRECATED. Sets the base URL for accessing the administration console, including scheme, host, port and path. Applicable for Hostname v1.  |
-| `spec.hostname.backchannelDynamic` | boolean | Enables dynamic resolving of backchannel URLs, including hostname, scheme, port and context path. Set to true if your application accesses Keycloak via a private network. Applicable for Hostname v2.  |
-| `spec.hostname.hostname` | string | Hostname for the Keycloak server. Applicable for Hostname v1 and v2.  |
-| `spec.hostname.strict` | boolean | Disables dynamically resolving the hostname from request headers. Applicable for Hostname v1 and v2.  |
-| `spec.hostname.strictBackchannel` | boolean | DEPRECATED. By default backchannel URLs are dynamically resolved from request headers to allow internal and external applications. Applicable for Hostname v1.  |
-| `spec.http.annotations` | map<string,string> | Annotations to be appended to the Service object  |
-| `spec.http.httpEnabled` | boolean | Enables the HTTP listener.  |
-| `spec.http.httpPort` | integer | The used HTTP port.  |
-| `spec.http.httpsPort` | integer | The used HTTPS port.  |
-| `spec.http.labels` | map<string,string> | Labels to be appended to the Service object  |
-| `spec.http.serviceHttpPort` | integer | The HTTP port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on httpPort.  |
-| `spec.http.serviceHttpsPort` | integer | The HTTPS port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on httpsPort.  |
-| `spec.http.serviceName` | string | The name of the Kubernetes Service. When not set, the name defaults to the Keycloak CR name with a "-service" suffix.  |
-| `spec.http.tlsSecret` | string | A secret containing the TLS configuration for HTTPS. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
-| `spec.httpManagement.port` | integer | Port of the management interface.  |
-| `spec.image` | string | Custom Keycloak image to be used.  |
-| `spec.imagePullSecrets` | array[object] | Secret(s) that might be used when pulling an image from a private container image registry or repository.  |
-| `spec.imagePullSecrets[].name` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
-| `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.import.scheduling.priorityClassName` | string |   |
-| `spec.import.scheduling.tolerations` | array[object] |   |
-| `spec.import.scheduling.tolerations[].effect` | string |   |
-| `spec.import.scheduling.tolerations[].key` | string |   |
-| `spec.import.scheduling.tolerations[].operator` | string |   |
-| `spec.import.scheduling.tolerations[].tolerationSeconds` | integer |   |
-| `spec.import.scheduling.tolerations[].value` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints` | array[object] |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.import.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
-| `spec.import.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
-| `spec.import.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
-| `spec.import.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
-| `spec.import.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
-| `spec.ingress.annotations` | map<string,string> | Additional annotations to be appended to the Ingress object  |
-| `spec.ingress.className` | string |   |
-| `spec.ingress.enabled` | boolean |   |
-| `spec.ingress.labels` | map<string,string> | Additional labels to be appended to the Ingress object  |
-| `spec.ingress.tlsSecret` | string | A secret containing the TLS configuration for re-encrypt or TLS termination scenarios. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
-| `spec.instances` | integer | Number of Keycloak instances. Default is 1.  |
-| `spec.livenessProbe.failureThreshold` | integer |   |
-| `spec.livenessProbe.periodSeconds` | integer |   |
-| `spec.networkPolicy.enabled` | boolean | Enables or disables the ingress traffic control.  |
-| `spec.networkPolicy.http` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
-| `spec.networkPolicy.http[].ipBlock.cidr` | string |   |
-| `spec.networkPolicy.http[].ipBlock.except` | array[string] |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.http[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.http[].podSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.http[].podSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.http[].podSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.http[].podSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.http[].podSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.https` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
-| `spec.networkPolicy.https[].ipBlock.cidr` | string |   |
-| `spec.networkPolicy.https[].ipBlock.except` | array[string] |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.https[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.https[].podSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.https[].podSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.https[].podSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.https[].podSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.https[].podSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.management` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
-| `spec.networkPolicy.management[].ipBlock.cidr` | string |   |
-| `spec.networkPolicy.management[].ipBlock.except` | array[string] |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.management[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.networkPolicy.management[].podSelector.matchExpressions` | array[object] |   |
-| `spec.networkPolicy.management[].podSelector.matchExpressions[].key` | string |   |
-| `spec.networkPolicy.management[].podSelector.matchExpressions[].operator` | string |   |
-| `spec.networkPolicy.management[].podSelector.matchExpressions[].values` | array[string] |   |
-| `spec.networkPolicy.management[].podSelector.matchLabels` | map<string,string> |   |
-| `spec.proxy.headers` | string | The proxy headers that should be accepted by the server. Misconfiguration might leave the server exposed to security vulnerabilities.  |
-| `spec.readinessProbe.failureThreshold` | integer |   |
-| `spec.readinessProbe.periodSeconds` | integer |   |
-| `spec.resources.claims` | array[object] |   |
-| `spec.resources.claims[].name` | string |   |
-| `spec.resources.claims[].request` | string |   |
-| `spec.resources.limits` | map<string,any> |   |
-| `spec.resources.requests` | map<string,any> |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
-| `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
-| `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.scheduling.priorityClassName` | string |   |
-| `spec.scheduling.tolerations` | array[object] |   |
-| `spec.scheduling.tolerations[].effect` | string |   |
-| `spec.scheduling.tolerations[].key` | string |   |
-| `spec.scheduling.tolerations[].operator` | string |   |
-| `spec.scheduling.tolerations[].tolerationSeconds` | integer |   |
-| `spec.scheduling.tolerations[].value` | string |   |
-| `spec.scheduling.topologySpreadConstraints` | array[object] |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
-| `spec.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
-| `spec.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
-| `spec.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
-| `spec.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
-| `spec.serviceMonitor.annotations` | map<string,string> | Annotations to be appended to the Service object  |
-| `spec.serviceMonitor.enabled` | boolean | Enables or disables the creation of the ServiceMonitor.  |
-| `spec.serviceMonitor.interval` | string | Interval at which metrics should be scraped  |
-| `spec.serviceMonitor.labels` | map<string,string> | Labels to be appended to the Service object  |
-| `spec.serviceMonitor.scrapeTimeout` | string | Timeout after which the scrape is ended  |
-| `spec.startOptimized` | boolean | Set to force the behavior of the --optimized flag for the start command. If left unspecified the operator will assume custom images have already been augmented.  |
-| `spec.startupProbe.failureThreshold` | integer |   |
-| `spec.startupProbe.periodSeconds` | integer |   |
-| `spec.telemetry.endpoint` | string | OpenTelemetry endpoint to connect to.  |
-| `spec.telemetry.protocol` | string | OpenTelemetry protocol used for the telemetry data (default 'grpc'). For more information, check the OpenTelemetry guide.  |
-| `spec.telemetry.resourceAttributes` | map<string,string> | OpenTelemetry resource attributes present in the exported telemetry data to characterize the telemetry producer.  |
-| `spec.telemetry.serviceName` | string | OpenTelemetry service name. Takes precedence over 'service.name' defined in the 'resourceAttributes' map.  |
-| `spec.tracing.compression` | string | OpenTelemetry compression method used to compress payloads. If unset, compression is disabled. Possible values are: gzip, none.  |
-| `spec.tracing.enabled` | boolean | Enables the OpenTelemetry tracing.  |
-| `spec.tracing.endpoint` | string | OpenTelemetry endpoint to connect to.  |
-| `spec.tracing.protocol` | string | OpenTelemetry protocol used for the telemetry data (default 'grpc'). For more information, check the Tracing guide.  |
-| `spec.tracing.resourceAttributes` | map<string,string> | DEPRECATED - use the 'telemetry.resourceAttributes' instead. OpenTelemetry resource attributes present in the exported trace to characterize the telemetry producer.  |
-| `spec.tracing.samplerRatio` | number | OpenTelemetry sampler ratio. Probability that a span will be sampled. Expected double value in interval [0,1].  |
-| `spec.tracing.samplerType` | string | OpenTelemetry sampler to use for tracing (default 'traceidratio'). For more information, check the Tracing guide.  |
-| `spec.tracing.serviceName` | string | DEPRECATED - use the 'telemetry.serviceName' instead. OpenTelemetry service name. Takes precedence over 'service.name' defined in the 'resourceAttributes' map.  |
-| `spec.transaction.xaEnabled` | boolean | Determine whether Keycloak should use a non-XA datasource in case the database does not support XA transactions.  |
-| `spec.truststores` | map<string,object> | In this section you can configure Keycloak truststores.  |
-| `spec.unsupported.podTemplate.metadata.annotations` | map<string,string> |   |
-| `spec.unsupported.podTemplate.metadata.creationTimestamp` | string |   |
-| `spec.unsupported.podTemplate.metadata.deletionGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.metadata.deletionTimestamp` | string |   |
-| `spec.unsupported.podTemplate.metadata.finalizers` | array[string] |   |
-| `spec.unsupported.podTemplate.metadata.generateName` | string |   |
-| `spec.unsupported.podTemplate.metadata.generation` | integer |   |
-| `spec.unsupported.podTemplate.metadata.labels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.metadata.managedFields` | array[object] |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].apiVersion` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].fieldsType` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].fieldsV1` | object |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].manager` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].operation` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].subresource` | string |   |
-| `spec.unsupported.podTemplate.metadata.managedFields[].time` | string |   |
-| `spec.unsupported.podTemplate.metadata.name` | string |   |
-| `spec.unsupported.podTemplate.metadata.namespace` | string |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences` | array[object] |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].apiVersion` | string |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].blockOwnerDeletion` | boolean |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].controller` | boolean |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].kind` | string |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].name` | string |   |
-| `spec.unsupported.podTemplate.metadata.ownerReferences[].uid` | string |   |
-| `spec.unsupported.podTemplate.metadata.resourceVersion` | string |   |
-| `spec.unsupported.podTemplate.metadata.selfLink` | string |   |
-| `spec.unsupported.podTemplate.metadata.uid` | string |   |
-| `spec.unsupported.podTemplate.spec.activeDeadlineSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.automountServiceAccountToken` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].args` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].env` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].configMapRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].configMapRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].prefix` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].envFrom[].secretRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].image` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].imagePullPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].lifecycle.stopSignal` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].livenessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].containerPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].hostIP` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].hostPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].ports[].protocol` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].readinessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].resizePolicy` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].resizePolicy[].resourceName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].resizePolicy[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.claims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.claims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.claims[].request` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.containers[].resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].action` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].exitCodes.operator` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.allowPrivilegeEscalation` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.appArmorProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.appArmorProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.capabilities.add` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.capabilities.drop` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.privileged` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.procMount` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.readOnlyRootFilesystem` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsNonRoot` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsUser` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.level` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.role` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.type` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.user` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seccompProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.seccompProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.hostProcess` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.runAsUserName` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].startupProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.containers[].stdin` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].stdinOnce` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].terminationMessagePath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].terminationMessagePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].tty` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeDevices` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeDevices[].devicePath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeDevices[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].mountPath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].mountPropagation` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].recursiveReadOnly` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].subPath` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].subPathExpr` | string |   |
-| `spec.unsupported.podTemplate.spec.containers[].workingDir` | string |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.nameservers` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.options` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.options[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.options[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.dnsConfig.searches` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.dnsPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.enableServiceLinks` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].args` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].configMapRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].configMapRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].prefix` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].secretRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].image` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].imagePullPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.stopSignal` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].containerPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].hostIP` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].hostPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].protocol` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy[].resourceName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims[].request` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].action` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].exitCodes.operator` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.allowPrivilegeEscalation` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.appArmorProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.appArmorProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.capabilities.add` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.capabilities.drop` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.privileged` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.procMount` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.readOnlyRootFilesystem` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsNonRoot` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsUser` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.level` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.role` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.type` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.user` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seccompProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seccompProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.hostProcess` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.runAsUserName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].stdin` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].stdinOnce` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].targetContainerName` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].terminationMessagePath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].terminationMessagePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].tty` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices[].devicePath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].mountPath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].mountPropagation` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].recursiveReadOnly` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].subPath` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].subPathExpr` | string |   |
-| `spec.unsupported.podTemplate.spec.ephemeralContainers[].workingDir` | string |   |
-| `spec.unsupported.podTemplate.spec.hostAliases` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.hostAliases[].hostnames` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.hostAliases[].ip` | string |   |
-| `spec.unsupported.podTemplate.spec.hostIPC` | boolean |   |
-| `spec.unsupported.podTemplate.spec.hostNetwork` | boolean |   |
-| `spec.unsupported.podTemplate.spec.hostPID` | boolean |   |
-| `spec.unsupported.podTemplate.spec.hostUsers` | boolean |   |
-| `spec.unsupported.podTemplate.spec.hostname` | string |   |
-| `spec.unsupported.podTemplate.spec.hostnameOverride` | string |   |
-| `spec.unsupported.podTemplate.spec.imagePullSecrets` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.imagePullSecrets[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].args` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.key` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].configMapRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].configMapRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].prefix` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].secretRef.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].image` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].imagePullPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.sleep.seconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.stopSignal` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].containerPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].hostIP` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].hostPort` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].ports[].protocol` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy[].resourceName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.claims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.claims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.claims[].request` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].action` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].exitCodes.operator` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.allowPrivilegeEscalation` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.appArmorProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.appArmorProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.capabilities.add` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.capabilities.drop` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.privileged` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.procMount` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.readOnlyRootFilesystem` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsNonRoot` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsUser` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.level` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.role` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.type` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.user` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seccompProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seccompProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.hostProcess` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.runAsUserName` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.exec.command` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.failureThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.grpc.port` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.grpc.service` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.path` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.scheme` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.initialDelaySeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.periodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.successThreshold` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.tcpSocket.host` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.tcpSocket.port` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.timeoutSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].stdin` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].stdinOnce` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].terminationMessagePath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].terminationMessagePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].tty` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices[].devicePath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].mountPath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].mountPropagation` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].recursiveReadOnly` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].subPath` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].subPathExpr` | string |   |
-| `spec.unsupported.podTemplate.spec.initContainers[].workingDir` | string |   |
-| `spec.unsupported.podTemplate.spec.nodeName` | string |   |
-| `spec.unsupported.podTemplate.spec.nodeSelector` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.os.name` | string |   |
-| `spec.unsupported.podTemplate.spec.overhead` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.preemptionPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.priority` | integer |   |
-| `spec.unsupported.podTemplate.spec.priorityClassName` | string |   |
-| `spec.unsupported.podTemplate.spec.readinessGates` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.readinessGates[].conditionType` | string |   |
-| `spec.unsupported.podTemplate.spec.resourceClaims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.resourceClaims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.resourceClaims[].resourceClaimName` | string |   |
-| `spec.unsupported.podTemplate.spec.resourceClaims[].resourceClaimTemplateName` | string |   |
-| `spec.unsupported.podTemplate.spec.resources.claims` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.resources.claims[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.resources.claims[].request` | string |   |
-| `spec.unsupported.podTemplate.spec.resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.restartPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.runtimeClassName` | string |   |
-| `spec.unsupported.podTemplate.spec.schedulerName` | string |   |
-| `spec.unsupported.podTemplate.spec.schedulingGates` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.schedulingGates[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.appArmorProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.appArmorProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.fsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.securityContext.fsGroupChangePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.runAsGroup` | integer |   |
-| `spec.unsupported.podTemplate.spec.securityContext.runAsNonRoot` | boolean |   |
-| `spec.unsupported.podTemplate.spec.securityContext.runAsUser` | integer |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxChangePolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.level` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.role` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.type` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.user` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seccompProfile.localhostProfile` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.seccompProfile.type` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.supplementalGroups` | array[integer] |   |
-| `spec.unsupported.podTemplate.spec.securityContext.supplementalGroupsPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.sysctls` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.securityContext.sysctls[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.sysctls[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
-| `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.hostProcess` | boolean |   |
-| `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.runAsUserName` | string |   |
-| `spec.unsupported.podTemplate.spec.serviceAccount` | string |   |
-| `spec.unsupported.podTemplate.spec.serviceAccountName` | string |   |
-| `spec.unsupported.podTemplate.spec.setHostnameAsFQDN` | boolean |   |
-| `spec.unsupported.podTemplate.spec.shareProcessNamespace` | boolean |   |
-| `spec.unsupported.podTemplate.spec.subdomain` | string |   |
-| `spec.unsupported.podTemplate.spec.terminationGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.tolerations` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].effect` | string |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].tolerationSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.tolerations[].value` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].maxSkew` | integer |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].minDomains` | integer |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].topologyKey` | string |   |
-| `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.partition` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.volumeID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.cachingMode` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.diskName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.diskURI` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.kind` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureDisk.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureFile.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureFile.secretName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].azureFile.shareName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.monitors` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.secretFile` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cephfs.user` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cinder.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cinder.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cinder.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].cinder.volumeID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.defaultMode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].configMap.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.driver` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.nodePublishSecretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].csi.volumeAttributes` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.defaultMode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].emptyDir.medium` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].emptyDir.sizeLimit` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.annotations` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.creationTimestamp` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.deletionGracePeriodSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.deletionTimestamp` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.finalizers` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.generateName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.generation` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.labels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].fieldsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].fieldsV1` | object |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].manager` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].operation` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].subresource` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].time` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.namespace` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].blockOwnerDeletion` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].controller` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].kind` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].uid` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.resourceVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.selfLink` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.uid` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.accessModes` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.apiGroup` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.kind` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.apiGroup` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.kind` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.namespace` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.resources.limits` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.resources.requests` | map<string,any> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.storageClassName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeAttributesClassName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeMode` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.lun` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.targetWWNs` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].fc.wwids` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.driver` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.options` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flexVolume.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flocker.datasetName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].flocker.datasetUUID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.partition` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.pdName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gitRepo.directory` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gitRepo.repository` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].gitRepo.revision` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].glusterfs.endpoints` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].glusterfs.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].glusterfs.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].hostPath.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].hostPath.type` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].image.pullPolicy` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].image.reference` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.chapAuthDiscovery` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.chapAuthSession` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.initiatorName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.iqn` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.iscsiInterface` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.lun` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.portals` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].iscsi.targetPortal` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].nfs.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].nfs.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].nfs.server` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].persistentVolumeClaim.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].photonPersistentDisk.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].photonPersistentDisk.pdID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.volumeID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.defaultMode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.signerName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].fieldRef.apiVersion` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].fieldRef.fieldPath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.containerName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.divisor` | int-or-string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.resource` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.certificateChainPath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.credentialBundlePath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.keyPath` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.keyType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.maxExpirationSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.signerName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.audience` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.expirationSeconds` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.group` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.registry` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.tenant` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.user` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].quobyte.volume` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.image` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.keyring` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.monitors` | array[string] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.pool` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].rbd.user` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.gateway` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.protectionDomain` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.sslEnabled` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.storageMode` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.storagePool` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.system` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].scaleIO.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.defaultMode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.items` | array[object] |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.items[].key` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.items[].mode` | integer |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.items[].path` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.optional` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].secret.secretName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.readOnly` | boolean |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.secretRef.name` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.volumeName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].storageos.volumeNamespace` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.fsType` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.storagePolicyID` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.storagePolicyName` | string |   |
-| `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.volumePath` | string |   |
-| `spec.update.labels` | map<string,string> | Optionally set to add additional labels to the Job created for the update.  |
-| `spec.update.revision` | string | When use the Explicit strategy, the revision signals if a rolling update can be used or not.  |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
-| `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
-| `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
-| `spec.update.scheduling.priorityClassName` | string |   |
-| `spec.update.scheduling.tolerations` | array[object] |   |
-| `spec.update.scheduling.tolerations[].effect` | string |   |
-| `spec.update.scheduling.tolerations[].key` | string |   |
-| `spec.update.scheduling.tolerations[].operator` | string |   |
-| `spec.update.scheduling.tolerations[].tolerationSeconds` | integer |   |
-| `spec.update.scheduling.tolerations[].value` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints` | array[object] |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
-| `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
-| `spec.update.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
-| `spec.update.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
-| `spec.update.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
-| `spec.update.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
-| `spec.update.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
-| `spec.update.strategy` | string | Sets the update strategy to use.  |
+| Version | Property path | Type | Description |
+|---------|---------------|------|-------------|
+| `v2beta1` | `spec.additionalOptions` | array[object] | Configuration of the Keycloak server. expressed as a keys (reference: https://www.keycloak.org/server/all-config) and values that can be either direct values or references to secrets.  |
+| `v2beta1` | `spec.additionalOptions[].name` | string |   |
+| `v2beta1` | `spec.additionalOptions[].secret.key` | string |   |
+| `v2beta1` | `spec.additionalOptions[].secret.name` | string |   |
+| `v2beta1` | `spec.additionalOptions[].secret.optional` | boolean |   |
+| `v2beta1` | `spec.additionalOptions[].value` | string |   |
+| `v2beta1` | `spec.admin.tlsSecret` | string | If mTLS is required, this references a secret containing the client TLS configuration for the admin client. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
+| `v2beta1` | `spec.automountServiceAccountToken` | boolean | Set this to to false to disable automounting the default ServiceAccount Token and Service CA. This is enabled by default.  |
+| `v2beta1` | `spec.bootstrapAdmin.service.secret` | string | Name of the Secret that contains the client-id and client-secret keys  |
+| `v2beta1` | `spec.bootstrapAdmin.user.secret` | string | Name of the Secret that contains the username and password keys  |
+| `v2beta1` | `spec.cache.configMapFile.key` | string |   |
+| `v2beta1` | `spec.cache.configMapFile.name` | string |   |
+| `v2beta1` | `spec.cache.configMapFile.optional` | boolean |   |
+| `v2beta1` | `spec.db.database` | string | Sets the database name of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
+| `v2beta1` | `spec.db.host` | string | Sets the hostname of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
+| `v2beta1` | `spec.db.passwordSecret.key` | string |   |
+| `v2beta1` | `spec.db.passwordSecret.name` | string |   |
+| `v2beta1` | `spec.db.passwordSecret.optional` | boolean |   |
+| `v2beta1` | `spec.db.poolInitialSize` | integer | The initial size of the connection pool.  |
+| `v2beta1` | `spec.db.poolMaxSize` | integer | The maximum size of the connection pool.  |
+| `v2beta1` | `spec.db.poolMinSize` | integer | The minimal size of the connection pool.  |
+| `v2beta1` | `spec.db.port` | integer | Sets the port of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
+| `v2beta1` | `spec.db.schema` | string | The database schema to be used.  |
+| `v2beta1` | `spec.db.url` | string | The full database JDBC URL. If not provided, a default URL is set based on the selected database vendor. For instance, if using 'postgres', the default JDBC URL would be 'jdbc:postgresql://localhost/keycloak'.  |
+| `v2beta1` | `spec.db.usernameSecret.key` | string |   |
+| `v2beta1` | `spec.db.usernameSecret.name` | string |   |
+| `v2beta1` | `spec.db.usernameSecret.optional` | boolean |   |
+| `v2beta1` | `spec.db.vendor` | string | The database vendor.  |
+| `v2beta1` | `spec.env` | array[object] | Environment variables for the Keycloak server. Values can be either direct values or references to secrets. Use additionalOptions for first-class options rather than KC_ values here.  |
+| `v2beta1` | `spec.env[].name` | string |   |
+| `v2beta1` | `spec.env[].secret.key` | string |   |
+| `v2beta1` | `spec.env[].secret.name` | string |   |
+| `v2beta1` | `spec.env[].secret.optional` | boolean |   |
+| `v2beta1` | `spec.env[].value` | string |   |
+| `v2beta1` | `spec.features.disabled` | array[string] | Disabled Keycloak features  |
+| `v2beta1` | `spec.features.enabled` | array[string] | Enabled Keycloak features  |
+| `v2beta1` | `spec.hostname.admin` | string | The hostname for accessing the administration console. Applicable for Hostname v1 and v2.  |
+| `v2beta1` | `spec.hostname.adminUrl` | string | DEPRECATED. Sets the base URL for accessing the administration console, including scheme, host, port and path. Applicable for Hostname v1.  |
+| `v2beta1` | `spec.hostname.backchannelDynamic` | boolean | Enables dynamic resolving of backchannel URLs, including hostname, scheme, port and context path. Set to true if your application accesses Keycloak via a private network. Applicable for Hostname v2.  |
+| `v2beta1` | `spec.hostname.hostname` | string | Hostname for the Keycloak server. Applicable for Hostname v1 and v2.  |
+| `v2beta1` | `spec.hostname.strict` | boolean | Disables dynamically resolving the hostname from request headers. Applicable for Hostname v1 and v2.  |
+| `v2beta1` | `spec.hostname.strictBackchannel` | boolean | DEPRECATED. By default backchannel URLs are dynamically resolved from request headers to allow internal and external applications. Applicable for Hostname v1.  |
+| `v2beta1` | `spec.http.annotations` | map<string,string> | Annotations to be appended to the Service object  |
+| `v2beta1` | `spec.http.httpEnabled` | boolean | Enables the HTTP listener.  |
+| `v2beta1` | `spec.http.httpPort` | integer | The used HTTP port.  |
+| `v2beta1` | `spec.http.httpsPort` | integer | The used HTTPS port.  |
+| `v2beta1` | `spec.http.labels` | map<string,string> | Labels to be appended to the Service object  |
+| `v2beta1` | `spec.http.serviceHttpPort` | integer | The HTTP port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on httpPort.  |
+| `v2beta1` | `spec.http.serviceHttpsPort` | integer | The HTTPS port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on httpsPort.  |
+| `v2beta1` | `spec.http.serviceName` | string | The name of the Kubernetes Service. When not set, the name defaults to the Keycloak CR name with a "-service" suffix.  |
+| `v2beta1` | `spec.http.tlsSecret` | string | A secret containing the TLS configuration for HTTPS. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
+| `v2beta1` | `spec.httpManagement.port` | integer | Port of the management interface.  |
+| `v2beta1` | `spec.image` | string | Custom Keycloak image to be used.  |
+| `v2beta1` | `spec.imagePullSecrets` | array[object] | Secret(s) that might be used when pulling an image from a private container image registry or repository.  |
+| `v2beta1` | `spec.imagePullSecrets[].name` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2beta1` | `spec.import.scheduling.priorityClassName` | string |   |
+| `v2beta1` | `spec.import.scheduling.tolerations` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.tolerations[].effect` | string |   |
+| `v2beta1` | `spec.import.scheduling.tolerations[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.tolerations[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.tolerations[].tolerationSeconds` | integer |   |
+| `v2beta1` | `spec.import.scheduling.tolerations[].value` | string |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
+| `v2beta1` | `spec.import.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
+| `v2beta1` | `spec.ingress.annotations` | map<string,string> | Additional annotations to be appended to the Ingress object  |
+| `v2beta1` | `spec.ingress.className` | string |   |
+| `v2beta1` | `spec.ingress.enabled` | boolean |   |
+| `v2beta1` | `spec.ingress.labels` | map<string,string> | Additional labels to be appended to the Ingress object  |
+| `v2beta1` | `spec.ingress.tlsSecret` | string | A secret containing the TLS configuration for re-encrypt or TLS termination scenarios. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
+| `v2beta1` | `spec.instances` | integer | Number of Keycloak instances. Default is 1.  |
+| `v2beta1` | `spec.livenessProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.livenessProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.networkPolicy.enabled` | boolean | Enables or disables the ingress traffic control.  |
+| `v2beta1` | `spec.networkPolicy.http` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
+| `v2beta1` | `spec.networkPolicy.http[].ipBlock.cidr` | string |   |
+| `v2beta1` | `spec.networkPolicy.http[].ipBlock.except` | array[string] |   |
+| `v2beta1` | `spec.networkPolicy.http[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.networkPolicy.http[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.networkPolicy.http[].podSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.networkPolicy.http[].podSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.networkPolicy.http[].podSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.networkPolicy.http[].podSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.networkPolicy.http[].podSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.networkPolicy.https` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
+| `v2beta1` | `spec.networkPolicy.https[].ipBlock.cidr` | string |   |
+| `v2beta1` | `spec.networkPolicy.https[].ipBlock.except` | array[string] |   |
+| `v2beta1` | `spec.networkPolicy.https[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.networkPolicy.https[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.networkPolicy.https[].podSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.networkPolicy.https[].podSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.networkPolicy.https[].podSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.networkPolicy.https[].podSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.networkPolicy.https[].podSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.networkPolicy.management` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
+| `v2beta1` | `spec.networkPolicy.management[].ipBlock.cidr` | string |   |
+| `v2beta1` | `spec.networkPolicy.management[].ipBlock.except` | array[string] |   |
+| `v2beta1` | `spec.networkPolicy.management[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.networkPolicy.management[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.networkPolicy.management[].podSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.networkPolicy.management[].podSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.networkPolicy.management[].podSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.networkPolicy.management[].podSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.networkPolicy.management[].podSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.proxy.headers` | string | The proxy headers that should be accepted by the server. Misconfiguration might leave the server exposed to security vulnerabilities.  |
+| `v2beta1` | `spec.readinessProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.readinessProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.resources.claims` | array[object] |   |
+| `v2beta1` | `spec.resources.claims[].name` | string |   |
+| `v2beta1` | `spec.resources.claims[].request` | string |   |
+| `v2beta1` | `spec.resources.limits` | map<string,any> |   |
+| `v2beta1` | `spec.resources.requests` | map<string,any> |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2beta1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2beta1` | `spec.scheduling.priorityClassName` | string |   |
+| `v2beta1` | `spec.scheduling.tolerations` | array[object] |   |
+| `v2beta1` | `spec.scheduling.tolerations[].effect` | string |   |
+| `v2beta1` | `spec.scheduling.tolerations[].key` | string |   |
+| `v2beta1` | `spec.scheduling.tolerations[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.tolerations[].tolerationSeconds` | integer |   |
+| `v2beta1` | `spec.scheduling.tolerations[].value` | string |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints` | array[object] |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
+| `v2beta1` | `spec.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
+| `v2beta1` | `spec.serviceMonitor.annotations` | map<string,string> | Annotations to be appended to the Service object  |
+| `v2beta1` | `spec.serviceMonitor.enabled` | boolean | Enables or disables the creation of the ServiceMonitor.  |
+| `v2beta1` | `spec.serviceMonitor.interval` | string | Interval at which metrics should be scraped  |
+| `v2beta1` | `spec.serviceMonitor.labels` | map<string,string> | Labels to be appended to the Service object  |
+| `v2beta1` | `spec.serviceMonitor.scrapeTimeout` | string | Timeout after which the scrape is ended  |
+| `v2beta1` | `spec.startOptimized` | boolean | Set to force the behavior of the --optimized flag for the start command. If left unspecified the operator will assume custom images have already been augmented.  |
+| `v2beta1` | `spec.startupProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.startupProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.telemetry.endpoint` | string | OpenTelemetry endpoint to connect to.  |
+| `v2beta1` | `spec.telemetry.protocol` | string | OpenTelemetry protocol used for the telemetry data (default 'grpc'). For more information, check the OpenTelemetry guide.  |
+| `v2beta1` | `spec.telemetry.resourceAttributes` | map<string,string> | OpenTelemetry resource attributes present in the exported telemetry data to characterize the telemetry producer.  |
+| `v2beta1` | `spec.telemetry.serviceName` | string | OpenTelemetry service name. Takes precedence over 'service.name' defined in the 'resourceAttributes' map.  |
+| `v2beta1` | `spec.tracing.compression` | string | OpenTelemetry compression method used to compress payloads. If unset, compression is disabled. Possible values are: gzip, none.  |
+| `v2beta1` | `spec.tracing.enabled` | boolean | Enables the OpenTelemetry tracing.  |
+| `v2beta1` | `spec.tracing.endpoint` | string | OpenTelemetry endpoint to connect to.  |
+| `v2beta1` | `spec.tracing.protocol` | string | OpenTelemetry protocol used for the telemetry data (default 'grpc'). For more information, check the Tracing guide.  |
+| `v2beta1` | `spec.tracing.resourceAttributes` | map<string,string> | DEPRECATED - use the 'telemetry.resourceAttributes' instead. OpenTelemetry resource attributes present in the exported trace to characterize the telemetry producer.  |
+| `v2beta1` | `spec.tracing.samplerRatio` | number | OpenTelemetry sampler ratio. Probability that a span will be sampled. Expected double value in interval [0,1].  |
+| `v2beta1` | `spec.tracing.samplerType` | string | OpenTelemetry sampler to use for tracing (default 'traceidratio'). For more information, check the Tracing guide.  |
+| `v2beta1` | `spec.tracing.serviceName` | string | DEPRECATED - use the 'telemetry.serviceName' instead. OpenTelemetry service name. Takes precedence over 'service.name' defined in the 'resourceAttributes' map.  |
+| `v2beta1` | `spec.transaction.xaEnabled` | boolean | Determine whether Keycloak should use a non-XA datasource in case the database does not support XA transactions.  |
+| `v2beta1` | `spec.truststores` | map<string,object> | In this section you can configure Keycloak truststores.  |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.annotations` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.creationTimestamp` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.deletionGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.deletionTimestamp` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.finalizers` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.generateName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.generation` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.labels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.managedFields` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.managedFields[].apiVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.managedFields[].fieldsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.managedFields[].fieldsV1` | object |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.managedFields[].manager` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.managedFields[].operation` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.managedFields[].subresource` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.managedFields[].time` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.namespace` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.ownerReferences` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].apiVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].blockOwnerDeletion` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].controller` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].kind` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].uid` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.resourceVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.selfLink` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.metadata.uid` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.activeDeadlineSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.automountServiceAccountToken` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].args` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].envFrom` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].configMapRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].configMapRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].prefix` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].secretRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].image` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].imagePullPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.sleep.seconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.sleep.seconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.stopSignal` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.grpc.port` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.grpc.service` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.initialDelaySeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.successThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.timeoutSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].ports` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].ports[].containerPort` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].ports[].hostIP` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].ports[].hostPort` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].ports[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].ports[].protocol` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.grpc.port` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.grpc.service` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.initialDelaySeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.successThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.timeoutSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].resizePolicy` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].resizePolicy[].resourceName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].resizePolicy[].restartPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].resources.claims` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].resources.claims[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].resources.claims[].request` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].resources.limits` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].resources.requests` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].action` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].exitCodes.operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.allowPrivilegeEscalation` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.appArmorProfile.localhostProfile` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.appArmorProfile.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.capabilities.add` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.capabilities.drop` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.privileged` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.procMount` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.readOnlyRootFilesystem` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsGroup` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsNonRoot` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsUser` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.level` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.role` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.user` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seccompProfile.localhostProfile` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seccompProfile.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.hostProcess` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.runAsUserName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.grpc.port` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.grpc.service` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.initialDelaySeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.successThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.timeoutSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].stdin` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].stdinOnce` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].terminationMessagePath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].terminationMessagePolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].tty` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeDevices` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeDevices[].devicePath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeDevices[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].mountPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].mountPropagation` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].recursiveReadOnly` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].subPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].subPathExpr` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.containers[].workingDir` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.dnsConfig.nameservers` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.dnsConfig.options` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.dnsConfig.options[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.dnsConfig.options[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.dnsConfig.searches` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.dnsPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.enableServiceLinks` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].args` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].configMapRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].configMapRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].prefix` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].secretRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].image` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].imagePullPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.sleep.seconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.sleep.seconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.stopSignal` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.grpc.port` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.grpc.service` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.initialDelaySeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.successThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.timeoutSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].containerPort` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].hostIP` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].hostPort` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].protocol` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.grpc.port` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.grpc.service` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.initialDelaySeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.successThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.timeoutSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy[].resourceName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy[].restartPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims[].request` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.limits` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.requests` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].action` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].exitCodes.operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.allowPrivilegeEscalation` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.appArmorProfile.localhostProfile` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.appArmorProfile.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.capabilities.add` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.capabilities.drop` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.privileged` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.procMount` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.readOnlyRootFilesystem` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsGroup` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsNonRoot` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsUser` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.level` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.role` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.user` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seccompProfile.localhostProfile` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seccompProfile.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.hostProcess` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.runAsUserName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.grpc.port` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.grpc.service` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.initialDelaySeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.successThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.timeoutSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].stdin` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].stdinOnce` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].targetContainerName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].terminationMessagePath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].terminationMessagePolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].tty` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices[].devicePath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].mountPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].mountPropagation` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].recursiveReadOnly` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].subPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].subPathExpr` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].workingDir` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.hostAliases` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.hostAliases[].hostnames` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.hostAliases[].ip` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.hostIPC` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.hostNetwork` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.hostPID` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.hostUsers` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.hostname` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.hostnameOverride` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.imagePullSecrets` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.imagePullSecrets[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].args` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].configMapRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].configMapRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].prefix` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].secretRef.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].image` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].imagePullPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.sleep.seconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.sleep.seconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.stopSignal` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.grpc.port` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.grpc.service` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.initialDelaySeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.successThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.timeoutSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].ports` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].containerPort` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].hostIP` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].hostPort` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].protocol` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.grpc.port` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.grpc.service` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.initialDelaySeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.successThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.timeoutSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy[].resourceName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy[].restartPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.claims` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.claims[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.claims[].request` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.limits` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.requests` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].action` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].exitCodes.operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.allowPrivilegeEscalation` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.appArmorProfile.localhostProfile` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.appArmorProfile.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.capabilities.add` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.capabilities.drop` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.privileged` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.procMount` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.readOnlyRootFilesystem` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsGroup` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsNonRoot` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsUser` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.level` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.role` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.user` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seccompProfile.localhostProfile` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seccompProfile.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.hostProcess` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.runAsUserName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.exec.command` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.failureThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.grpc.port` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.grpc.service` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.scheme` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.initialDelaySeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.periodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.successThreshold` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.tcpSocket.host` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.tcpSocket.port` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.timeoutSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].stdin` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].stdinOnce` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].terminationMessagePath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].terminationMessagePolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].tty` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices[].devicePath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].mountPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].mountPropagation` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].recursiveReadOnly` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].subPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].subPathExpr` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.initContainers[].workingDir` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.nodeName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.nodeSelector` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.os.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.overhead` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.preemptionPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.priority` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.priorityClassName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.readinessGates` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.readinessGates[].conditionType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.resourceClaims` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.resourceClaims[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.resourceClaims[].resourceClaimName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.resourceClaims[].resourceClaimTemplateName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.resources.claims` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.resources.claims[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.resources.claims[].request` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.resources.limits` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.resources.requests` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.restartPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.runtimeClassName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.schedulerName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.schedulingGates` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.schedulingGates[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.appArmorProfile.localhostProfile` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.appArmorProfile.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.fsGroup` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.fsGroupChangePolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.runAsGroup` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.runAsNonRoot` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.runAsUser` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxChangePolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.level` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.role` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.user` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.seccompProfile.localhostProfile` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.seccompProfile.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.supplementalGroups` | array[integer] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.supplementalGroupsPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.sysctls` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.sysctls[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.sysctls[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.hostProcess` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.runAsUserName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.serviceAccount` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.serviceAccountName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.setHostnameAsFQDN` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.shareProcessNamespace` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.subdomain` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.terminationGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.tolerations` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.tolerations[].effect` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.tolerations[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.tolerations[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.tolerations[].tolerationSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.tolerations[].value` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].maxSkew` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].minDomains` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].topologyKey` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.partition` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.volumeID` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.cachingMode` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.diskName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.diskURI` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.kind` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].azureFile.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].azureFile.secretName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].azureFile.shareName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.monitors` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.secretFile` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.user` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cinder.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cinder.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cinder.secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].cinder.volumeID` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.defaultMode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.items` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].mode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].csi.driver` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].csi.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].csi.nodePublishSecretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].csi.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].csi.volumeAttributes` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.defaultMode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].fieldRef.apiVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].fieldRef.fieldPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].mode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.containerName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.divisor` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.resource` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].emptyDir.medium` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].emptyDir.sizeLimit` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.annotations` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.creationTimestamp` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.deletionGracePeriodSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.deletionTimestamp` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.finalizers` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.generateName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.generation` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.labels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].apiVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].fieldsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].fieldsV1` | object |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].manager` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].operation` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].subresource` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].time` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.namespace` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].apiVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].blockOwnerDeletion` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].controller` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].kind` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].uid` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.resourceVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.selfLink` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.uid` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.accessModes` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.apiGroup` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.kind` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.apiGroup` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.kind` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.namespace` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.resources.limits` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.resources.requests` | map<string,any> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.storageClassName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeAttributesClassName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeMode` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].fc.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].fc.lun` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].fc.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].fc.targetWWNs` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].fc.wwids` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.driver` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.options` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].flocker.datasetName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].flocker.datasetUUID` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.partition` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.pdName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].gitRepo.directory` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].gitRepo.repository` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].gitRepo.revision` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].glusterfs.endpoints` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].glusterfs.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].glusterfs.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].hostPath.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].hostPath.type` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].image.pullPolicy` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].image.reference` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.chapAuthDiscovery` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.chapAuthSession` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.initiatorName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.iqn` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.iscsiInterface` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.lun` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.portals` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.targetPortal` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].nfs.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].nfs.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].nfs.server` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].persistentVolumeClaim.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].photonPersistentDisk.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].photonPersistentDisk.pdID` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.volumeID` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.defaultMode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.signerName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].mode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].fieldRef.apiVersion` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].fieldRef.fieldPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].mode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.containerName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.divisor` | int-or-string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.resource` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.certificateChainPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.credentialBundlePath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.keyPath` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.keyType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.maxExpirationSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.signerName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].mode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.audience` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.expirationSeconds` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.group` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.registry` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.tenant` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.user` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.volume` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.image` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.keyring` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.monitors` | array[string] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.pool` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.user` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.gateway` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.protectionDomain` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.sslEnabled` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.storageMode` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.storagePool` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.system` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.volumeName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].secret.defaultMode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].secret.items` | array[object] |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].secret.items[].key` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].secret.items[].mode` | integer |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].secret.items[].path` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].secret.optional` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].secret.secretName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.readOnly` | boolean |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.secretRef.name` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.volumeName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.volumeNamespace` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.fsType` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.storagePolicyID` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.storagePolicyName` | string |   |
+| `v2beta1` | `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.volumePath` | string |   |
+| `v2beta1` | `spec.update.labels` | map<string,string> | Optionally set to add additional labels to the Job created for the update.  |
+| `v2beta1` | `spec.update.revision` | string | When use the Explicit strategy, the revision signals if a rolling update can be used or not.  |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2beta1` | `spec.update.scheduling.priorityClassName` | string |   |
+| `v2beta1` | `spec.update.scheduling.tolerations` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.tolerations[].effect` | string |   |
+| `v2beta1` | `spec.update.scheduling.tolerations[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.tolerations[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.tolerations[].tolerationSeconds` | integer |   |
+| `v2beta1` | `spec.update.scheduling.tolerations[].value` | string |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
+| `v2beta1` | `spec.update.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
+| `v2beta1` | `spec.update.strategy` | string | Sets the update strategy to use.  |
+
+## v2alpha1 Reference
+
+| Version | Property path | Type | Description |
+|---------|---------------|------|-------------|
+| `v2alpha1` | `spec.additionalOptions` | array[object] | Configuration of the Keycloak server. expressed as a keys (reference: https://www.keycloak.org/server/all-config) and values that can be either direct values or references to secrets.  |
+| `v2alpha1` | `spec.additionalOptions[].name` | string |   |
+| `v2alpha1` | `spec.additionalOptions[].secret.key` | string |   |
+| `v2alpha1` | `spec.additionalOptions[].secret.name` | string |   |
+| `v2alpha1` | `spec.additionalOptions[].secret.optional` | boolean |   |
+| `v2alpha1` | `spec.additionalOptions[].value` | string |   |
+| `v2alpha1` | `spec.admin.tlsSecret` | string | If mTLS is required, this references a secret containing the client TLS configuration for the admin client. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
+| `v2alpha1` | `spec.automountServiceAccountToken` | boolean | Set this to to false to disable automounting the default ServiceAccount Token and Service CA. This is enabled by default.  |
+| `v2alpha1` | `spec.bootstrapAdmin.service.secret` | string | Name of the Secret that contains the client-id and client-secret keys  |
+| `v2alpha1` | `spec.bootstrapAdmin.user.secret` | string | Name of the Secret that contains the username and password keys  |
+| `v2alpha1` | `spec.cache.configMapFile.key` | string |   |
+| `v2alpha1` | `spec.cache.configMapFile.name` | string |   |
+| `v2alpha1` | `spec.cache.configMapFile.optional` | boolean |   |
+| `v2alpha1` | `spec.db.database` | string | Sets the database name of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
+| `v2alpha1` | `spec.db.host` | string | Sets the hostname of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
+| `v2alpha1` | `spec.db.passwordSecret.key` | string |   |
+| `v2alpha1` | `spec.db.passwordSecret.name` | string |   |
+| `v2alpha1` | `spec.db.passwordSecret.optional` | boolean |   |
+| `v2alpha1` | `spec.db.poolInitialSize` | integer | The initial size of the connection pool.  |
+| `v2alpha1` | `spec.db.poolMaxSize` | integer | The maximum size of the connection pool.  |
+| `v2alpha1` | `spec.db.poolMinSize` | integer | The minimal size of the connection pool.  |
+| `v2alpha1` | `spec.db.port` | integer | Sets the port of the default JDBC URL of the chosen vendor. If the `url` option is set, this option is ignored.  |
+| `v2alpha1` | `spec.db.schema` | string | The database schema to be used.  |
+| `v2alpha1` | `spec.db.url` | string | The full database JDBC URL. If not provided, a default URL is set based on the selected database vendor. For instance, if using 'postgres', the default JDBC URL would be 'jdbc:postgresql://localhost/keycloak'.  |
+| `v2alpha1` | `spec.db.usernameSecret.key` | string |   |
+| `v2alpha1` | `spec.db.usernameSecret.name` | string |   |
+| `v2alpha1` | `spec.db.usernameSecret.optional` | boolean |   |
+| `v2alpha1` | `spec.db.vendor` | string | The database vendor.  |
+| `v2alpha1` | `spec.env` | array[object] | Environment variables for the Keycloak server. Values can be either direct values or references to secrets. Use additionalOptions for first-class options rather than KC_ values here.  |
+| `v2alpha1` | `spec.env[].name` | string |   |
+| `v2alpha1` | `spec.env[].secret.key` | string |   |
+| `v2alpha1` | `spec.env[].secret.name` | string |   |
+| `v2alpha1` | `spec.env[].secret.optional` | boolean |   |
+| `v2alpha1` | `spec.env[].value` | string |   |
+| `v2alpha1` | `spec.features.disabled` | array[string] | Disabled Keycloak features  |
+| `v2alpha1` | `spec.features.enabled` | array[string] | Enabled Keycloak features  |
+| `v2alpha1` | `spec.hostname.admin` | string | The hostname for accessing the administration console. Applicable for Hostname v1 and v2.  |
+| `v2alpha1` | `spec.hostname.adminUrl` | string | DEPRECATED. Sets the base URL for accessing the administration console, including scheme, host, port and path. Applicable for Hostname v1.  |
+| `v2alpha1` | `spec.hostname.backchannelDynamic` | boolean | Enables dynamic resolving of backchannel URLs, including hostname, scheme, port and context path. Set to true if your application accesses Keycloak via a private network. Applicable for Hostname v2.  |
+| `v2alpha1` | `spec.hostname.hostname` | string | Hostname for the Keycloak server. Applicable for Hostname v1 and v2.  |
+| `v2alpha1` | `spec.hostname.strict` | boolean | Disables dynamically resolving the hostname from request headers. Applicable for Hostname v1 and v2.  |
+| `v2alpha1` | `spec.hostname.strictBackchannel` | boolean | DEPRECATED. By default backchannel URLs are dynamically resolved from request headers to allow internal and external applications. Applicable for Hostname v1.  |
+| `v2alpha1` | `spec.http.annotations` | map<string,string> | Annotations to be appended to the Service object  |
+| `v2alpha1` | `spec.http.httpEnabled` | boolean | Enables the HTTP listener.  |
+| `v2alpha1` | `spec.http.httpPort` | integer | The used HTTP port.  |
+| `v2alpha1` | `spec.http.httpsPort` | integer | The used HTTPS port.  |
+| `v2alpha1` | `spec.http.labels` | map<string,string> | Labels to be appended to the Service object  |
+| `v2alpha1` | `spec.http.serviceHttpPort` | integer | The HTTP port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on httpPort.  |
+| `v2alpha1` | `spec.http.serviceHttpsPort` | integer | The HTTPS port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on httpsPort.  |
+| `v2alpha1` | `spec.http.serviceName` | string | The name of the Kubernetes Service. When not set, the name defaults to the Keycloak CR name with a "-service" suffix.  |
+| `v2alpha1` | `spec.http.tlsSecret` | string | A secret containing the TLS configuration for HTTPS. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
+| `v2alpha1` | `spec.httpManagement.port` | integer | Port of the management interface.  |
+| `v2alpha1` | `spec.image` | string | Custom Keycloak image to be used.  |
+| `v2alpha1` | `spec.imagePullSecrets` | array[object] | Secret(s) that might be used when pulling an image from a private container image registry or repository.  |
+| `v2alpha1` | `spec.imagePullSecrets[].name` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2alpha1` | `spec.import.scheduling.priorityClassName` | string |   |
+| `v2alpha1` | `spec.import.scheduling.tolerations` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.tolerations[].effect` | string |   |
+| `v2alpha1` | `spec.import.scheduling.tolerations[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.tolerations[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.tolerations[].tolerationSeconds` | integer |   |
+| `v2alpha1` | `spec.import.scheduling.tolerations[].value` | string |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
+| `v2alpha1` | `spec.import.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
+| `v2alpha1` | `spec.ingress.annotations` | map<string,string> | Additional annotations to be appended to the Ingress object  |
+| `v2alpha1` | `spec.ingress.className` | string |   |
+| `v2alpha1` | `spec.ingress.enabled` | boolean |   |
+| `v2alpha1` | `spec.ingress.labels` | map<string,string> | Additional labels to be appended to the Ingress object  |
+| `v2alpha1` | `spec.ingress.tlsSecret` | string | A secret containing the TLS configuration for re-encrypt or TLS termination scenarios. Reference: https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets.  |
+| `v2alpha1` | `spec.instances` | integer | Number of Keycloak instances. Default is 1.  |
+| `v2alpha1` | `spec.livenessProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.livenessProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.networkPolicy.enabled` | boolean | Enables or disables the ingress traffic control.  |
+| `v2alpha1` | `spec.networkPolicy.http` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
+| `v2alpha1` | `spec.networkPolicy.http[].ipBlock.cidr` | string |   |
+| `v2alpha1` | `spec.networkPolicy.http[].ipBlock.except` | array[string] |   |
+| `v2alpha1` | `spec.networkPolicy.http[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.networkPolicy.http[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.networkPolicy.http[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.networkPolicy.http[].podSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.networkPolicy.http[].podSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.networkPolicy.http[].podSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.networkPolicy.http[].podSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.networkPolicy.http[].podSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.networkPolicy.https` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
+| `v2alpha1` | `spec.networkPolicy.https[].ipBlock.cidr` | string |   |
+| `v2alpha1` | `spec.networkPolicy.https[].ipBlock.except` | array[string] |   |
+| `v2alpha1` | `spec.networkPolicy.https[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.networkPolicy.https[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.networkPolicy.https[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.networkPolicy.https[].podSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.networkPolicy.https[].podSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.networkPolicy.https[].podSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.networkPolicy.https[].podSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.networkPolicy.https[].podSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.networkPolicy.management` | array[object] | A list of sources which should be able to access this endpoint. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the from list.  |
+| `v2alpha1` | `spec.networkPolicy.management[].ipBlock.cidr` | string |   |
+| `v2alpha1` | `spec.networkPolicy.management[].ipBlock.except` | array[string] |   |
+| `v2alpha1` | `spec.networkPolicy.management[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.networkPolicy.management[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.networkPolicy.management[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.networkPolicy.management[].podSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.networkPolicy.management[].podSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.networkPolicy.management[].podSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.networkPolicy.management[].podSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.networkPolicy.management[].podSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.proxy.headers` | string | The proxy headers that should be accepted by the server. Misconfiguration might leave the server exposed to security vulnerabilities.  |
+| `v2alpha1` | `spec.readinessProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.readinessProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.resources.claims` | array[object] |   |
+| `v2alpha1` | `spec.resources.claims[].name` | string |   |
+| `v2alpha1` | `spec.resources.claims[].request` | string |   |
+| `v2alpha1` | `spec.resources.limits` | map<string,any> |   |
+| `v2alpha1` | `spec.resources.requests` | map<string,any> |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2alpha1` | `spec.scheduling.priorityClassName` | string |   |
+| `v2alpha1` | `spec.scheduling.tolerations` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.tolerations[].effect` | string |   |
+| `v2alpha1` | `spec.scheduling.tolerations[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.tolerations[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.tolerations[].tolerationSeconds` | integer |   |
+| `v2alpha1` | `spec.scheduling.tolerations[].value` | string |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
+| `v2alpha1` | `spec.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
+| `v2alpha1` | `spec.serviceMonitor.annotations` | map<string,string> | Annotations to be appended to the Service object  |
+| `v2alpha1` | `spec.serviceMonitor.enabled` | boolean | Enables or disables the creation of the ServiceMonitor.  |
+| `v2alpha1` | `spec.serviceMonitor.interval` | string | Interval at which metrics should be scraped  |
+| `v2alpha1` | `spec.serviceMonitor.labels` | map<string,string> | Labels to be appended to the Service object  |
+| `v2alpha1` | `spec.serviceMonitor.scrapeTimeout` | string | Timeout after which the scrape is ended  |
+| `v2alpha1` | `spec.startOptimized` | boolean | Set to force the behavior of the --optimized flag for the start command. If left unspecified the operator will assume custom images have already been augmented.  |
+| `v2alpha1` | `spec.startupProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.startupProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.telemetry.endpoint` | string | OpenTelemetry endpoint to connect to.  |
+| `v2alpha1` | `spec.telemetry.protocol` | string | OpenTelemetry protocol used for the telemetry data (default 'grpc'). For more information, check the OpenTelemetry guide.  |
+| `v2alpha1` | `spec.telemetry.resourceAttributes` | map<string,string> | OpenTelemetry resource attributes present in the exported telemetry data to characterize the telemetry producer.  |
+| `v2alpha1` | `spec.telemetry.serviceName` | string | OpenTelemetry service name. Takes precedence over 'service.name' defined in the 'resourceAttributes' map.  |
+| `v2alpha1` | `spec.tracing.compression` | string | OpenTelemetry compression method used to compress payloads. If unset, compression is disabled. Possible values are: gzip, none.  |
+| `v2alpha1` | `spec.tracing.enabled` | boolean | Enables the OpenTelemetry tracing.  |
+| `v2alpha1` | `spec.tracing.endpoint` | string | OpenTelemetry endpoint to connect to.  |
+| `v2alpha1` | `spec.tracing.protocol` | string | OpenTelemetry protocol used for the telemetry data (default 'grpc'). For more information, check the Tracing guide.  |
+| `v2alpha1` | `spec.tracing.resourceAttributes` | map<string,string> | DEPRECATED - use the 'telemetry.resourceAttributes' instead. OpenTelemetry resource attributes present in the exported trace to characterize the telemetry producer.  |
+| `v2alpha1` | `spec.tracing.samplerRatio` | number | OpenTelemetry sampler ratio. Probability that a span will be sampled. Expected double value in interval [0,1].  |
+| `v2alpha1` | `spec.tracing.samplerType` | string | OpenTelemetry sampler to use for tracing (default 'traceidratio'). For more information, check the Tracing guide.  |
+| `v2alpha1` | `spec.tracing.serviceName` | string | DEPRECATED - use the 'telemetry.serviceName' instead. OpenTelemetry service name. Takes precedence over 'service.name' defined in the 'resourceAttributes' map.  |
+| `v2alpha1` | `spec.transaction.xaEnabled` | boolean | Determine whether Keycloak should use a non-XA datasource in case the database does not support XA transactions.  |
+| `v2alpha1` | `spec.truststores` | map<string,object> | In this section you can configure Keycloak truststores.  |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.annotations` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.creationTimestamp` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.deletionGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.deletionTimestamp` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.finalizers` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.generateName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.generation` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.labels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.managedFields` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.managedFields[].apiVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.managedFields[].fieldsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.managedFields[].fieldsV1` | object |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.managedFields[].manager` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.managedFields[].operation` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.managedFields[].subresource` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.managedFields[].time` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.namespace` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.ownerReferences` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].apiVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].blockOwnerDeletion` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].controller` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].kind` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.ownerReferences[].uid` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.resourceVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.selfLink` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.metadata.uid` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.activeDeadlineSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.automountServiceAccountToken` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].args` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].envFrom` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].configMapRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].configMapRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].prefix` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].envFrom[].secretRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].image` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].imagePullPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.sleep.seconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.sleep.seconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].lifecycle.stopSignal` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.grpc.port` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.grpc.service` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.initialDelaySeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.successThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].livenessProbe.timeoutSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].ports` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].ports[].containerPort` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].ports[].hostIP` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].ports[].hostPort` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].ports[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].ports[].protocol` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.grpc.port` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.grpc.service` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.initialDelaySeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.successThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].readinessProbe.timeoutSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].resizePolicy` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].resizePolicy[].resourceName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].resizePolicy[].restartPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].resources.claims` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].resources.claims[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].resources.claims[].request` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].resources.limits` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].resources.requests` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].action` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].exitCodes.operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.allowPrivilegeEscalation` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.appArmorProfile.localhostProfile` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.appArmorProfile.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.capabilities.add` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.capabilities.drop` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.privileged` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.procMount` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.readOnlyRootFilesystem` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsGroup` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsNonRoot` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.runAsUser` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.level` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.role` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seLinuxOptions.user` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seccompProfile.localhostProfile` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.seccompProfile.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.hostProcess` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].securityContext.windowsOptions.runAsUserName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.grpc.port` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.grpc.service` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.initialDelaySeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.successThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].startupProbe.timeoutSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].stdin` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].stdinOnce` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].terminationMessagePath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].terminationMessagePolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].tty` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeDevices` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeDevices[].devicePath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeDevices[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].mountPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].mountPropagation` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].recursiveReadOnly` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].subPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].volumeMounts[].subPathExpr` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.containers[].workingDir` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.dnsConfig.nameservers` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.dnsConfig.options` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.dnsConfig.options[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.dnsConfig.options[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.dnsConfig.searches` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.dnsPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.enableServiceLinks` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].args` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].configMapRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].configMapRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].prefix` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].envFrom[].secretRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].image` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].imagePullPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.sleep.seconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.sleep.seconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].lifecycle.stopSignal` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.grpc.port` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.grpc.service` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.initialDelaySeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.successThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].livenessProbe.timeoutSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].containerPort` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].hostIP` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].hostPort` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].ports[].protocol` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.grpc.port` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.grpc.service` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.initialDelaySeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.successThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].readinessProbe.timeoutSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy[].resourceName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resizePolicy[].restartPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.claims[].request` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.limits` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].resources.requests` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].action` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].exitCodes.operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.allowPrivilegeEscalation` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.appArmorProfile.localhostProfile` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.appArmorProfile.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.capabilities.add` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.capabilities.drop` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.privileged` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.procMount` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.readOnlyRootFilesystem` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsGroup` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsNonRoot` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.runAsUser` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.level` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.role` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seLinuxOptions.user` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seccompProfile.localhostProfile` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.seccompProfile.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.hostProcess` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].securityContext.windowsOptions.runAsUserName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.grpc.port` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.grpc.service` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.initialDelaySeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.successThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].startupProbe.timeoutSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].stdin` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].stdinOnce` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].targetContainerName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].terminationMessagePath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].terminationMessagePolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].tty` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices[].devicePath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeDevices[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].mountPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].mountPropagation` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].recursiveReadOnly` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].subPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].volumeMounts[].subPathExpr` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.ephemeralContainers[].workingDir` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.hostAliases` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.hostAliases[].hostnames` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.hostAliases[].ip` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.hostIPC` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.hostNetwork` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.hostPID` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.hostUsers` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.hostname` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.hostnameOverride` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.imagePullSecrets` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.imagePullSecrets[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].args` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.configMapKeyRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fieldRef.apiVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fieldRef.fieldPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.fileKeyRef.volumeName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.containerName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.divisor` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.resourceFieldRef.resource` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].env[].valueFrom.secretKeyRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].configMapRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].configMapRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].prefix` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].envFrom[].secretRef.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].image` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].imagePullPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.sleep.seconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.postStart.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.sleep.seconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.preStop.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].lifecycle.stopSignal` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.grpc.port` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.grpc.service` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.initialDelaySeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.successThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].livenessProbe.timeoutSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].ports` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].containerPort` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].hostIP` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].hostPort` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].ports[].protocol` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.grpc.port` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.grpc.service` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.initialDelaySeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.successThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].readinessProbe.timeoutSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy[].resourceName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].resizePolicy[].restartPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.claims` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.claims[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.claims[].request` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.limits` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].resources.requests` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].action` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].exitCodes.operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].restartPolicyRules[].exitCodes.values` | array[integer] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.allowPrivilegeEscalation` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.appArmorProfile.localhostProfile` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.appArmorProfile.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.capabilities.add` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.capabilities.drop` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.privileged` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.procMount` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.readOnlyRootFilesystem` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsGroup` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsNonRoot` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.runAsUser` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.level` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.role` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seLinuxOptions.user` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seccompProfile.localhostProfile` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.seccompProfile.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.hostProcess` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].securityContext.windowsOptions.runAsUserName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.exec.command` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.failureThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.grpc.port` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.grpc.service` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.httpHeaders[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.httpGet.scheme` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.initialDelaySeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.periodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.successThreshold` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.tcpSocket.host` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.tcpSocket.port` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].startupProbe.timeoutSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].stdin` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].stdinOnce` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].terminationMessagePath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].terminationMessagePolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].tty` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices[].devicePath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeDevices[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].mountPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].mountPropagation` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].recursiveReadOnly` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].subPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].volumeMounts[].subPathExpr` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.initContainers[].workingDir` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.nodeName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.nodeSelector` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.os.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.overhead` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.preemptionPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.priority` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.priorityClassName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.readinessGates` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.readinessGates[].conditionType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.resourceClaims` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.resourceClaims[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.resourceClaims[].resourceClaimName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.resourceClaims[].resourceClaimTemplateName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.resources.claims` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.resources.claims[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.resources.claims[].request` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.resources.limits` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.resources.requests` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.restartPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.runtimeClassName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.schedulerName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.schedulingGates` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.schedulingGates[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.appArmorProfile.localhostProfile` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.appArmorProfile.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.fsGroup` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.fsGroupChangePolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.runAsGroup` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.runAsNonRoot` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.runAsUser` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxChangePolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.level` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.role` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.seLinuxOptions.user` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.seccompProfile.localhostProfile` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.seccompProfile.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.supplementalGroups` | array[integer] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.supplementalGroupsPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.sysctls` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.sysctls[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.sysctls[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.gmsaCredentialSpec` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.gmsaCredentialSpecName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.hostProcess` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.securityContext.windowsOptions.runAsUserName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.serviceAccount` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.serviceAccountName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.setHostnameAsFQDN` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.shareProcessNamespace` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.subdomain` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.terminationGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.tolerations` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.tolerations[].effect` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.tolerations[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.tolerations[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.tolerations[].tolerationSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.tolerations[].value` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].maxSkew` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].minDomains` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].topologyKey` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.partition` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].awsElasticBlockStore.volumeID` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.cachingMode` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.diskName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.diskURI` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.kind` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].azureDisk.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].azureFile.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].azureFile.secretName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].azureFile.shareName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.monitors` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.secretFile` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cephfs.user` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cinder.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cinder.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cinder.secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].cinder.volumeID` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.defaultMode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.items` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].mode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.items[].path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].configMap.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].csi.driver` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].csi.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].csi.nodePublishSecretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].csi.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].csi.volumeAttributes` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.defaultMode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].fieldRef.apiVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].fieldRef.fieldPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].mode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.containerName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.divisor` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].downwardAPI.items[].resourceFieldRef.resource` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].emptyDir.medium` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].emptyDir.sizeLimit` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.annotations` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.creationTimestamp` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.deletionGracePeriodSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.deletionTimestamp` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.finalizers` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.generateName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.generation` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.labels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].apiVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].fieldsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].fieldsV1` | object |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].manager` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].operation` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].subresource` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.managedFields[].time` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.namespace` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].apiVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].blockOwnerDeletion` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].controller` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].kind` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.ownerReferences[].uid` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.resourceVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.selfLink` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.metadata.uid` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.accessModes` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.apiGroup` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.kind` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSource.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.apiGroup` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.kind` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.dataSourceRef.namespace` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.resources.limits` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.resources.requests` | map<string,any> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.selector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.storageClassName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeAttributesClassName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeMode` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].ephemeral.volumeClaimTemplate.spec.volumeName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].fc.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].fc.lun` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].fc.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].fc.targetWWNs` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].fc.wwids` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.driver` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.options` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].flexVolume.secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].flocker.datasetName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].flocker.datasetUUID` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.partition` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.pdName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].gcePersistentDisk.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].gitRepo.directory` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].gitRepo.repository` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].gitRepo.revision` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].glusterfs.endpoints` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].glusterfs.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].glusterfs.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].hostPath.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].hostPath.type` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].image.pullPolicy` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].image.reference` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.chapAuthDiscovery` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.chapAuthSession` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.initiatorName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.iqn` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.iscsiInterface` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.lun` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.portals` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].iscsi.targetPortal` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].nfs.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].nfs.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].nfs.server` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].persistentVolumeClaim.claimName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].persistentVolumeClaim.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].photonPersistentDisk.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].photonPersistentDisk.pdID` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].portworxVolume.volumeID` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.defaultMode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].clusterTrustBundle.signerName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].mode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.items[].path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].configMap.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].fieldRef.apiVersion` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].fieldRef.fieldPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].mode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.containerName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.divisor` | int-or-string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].downwardAPI.items[].resourceFieldRef.resource` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.certificateChainPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.credentialBundlePath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.keyPath` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.keyType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.maxExpirationSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].podCertificate.signerName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].mode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.items[].path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].secret.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.audience` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.expirationSeconds` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].projected.sources[].serviceAccountToken.path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.group` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.registry` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.tenant` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.user` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].quobyte.volume` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.image` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.keyring` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.monitors` | array[string] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.pool` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].rbd.user` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.gateway` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.protectionDomain` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.sslEnabled` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.storageMode` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.storagePool` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.system` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].scaleIO.volumeName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].secret.defaultMode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].secret.items` | array[object] |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].secret.items[].key` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].secret.items[].mode` | integer |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].secret.items[].path` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].secret.optional` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].secret.secretName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.readOnly` | boolean |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.secretRef.name` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.volumeName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].storageos.volumeNamespace` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.fsType` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.storagePolicyID` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.storagePolicyName` | string |   |
+| `v2alpha1` | `spec.unsupported.podTemplate.spec.volumes[].vsphereVolume.volumePath` | string |   |
+| `v2alpha1` | `spec.update.labels` | map<string,string> | Optionally set to add additional labels to the Job created for the update.  |
+| `v2alpha1` | `spec.update.revision` | string | When use the Explicit strategy, the revision signals if a rolling update can be used or not.  |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].preference.matchFields[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[].matchFields[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.namespaces` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].podAffinityTerm.topologyKey` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[].weight` | integer |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].mismatchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaceSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].namespaces` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[].topologyKey` | string |   |
+| `v2alpha1` | `spec.update.scheduling.priorityClassName` | string |   |
+| `v2alpha1` | `spec.update.scheduling.tolerations` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.tolerations[].effect` | string |   |
+| `v2alpha1` | `spec.update.scheduling.tolerations[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.tolerations[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.tolerations[].tolerationSeconds` | integer |   |
+| `v2alpha1` | `spec.update.scheduling.tolerations[].value` | string |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions` | array[object] |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].key` | string |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].operator` | string |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchExpressions[].values` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].labelSelector.matchLabels` | map<string,string> |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].matchLabelKeys` | array[string] |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].maxSkew` | integer |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].minDomains` | integer |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].nodeAffinityPolicy` | string |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].nodeTaintsPolicy` | string |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].topologyKey` | string |   |
+| `v2alpha1` | `spec.update.scheduling.topologySpreadConstraints[].whenUnsatisfiable` | string |   |
+| `v2alpha1` | `spec.update.strategy` | string | Sets the update strategy to use.  |
