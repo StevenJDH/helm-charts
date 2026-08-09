@@ -232,8 +232,8 @@ spec:
     samplerRatio: {{ .Values.tracing.samplerRatio }}
     samplerType: {{ .Values.tracing.samplerType }}
   telemetry:
-    enabled: {{ .Values.telemetry.enabled }}
     endpoint: {{ .Values.telemetry.endpoint }}
+    protocol: {{ .Values.telemetry.enabled }}
     serviceName: {{ .Values.telemetry.serviceName | quote }}
     {{- with .Values.telemetry.resourceAttributes }}
     resourceAttributes:

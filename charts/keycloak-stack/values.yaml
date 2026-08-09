@@ -446,7 +446,7 @@ tracing:
   # -- endpoint is the OpenTelemetry endpoint to connect to.
   endpoint: "http://otel-collector:4317"
   # -- protocol is the OpenTelemetry protocol used for the transmitting the data.
-  protocol: "grpc"
+  protocol: grpc
   # -- samplerRatio is the OpenTelemetry sampler ratio. Probability that a span will be sampled using a
   # double type value. For example, 1.0 is equal to 100%.
   samplerRatio: 0.1
@@ -459,6 +459,8 @@ telemetry:
   enabled: false
   # -- endpoint is the OpenTelemetry endpoint to connect to.
   endpoint: "http://otel-collector:4317"
+  # -- protocol is the OpenTelemetry protocol used for the transmitting the data.
+  protocol: grpc
   # -- serviceName is the OpenTelemetry service name. Takes precedence over 'service.name' defined in
   # `telemetry.resourceAttributes`.
   serviceName: ""
