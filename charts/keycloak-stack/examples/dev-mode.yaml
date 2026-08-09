@@ -26,6 +26,17 @@ devModeEnabled: true
 ingress:
   className: traefik
 
+metrics:
+  enabled: false
+
+serviceMonitor:
+  # Requires that `metrics.enabled` be set to `true`.
+  enabled: false
+
+dashboards:
+  # Requires `metrics.enabled` and `serviceMonitor` to be set as `true`.
+  enabled: false
+
 postgresql:
   auth:
     password: "password"
