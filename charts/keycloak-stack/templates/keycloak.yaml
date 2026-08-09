@@ -102,7 +102,7 @@ spec:
     annotations:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-    httpEnabled: {{ .Values.devModeEnabled | ternary false .Values.http.httpEnabled }}
+    httpEnabled: {{ .Values.devModeEnabled | ternary true .Values.http.httpEnabled }}
     httpPort: {{ .Values.http.httpPort }}
     httpsPort: {{ .Values.http.httpsPort }}
     {{- with .Values.http.serviceName }}
