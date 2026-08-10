@@ -3,12 +3,12 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: example-keycloak-postgresql
+  name: example-postgresql
   namespace: "default"
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloak-postgresql
+    app.kubernetes.io/name: postgresql
     app.kubernetes.io/version: 18.4.0
     helm.sh/chart: postgresql-18.8.7
     app.kubernetes.io/component: primary
@@ -16,7 +16,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: example
-      app.kubernetes.io/name: keycloak-postgresql
+      app.kubernetes.io/name: postgresql
       app.kubernetes.io/component: primary
   policyTypes:
     - Ingress
@@ -31,12 +31,12 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: example-keycloak-postgresql
+  name: example-postgresql
   namespace: "default"
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloak-postgresql
+    app.kubernetes.io/name: postgresql
     app.kubernetes.io/version: 18.4.0
     helm.sh/chart: postgresql-18.8.7
     app.kubernetes.io/component: primary
@@ -45,7 +45,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: example
-      app.kubernetes.io/name: keycloak-postgresql
+      app.kubernetes.io/name: postgresql
       app.kubernetes.io/component: primary
 ---
 # Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-serviceaccount.yaml
@@ -65,12 +65,12 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: example-keycloak-postgresql
+  name: example-postgresql
   namespace: "default"
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloak-postgresql
+    app.kubernetes.io/name: postgresql
     app.kubernetes.io/version: 18.4.0
     helm.sh/chart: postgresql-18.8.7
 automountServiceAccountToken: false
@@ -79,17 +79,17 @@ automountServiceAccountToken: false
 apiVersion: v1
 kind: Secret
 metadata:
-  name: example-keycloak-postgresql
+  name: example-postgresql
   namespace: "default"
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloak-postgresql
+    app.kubernetes.io/name: postgresql
     app.kubernetes.io/version: 18.4.0
     helm.sh/chart: postgresql-18.8.7
 type: Opaque
 data:
-  postgres-password: "VDdwc1VkdWh3d3ZXMWhOa29oaWFwSjd2"
+  postgres-password: "M0JUb0xnRWdRWVhuN1ROQk1wNk1qb1Jm"
   # We don't auto-generate metrics password when it's not provided as we do for other passwords
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
@@ -521,12 +521,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-keycloak-postgresql-hl
+  name: example-postgresql-hl
   namespace: "default"
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloak-postgresql
+    app.kubernetes.io/name: postgresql
     app.kubernetes.io/version: 18.4.0
     helm.sh/chart: postgresql-18.8.7
     app.kubernetes.io/component: primary
@@ -544,19 +544,19 @@ spec:
       targetPort: tcp-postgresql
   selector:
     app.kubernetes.io/instance: example
-    app.kubernetes.io/name: keycloak-postgresql
+    app.kubernetes.io/name: postgresql
     app.kubernetes.io/component: primary
 ---
 # Source: keycloak-stack/charts/postgresql/templates/primary/svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-keycloak-postgresql
+  name: example-postgresql
   namespace: "default"
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloak-postgresql
+    app.kubernetes.io/name: postgresql
     app.kubernetes.io/version: 18.4.0
     helm.sh/chart: postgresql-18.8.7
     app.kubernetes.io/component: primary
@@ -569,7 +569,7 @@ spec:
       nodePort: null
   selector:
     app.kubernetes.io/instance: example
-    app.kubernetes.io/name: keycloak-postgresql
+    app.kubernetes.io/name: postgresql
     app.kubernetes.io/component: primary
 ---
 # Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-deployment.yaml
@@ -577,7 +577,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    rollme: yCYvM
+    rollme: i5YRB
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
@@ -662,38 +662,38 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: example-keycloak-postgresql
+  name: example-postgresql
   namespace: "default"
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: keycloak-postgresql
+    app.kubernetes.io/name: postgresql
     app.kubernetes.io/version: 18.4.0
     helm.sh/chart: postgresql-18.8.7
     app.kubernetes.io/component: primary
 spec:
   replicas: 1
-  serviceName: example-keycloak-postgresql-hl
+  serviceName: example-postgresql-hl
   updateStrategy:
     rollingUpdate: {}
     type: RollingUpdate
   selector:
     matchLabels:
       app.kubernetes.io/instance: example
-      app.kubernetes.io/name: keycloak-postgresql
+      app.kubernetes.io/name: postgresql
       app.kubernetes.io/component: primary
   template:
     metadata:
-      name: example-keycloak-postgresql
+      name: example-postgresql
       labels:
         app.kubernetes.io/instance: example
         app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/name: keycloak-postgresql
+        app.kubernetes.io/name: postgresql
         app.kubernetes.io/version: 18.4.0
         helm.sh/chart: postgresql-18.8.7
         app.kubernetes.io/component: primary
     spec:
-      serviceAccountName: example-keycloak-postgresql
+      serviceAccountName: example-postgresql
       
       automountServiceAccountToken: false
       affinity:
@@ -705,7 +705,7 @@ spec:
                 labelSelector:
                   matchLabels:
                     app.kubernetes.io/instance: example
-                    app.kubernetes.io/name: keycloak-postgresql
+                    app.kubernetes.io/name: postgresql
                     app.kubernetes.io/component: primary
                 topologyKey: kubernetes.io/hostname
               weight: 1
@@ -831,7 +831,7 @@ spec:
           emptyDir: {}
         - name: postgresql-password
           secret:
-            secretName: example-keycloak-postgresql
+            secretName: example-postgresql
         - name: dshm
           emptyDir:
             medium: Memory
@@ -867,14 +867,14 @@ spec:
       secret: example-keycloak-stack-secret
   db:
     vendor: postgres
-    host: example-keycloak-postgresql-hl.default.svc.cluster.local
+    host: example-postgresql-hl.default.svc.cluster.local
     database: keycloak
     port: 5432
     usernameSecret:
       name: example-keycloak-stack-secret
       key: db-username
     passwordSecret:
-      name: example-keycloak-postgresql
+      name: example-postgresql
       key: postgres-password
     schema: public
     poolInitialSize: 1
@@ -911,8 +911,8 @@ spec:
     samplerRatio: 0.1
     samplerType: traceidratio
   telemetry:
-    enabled: false
     endpoint: http://otel-collector:4317
+    protocol: grpc
     serviceName: ""
   additionalOptions:
     - name: metrics-enabled

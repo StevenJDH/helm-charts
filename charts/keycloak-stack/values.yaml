@@ -432,7 +432,7 @@ serviceMonitor:
 
 dashboards:
   # -- Indicates whether or not to deploy a set of Keycloak related Grafana dashboards that will be imported
-  # automatically.
+  # automatically. Requires `metrics.enabled` and `serviceMonitor` to be set as `true`.
   enabled: false
   # -- namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace
   # as the Prometheus Operator and Grafana instance.
@@ -603,8 +603,6 @@ keycloak-operator:
 postgresql:
   # -- Indicates whether or not a PostgreSQL database is created.
   enabled: true
-  # @ignored. Override for postgresql chart name in helm common labels.
-  nameOverride: keycloak-postgresql
   auth:
     # -- username is the username for the database user.
     username: postgres

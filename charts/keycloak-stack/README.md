@@ -79,7 +79,7 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 | bootstrapAdmin.user.password | string | `"admin"` | password is the temporary password for the Keycloak bootstrap admin user. |
 | bootstrapAdmin.user.username | string | `"admin"` | username is the temporary username for the Keycloak bootstrap admin user. See [Accessing the Admin Console](https://www.keycloak.org/operator/basic-deployment#_accessing_the_admin_console) for more information. |
 | cache.configMapFile | object | `{}` | configMapFile references a ConfigMap key containing a custom Infinispan cache configuration XML. When specified, Keycloak uses this file instead of the default cache configuration. See [Configuring caches](https://www.keycloak.org/server/caching#_configuring_caches) for more information. |
-| dashboards.enabled | bool | `false` | Indicates whether or not to deploy a set of Keycloak related Grafana dashboards that will be imported automatically. |
+| dashboards.enabled | bool | `false` | Indicates whether or not to deploy a set of Keycloak related Grafana dashboards that will be imported automatically. Requires `metrics.enabled` and `serviceMonitor` to be set as `true`. |
 | dashboards.namespace | string | `"monitoring"` | namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
 | db.external.auth.password | string | `""` | password is the password for the external database user. This setting is ignored if `postgresql.enabled` is `true`. |
 | db.external.auth.username | string | `""` | username is the username for the external database user. This setting is ignored if `postgresql.enabled` is `true`. |
@@ -161,6 +161,7 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 | startupProbe | object | `{}` | startupProbe configures the startup probe. Only a subnet of features are support by the CR. |
 | telemetry.enabled | bool | `false` | Indicates whether or not to enable OpenTelemetry metrics. Requires `metrics.enabled` to be `true`, and `features` to include `opentelemetry-metrics:v1`. |
 | telemetry.endpoint | string | `"http://otel-collector:4317"` | endpoint is the OpenTelemetry endpoint to connect to. |
+| telemetry.protocol | string | `"grpc"` | protocol is the OpenTelemetry protocol used for the transmitting the data. |
 | telemetry.resourceAttributes | object | `{}` | resourceAttributes is the OpenTelemetry resource attributes present in the exported telemetry data to characterize the telemetry producer. |
 | telemetry.serviceName | string | `""` | serviceName is the OpenTelemetry service name. Takes precedence over 'service.name' defined in `telemetry.resourceAttributes`. |
 | tracing.compression | string | `"none"` | compression is the OpenTelemetry method used to compress payloads. Possible values are: gzip, none. |
