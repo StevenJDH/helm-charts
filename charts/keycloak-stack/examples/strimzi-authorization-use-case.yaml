@@ -48,7 +48,7 @@ keycloakRealmImport:
   #     --atomic
   #
   realmContent: |
-    USE THE COMMAND ABOVE OR PASTE THE CONTENT
+    USE THE COMMAND ABOVE OR PASTE THE CONTENT OF kafka-authz-realm.json HERE
 
 postgresql:
   auth:
