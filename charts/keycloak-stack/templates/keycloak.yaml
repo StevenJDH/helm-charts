@@ -15,7 +15,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- $requiredMsg := include "shared-library.required-msg" . -}}
+{{- $requiredMsg       := include "shared-library.required-msg" .                            -}}
+{{- $httpTlsSecret     := .Values.http.tlsSecret                                             -}}
+{{- $httpTlsContent    := and .Values.http.tls.certContent .Values.http.tls.keyContent       -}}
+{{- $ingressTlsSecret  := .Values.ingress.tlsSecret                                          -}}
+{{- $ingressTlsContent := and .Values.ingress.tls.certContent .Values.ingress.tls.keyContent -}}
 
 apiVersion: k8s.keycloak.org/v2beta1
 kind: Keycloak
@@ -114,10 +118,8 @@ spec:
     {{- with .Values.http.serviceHttpsPort }}
     serviceHttpsPort: {{ . }}
     {{- end }}
-    {{- if and .Values.ingress.enabled (not .Values.ingress.tlsSecret) }}
-    {{- with .Values.http.tlsSecret }}
-    tlsSecret: {{ . }}
-    {{- end }}
+    {{- if or $httpTlsSecret $httpTlsContent }}
+    tlsSecret: {{ $httpTlsSecret | default (printf "%s-tls-http-secret" (include "shared-library.fullname" .)) }}
     {{- end }}
   hostname:
     hostname: {{ .Values.hostname.host }}
@@ -147,8 +149,8 @@ spec:
     {{- with .Values.ingress.className }}
     className: {{ . }}
     {{- end }}
-    {{- with .Values.ingress.tlsSecret }}
-    tlsSecret: {{ . }}
+    {{- if or $ingressTlsSecret $ingressTlsContent }}
+    tlsSecret: {{ $ingressTlsSecret | default (printf "%s-tls-ingress-secret" (include "shared-library.fullname" .)) }}
     {{- end }}
   {{- with .Values.truststores }}
   truststores:
@@ -253,10 +255,14 @@ spec:
   additionalOptions:
     - name: metrics-enabled
       value: {{ .Values.metrics.enabled | quote }}
-    - name: telemetry-metrics-enabled
-      value: {{ .Values.telemetry.enabled | quote }}
     - name: http-metrics-histograms-enabled
       value: {{ .Values.metrics.enabled | quote }}
+    - name: cache-metrics-histograms-enabled
+      value: {{ .Values.metrics.enabled | quote }}
+    - name: event-metrics-user-enabled
+      value: {{ .Values.metrics.enabled | quote }}
+    - name: telemetry-metrics-enabled
+      value: {{ .Values.telemetry.enabled | quote }}
     {{- with .Values.additionalOptions }}
     {{- toYaml . | nindent 4 }}
     {{- end }}

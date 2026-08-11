@@ -148,10 +148,32 @@ http:
   # will use this port while the pod still listens on `http.httpsPort`. This setting is ignored when
   # set to `0`.
   serviceHttpsPort: 0
-  # -- tlsSecret is a secret containing the TLS configuration for the Passthrough TLS scenario.
-  # Requires `ingress.enabled` set to `true` and `ingress.tlsSecret` must be unset.
+  # -- tlsSecret is an existing secret containing the TLS configuration for the Passthrough TLS scenario.
+  # This scenario requires `ingress.enabled` set to `true` and `ingress.tlsSecret`, `ingress.tls.certContent`,
+  # and `ingress.tls.keyContent` to be unset.
   # See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information.
   tlsSecret: ""
+  tls:
+    # -- certContent specifies PEM-encoded TLS certificate used to create a TLS Secret when
+    # `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set.
+    certContent: ""
+    # certContent: |
+    #   -----BEGIN CERTIFICATE-----
+    #   ...server
+    #   -----END CERTIFICATE-----
+    #   -----BEGIN CERTIFICATE-----
+    #   ...CA
+    #   -----END CERTIFICATE-----
+
+    # -- keyContent specifies PEM-encoded TLS private key used to create a TLS Secret when
+    # `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set.
+    keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
 
 hostname:
   # -- host is the hostname for the Keycloak server. Applicable for Hostname v1 and v2.
@@ -200,10 +222,31 @@ ingress:
   annotations: {}
   # -- className is the name of the Ingress class.
   className: ""
-  # -- tlsSecret is a secret containing the TLS configuration for re-encrypt or TLS termination
+  # -- tlsSecret is an existing secret containing the TLS configuration for re-encrypt or TLS termination
   # scenarios. See [TLS Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets)
   # for more information.
   tlsSecret: ""
+  tls:
+    # -- certContent specifies PEM-encoded TLS certificate used to create a TLS Secret when
+    # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
+    certContent: ""
+    # certContent: |
+    #   -----BEGIN CERTIFICATE-----
+    #   ...server
+    #   -----END CERTIFICATE-----
+    #   -----BEGIN CERTIFICATE-----
+    #   ...CA
+    #   -----END CERTIFICATE-----
+
+    # -- keyContent specifies PEM-encoded TLS private key used to create a TLS Secret when
+    # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
+    keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
 
 # -- truststores is used to configure the Keycloak truststores using Secrets or ConfigMaps containing PEM encoded
 # files, or PKCS12 files with extension .p12, .pfx, or .pkcs12.
@@ -474,6 +517,7 @@ features:
   # -- enabled is used to enable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
   enabled: []
   # - client-admin-api
+  # - user-event-metrics
   # - docker
   # - authorization
   # -- disabled is used to disable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
@@ -483,8 +527,9 @@ features:
 
 # -- Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either
 # direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled`,
-# `telemetry-metrics-enabled`, and `http-metrics-histograms-enabled` as these will be added when needed automatically.
-# See [All configuration](https://www.keycloak.org/server/all-config) for details.
+# `http-metrics-histograms-enabled`, `cache-metrics-histograms-enabled`, `event-metrics-user-enabled`, and
+# `telemetry-metrics-enabled` as these will be added when needed automatically. For `event-metrics-user-enabled`, enable
+# the feature `user-event-metrics`. See [All configuration](https://www.keycloak.org/server/all-config) for details.
 additionalOptions: []
 # - name: http-relative-path
 #   value: "/"
@@ -492,6 +537,16 @@ additionalOptions: []
 #   secret:
 #     name: my-logging-config
 #     key: log-console-level
+# ## To break down by realm, client, and identity provider,
+# ## but not recommended for large number of clients or IDPs.
+# - name: event-metrics-user-tags
+#   value: "realm,idp,clientId"
+# ## Limits collected user events.
+# ## Reference: https://www.keycloak.org/docs/latest/server_admin/#event-types
+# - name: event-metrics-user-events
+#   value: "login,logout"
+# - name: http-metrics-slos
+#   value: "250,500,1000,2500"
 
 # -- podTemplate is a raw API representation that is used for the Deployment Template. This field is a temporary
 # workaround in case no supported field exists at the top level of the CR for a use case. However, no guarantee
