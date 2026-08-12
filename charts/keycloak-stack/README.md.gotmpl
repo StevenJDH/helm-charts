@@ -56,7 +56,7 @@ The below steps for creating self-signed certificates is meant for feature testi
         -addext "subjectKeyIdentifier=hash"
     ```
 
-3. Create certificate signing request (*.csr) and private key.
+3. Create certificate signing request (*.csr) and private key. Change `$hostname` to `%hostname%` if using Windows.
 
     ```bash
     openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
