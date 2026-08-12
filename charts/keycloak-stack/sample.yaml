@@ -89,7 +89,7 @@ metadata:
     helm.sh/chart: postgresql-18.8.7
 type: Opaque
 data:
-  postgres-password: "M0JUb0xnRWdRWVhuN1ROQk1wNk1qb1Jm"
+  postgres-password: "SURvcUE3WU0xdXFkM3h4YUpneHU1SWph"
   # We don't auto-generate metrics password when it's not provided as we do for other passwords
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
@@ -577,7 +577,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    rollme: i5YRB
+    rollme: LBDm3
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
@@ -917,7 +917,11 @@ spec:
   additionalOptions:
     - name: metrics-enabled
       value: "false"
-    - name: telemetry-metrics-enabled
-      value: "false"
     - name: http-metrics-histograms-enabled
+      value: "false"
+    - name: cache-metrics-histograms-enabled
+      value: "false"
+    - name: event-metrics-user-enabled
+      value: "false"
+    - name: telemetry-metrics-enabled
       value: "false"
