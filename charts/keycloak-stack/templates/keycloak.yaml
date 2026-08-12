@@ -245,7 +245,6 @@ spec:
     resourceAttributes:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-  {{- if or .Values.features.enabled .Values.features.disabled }}
   features:
     enabled:
       - client-admin-api:v2
@@ -256,7 +255,6 @@ spec:
     disabled:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-  {{- end }}
   additionalOptions:
     - name: metrics-enabled
       value: {{ .Values.metrics.enabled | quote }}

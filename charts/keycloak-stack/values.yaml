@@ -57,6 +57,23 @@ bootstrapAdmin:
     clientSecret: ""
 
 admin:
+  operatorSecret:
+    # -- clientId is the client ID for the main admin service account used by the Keycloak
+    # Operator for managing `KeycloakOIDCClient` and `KeycloakSAMLClient` resources in any
+    # realm. When unset, it uses `bootstrapAdmin.service.clientId` if set. For initial
+    # deployments, configure the fallback property instead as it will create the needed
+    # service account with `admin` role. After, a different service account can be created
+    # and configured here, since this will create the required `<keycloak-cr-name>-admin`
+    # secret needed by the operator.
+    clientId: ""
+    # -- clientSecret is the client secret for the main admin service account used by the
+    # Keycloak Operator for managing `KeycloakOIDCClient` and `KeycloakSAMLClient` resources
+    # in any realm. When unset, it uses `bootstrapAdmin.service.clientSecret` if set. For
+    # initial deployments, configure the fallback property instead as it will create the
+    # needed service account with `admin` role. After, a different service account can be
+    # created and configured here, since this will create the required
+    # `<keycloak-cr-name>-admin` secret needed by the operator.
+    clientSecret: ""
   # -- tlsSecret specifies the TLS Secret containing the client certificate and private key
   # used by the operator for mTLS connections to Keycloak. Requires setting `http.tlsSecret`
   # or `http.tls.certContent` and `http.tls.keyContent` to enable TLS passthrough. 
@@ -567,6 +584,8 @@ additionalOptions: []
 # - name: http-metrics-slos
 #   value: "250,500,1000,2500"
 # ## Used for mTLS. Valid values are none, request, and required.
+# ## Setting to 'required' will prevent access to the admin console
+# ## when using a browser.
 # - name: https-client-auth
 #   value: "request"
 # ## The management interface inherits from 'https-client-auth',

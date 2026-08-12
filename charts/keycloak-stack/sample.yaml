@@ -89,7 +89,7 @@ metadata:
     helm.sh/chart: postgresql-18.8.7
 type: Opaque
 data:
-  postgres-password: "SURvcUE3WU0xdXFkM3h4YUpneHU1SWph"
+  postgres-password: "eWxPY3dnRmxxem9xU25taFhEdkdEaG9I"
   # We don't auto-generate metrics password when it's not provided as we do for other passwords
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
@@ -577,7 +577,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    rollme: LBDm3
+    rollme: PW70p
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
@@ -914,6 +914,9 @@ spec:
     endpoint: http://otel-collector:4317
     protocol: grpc
     serviceName: ""
+  features:
+    enabled:
+      - client-admin-api:v2
   additionalOptions:
     - name: metrics-enabled
       value: "false"
