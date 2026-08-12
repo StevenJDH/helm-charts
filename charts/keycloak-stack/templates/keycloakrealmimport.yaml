@@ -16,9 +16,9 @@ limitations under the License.
 */}}
 
 {{- if ((.Values.keycloakRealmImport).enabled) -}}
-{{- $realm := .Values.keycloakRealmImport.realm -}}
-{{- $content := .Values.keycloakRealmImport.realmContent -}}
-{{- $format := lower (.Values.keycloakRealmImport.realmContentFormat | default "json") -}}
+{{- $realm   := .Values.keycloakRealmImport.realm                                       -}}
+{{- $content := .Values.keycloakRealmImport.realmContent                                -}}
+{{- $format  := lower (.Values.keycloakRealmImport.realmContentFormat | default "json") -}}
 apiVersion: k8s.keycloak.org/v2beta1
 kind: KeycloakRealmImport
 metadata:

@@ -32,12 +32,13 @@ proxy:
   headers: "xforwarded"
 
 # See README for how to create certificates to test with.
+# Reference: https://github.com/StevenJDH/helm-charts/tree/chart/add_keycloak_chart/charts/keycloak-stack#creating-certificates-for-tls-scenarios
 ingress:
   className: traefik
   # Use this if you already have an existing tls secret for the above hostname.
   tlsSecret: ""
   tls:
-    # -- certContent specifies PEM-encoded TLS certificate used to create a TLS Secret when
+    # -- certContent specifies PEM-encoded server certificate used to create a TLS Secret when
     # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
     # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
     certContent: ""
@@ -49,7 +50,7 @@ ingress:
     #   ...CA
     #   -----END CERTIFICATE-----
 
-    # -- keyContent specifies PEM-encoded TLS private key used to create a TLS Secret when
+    # -- keyContent specifies PEM-encoded server private key used to create a TLS Secret when
     # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
     # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
     keyContent: ""
