@@ -18,6 +18,7 @@
 <p align="center">
     <a href="#requirements"><b>Requirements</b></a> •
     <a href="#usage-example"><b>Usage</b></a> •
+    <a href="#creating-certificates-for-tls-scenarios"><b>TLS Scenarios</b></a> •
     <a href="#monitoring-with-prometheus-and-grafana"><b>Monitoring</b></a> •
     <a href="#values"><b>Chart Values</b></a>
 </p>
@@ -52,6 +53,99 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
     --atomic
 ```
 
+## Creating certificates for TLS scenarios
+This section provides the steps for creating the CA and server certificates needed for the different TLS scenarios supported by Keycloak. These scenarios include:
+
+* [Passthrough](https://www.keycloak.org/operator/basic-deployment#passthrough)
+* [Ingress Terminated/Edge](https://www.keycloak.org/operator/basic-deployment#_edge)
+* [Reencrypt](https://www.keycloak.org/operator/basic-deployment#_reencrypt)
+* [Custom Access](https://www.keycloak.org/operator/basic-deployment#_custom_access)
+
+The below steps for creating self-signed certificates is meant for feature testing only. For production environments, certificates should be issued by a trusted public certificate authority or an internal one. OpenSSL CLI v1.1.1 or newer is required.
+
+1. In a shell console, set the hostname used by Keycloak. Use `set hostname` if using Windows.
+
+    ```bash
+    hostname=keycloak.127.0.0.1.sslip.io
+    ```
+
+2. Create CA certificate and key.
+
+    ```bash
+    openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 11688 -noenc \
+        -subj "/CN=Keycloak Stack Root CA/O=StevenJDH" \
+        -addext "basicConstraints=critical,CA:TRUE,pathlen:1" \
+        -addext "keyUsage=critical,keyCertSign,cRLSign" \
+        -addext "subjectKeyIdentifier=hash"
+    ```
+
+3. Create certificate signing request (*.csr) and private key.
+
+    ```bash
+    openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
+        -subj "/CN=$hostname/O=StevenJDH" \
+        -addext "basicConstraints=critical,CA:FALSE" \
+        -addext "extendedKeyUsage=serverAuth" \
+        -addext "keyUsage=critical,digitalSignature,keyEncipherment" \
+        -addext "subjectAltName=DNS:$hostname" \
+        -addext "nsComment=Keycloak Stack Test Server Certificate" \
+        -addext "subjectKeyIdentifier=hash"
+    ```
+
+4. Created CA signed server certificate from CSR.
+
+    ```bash
+    openssl x509 -req -sha256 -days 11688 -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt \
+        -copy_extensions copy
+    ```
+
+5. Append the CA certificate to the server certificate to have the full chain. Use `type` instead of `cat` if using Windows.
+
+    ```bash
+    cat cat ca.crt >> tls.crt
+    ```
+
+6. Finally, apply the `tls.crt` and `tls.key` key-pair to Keycloak using one of the TLS [example configurations](./examples). Accept the browser warning for the untrusted self-signed certificate to view the Keycloak admin console.
+
+### Additional openssl commands
+Optionally, there may be a need to inspect details about a certificate's relation to a particular CA, or how it was configured. This is useful for troubleshooting issues that could affect their use. As such, use any of the following commands to analyze these points of interest.
+
+📚 <ins>**CHECKS IF ISSUED BY THE CA**</ins>
+
+```bash
+openssl verify -CAfile ca.crt -purpose sslserver tls.crt
+```
+
+🔳 **Output**
+
+```bash
+tls.crt: OK
+```
+
+📚 <ins>**INSPECT CERTIFICATE DETAILS**</ins>
+
+```bash
+openssl x509 -in tls.crt -noout -subject -issuer \
+    -ext basicConstraints,keyUsage,extendedKeyUsage,subjectAltName,nsComment
+```
+
+🔳 **Output**
+
+```bash
+subject=CN = keycloak.127.0.0.1.sslip.io, O = StevenJDH
+issuer=CN = Keycloak Stack Root CA, O = StevenJDH
+X509v3 Basic Constraints: critical
+    CA:FALSE
+X509v3 Extended Key Usage:
+    TLS Web Server Authentication
+X509v3 Key Usage: critical
+    Digital Signature, Key Encipherment
+X509v3 Subject Alternative Name:
+    DNS:keycloak.127.0.0.1.sslip.io
+Netscape Comment:
+    Keycloak Stack Test Server Certificate
+```
+
 ## Monitoring with Prometheus and Grafana
 This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
 
@@ -66,11 +160,56 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 > [!IMPORTANT]  
 > Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 0 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - SLO Metrics" alt="Troubleshooting Dashboard - SLO Metrics"
+      /><br>
+      <b>Troubleshooting Dashboard - SLO Metrics</b><br>
+      Service Level Objectives metrics.
+    </td>
+      <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 1 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - JVM Metrics" alt="Troubleshooting Dashboard - JVM Metrics"
+      /><br>
+      <b>Troubleshooting Dashboard - JVM Metrics</b><br>
+      JVM memory metrics.
+    </td>
+    <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 3 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - HTTP Metrics" alt="Troubleshooting Dashboard - HTTP Metrics"
+      /><br>
+      <b>Troubleshooting Dashboard - HTTP Metrics</b><br>
+      HTTP performance insights.
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 4 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - Sections" alt="Troubleshooting Dashboard - Sections"
+      /><br>
+      <b>Troubleshooting Dashboard - Sections</b><br>
+      Categorized operational data.
+    </td>
+    <td align="center">
+      <img src="screenshots/Keycloak capacity planning 0 - Dashboards - Grafana.png" width="260"
+        title="Capacity Planning Dashboard" alt="Capacity Planning Dashboard"
+      /><br>
+      <b>Capacity Planning Dashboard</b><br>
+      Performance capacity metrics.
+    </td>
+    <td align="center">
+      <a href="./screenshots/">More...</a>
+    </td>
+  </tr>
+</table>
+
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| additionalOptions | list | `[]` | Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled`, `telemetry-metrics-enabled`, and `http-metrics-histograms-enabled` as these will be added when needed automatically. See [All configuration](https://www.keycloak.org/server/all-config) for details. |
+| additionalOptions | list | `[]` | Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled`, `http-metrics-histograms-enabled`, `cache-metrics-histograms-enabled`, `event-metrics-user-enabled`, and `telemetry-metrics-enabled` as these will be added when needed automatically. For `event-metrics-user-enabled`, enable the feature `user-event-metrics`. See [All configuration](https://www.keycloak.org/server/all-config) for details. |
 | admin.tlsSecret | string | `""` | tlsSecret specifies the TLS Secret containing the client certificate and private key used by the operator for mTLS connections to Keycloak. See [Managing Keycloak Clients](https://www.keycloak.org/operator/managing-clients) for more information. |
 | annotations | object | `{}` | annotations to be added to the Deployment resource. |
 | automountServiceAccountToken | bool | `true` | Indicates whether or not to automatically mount the Kubernetes ServiceAccount token into the Keycloak pod. If set to `false`, this will also disable the Kubernetes CA truststore auto-discovery logic. Keep this set to `true` if planning to use an external Infinispan cluster, the Kubernetes ServiceAccount identity provider, or any custom provider logic that expects to implicitly use the Kubernetes API. See [Truststores](https://www.keycloak.org/operator/advanced-configuration#_truststores) for more information. |
@@ -112,7 +251,9 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 | http.serviceHttpPort | int | `0` | serviceHttpPort is the HTTP port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on `http.httpPort`. This setting is ignored when set to `0`. |
 | http.serviceHttpsPort | int | `0` | serviceHttpsPort is the HTTPS port exposed on the Kubernetes Service. When set, the Service will use this port while the pod still listens on `http.httpsPort`. This setting is ignored when set to `0`. |
 | http.serviceName | string | `""` | serviceName is used to override the default Service resource name. When not set, the name defaults to the Keycloak CR name with a "-service" suffix. |
-| http.tlsSecret | string | `""` | tlsSecret is a secret containing the TLS configuration for the Passthrough TLS scenario. Requires `ingress.enabled` set to `true` and `ingress.tlsSecret` must be unset. See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information. |
+| http.tls.certContent | string | `""` | certContent specifies PEM-encoded TLS certificate used to create a TLS Secret when `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set. |
+| http.tls.keyContent | string | `""` | keyContent specifies PEM-encoded TLS private key used to create a TLS Secret when `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set. |
+| http.tlsSecret | string | `""` | tlsSecret is an existing secret containing the TLS configuration for the Passthrough TLS scenario. This scenario requires `ingress.enabled` set to `true` and `ingress.tlsSecret`, `ingress.tls.certContent`, and `ingress.tls.keyContent` to be unset. See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information. |
 | httpManagement.port | int | `9000` | port is the port of the management interface. |
 | image | string | `""` | image is used to specify a custom Keycloak image to be used. |
 | imagePullSecrets | list | `[]` | imagePullSecrets is a list of secrets for pulling an image from a private container registry. |
@@ -121,7 +262,9 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 | ingress.className | string | `""` | className is the name of the Ingress class. |
 | ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created to enable outside access. See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information. |
 | ingress.labels | object | `{}` | labels to be added to the Ingress resource. |
-| ingress.tlsSecret | string | `""` | tlsSecret is a secret containing the TLS configuration for re-encrypt or TLS termination scenarios. See [TLS Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets) for more information. |
+| ingress.tls.certContent | string | `""` | certContent specifies PEM-encoded TLS certificate used to create a TLS Secret when `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set. |
+| ingress.tls.keyContent | string | `""` | keyContent specifies PEM-encoded TLS private key used to create a TLS Secret when `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set. |
+| ingress.tlsSecret | string | `""` | tlsSecret is an existing secret containing the TLS configuration for re-encrypt or TLS termination scenarios. See [TLS Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets) for more information. |
 | instances | int | `1` | instances is the number of Keycloak instances created to increase availability when set to more than one. |
 | keycloak-operator.enabled | bool | `true` | Indicates whether or not the Keycloak Operator is installed. |
 | keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloak | bool | `false` | keycloak is for indicating whether or not Keycloak resources will be watched in all namespaces. |

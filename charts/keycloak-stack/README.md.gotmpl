@@ -5,6 +5,7 @@
 <p align="center">
     <a href="#requirements"><b>Requirements</b></a> •
     <a href="#usage-example"><b>Usage</b></a> •
+    <a href="#creating-certificates-for-tls-scenarios"><b>TLS Scenarios</b></a> •
     <a href="#monitoring-with-prometheus-and-grafana"><b>Monitoring</b></a> •
     <a href="#values"><b>Chart Values</b></a>
 </p>
@@ -29,6 +30,99 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
     --atomic
 ```
 
+## Creating certificates for TLS scenarios
+This section provides the steps for creating the CA and server certificates needed for the different TLS scenarios supported by Keycloak. These scenarios include:
+
+* [Passthrough](https://www.keycloak.org/operator/basic-deployment#passthrough)
+* [Ingress Terminated/Edge](https://www.keycloak.org/operator/basic-deployment#_edge)
+* [Reencrypt](https://www.keycloak.org/operator/basic-deployment#_reencrypt)
+* [Custom Access](https://www.keycloak.org/operator/basic-deployment#_custom_access)
+
+The below steps for creating self-signed certificates is meant for feature testing only. For production environments, certificates should be issued by a trusted public certificate authority or an internal one. OpenSSL CLI v1.1.1 or newer is required.
+
+1. In a shell console, set the hostname used by Keycloak. Use `set hostname` if using Windows.
+
+    ```bash
+    hostname=keycloak.127.0.0.1.sslip.io
+    ```
+
+2. Create CA certificate and key.
+
+    ```bash
+    openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 11688 -noenc \
+        -subj "/CN=Keycloak Stack Root CA/O=StevenJDH" \
+        -addext "basicConstraints=critical,CA:TRUE,pathlen:1" \
+        -addext "keyUsage=critical,keyCertSign,cRLSign" \
+        -addext "subjectKeyIdentifier=hash"
+    ```
+
+3. Create certificate signing request (*.csr) and private key.
+
+    ```bash
+    openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
+        -subj "/CN=$hostname/O=StevenJDH" \
+        -addext "basicConstraints=critical,CA:FALSE" \
+        -addext "extendedKeyUsage=serverAuth" \
+        -addext "keyUsage=critical,digitalSignature,keyEncipherment" \
+        -addext "subjectAltName=DNS:$hostname" \
+        -addext "nsComment=Keycloak Stack Test Server Certificate" \
+        -addext "subjectKeyIdentifier=hash"
+    ```
+
+4. Created CA signed server certificate from CSR.
+
+    ```bash
+    openssl x509 -req -sha256 -days 11688 -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt \
+        -copy_extensions copy
+    ```
+
+5. Append the CA certificate to the server certificate to have the full chain. Use `type` instead of `cat` if using Windows.
+
+    ```bash
+    cat cat ca.crt >> tls.crt
+    ```
+
+6. Finally, apply the `tls.crt` and `tls.key` key-pair to Keycloak using one of the TLS [example configurations](./examples). Accept the browser warning for the untrusted self-signed certificate to view the Keycloak admin console.
+
+### Additional openssl commands
+Optionally, there may be a need to inspect details about a certificate's relation to a particular CA, or how it was configured. This is useful for troubleshooting issues that could affect their use. As such, use any of the following commands to analyze these points of interest.
+
+📚 <ins>**CHECKS IF ISSUED BY THE CA**</ins>
+
+```bash
+openssl verify -CAfile ca.crt -purpose sslserver tls.crt
+```
+
+🔳 **Output**
+
+```bash
+tls.crt: OK
+```
+
+📚 <ins>**INSPECT CERTIFICATE DETAILS**</ins>
+
+```bash
+openssl x509 -in tls.crt -noout -subject -issuer \
+    -ext basicConstraints,keyUsage,extendedKeyUsage,subjectAltName,nsComment
+```
+
+🔳 **Output**
+
+```bash
+subject=CN = keycloak.127.0.0.1.sslip.io, O = StevenJDH
+issuer=CN = Keycloak Stack Root CA, O = StevenJDH
+X509v3 Basic Constraints: critical
+    CA:FALSE
+X509v3 Extended Key Usage:
+    TLS Web Server Authentication
+X509v3 Key Usage: critical
+    Digital Signature, Key Encipherment
+X509v3 Subject Alternative Name:
+    DNS:keycloak.127.0.0.1.sslip.io
+Netscape Comment:
+    Keycloak Stack Test Server Certificate
+```
+
 ## Monitoring with Prometheus and Grafana
 This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
 
@@ -42,6 +136,51 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 
 > [!IMPORTANT]  
 > Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 0 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - SLO Metrics" alt="Troubleshooting Dashboard - SLO Metrics"
+      /><br>
+      <b>Troubleshooting Dashboard - SLO Metrics</b><br>
+      Service Level Objectives metrics.
+    </td>
+      <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 1 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - JVM Metrics" alt="Troubleshooting Dashboard - JVM Metrics"
+      /><br>
+      <b>Troubleshooting Dashboard - JVM Metrics</b><br>
+      JVM memory metrics.
+    </td>
+    <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 3 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - HTTP Metrics" alt="Troubleshooting Dashboard - HTTP Metrics"
+      /><br>
+      <b>Troubleshooting Dashboard - HTTP Metrics</b><br>
+      HTTP performance insights.
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 4 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - Sections" alt="Troubleshooting Dashboard - Sections"
+      /><br>
+      <b>Troubleshooting Dashboard - Sections</b><br>
+      Categorized operational data.
+    </td>
+    <td align="center">
+      <img src="screenshots/Keycloak capacity planning 0 - Dashboards - Grafana.png" width="260"
+        title="Capacity Planning Dashboard" alt="Capacity Planning Dashboard"
+      /><br>
+      <b>Capacity Planning Dashboard</b><br>
+      Performance capacity metrics.
+    </td>
+    <td align="center">
+      <a href="./screenshots/">More...</a>
+    </td>
+  </tr>
+</table>
 
 {{ template "chart.valuesSectionWrap" (dict "context" . "limit" 40) }}
 
