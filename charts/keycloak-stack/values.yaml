@@ -541,10 +541,10 @@ additionalOptions: []
 # ## but not recommended for large number of clients or IDPs.
 # - name: event-metrics-user-tags
 #   value: "realm,idp,clientId"
-# ## Limits collected user events.
+# ## Limits collected user events. Below are ones used by the capacity planning dashboard.
 # ## Reference: https://www.keycloak.org/docs/latest/server_admin/#event-types
 # - name: event-metrics-user-events
-#   value: "login,logout"
+#   value: "token_exchange,login,logout,code_to_token,client_login,refresh_token"
 # - name: http-metrics-slos
 #   value: "250,500,1000,2500"
 

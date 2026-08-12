@@ -18,8 +18,10 @@ limitations under the License.
 {{- $requiredMsg       := include "shared-library.required-msg" .                            -}}
 {{- $httpTlsSecret     := .Values.http.tlsSecret                                             -}}
 {{- $httpTlsContent    := and .Values.http.tls.certContent .Values.http.tls.keyContent       -}}
+{{- $httpTlsEnabled    := or $httpTlsSecret $httpTlsContent                                  -}}
 {{- $ingressTlsSecret  := .Values.ingress.tlsSecret                                          -}}
 {{- $ingressTlsContent := and .Values.ingress.tls.certContent .Values.ingress.tls.keyContent -}}
+{{- $ingressTlsEnabled := or $ingressTlsSecret $ingressTlsContent                            -}}
 
 apiVersion: k8s.keycloak.org/v2beta1
 kind: Keycloak
@@ -118,7 +120,7 @@ spec:
     {{- with .Values.http.serviceHttpsPort }}
     serviceHttpsPort: {{ . }}
     {{- end }}
-    {{- if or $httpTlsSecret $httpTlsContent }}
+    {{- if and (not .Values.devModeEnabled) (or $httpTlsSecret $httpTlsContent) }}
     tlsSecret: {{ $httpTlsSecret | default (printf "%s-tls-http-secret" (include "shared-library.fullname" .)) }}
     {{- end }}
   hostname:
@@ -130,7 +132,7 @@ spec:
     backchannelDynamic: {{ .Values.hostname.backchannelDynamic }}
   automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
   {{- /* Ensuring not a Passthrough scenario. */}}
-  {{- if not (and .Values.http.tlsSecret (not .Values.ingress.tlsSecret)) }}
+  {{- if not (and $httpTlsEnabled (not $ingressTlsEnabled)) }}
   {{- with .Values.proxy.headers }}
   proxy:
     headers: {{ . }}
@@ -149,7 +151,7 @@ spec:
     {{- with .Values.ingress.className }}
     className: {{ . }}
     {{- end }}
-    {{- if or $ingressTlsSecret $ingressTlsContent }}
+    {{- if and (not .Values.devModeEnabled) (or $ingressTlsSecret $ingressTlsContent) }}
     tlsSecret: {{ $ingressTlsSecret | default (printf "%s-tls-ingress-secret" (include "shared-library.fullname" .)) }}
     {{- end }}
   {{- with .Values.truststores }}
