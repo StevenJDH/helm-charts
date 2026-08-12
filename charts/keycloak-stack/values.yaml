@@ -58,9 +58,28 @@ bootstrapAdmin:
 
 admin:
   # -- tlsSecret specifies the TLS Secret containing the client certificate and private key
-  # used by the operator for mTLS connections to Keycloak.
+  # used by the operator for mTLS connections to Keycloak. Requires setting `http.tlsSecret`
+  # or `http.tls.certContent` and `http.tls.keyContent` to enable TLS passthrough. 
   # See [Managing Keycloak Clients](https://www.keycloak.org/operator/managing-clients) for more information.
   tlsSecret: ""
+  tls:
+    # -- certContent specifies PEM-encoded client certificate used to create a TLS Secret when
+    # `admin.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `admin.tlsSecret` is set.
+    certContent: ""
+    # certContent: |
+    #   -----BEGIN CERTIFICATE-----
+    #   ...client
+    #   -----END CERTIFICATE-----
+
+    # -- keyContent specifies PEM-encoded client private key used to create a TLS Secret when
+    # `admin.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `admin.tlsSecret` is set.
+    keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
 
 cache:
   # -- configMapFile references a ConfigMap key containing a custom Infinispan cache
@@ -154,7 +173,7 @@ http:
   # See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information.
   tlsSecret: ""
   tls:
-    # -- certContent specifies PEM-encoded TLS certificate used to create a TLS Secret when
+    # -- certContent specifies PEM-encoded server certificate used to create a TLS Secret when
     # `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's
     # `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set.
     certContent: ""
@@ -166,7 +185,7 @@ http:
     #   ...CA
     #   -----END CERTIFICATE-----
 
-    # -- keyContent specifies PEM-encoded TLS private key used to create a TLS Secret when
+    # -- keyContent specifies PEM-encoded server private key used to create a TLS Secret when
     # `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's
     # `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set.
     keyContent: ""
@@ -227,7 +246,7 @@ ingress:
   # for more information.
   tlsSecret: ""
   tls:
-    # -- certContent specifies PEM-encoded TLS certificate used to create a TLS Secret when
+    # -- certContent specifies PEM-encoded server certificate used to create a TLS Secret when
     # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
     # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
     certContent: ""
@@ -239,7 +258,7 @@ ingress:
     #   ...CA
     #   -----END CERTIFICATE-----
 
-    # -- keyContent specifies PEM-encoded TLS private key used to create a TLS Secret when
+    # -- keyContent specifies PEM-encoded server private key used to create a TLS Secret when
     # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
     # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
     keyContent: ""
@@ -514,9 +533,9 @@ telemetry:
     # deployment.environment: test
 
 features:
-  # -- enabled is used to enable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
+  # -- enabled is used to enable Keycloak features. Do not set `client-admin-api:v2` as this is
+  # enabled by default. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
   enabled: []
-  # - client-admin-api
   # - user-event-metrics
   # - docker
   # - authorization
@@ -547,6 +566,15 @@ additionalOptions: []
 #   value: "token_exchange,login,logout,code_to_token,client_login,refresh_token"
 # - name: http-metrics-slos
 #   value: "250,500,1000,2500"
+# ## Used for mTLS. Valid values are none, request, and required.
+# - name: https-client-auth
+#   value: "request"
+# ## The management interface inherits from 'https-client-auth',
+# ## so overriding is needed if 'required' is used to not impact
+# ## health checks or the scraping of metrics.
+# ## Reference: https://www.keycloak.org/server/mutual-tls?utm_source=chatgpt.com#_enabling_mtls
+# - name: https-management-client-auth
+#   value: "request"
 
 # -- podTemplate is a raw API representation that is used for the Deployment Template. This field is a temporary
 # workaround in case no supported field exists at the top level of the CR for a use case. However, no guarantee

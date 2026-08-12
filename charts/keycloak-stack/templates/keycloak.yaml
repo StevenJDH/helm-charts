@@ -16,6 +16,8 @@ limitations under the License.
 */}}
 
 {{- $requiredMsg       := include "shared-library.required-msg" .                            -}}
+{{- $adminTlsSecret    := .Values.admin.tlsSecret                                            -}}
+{{- $adminTlsContent   := and .Values.admin.tls.certContent .Values.admin.tls.keyContent     -}}
 {{- $httpTlsSecret     := .Values.http.tlsSecret                                             -}}
 {{- $httpTlsContent    := and .Values.http.tls.certContent .Values.http.tls.keyContent       -}}
 {{- $httpTlsEnabled    := or $httpTlsSecret $httpTlsContent                                  -}}
@@ -61,9 +63,9 @@ spec:
     service:
       secret: {{ template "shared-library.fullname" . }}-secret
     {{- end }}
-  {{- with .Values.admin.tlsSecret }}
+  {{- if and (not .Values.devModeEnabled) $httpTlsEnabled (or $adminTlsSecret $adminTlsContent) }}
   admin:
-    tlsSecret: {{ . }}
+    tlsSecret: {{ $adminTlsSecret | default (printf "%s-operator-mtls-secret" (include "shared-library.fullname" .)) }}
   {{- end }}
   {{- with .Values.cache.configMapFile }}
   cache:
@@ -245,8 +247,9 @@ spec:
     {{- end }}
   {{- if or .Values.features.enabled .Values.features.disabled }}
   features:
-    {{- with .Values.features.enabled }}
     enabled:
+      - client-admin-api:v2
+    {{- with .Values.features.enabled }}
       {{- toYaml . | nindent 6 }}
     {{- end }}
     {{- with .Values.features.disabled }}
