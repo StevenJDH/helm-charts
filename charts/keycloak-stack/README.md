@@ -18,7 +18,8 @@
 <p align="center">
     <a href="#requirements"><b>Requirements</b></a> •
     <a href="#usage-example"><b>Usage</b></a> •
-    <a href="#creating-certificates-for-tls-scenarios"><b>TLS Scenarios</b></a> •
+    <a href="#creating-server-certificates-for-tls-scenarios"><b>TLS Scenarios</b></a> •
+    <a href="#creating-client-certificates-for-mtls"><b>mTLS</b></a> •
     <a href="#monitoring-with-prometheus-and-grafana"><b>Monitoring</b></a> •
     <a href="#values"><b>Chart Values</b></a>
 </p>
@@ -53,7 +54,7 @@ helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.
     --atomic
 ```
 
-## Creating certificates for TLS scenarios
+## Creating server certificates for TLS scenarios
 This section provides the steps for creating the CA and server certificates needed for the different TLS scenarios supported by Keycloak. These scenarios include:
 
 * [Passthrough](https://www.keycloak.org/operator/basic-deployment#passthrough)
@@ -92,7 +93,7 @@ The below steps for creating self-signed certificates is meant for feature testi
         -addext "subjectKeyIdentifier=hash"
     ```
 
-4. Created CA signed server certificate from CSR.
+4. Create CA signed server certificate from CSR.
 
     ```bash
     openssl x509 -req -sha256 -days 11688 -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt \
@@ -105,9 +106,25 @@ The below steps for creating self-signed certificates is meant for feature testi
     cat ca.crt >> tls.crt
     ```
 
-6. Finally, apply the `tls.crt` and `tls.key` key-pair to Keycloak using one of the TLS [example configurations](./examples). Accept the browser warning for the untrusted self-signed certificate to view the Keycloak admin console.
+6. Finally, apply the `tls.crt` and `tls.key` key-pair to Keycloak using one of the TLS [example configurations](./examples). Accept the browser warning for the untrusted self-signed certificate to view the Keycloak Admin Console. Third-party client applications can optionally use the following command to create the needed truststore to trust the server certificate:
 
-### Additional openssl commands
+    ```bash
+    openssl pkcs12 -export -nokeys -in ca.crt -passout pass:changeit -out truststore.p12
+
+    # For Java-based technologies, use this command instead. Both commands produce a truststore in the same
+    # format, however, this one adds the required '2.16.840.1.113894.746875.1.1' Bag Attribute, which is used
+    # for detecting trusted cert entries. If the above command is used with a Java app or keytool -list, the
+    # entries will be 0. In the next section, the VERIFY CONTAINER STRUCTURE command can show this distinction.
+    #
+    # NOTE: openssl v3.2.0 now supports adding '-jdktrust anyExtendedKeyUsage' to solve this problem. Just
+    # remove the -nokeys flag as it is implicitly added. Downside is the java specific 'friendlyName' Bag
+    # Attribute still isn't added even in 4x versions of the CLI, so using keytool for truststores is preferred.
+    keytool -importcert -alias keycloak-stack-ca -file ca.crt -keystore truststore.p12 -storetype PKCS12 \
+        -storepass changeit \
+        -noprompt
+    ```
+
+### Additional server-based openssl commands
 Optionally, there may be a need to inspect details about a certificate's relation to a particular CA, or how it was configured. This is useful for troubleshooting issues that could affect their use. As such, use any of the following commands to analyze these points of interest.
 
 📚 <ins>**CHECKS IF ISSUED BY THE CA**</ins>
@@ -122,7 +139,7 @@ openssl verify -CAfile ca.crt -purpose sslserver tls.crt
 tls.crt: OK
 ```
 
-📚 <ins>**INSPECT CERTIFICATE DETAILS**</ins>
+📚 <ins>**INSPECT SERVER CERTIFICATE DETAILS**</ins>
 
 ```bash
 openssl x509 -in tls.crt -noout -subject -issuer \
@@ -144,6 +161,111 @@ X509v3 Subject Alternative Name:
     DNS:keycloak.127.0.0.1.sslip.io
 Netscape Comment:
     Keycloak Stack Test Server Certificate
+```
+
+## Creating client certificates for mTLS
+This section shows how to create a client certificate for mTLS communication. For the CA, reuse the one from the previous section or create a dedicated one for the client chain using Step 2 in that section. OpenSSL CLI v1.1.1 or newer is required.
+
+1. Create certificate signing request (*.csr) and private key.
+
+    ```bash
+    openssl req -new -newkey rsa:4096 -keyout client.key -out client.csr -noenc \
+        -subj "/CN=Trusted Client/O=StevenJDH" \
+        -addext "basicConstraints=critical,CA:FALSE" \
+        -addext "extendedKeyUsage=clientAuth" \
+        -addext "keyUsage=critical,digitalSignature" \
+        -addext "nsComment=Keycloak Stack Operator Test Client Certificate" \
+        -addext "subjectKeyIdentifier=hash"
+    ```
+
+2. Create CA signed client certificate from CSR.
+
+    ```bash
+    openssl x509 -req -sha256 -days 11688 -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt \
+        -copy_extensions copy
+    ```
+
+3. Apply the `client.crt` and `client.key` key-pair to Keycloak using the [mTLS example configuration](./examples/mtls-protected-admin-api.yaml). This shows how to configure the Keycloak Operator with a client certificate to access the Admin API. Third-party client applications can optionally use the following command to create the needed keystore to properly authenticate themselves with the server:
+
+    ```bash
+    openssl pkcs12 -export -name client -in client.crt -inkey client.key -certfile ca.crt \
+      -passout pass:changeit -out client-keystore.p12
+
+    # OR
+
+    # For certs with intermediary certs, use this one. Use 'type' instead of 'cat' on Window.
+    # Structure: Key -> Child -> Parent.
+    cat client.key client.crt intermediary.crt ca.crt > client-chain.pem
+    openssl pkcs12 -export -name client -in client-chain.pem -passout pass:changeit -out client-keystore.p12
+    ```
+
+### Additional client-based openssl commands
+Similar to the previous section for server certificates, the following are a few more commands for troubleshooting client certificates. However, some of the before mentioned commands are also still valid here but excluded for brevity.
+
+📚 <ins>**INSPECT CLIENT CERTIFICATE DETAILS**</ins>
+
+```bash
+openssl x509 -in client.crt -noout -subject -issuer \
+    -ext basicConstraints,keyUsage,extendedKeyUsage,nsComment
+```
+
+🔳 **Output**
+
+```bash
+subject=CN = Trusted Client, O = StevenJDH
+issuer=CN = Keycloak Stack Root CA, O = StevenJDH
+X509v3 Basic Constraints: critical
+    CA:FALSE
+X509v3 Extended Key Usage:
+    TLS Web Client Authentication
+X509v3 Key Usage: critical
+    Digital Signature
+Netscape Comment:
+    Keycloak Stack Test Client Certificate
+```
+
+📚 <ins>**TEST MTLS HANDSHAKE**</ins>
+
+```bash
+# No error at bottom of output is good. However, you may need to set mTLS to 'required' to force a problem.
+openssl s_client -brief -connect keycloak.127.0.0.1.sslip.io:443 \
+    -servername keycloak.127.0.0.1.sslip.io
+    -CAfile ca.crt -cert client.crt -key client.key
+```
+
+🔳 **Output**
+
+```bash
+CONNECTION ESTABLISHED
+Protocol version: TLSv1.3
+Ciphersuite: TLS_AES_256_GCM_SHA384
+Requested Signature Algorithms: ECDSA+SHA256:ECDSA+SHA384:ECDSA+SHA512:Ed25519:Ed448:RSA-PSS+SHA256:RSA-PSS+SHA384:RSA-PSS+SHA512:RSA-PSS+SHA256:RSA-PSS+SHA384:RSA-PSS+SHA512
+Peer certificate: CN = keycloak.127.0.0.1.sslip.io, O = StevenJDH
+Hash used: SHA256
+Signature type: RSA-PSS
+Verification: OK
+Server Temp Key: X25519, 253 bits
+```
+
+📚 <ins>**VERIFY CONTAINER STRUCTURE**</ins>
+
+```bash
+openssl pkcs12 -info -in client-keystore.p12 -passin pass:changeit -noout
+
+# Alternatively, this command will show the certs, keys, and metadata.
+openssl pkcs12 -info -in client-keystore.p12 -passin pass:changeit -nodes
+```
+
+🔳 **Output**
+
+```bash
+MAC: sha256, Iteration 2048
+MAC length: 32, salt length: 8
+PKCS7 Encrypted data: PBES2, PBKDF2, AES-256-CBC, Iteration 2048, PRF hmacWithSHA256
+Certificate bag
+Certificate bag
+PKCS7 Data
+Shrouded Keybag: PBES2, PBKDF2, AES-256-CBC, Iteration 2048, PRF hmacWithSHA256
 ```
 
 ## Monitoring with Prometheus and Grafana
