@@ -37,6 +37,21 @@ dashboards:
   # Requires `metrics.enabled` and `serviceMonitor` to be set as `true`.
   enabled: false
 
+features:
+  enabled:
+  - user-event-metrics
+
+# Some options are already added automatically when enabling metrics.
+# See documentation in values file or README for more information.
+additionalOptions:
+- name: event-metrics-user-tags
+  value: "realm,idp,clientId"
+- name: http-metrics-slos
+  value: "250,500,1000,2500"
+- name: "event-metrics-user-events"
+  # Below are ones used by the capacity planning dashboard.
+  value: "token_exchange,login,logout,code_to_token,client_login,refresh_token"
+
 postgresql:
   auth:
     password: "password"
