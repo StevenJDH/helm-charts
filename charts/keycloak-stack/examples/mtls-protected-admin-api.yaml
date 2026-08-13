@@ -29,6 +29,7 @@ bootstrapAdmin:
 # Provides client certificates to the Keycloak Operator to establish mTLS.
 # The operator already knows how to trust the server certificate.
 # See README for how to create a client certificate to test with.
+# Reference: https://github.com/StevenJDH/helm-charts/tree/chart/add_keycloak_chart/charts/keycloak-stack#creating-client-certificates-for-mtls
 admin:
   # Leaving unset will make it use the values from the bootstrap admin service account,
   # which auto creates the account, and this section creates the admin secret.
@@ -57,7 +58,7 @@ admin:
     #   -----END PRIVATE KEY-----
 
 # See README for how to create certificates to test with.
-# Reference: https://github.com/StevenJDH/helm-charts/tree/chart/add_keycloak_chart/charts/keycloak-stack#creating-certificates-for-tls-scenarios
+# Reference: https://github.com/StevenJDH/helm-charts/tree/chart/add_keycloak_chart/charts/keycloak-stack#creating-server-certificates-for-tls-scenarios
 http:
   # Use this if you already have an existing tls secret for the below hostname.
   tlsSecret: ""
