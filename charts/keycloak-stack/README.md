@@ -102,7 +102,7 @@ The below steps for creating self-signed certificates is meant for feature testi
 5. Append the CA certificate to the server certificate to have the full chain. Use `type` instead of `cat` if using Windows.
 
     ```bash
-    cat cat ca.crt >> tls.crt
+    cat ca.crt >> tls.crt
     ```
 
 6. Finally, apply the `tls.crt` and `tls.key` key-pair to Keycloak using one of the TLS [example configurations](./examples). Accept the browser warning for the untrusted self-signed certificate to view the Keycloak admin console.
