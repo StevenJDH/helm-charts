@@ -25,7 +25,12 @@
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
 helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
-    --set devModeEnabled=true
+    --set devModeEnabled=true \
+    --set hostname.host=keycloak.127.0.0.1.sslip.io \
+    --set bootstrapAdmin.user.username=admin \
+    --set bootstrapAdmin.user.password=admin \
+    --set bootstrapAdmin.service.clientId=operator \
+    --set bootstrapAdmin.service.clientSecret=operator \
     --namespace example \
     --create-namespace \
     --atomic

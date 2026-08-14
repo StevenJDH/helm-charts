@@ -51,9 +51,15 @@ bootstrapAdmin:
     # -- password is the temporary password for the Keycloak bootstrap admin user.
     password: admin
   service:
-    # -- clientId is the client ID for the Keycloak bootstrap admin service account.
+    # -- clientId is the client ID for the Keycloak bootstrap admin service account with
+    # an admin role. This is used to support creating and managing `KeycloakOIDCClient` and
+    # `KeycloakSAMLClient` clients in any realm. Later, this value can be managed via the
+    # `admin.operatorSecret.clientId` property.
     clientId: ""
-    # -- clientSecret is the client secret for the Keycloak bootstrap admin service account.
+    # -- clientSecret is the client secret for the Keycloak bootstrap admin service account
+    # with an admin role. This is used to support creating and managing `KeycloakOIDCClient`
+    # and `KeycloakSAMLClient` clients in any realm. Later, this value can be managed via the
+    # `admin.operatorSecret.clientSecret` property.
     clientSecret: ""
 
 admin:
@@ -63,15 +69,15 @@ admin:
     # realm. When unset, it uses `bootstrapAdmin.service.clientId` if set. For initial
     # deployments, configure the fallback property instead as it will create the needed
     # service account with `admin` role. After, a different service account can be created
-    # and configured here, since this will create the required `<keycloak-cr-name>-admin`
-    # secret needed by the operator.
+    # and configured here if desired, since this will create the required
+    # `<keycloak-cr-name>-admin` secret needed by the operator.
     clientId: ""
     # -- clientSecret is the client secret for the main admin service account used by the
     # Keycloak Operator for managing `KeycloakOIDCClient` and `KeycloakSAMLClient` resources
     # in any realm. When unset, it uses `bootstrapAdmin.service.clientSecret` if set. For
     # initial deployments, configure the fallback property instead as it will create the
     # needed service account with `admin` role. After, a different service account can be
-    # created and configured here, since this will create the required
+    # created and configured here if desired, since this will create the required
     # `<keycloak-cr-name>-admin` secret needed by the operator.
     clientSecret: ""
   # -- tlsSecret specifies the TLS Secret containing the client certificate and private key
