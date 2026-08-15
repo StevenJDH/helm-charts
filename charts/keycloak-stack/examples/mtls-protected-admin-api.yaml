@@ -23,8 +23,8 @@ bootstrapAdmin:
   # managing KeycloakOIDCClient and KeycloakSAMLClient clients in any realm.
   # The admin section below will auto create the admin secret for the operator.
   service:
-    clientId: "operator"
-    clientSecret: "operator"
+    clientId: operator
+    clientSecret: operator
 
 # Provides client certificates to the Keycloak Operator to establish mTLS.
 # The operator already knows how to trust the server certificate.

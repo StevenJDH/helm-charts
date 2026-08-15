@@ -5,6 +5,7 @@
 <p align="center">
     <a href="#requirements"><b>Requirements</b></a> •
     <a href="#usage-example"><b>Usage</b></a> •
+    <a href="#keycloak-operator-crd-references"><b>CRDs</b></a> •
     <a href="#creating-server-certificates-for-tls-scenarios"><b>TLS Scenarios</b></a> •
     <a href="#creating-client-certificates-for-mtls"><b>mTLS</b></a> •
     <a href="#monitoring-with-prometheus-and-grafana"><b>Monitoring</b></a> •
@@ -35,6 +36,9 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
     --create-namespace \
     --atomic
 ```
+
+## Keycloak Operator CRD references
+Currently, there isn't an official reference source containing all the properties supported by resources such as `KeycloakOIDCClient`, `KeycloakSAMLClient`, and `KeycloakRealmImport`. However, I've provided these [Generated CRD References](https://github.com/StevenJDH/helm-charts/tree/keycloak-operator-0.1.1/charts/keycloak-operator/docs/crds), which are generated directly from the CRD definitions and can be used as a reference when configuring these resources.
 
 ## Creating server certificates for TLS scenarios
 This section provides the steps for creating the CA and server certificates needed for the different TLS scenarios supported by Keycloak. These scenarios include:

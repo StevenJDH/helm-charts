@@ -234,7 +234,7 @@ hostname:
   backchannelDynamic: false
 
 # -- Indicates whether or not Keycloak is running in development mode. This will disable features and
-# configurations that are only suitable for development environments.
+# configurations that are not suitable for development environments.
 devModeEnabled: false
 
 # -- Indicates whether or not to automatically mount the Kubernetes ServiceAccount token into the
@@ -333,19 +333,19 @@ httpManagement:
   # -- port is the port of the management interface.
   port: 9000
 
-# -- startupProbe configures the startup probe. Only a subnet of features are support by the CR.
+# -- startupProbe configures the startup probe. Only a subset of features are support by the CR.
 startupProbe: {}
   # periodSeconds: 20
   # failureThreshold: 5
 
 # -- livenessProbe configures the liveness probe. This type of probe does not wait for the readiness
-# probe to succeed. To make the the probe wait, use the `startupProbe`. Only a subnet of features
+# probe to succeed. To make the the probe wait, use the `startupProbe`. Only a subset of features
 # are support by the CR.
 livenessProbe: {}
   # periodSeconds: 20
   # failureThreshold: 5
 
-# -- readinessProbe configures the readiness probe. Only a subnet of features are support by the CR.
+# -- readinessProbe configures the readiness probe. Only a subset of features are support by the CR.
 readinessProbe: {}
   # periodSeconds: 20
   # failureThreshold: 5
@@ -540,7 +540,7 @@ tracing:
 
 telemetry:
   # -- Indicates whether or not to enable OpenTelemetry metrics. Requires `metrics.enabled` to be
-  # `true`, and `features` to include `opentelemetry-metrics:v1`.
+  # `true`.
   enabled: false
   # -- endpoint is the OpenTelemetry endpoint to connect to.
   endpoint: "http://otel-collector:4317"
@@ -556,10 +556,10 @@ telemetry:
     # deployment.environment: test
 
 features:
-  # -- enabled is used to enable Keycloak features. Do not set `client-admin-api:v2` as this is
+  # -- enabled is used to enable Keycloak features. Do not set `client-admin-api:v2` this is enabled by default. Also,
+  # do not set `user-event-metrics` or `opentelemetry-metrics` as these will be enabled automatically when needed.
   # enabled by default. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
   enabled: []
-  # - user-event-metrics
   # - docker
   # - authorization
   # -- disabled is used to disable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
@@ -570,8 +570,8 @@ features:
 # -- Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either
 # direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled`,
 # `http-metrics-histograms-enabled`, `cache-metrics-histograms-enabled`, `event-metrics-user-enabled`, and
-# `telemetry-metrics-enabled` as these will be added when needed automatically. For `event-metrics-user-enabled`, enable
-# the feature `user-event-metrics`. See [All configuration](https://www.keycloak.org/server/all-config) for details.
+# `telemetry-metrics-enabled` as these will be added automatically when needed.
+# See [All configuration](https://www.keycloak.org/server/all-config) for details.
 additionalOptions: []
 # - name: http-relative-path
 #   value: "/"

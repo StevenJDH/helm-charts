@@ -15,7 +15,7 @@
 
 apiVersion: v2
 name: keycloak-stack
-description: Installs a fully managed Keycloak and its dependencies.
+description: Installs a fully managed Keycloak and its dependencies with support for declarative resources.
 
 # A chart can be either an 'application' or a 'library' chart.
 #

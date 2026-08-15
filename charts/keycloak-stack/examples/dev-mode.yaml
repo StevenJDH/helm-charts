@@ -17,6 +17,9 @@ bootstrapAdmin:
   user:
     username: admin
     password: admin
+  service:
+    clientId: operator
+    clientSecret: operator
 
 hostname:
   host: "keycloak.127.0.0.1.sslip.io"
@@ -37,20 +40,24 @@ dashboards:
   # Requires `metrics.enabled` and `serviceMonitor` to be set as `true`.
   enabled: false
 
-features:
+features: 
   enabled:
-  - user-event-metrics
+  - openapi
 
-# Some options are already added automatically when enabling metrics.
-# See documentation in values file or README for more information.
+# Some options and features are already added automatically when enabling
+# metrics. See documentation in values file or README for more information.
 additionalOptions:
 - name: event-metrics-user-tags
   value: "realm,idp,clientId"
 - name: http-metrics-slos
   value: "250,500,1000,2500"
+# Events that are used by the capacity planning dashboard.
 - name: "event-metrics-user-events"
-  # Below are ones used by the capacity planning dashboard.
   value: "token_exchange,login,logout,code_to_token,client_login,refresh_token"
+- name: openapi-enabled
+  value: "true"
+- name: openapi-ui-enabled
+  value: "true"
 
 postgresql:
   auth:

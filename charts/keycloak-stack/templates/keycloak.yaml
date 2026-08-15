@@ -74,7 +74,7 @@ spec:
   {{- end }}
   db:
     vendor: {{ .Values.postgresql.enabled | ternary (.Values.db.vendor | default "postgres") .Values.db.external.vendor }}
-    host: {{ .Values.postgresql.enabled | ternary (.Values.db.hostOverride | default (printf "%s-%s.%s.svc.cluster.local" .Release.Name "postgresql-hl" .Release.Namespace)) .Values.db.external.host }}
+    host: {{ .Values.postgresql.enabled | ternary (.Values.db.hostOverride | default (include "keycloak-stack.postgresqlHost" .)) .Values.db.external.host }}
     database: {{ .Values.postgresql.enabled | ternary .Values.postgresql.auth.database .Values.db.external.database }}
     port: {{ .Values.postgresql.enabled | ternary .Values.db.port .Values.db.external.port }}
     usernameSecret:
@@ -248,6 +248,12 @@ spec:
   features:
     enabled:
       - client-admin-api:v2
+    {{- if .Values.metrics.enabled }}
+      - user-event-metrics
+    {{- end }}
+    {{- if .Values.telemetry.enabled }}
+      - opentelemetry-metrics
+    {{- end }}
     {{- with .Values.features.enabled }}
       {{- toYaml . | nindent 6 }}
     {{- end }}
