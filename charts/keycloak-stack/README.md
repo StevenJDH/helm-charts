@@ -41,7 +41,7 @@ Kubernetes: `>= 1.30.0-0`
 |------------|------|---------|
 | https://StevenJDH.github.io/helm-charts | keycloak-operator | 0.1.1 |
 | https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
-| oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.7 |
+| oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.9 |
 
 ## Usage example
 
@@ -336,6 +336,113 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
   </tr>
 </table>
 
+### Option 1 - Using ServiceMonitor (Recommended)
+This recommended approach will automatically detect and directly collect metrics from Keycloak related services. In general, the below configurations are the defaults, which only require that a ServiceMonitor in any namespace have the label `release: kube-prometheus-stack` to be detected.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  adminUser: admin
+  # Change adminPassword as needed.
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    # Disabling this adds better support for third-party ServiceMonitor resource detection
+    # across namespaces without having to deal with label filtering or compromising the
+    # default discovery. When enabled, an empty 'serviceMonitorSelector' is replaced with a
+    # label selector matching 'release: kube-prometheus-stack', which must be present on
+    # ServiceMonitor resources to be detected. To get the release name if the chart is already
+    # installed, use 'helm list -n monitoring' or the namespace used.
+    #
+    # DEPRECATED. Use 'matchLabels: null' in 'serviceMonitorSelector' for equivalent behavior
+    # when set to false.
+    #
+    # Reference:
+    # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/UPGRADE.md#from-62x-to-63x
+    serviceMonitorSelectorNilUsesHelmValues: true
+
+    # ServiceMonitors to be selected for target discovery. If {}, and above is 'false', select
+    # all ServiceMonitors. For the new approach, set 'matchLabels' to 'null' for equivalent
+    # behavior to the deprecated 'serviceMonitorSelectorNilUsesHelmValues' property when set
+    # to 'false' for all namespaces.
+    serviceMonitorSelector: {}
+      # matchLabels:
+      #   prometheus: main
+      
+    # Namespaces matching labels to be selected for ServiceMonitor discovery. If {},
+    # then it selects all namespaces. Useful for when wanting to keep resources
+    # together with app instead of grouped together in a monitoring namespace.
+    serviceMonitorNamespaceSelector: {}
+      # matchLabels:
+      #   monitoring: prometheus
+ 
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
+```
+
+After the kube-prometheus-stack chart has been deployed, or updated with the config above, set `metrics.enabled`, `serviceMonitor.enabled`, and `dashboards.enabled` to `true` in the keycloak-stack chart. Review what `additionalOptions` to set for the dashboards using the [dev-mode example](./examples/dev-mode.yaml) so that the correct metrics are exposed.
+
+### Option 2 - Static Config
+This option replicates the behavior of Option 1 without relying on ServiceMonitor CRs. Remove the `namespaces` section from `kubernetes_sd_configs` to support all namespaces.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  # Change adminPassword as needed.
+  adminUser: admin  
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: keycloak-service
+      honor_timestamps: true
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      follow_redirects: true
+      enable_http2: true
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - keycloak
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        action: keep
+        regex: keycloak
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        action: keep
+        regex: management
+      - target_label: endpoint
+        replacement: management
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: (.+)
+        target_label: service
+        replacement: ${1}-service
+
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
+```
+
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `metrics.enabled` and `dashboards.enabled` to `true` in the keycloak-stack chart. Review what `additionalOptions` to set for the dashboards using the [dev-mode example](./examples/dev-mode.yaml) so that the correct metrics are exposed.
+
 ## Values
 
 | Key | Type | Default | Description |
@@ -348,8 +455,8 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 | admin.tlsSecret | string | `""` | tlsSecret specifies the TLS Secret containing the client certificate and private key used by the operator for mTLS connections to Keycloak. Requires setting `http.tlsSecret` or `http.tls.certContent` and `http.tls.keyContent` to enable TLS passthrough.  See [Managing Keycloak Clients](https://www.keycloak.org/operator/managing-clients) for more information. |
 | annotations | object | `{}` | annotations to be added to the Deployment resource. |
 | automountServiceAccountToken | bool | `true` | Indicates whether or not to automatically mount the Kubernetes ServiceAccount token into the Keycloak pod. If set to `false`, this will also disable the Kubernetes CA truststore auto-discovery logic. Keep this set to `true` if planning to use an external Infinispan cluster, the Kubernetes ServiceAccount identity provider, or any custom provider logic that expects to implicitly use the Kubernetes API. See [Truststores](https://www.keycloak.org/operator/advanced-configuration#_truststores) for more information. |
-| bootstrapAdmin.service.clientId | string | `""` | clientId is the client ID for the Keycloak bootstrap admin service account with an admin role. This is used to support creating and managing `KeycloakOIDCClient` and `KeycloakSAMLClient` clients in any realm. Later, this value can be managed via the `admin.operatorSecret.clientId` property. |
-| bootstrapAdmin.service.clientSecret | string | `""` | clientSecret is the client secret for the Keycloak bootstrap admin service account with an admin role. This is used to support creating and managing `KeycloakOIDCClient` and `KeycloakSAMLClient` clients in any realm. Later, this value can be managed via the `admin.operatorSecret.clientSecret` property. |
+| bootstrapAdmin.service.clientId | string | `""` | clientId is the temporary client ID for the Keycloak bootstrap admin service account with an admin role. This is used to support creating and managing `KeycloakOIDCClient` and `KeycloakSAMLClient` clients in any realm. Later, this value can be managed via the `admin.operatorSecret.clientId` property. |
+| bootstrapAdmin.service.clientSecret | string | `""` | clientSecret is the temporary client secret for the Keycloak bootstrap admin service account with an admin role. This is used to support creating and managing `KeycloakOIDCClient` and `KeycloakSAMLClient` clients in any realm. Later, this value can be managed via the `admin.operatorSecret.clientSecret` property. |
 | bootstrapAdmin.user.password | string | `"admin"` | password is the temporary password for the Keycloak bootstrap admin user. |
 | bootstrapAdmin.user.username | string | `"admin"` | username is the temporary username for the Keycloak bootstrap admin user. See [Accessing the Admin Console](https://www.keycloak.org/operator/basic-deployment#_accessing_the_admin_console) for more information. |
 | cache.configMapFile | object | `{}` | configMapFile references a ConfigMap key containing a custom Infinispan cache configuration XML. When specified, Keycloak uses this file instead of the default cache configuration. See [Configuring caches](https://www.keycloak.org/server/caching#_configuring_caches) for more information. |
@@ -395,7 +502,7 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 | import.scheduling | object | `{}` | scheduling is used to configure Kubernetes affinity, tolerations, topology spread constraints, and the priority class name to fine tune the scheduling and placement of Pods. |
 | ingress.annotations | object | `{}` | annotations to be added to the Ingress resource. |
 | ingress.className | string | `""` | className is the name of the Ingress class. |
-| ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created to enable outside access. See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information. |
+| ingress.enabled | bool | `true` | Indicates whether or not an Ingress resource is created to enable outside access. For Ingress Termination/Edge TLS scenario, make sure to set `http.httpEnabled` to `true`, and configure `proxy.headers` as needed. See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information. |
 | ingress.labels | object | `{}` | labels to be added to the Ingress resource. |
 | ingress.tls.certContent | string | `""` | certContent specifies PEM-encoded server certificate used to create a TLS Secret when `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set. |
 | ingress.tls.keyContent | string | `""` | keyContent specifies PEM-encoded server private key used to create a TLS Secret when `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set. |
@@ -406,14 +513,14 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 | keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloakOIDCClient | bool | `false` | keycloakOIDCClient is for indicating whether or not KeycloakOIDCClient resources will be watched in all namespaces. |
 | keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloakRealmImport | bool | `false` | keycloakRealmImport is for indicating whether or not KeycloakRealmImport resources will be watched in all namespaces. |
 | keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloakSAMLClient | bool | `false` | keycloakSAMLClient is for indicating whether or not KeycloakSAMLClient resources will be watched in all namespaces. |
-| keycloakRealmImport.enabled | bool | `false` | Indicates whether or not to import a realm backup or configuration. |
+| keycloakRealmImport.enabled | bool | `false` | Indicates whether or not to import a realm backup or configuration via a job. This is a onetime activity, and it can be disabled safely after a successful import. |
 | keycloakRealmImport.labels | object | `{}` | labels to be added to the Job created for the import. |
 | keycloakRealmImport.placeholders | object | `{}` | placeholders is used to replace ENV variable placeholders in the realm import. For example, if 'realm' property has ${REALM_NAME}, then 'REALM_NAME: production' will perform a substitution. |
 | keycloakRealmImport.realm | object | `{}` | realm allows for defining the realm configuration inline. The structure is the same as any realm backup converted to YAML. This setting cannot be used when `keycloakRealmImport.realmContent` is defined. |
 | keycloakRealmImport.realmContent | string | `""` | realmContent contains a realm backup provided as raw `JSON` or `YAML` content. This is primarily intended for use with Helm's `--set-file` option, but supports inline when using a pipe. However, please use the dedicate inline property `keycloakRealmImport.realm` if inline is needed. The format must match `keycloakRealmImport.realmContentFormat`. This setting cannot be used when `keycloakRealmImport.realm` is defined. |
 | keycloakRealmImport.realmContentFormat | string | `"json"` | realmContentFormat specifies the format of the content provided via `keycloakRealmImport.realmContent`. Supported values are `json` and `yaml`. This setting is ignored unless `keycloakRealmImport.realmContent` is defined. |
 | keycloakRealmImport.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the import job needs. If no resources are configured, the values from the Keycloak resource, or their defaults, will be used. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
-| livenessProbe | object | `{}` | livenessProbe configures the liveness probe. This type of probe does not wait for the readiness probe to succeed. To make the the probe wait, use the `startupProbe`. Only a subset of features are support by the CR. |
+| livenessProbe | object | `{}` | livenessProbe is used to override the default configuration of the liveness probe. This type of probe does not wait for the readiness probe to succeed. To make the the probe wait, use the `startupProbe`. Only a subset of features are supported by the CR. |
 | metrics.enabled | bool | `false` | Indicates whether or not Keycloak metrics should be enabled. Before enabling this, make sure `serviceMonitor.enabled` is set `false`, otherwise, a ServiceMonitor resource will also be created. This will also enabled the `http-metrics-histograms-enabled` option. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | networkPolicy.enabled | bool | `true` | Specifies whether a network policy should be created. By default, the operator automatically creates a NetworkPolicy resource to deny access to the clustering port of the Keycloak Pods. The HTTP(S) endpoint is open to traffic from any namespace and the outside world. Note: This will have no effect unless the chosen CNI supports network policies like Calico, Weave, Cilium, Romana, etc. |
@@ -426,17 +533,17 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 | postgresql.auth.username | string | `"postgres"` | username is the username for the database user. |
 | postgresql.enabled | bool | `true` | Indicates whether or not a PostgreSQL database is created. |
 | proxy.headers | string | `""` | headers are the proxy headers that should be accepted by the server. Misconfiguration might leave the server exposed to security vulnerabilities. Check the load balancer or reverse proxy configuration in use to determine whether it utilizes the Forwarded (RFC 7239) or X-Forwarded-* (e.g., X-Forwarded-For) mechanism for header propagation. Use with Edge and Re-encrypt scenarios, but not Passthrough. Valid values are `forwarded` and `xforwarded`. See [Configuring a reverse proxy](https://www.keycloak.org/server/reverseproxy) for more information. |
-| readinessProbe | object | `{}` | readinessProbe configures the readiness probe. Only a subset of features are support by the CR. |
+| readinessProbe | object | `{}` | readinessProbeis used to override the default configuration of the readiness probe. Only a subset of features are supported by the CR. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. When using a KeycloakRealmImport resource, if no resources are configured there, these values here, or their defaults, will be used. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | scheduling | object | `{}` | scheduling is used to configure Kubernetes affinity, tolerations, topology spread constraints, and the priority class name to fine tune the scheduling and placement of Pods. |
 | secrets | object | `{}` | secrets is used to store confidential data in key-value pairs. Can be used by other properties such as `additionalOptions` that can reference keys without having to provide a pre-existing secret resource. |
 | serviceMonitor.annotations | object | `{}` | annotations specifies additional annotations for the ServiceMonitor. |
 | serviceMonitor.enabled | bool | `false` | Indicates whether or not to create a ServiceMonitor for Keycloak. Requires that `metrics.enabled` be set to `true`. |
 | serviceMonitor.interval | string | `"30s"` | interval is the frequency at which metrics should be scraped. |
-| serviceMonitor.labels | object | `{}` | labels specifies additional labels for the ServiceMonitor. |
+| serviceMonitor.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the ServiceMonitor resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. See [Monitoring with Prometheus and Grafana](#monitoring-with-prometheus-and-grafana) for more information. |
 | serviceMonitor.scrapeTimeout | string | `"10s"` | scrapeTimeout sets the scrape timeout for the ServiceMonitor. |
 | startOptimized | bool | `false` | Indicates whether or not to start Keycloak in optimized mode with the `--optimized` flag when using custom pre-augmented images. Keep disabled when using non-optimized images or the official Keycloak image. When using an optimized custom image, `health-enabled`, `metrics-enabled` and `telemetry-metrics-enabled` options need to be explicitly set in the Dockerfile. Any build time options passed through first-class fields or `additionalOptions` will be ignored if not moved to the Dockerfile. See [Best practice](https://www.keycloak.org/operator/customizing-keycloak#_best_practice) for more information. |
-| startupProbe | object | `{}` | startupProbe configures the startup probe. Only a subset of features are support by the CR. |
+| startupProbe | object | `{}` | startupProbe is used to override the default configuration of the startup probe. Only a subset of features are supported by the CR. |
 | telemetry.enabled | bool | `false` | Indicates whether or not to enable OpenTelemetry metrics. Requires `metrics.enabled` to be `true`. |
 | telemetry.endpoint | string | `"http://otel-collector:4317"` | endpoint is the OpenTelemetry endpoint to connect to. |
 | telemetry.protocol | string | `"grpc"` | protocol is the OpenTelemetry protocol used for the transmitting the data. |

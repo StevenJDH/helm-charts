@@ -51,15 +51,15 @@ bootstrapAdmin:
     # -- password is the temporary password for the Keycloak bootstrap admin user.
     password: admin
   service:
-    # -- clientId is the client ID for the Keycloak bootstrap admin service account with
-    # an admin role. This is used to support creating and managing `KeycloakOIDCClient` and
-    # `KeycloakSAMLClient` clients in any realm. Later, this value can be managed via the
-    # `admin.operatorSecret.clientId` property.
-    clientId: ""
-    # -- clientSecret is the client secret for the Keycloak bootstrap admin service account
+    # -- clientId is the temporary client ID for the Keycloak bootstrap admin service account
     # with an admin role. This is used to support creating and managing `KeycloakOIDCClient`
     # and `KeycloakSAMLClient` clients in any realm. Later, this value can be managed via the
-    # `admin.operatorSecret.clientSecret` property.
+    # `admin.operatorSecret.clientId` property.
+    clientId: ""
+    # -- clientSecret is the temporary client secret for the Keycloak bootstrap admin service
+    # account with an admin role. This is used to support creating and managing
+    # `KeycloakOIDCClient` and `KeycloakSAMLClient` clients in any realm. Later, this value
+    # can be managed via the `admin.operatorSecret.clientSecret` property.
     clientSecret: ""
 
 admin:
@@ -255,7 +255,9 @@ proxy:
   headers: ""
 
 ingress:
-  # -- Indicates whether or not an Ingress resource is created to enable outside access.
+  # -- Indicates whether or not an Ingress resource is created to enable outside access. For Ingress
+  # Termination/Edge TLS scenario, make sure to set `http.httpEnabled` to `true`, and configure
+  # `proxy.headers` as needed.
   # See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information.
   enabled: true
   # -- labels to be added to the Ingress resource.
@@ -333,19 +335,21 @@ httpManagement:
   # -- port is the port of the management interface.
   port: 9000
 
-# -- startupProbe configures the startup probe. Only a subset of features are support by the CR.
+# -- startupProbe is used to override the default configuration of the startup probe. Only a
+# subset of features are supported by the CR.
 startupProbe: {}
   # periodSeconds: 20
   # failureThreshold: 5
 
-# -- livenessProbe configures the liveness probe. This type of probe does not wait for the readiness
-# probe to succeed. To make the the probe wait, use the `startupProbe`. Only a subset of features
-# are support by the CR.
+# -- livenessProbe is used to override the default configuration of the liveness probe. This
+# type of probe does not wait for the readiness probe to succeed. To make the the probe wait,
+# use the `startupProbe`. Only a subset of features are supported by the CR.
 livenessProbe: {}
   # periodSeconds: 20
   # failureThreshold: 5
 
-# -- readinessProbe configures the readiness probe. Only a subset of features are support by the CR.
+# -- readinessProbeis used to override the default configuration of the readiness probe. Only
+# a subset of features are supported by the CR.
 readinessProbe: {}
   # periodSeconds: 20
   # failureThreshold: 5
@@ -504,9 +508,11 @@ metrics:
 serviceMonitor:
   # -- Indicates whether or not to create a ServiceMonitor for Keycloak. Requires that `metrics.enabled` be set to `true`.
   enabled: false
-  # -- labels specifies additional labels for the ServiceMonitor.
-  labels: {}
-    # release: kube-prometheus-stack
+  # -- labels to be added to the ServiceMonitor resource. This is used by the auto-discovery feature of
+  # the prometheus operator, which by default uses the release name of the kube-prometheus-stack
+  # chart used when installing. See [Monitoring with Prometheus and Grafana](#monitoring-with-prometheus-and-grafana) for more information.
+  labels:
+    release: kube-prometheus-stack
 
   # -- annotations specifies additional annotations for the ServiceMonitor.
   annotations: {}
@@ -597,7 +603,7 @@ additionalOptions: []
 # ## The management interface inherits from 'https-client-auth',
 # ## so overriding is needed if 'required' is used to not impact
 # ## health checks or the scraping of metrics.
-# ## Reference: https://www.keycloak.org/server/mutual-tls?utm_source=chatgpt.com#_enabling_mtls
+# ## Reference: https://www.keycloak.org/server/mutual-tls#_enabling_mtls
 # - name: https-management-client-auth
 #   value: "request"
 
@@ -624,7 +630,8 @@ podTemplate: {}
 secrets: {}
 
 keycloakRealmImport:
-  # -- Indicates whether or not to import a realm backup or configuration.
+  # -- Indicates whether or not to import a realm backup or configuration via a job. This
+  # is a onetime activity, and it can be disabled safely after a successful import.
   enabled: false
   # -- labels to be added to the Job created for the import.
   labels: {}
@@ -694,6 +701,8 @@ keycloakRealmImport:
 keycloak-operator:
   # -- Indicates whether or not the Keycloak Operator is installed.
   enabled: true
+  # @ignored. Override for keycloak-operator chart name to consolidate stack name.
+  nameOverride: operator
   watchAllNamespacesFor:
     # -- keycloak is for indicating whether or not Keycloak resources will be watched
     # in all namespaces.

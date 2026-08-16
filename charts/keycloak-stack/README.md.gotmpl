@@ -313,6 +313,113 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
   </tr>
 </table>
 
+### Option 1 - Using ServiceMonitor (Recommended)
+This recommended approach will automatically detect and directly collect metrics from Keycloak related services. In general, the below configurations are the defaults, which only require that a ServiceMonitor in any namespace have the label `release: kube-prometheus-stack` to be detected.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  adminUser: admin
+  # Change adminPassword as needed.
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    # Disabling this adds better support for third-party ServiceMonitor resource detection
+    # across namespaces without having to deal with label filtering or compromising the
+    # default discovery. When enabled, an empty 'serviceMonitorSelector' is replaced with a
+    # label selector matching 'release: kube-prometheus-stack', which must be present on
+    # ServiceMonitor resources to be detected. To get the release name if the chart is already
+    # installed, use 'helm list -n monitoring' or the namespace used.
+    #
+    # DEPRECATED. Use 'matchLabels: null' in 'serviceMonitorSelector' for equivalent behavior
+    # when set to false.
+    #
+    # Reference:
+    # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/UPGRADE.md#from-62x-to-63x
+    serviceMonitorSelectorNilUsesHelmValues: true
+
+    # ServiceMonitors to be selected for target discovery. If {}, and above is 'false', select
+    # all ServiceMonitors. For the new approach, set 'matchLabels' to 'null' for equivalent
+    # behavior to the deprecated 'serviceMonitorSelectorNilUsesHelmValues' property when set
+    # to 'false' for all namespaces.
+    serviceMonitorSelector: {}
+      # matchLabels:
+      #   prometheus: main
+      
+    # Namespaces matching labels to be selected for ServiceMonitor discovery. If {},
+    # then it selects all namespaces. Useful for when wanting to keep resources
+    # together with app instead of grouped together in a monitoring namespace.
+    serviceMonitorNamespaceSelector: {}
+      # matchLabels:
+      #   monitoring: prometheus
+ 
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
+```
+
+After the kube-prometheus-stack chart has been deployed, or updated with the config above, set `metrics.enabled`, `serviceMonitor.enabled`, and `dashboards.enabled` to `true` in the keycloak-stack chart. Review what `additionalOptions` to set for the dashboards using the [dev-mode example](./examples/dev-mode.yaml) so that the correct metrics are exposed.
+
+### Option 2 - Static Config
+This option replicates the behavior of Option 1 without relying on ServiceMonitor CRs. Remove the `namespaces` section from `kubernetes_sd_configs` to support all namespaces.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  # Change adminPassword as needed.
+  adminUser: admin  
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: keycloak-service
+      honor_timestamps: true
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      follow_redirects: true
+      enable_http2: true
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - keycloak
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        action: keep
+        regex: keycloak
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        action: keep
+        regex: management
+      - target_label: endpoint
+        replacement: management
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: (.+)
+        target_label: service
+        replacement: ${1}-service
+
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
+```
+
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `metrics.enabled` and `dashboards.enabled` to `true` in the keycloak-stack chart. Review what `additionalOptions` to set for the dashboards using the [dev-mode example](./examples/dev-mode.yaml) so that the correct metrics are exposed.
+
 {{ template "chart.valuesSectionWrap" (dict "context" . "limit" 40) }}
 
 
