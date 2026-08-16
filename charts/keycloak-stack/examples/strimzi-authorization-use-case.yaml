@@ -36,7 +36,7 @@ ingress:
 # Original location of the kafka-authz-realm.json file:
 # - https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/refs/heads/main/examples/security/keycloak-authorization/kafka-authz-realm.json
 keycloakRealmImport:
-  enabled: true
+  create: true
   realmContentFormat: json
   # USAGE: Test with the below command. Path to json file might need to be updated.
   #

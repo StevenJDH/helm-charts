@@ -316,7 +316,7 @@ extraEnvs: []
 #     optional: false
 
 # -- Optionally request and limit how much CPU and memory (RAM) the container needs. When using a
-# KeycloakRealmImport resource, if no resources are configured there, these values here, or their
+# `KeycloakRealmImport` resource, if no resources are configured there, these values here, or their
 # defaults, will be used.
 # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
 resources: {}
@@ -630,9 +630,9 @@ podTemplate: {}
 secrets: {}
 
 keycloakRealmImport:
-  # -- Indicates whether or not to import a realm backup or configuration via a job. This
-  # is a onetime activity, and it can be disabled safely after a successful import.
-  enabled: false
+  # -- Indicates whether or not to create a job to import a realm backup or configuration.
+  # This is a one-time activity, and it can be disabled safely after a successful import.
+  create: false
   # -- labels to be added to the Job created for the import.
   labels: {}
   # --  placeholders is used to replace ENV variable placeholders in the
@@ -707,13 +707,13 @@ keycloak-operator:
     # -- keycloak is for indicating whether or not Keycloak resources will be watched
     # in all namespaces.
     keycloak: false
-    # -- keycloakRealmImport is for indicating whether or not KeycloakRealmImport
+    # -- keycloakRealmImport is for indicating whether or not `KeycloakRealmImport`
     # resources will be watched in all namespaces.
     keycloakRealmImport: false
-    # -- keycloakOIDCClient is for indicating whether or not KeycloakOIDCClient
+    # -- keycloakOIDCClient is for indicating whether or not `KeycloakOIDCClient`
     # resources will be watched in all namespaces.
     keycloakOIDCClient: false
-    # -- keycloakSAMLClient is for indicating whether or not KeycloakSAMLClient
+    # -- keycloakSAMLClient is for indicating whether or not `KeycloakSAMLClient`
     # resources will be watched in all namespaces.
     keycloakSAMLClient: false
 
