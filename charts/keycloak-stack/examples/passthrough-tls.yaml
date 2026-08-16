@@ -19,7 +19,7 @@ bootstrapAdmin:
     password: admin
 
 # See README for how to create certificates to test with.
-# Reference: https://github.com/StevenJDH/helm-charts/tree/chart/add_keycloak_chart/charts/keycloak-stack#creating-server-certificates-for-tls-scenarios
+# Reference: https://github.com/StevenJDH/helm-charts/tree/main/charts/keycloak-stack#creating-server-certificates-for-tls-scenarios
 http:
   # Use this if you already have an existing tls secret for the below hostname.
   tlsSecret: ""

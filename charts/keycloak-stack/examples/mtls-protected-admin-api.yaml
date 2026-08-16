@@ -29,7 +29,7 @@ bootstrapAdmin:
 # Provides client certificates to the Keycloak Operator to establish mTLS.
 # The operator already knows how to trust the server certificate.
 # See README for how to create a client certificate to test with.
-# Reference: https://github.com/StevenJDH/helm-charts/tree/chart/add_keycloak_chart/charts/keycloak-stack#creating-client-certificates-for-mtls
+# Reference: https://github.com/StevenJDH/helm-charts/tree/main/charts/keycloak-stack#creating-client-certificates-for-mtls
 admin:
   # Leaving unset will make it use the values from the bootstrap admin service account,
   # which auto creates the account, and this section creates the admin secret.
@@ -58,7 +58,7 @@ admin:
     #   -----END PRIVATE KEY-----
 
 # See README for how to create certificates to test with.
-# Reference: https://github.com/StevenJDH/helm-charts/tree/chart/add_keycloak_chart/charts/keycloak-stack#creating-server-certificates-for-tls-scenarios
+# Reference: https://github.com/StevenJDH/helm-charts/tree/main/charts/keycloak-stack#creating-server-certificates-for-tls-scenarios
 http:
   # Use this if you already have an existing tls secret for the below hostname.
   tlsSecret: ""
@@ -126,7 +126,7 @@ additionalOptions:
 # The management interface inherits from 'https-client-auth',
 # so overriding is needed if 'required' is used to not impact
 # health checks or the scraping of metrics.
-# Reference: https://www.keycloak.org/server/mutual-tls?utm_source=chatgpt.com#_enabling_mtls
+# Reference: https://www.keycloak.org/server/mutual-tls#_enabling_mtls
 - name: https-management-client-auth
   value: "request" # Alternatively, use 'none'.
 
