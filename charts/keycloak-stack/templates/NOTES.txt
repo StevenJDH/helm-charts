@@ -33,12 +33,20 @@ Ingress URL(s):
 {{ if not .Values.devModeEnabled -}}
 TLS is enabled. Make sure one of the config sections below are configured for the needed TLS scenario. Otherwise, set 'devModeEnabled' to 'true' to disable TLS.
 
+# TLS Passthrough scenario:
+
 http:
   tlsSecret: ""
   tls:
     certContent: ""
     keyContent: ""
 
+# Ingress Termination/Edge scenario:
+
+http:
+  httpEnabled: true
+proxy:
+  headers: ""
 ingress:
   tlsSecret: ""
   tls:
