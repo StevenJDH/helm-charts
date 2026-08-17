@@ -1,0 +1,58 @@
+# This file is part of Keycloak Stack Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2026 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+bootstrapAdmin:
+  user:
+    username: admin
+    password: admin
+
+http:
+  # Needs to be enabled to allow ingress controller to container traffic.
+  httpEnabled: true
+
+hostname:
+  host: "keycloak.127.0.0.1.sslip.io"
+
+devModeEnabled: false
+
+proxy:
+  # Valid values are 'forwarded' and 'xforwarded'.
+  headers: xforwarded
+
+# See README for how to create certificates to test with.
+# Reference: https://github.com/StevenJDH/helm-charts/tree/main/charts/keycloak-stack#creating-server-certificates-for-tls-scenarios
+ingress:
+  className: traefik
+  # Use this if you already have an existing tls secret for the above hostname.
+  tlsSecret: ""
+  tls:
+    certContent: ""
+    # certContent: |
+    #   -----BEGIN CERTIFICATE-----
+    #   ...server
+    #   -----END CERTIFICATE-----
+    #   -----BEGIN CERTIFICATE-----
+    #   ...CA
+    #   -----END CERTIFICATE-----
+
+    keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
+
+postgresql:
+  auth:
+    password: password

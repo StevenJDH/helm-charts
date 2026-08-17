@@ -1,0 +1,429 @@
+{{- template "chart.centeredHeader" "Keycloak Stack Helm Chart" }}
+
+{{ template "chart.centeredBadgesSection" . }}
+
+<p align="center">
+    <a href="#requirements"><b>Requirements</b></a> •
+    <a href="#usage-example"><b>Usage</b></a> •
+    <a href="#keycloak-operator-crd-references"><b>CRDs</b></a> •
+    <a href="#creating-server-certificates-for-tls-scenarios"><b>TLS Scenarios</b></a> •
+    <a href="#creating-client-certificates-for-mtls"><b>mTLS</b></a> •
+    <a href="#monitoring-with-prometheus-and-grafana"><b>Monitoring</b></a> •
+    <a href="#values"><b>Chart Values</b></a>
+</p>
+
+<p align="center">
+{{ template "chart.description" . }}
+</p>
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Usage example
+
+```bash
+helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
+helm repo update
+helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
+    --set devModeEnabled=true \
+    --set hostname.host=keycloak.127.0.0.1.sslip.io \
+    --set bootstrapAdmin.user.username=admin \
+    --set bootstrapAdmin.user.password=admin \
+    --set bootstrapAdmin.service.clientId=operator \
+    --set bootstrapAdmin.service.clientSecret=operator \
+    --namespace example \
+    --create-namespace \
+    --atomic
+```
+
+## Keycloak Operator CRD references
+Currently, there isn't an official reference source containing all the properties supported by resources such as `KeycloakOIDCClient`, `KeycloakSAMLClient`, and `KeycloakRealmImport`. However, I've provided these [Generated CRD References](https://github.com/StevenJDH/helm-charts/tree/keycloak-operator-0.1.1/charts/keycloak-operator/docs/crds), which are generated directly from the CRD definitions and can be used as a reference when configuring these resources.
+
+## Creating server certificates for TLS scenarios
+This section provides the steps for creating the CA and server certificates needed for the different TLS scenarios supported by Keycloak. These scenarios include:
+
+* [Passthrough](https://www.keycloak.org/operator/basic-deployment#passthrough)
+* [Ingress Terminated/Edge](https://www.keycloak.org/operator/basic-deployment#_edge)
+* [Reencrypt](https://www.keycloak.org/operator/basic-deployment#_reencrypt)
+* [Custom Access](https://www.keycloak.org/operator/basic-deployment#_custom_access)
+
+The below steps for creating self-signed certificates is meant for feature testing only. For production environments, certificates should be issued by a trusted public certificate authority or an internal one. OpenSSL CLI v1.1.1 or newer is required.
+
+1. In a shell console, set the hostname used by Keycloak. Use `set hostname` if using Windows.
+
+    ```bash
+    hostname=keycloak.127.0.0.1.sslip.io
+    ```
+
+2. Create CA certificate and key.
+
+    ```bash
+    openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 11688 -noenc \
+        -subj "/CN=Keycloak Stack Root CA/O=StevenJDH" \
+        -addext "basicConstraints=critical,CA:TRUE,pathlen:1" \
+        -addext "keyUsage=critical,keyCertSign,cRLSign" \
+        -addext "subjectKeyIdentifier=hash"
+    ```
+
+3. Create certificate signing request (*.csr) and private key. Change `$hostname` to `%hostname%` if using Windows.
+
+    ```bash
+    openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
+        -subj "/CN=$hostname/O=StevenJDH" \
+        -addext "basicConstraints=critical,CA:FALSE" \
+        -addext "extendedKeyUsage=serverAuth" \
+        -addext "keyUsage=critical,digitalSignature,keyEncipherment" \
+        -addext "subjectAltName=DNS:$hostname" \
+        -addext "nsComment=Keycloak Stack Test Server Certificate" \
+        -addext "subjectKeyIdentifier=hash"
+    ```
+
+4. Create CA signed server certificate from CSR.
+
+    ```bash
+    openssl x509 -req -sha256 -days 11688 -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt \
+        -copy_extensions copy
+    ```
+
+5. Append the CA certificate to the server certificate to have the full chain. Use `type` instead of `cat` if using Windows.
+
+    ```bash
+    cat ca.crt >> tls.crt
+    ```
+
+6. Finally, apply the `tls.crt` and `tls.key` key-pair to Keycloak using one of the [TLS example configurations](./examples). Accept the browser warning for the untrusted self-signed certificate to view the Keycloak Admin Console. Third-party client applications can optionally use the following command to create the needed truststore to trust the server certificate:
+
+    ```bash
+    openssl pkcs12 -export -nokeys -in ca.crt -passout pass:changeit -out truststore.p12
+
+    # For Java-based technologies, use this command instead. Both commands produce a truststore in the same
+    # format, however, this one adds the required '2.16.840.1.113894.746875.1.1' Bag Attribute, which is used
+    # for detecting trusted cert entries. If the above command is used with a Java app or keytool -list, the
+    # entries will be 0. In the next section, the VERIFY CONTAINER STRUCTURE command can show this distinction.
+    #
+    # NOTE: openssl v3.2.0 now supports adding '-jdktrust anyExtendedKeyUsage' to solve this problem. Just
+    # remove the -nokeys flag as it is implicitly added. Downside is the java specific 'friendlyName' Bag
+    # Attribute still isn't added even in 4x versions of the CLI, so using keytool for truststores is preferred.
+    keytool -importcert -alias keycloak-stack-ca -file ca.crt -keystore truststore.p12 -storetype PKCS12 \
+        -storepass changeit \
+        -noprompt
+    ```
+
+### Additional server-based openssl commands
+Optionally, there may be a need to inspect details about a certificate's relation to a particular CA, or how it was configured. This is useful for troubleshooting issues that could affect their use. As such, use any of the following commands to analyze these points of interest.
+
+📚 <ins>**CHECKS IF ISSUED BY THE CA**</ins>
+
+```bash
+openssl verify -CAfile ca.crt -purpose sslserver tls.crt
+```
+
+🔳 **Output**
+
+```bash
+tls.crt: OK
+```
+
+📚 <ins>**INSPECT SERVER CERTIFICATE DETAILS**</ins>
+
+```bash
+openssl x509 -in tls.crt -noout -subject -issuer \
+    -ext basicConstraints,keyUsage,extendedKeyUsage,subjectAltName,nsComment
+```
+
+🔳 **Output**
+
+```bash
+subject=CN = keycloak.127.0.0.1.sslip.io, O = StevenJDH
+issuer=CN = Keycloak Stack Root CA, O = StevenJDH
+X509v3 Basic Constraints: critical
+    CA:FALSE
+X509v3 Extended Key Usage:
+    TLS Web Server Authentication
+X509v3 Key Usage: critical
+    Digital Signature, Key Encipherment
+X509v3 Subject Alternative Name:
+    DNS:keycloak.127.0.0.1.sslip.io
+Netscape Comment:
+    Keycloak Stack Test Server Certificate
+```
+
+## Creating client certificates for mTLS
+This section shows how to create a client certificate for mTLS communication. For the CA, reuse the one from the previous section or create a dedicated one for the client chain using Step 2 in that section. OpenSSL CLI v1.1.1 or newer is required.
+
+1. Create certificate signing request (*.csr) and private key.
+
+    ```bash
+    openssl req -new -newkey rsa:4096 -keyout client.key -out client.csr -noenc \
+        -subj "/CN=Trusted Client/O=StevenJDH" \
+        -addext "basicConstraints=critical,CA:FALSE" \
+        -addext "extendedKeyUsage=clientAuth" \
+        -addext "keyUsage=critical,digitalSignature" \
+        -addext "nsComment=Keycloak Stack Operator Test Client Certificate" \
+        -addext "subjectKeyIdentifier=hash"
+    ```
+
+2. Create CA signed client certificate from CSR.
+
+    ```bash
+    openssl x509 -req -sha256 -days 11688 -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt \
+        -copy_extensions copy
+    ```
+
+3. Apply the `client.crt` and `client.key` key-pair to Keycloak using the [mTLS example configuration](./examples/mtls-protected-admin-api.yaml). That example shows how to configure the Keycloak Operator with a client certificate to access the Admin API. Third-party client applications can optionally use the following command to create the needed keystore to properly authenticate themselves with the server:
+
+    ```bash
+    openssl pkcs12 -export -name client -in client.crt -inkey client.key -certfile ca.crt \
+      -passout pass:changeit -out client-keystore.p12
+
+    # OR
+
+    # For certs with intermediary certs, use this one. Use 'type' instead of 'cat' on Window.
+    # Structure: Key -> Child -> Parent.
+    cat client.key client.crt intermediary.crt ca.crt > client-chain.pem
+    openssl pkcs12 -export -name client -in client-chain.pem -passout pass:changeit -out client-keystore.p12
+    ```
+
+### Additional client-based openssl commands
+Similar to the previous section for server certificates, the following are a few more commands for troubleshooting client certificates. However, some of the before mentioned commands are also still valid here but excluded for brevity.
+
+📚 <ins>**INSPECT CLIENT CERTIFICATE DETAILS**</ins>
+
+```bash
+openssl x509 -in client.crt -noout -subject -issuer \
+    -ext basicConstraints,keyUsage,extendedKeyUsage,nsComment
+```
+
+🔳 **Output**
+
+```bash
+subject=CN = Trusted Client, O = StevenJDH
+issuer=CN = Keycloak Stack Root CA, O = StevenJDH
+X509v3 Basic Constraints: critical
+    CA:FALSE
+X509v3 Extended Key Usage:
+    TLS Web Client Authentication
+X509v3 Key Usage: critical
+    Digital Signature
+Netscape Comment:
+    Keycloak Stack Test Client Certificate
+```
+
+📚 <ins>**TEST MTLS HANDSHAKE**</ins>
+
+```bash
+# No error at bottom of output is good. However, you may need to set mTLS to 'required' to force a problem.
+openssl s_client -brief -connect keycloak.127.0.0.1.sslip.io:443 \
+    -servername keycloak.127.0.0.1.sslip.io
+    -CAfile ca.crt -cert client.crt -key client.key
+```
+
+🔳 **Output**
+
+```bash
+CONNECTION ESTABLISHED
+Protocol version: TLSv1.3
+Ciphersuite: TLS_AES_256_GCM_SHA384
+Requested Signature Algorithms: ECDSA+SHA256:ECDSA+SHA384:ECDSA+SHA512:Ed25519:Ed448:RSA-PSS+SHA256:RSA-PSS+SHA384:RSA-PSS+SHA512:RSA-PSS+SHA256:RSA-PSS+SHA384:RSA-PSS+SHA512
+Peer certificate: CN = keycloak.127.0.0.1.sslip.io, O = StevenJDH
+Hash used: SHA256
+Signature type: RSA-PSS
+Verification: OK
+Server Temp Key: X25519, 253 bits
+```
+
+📚 <ins>**VERIFY CONTAINER STRUCTURE**</ins>
+
+```bash
+openssl pkcs12 -info -in client-keystore.p12 -passin pass:changeit -noout
+
+# Alternatively, this command will show the certs, keys, and metadata.
+openssl pkcs12 -info -in client-keystore.p12 -passin pass:changeit -nodes
+```
+
+🔳 **Output**
+
+```bash
+MAC: sha256, Iteration 2048
+MAC length: 32, salt length: 8
+PKCS7 Encrypted data: PBES2, PBKDF2, AES-256-CBC, Iteration 2048, PRF hmacWithSHA256
+Certificate bag
+Certificate bag
+PKCS7 Data
+Shrouded Keybag: PBES2, PBKDF2, AES-256-CBC, Iteration 2048, PRF hmacWithSHA256
+```
+
+## Monitoring with Prometheus and Grafana
+This section shows how to enable monitoring of a Keycloak cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
+
+```bash
+helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack --version 87.21.0
+    -f prometheus-values.yaml \ # TODO: Check below for one of the options to use for this file.
+    --namespace monitoring \
+    --create-namespace \
+    --atomic
+```
+
+> [!IMPORTANT]  
+> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 0 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - SLO Metrics" alt="Troubleshooting Dashboard - SLO Metrics"
+      /><br>
+      <b>Troubleshooting Dashboard - SLO Metrics</b><br>
+      Service Level Objectives metrics.
+    </td>
+      <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 1 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - JVM Metrics" alt="Troubleshooting Dashboard - JVM Metrics"
+      /><br>
+      <b>Troubleshooting Dashboard - JVM Metrics</b><br>
+      JVM memory metrics.
+    </td>
+    <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 3 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - HTTP Metrics" alt="Troubleshooting Dashboard - HTTP Metrics"
+      /><br>
+      <b>Troubleshooting Dashboard - HTTP Metrics</b><br>
+      HTTP performance insights.
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/Keycloak troubleshooting 4 - Dashboards - Grafana.png" width="260"
+        title="Troubleshooting Dashboard - Sections" alt="Troubleshooting Dashboard - Sections"
+      /><br>
+      <b>Troubleshooting Dashboard - Sections</b><br>
+      Categorized operational data.
+    </td>
+    <td align="center">
+      <img src="screenshots/Keycloak capacity planning 0 - Dashboards - Grafana.png" width="260"
+        title="Capacity Planning Dashboard" alt="Capacity Planning Dashboard"
+      /><br>
+      <b>Capacity Planning Dashboard</b><br>
+      Performance capacity metrics.
+    </td>
+    <td align="center">
+      <a href="./screenshots/">More...</a>
+    </td>
+  </tr>
+</table>
+
+### Option 1 - Using ServiceMonitor (Recommended)
+This recommended approach will automatically detect and directly collect metrics from Keycloak related services. In general, the below configurations are the defaults, which only require that a ServiceMonitor in any namespace have the label `release: kube-prometheus-stack` to be detected.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  adminUser: admin
+  # Change adminPassword as needed.
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    # Disabling this adds better support for third-party ServiceMonitor resource detection
+    # across namespaces without having to deal with label filtering or compromising the
+    # default discovery. When enabled, an empty 'serviceMonitorSelector' is replaced with a
+    # label selector matching 'release: kube-prometheus-stack', which must be present on
+    # ServiceMonitor resources to be detected. To get the release name if the chart is already
+    # installed, use 'helm list -n monitoring' or the namespace used.
+    #
+    # DEPRECATED. Use 'matchLabels: null' in 'serviceMonitorSelector' for equivalent behavior
+    # when set to false.
+    #
+    # Reference:
+    # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/UPGRADE.md#from-62x-to-63x
+    serviceMonitorSelectorNilUsesHelmValues: true
+
+    # ServiceMonitors to be selected for target discovery. If {}, and above is 'false', select
+    # all ServiceMonitors. For the new approach, set 'matchLabels' to 'null' for equivalent
+    # behavior to the deprecated 'serviceMonitorSelectorNilUsesHelmValues' property when set
+    # to 'false' for all namespaces.
+    serviceMonitorSelector: {}
+      # matchLabels:
+      #   prometheus: main
+      
+    # Namespaces matching labels to be selected for ServiceMonitor discovery. If {},
+    # then it selects all namespaces. Useful for when wanting to keep resources
+    # together with the app instead of grouped together in a monitoring namespace.
+    serviceMonitorNamespaceSelector: {}
+      # matchLabels:
+      #   monitoring: prometheus
+ 
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
+```
+
+After the kube-prometheus-stack chart has been deployed, or updated with the config above, set `metrics.enabled`, `serviceMonitor.enabled`, and `dashboards.enabled` to `true` in the keycloak-stack chart. Review what `additionalOptions` to set for the dashboards using the [dev-mode example](./examples/dev-mode.yaml) so that the correct metrics are exposed.
+
+### Option 2 - Static Config
+This option replicates the behavior of Option 1 without relying on ServiceMonitor CRs. Remove the `namespaces` section from `kubernetes_sd_configs` to support all namespaces.
+
+**prometheus-values.yaml**
+
+```yaml
+grafana:
+  defaultDashboardsEnabled: false
+  # Change adminPassword as needed.
+  adminUser: admin  
+  adminPassword: admin
+
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: keycloak-service
+      honor_timestamps: true
+      scrape_interval: 30s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      follow_redirects: true
+      enable_http2: true
+      kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - keycloak
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        action: keep
+        regex: keycloak
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        action: keep
+        regex: management
+      - target_label: endpoint
+        replacement: management
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+        regex: (.+)
+        target_label: service
+        replacement: ${1}-service
+
+crds:
+  upgradeJob:
+    enabled: true
+    forceConflicts: false
+```
+
+> [!NOTE]  
+> The name of the job must be either `keycloak-metrics` or `keycloak-service` as this is hardcoded in the dashboards for some of the queries.
+
+After the kube-prometheus-stack chart has been deployed or updated with the config above, set `metrics.enabled` and `dashboards.enabled` to `true` in the keycloak-stack chart. Review what `additionalOptions` to set for the dashboards using the [dev-mode example](./examples/dev-mode.yaml) so that the correct metrics are exposed.
+
+{{ template "chart.valuesSectionWrap" (dict "context" . "limit" 40) }}
+
+
+{{ template "footer.signature" . }}

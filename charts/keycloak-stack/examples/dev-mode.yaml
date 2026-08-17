@@ -1,0 +1,70 @@
+# This file is part of Keycloak Stack Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2026 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+bootstrapAdmin:
+  user:
+    username: admin
+    password: admin
+  service:
+    clientId: operator
+    clientSecret: operator
+
+hostname:
+  host: "keycloak.127.0.0.1.sslip.io"
+
+devModeEnabled: true
+
+ingress:
+  className: traefik
+
+metrics:
+  enabled: false
+
+serviceMonitor:
+  # Requires that `metrics.enabled` be set to `true`.
+  enabled: false
+
+dashboards:
+  # Requires `metrics.enabled` and `serviceMonitor.enabled` to be set as `true`.
+  enabled: false
+
+features: 
+  enabled:
+  - openapi
+
+# Some options and features are already added automatically when enabling
+# metrics. See documentation in values file or README for more information.
+additionalOptions:
+- name: event-metrics-user-tags
+  value: "realm,idp,clientId"
+- name: http-metrics-slos
+  value: "250,500,1000,2500"
+# Events that are used by the capacity planning dashboard.
+- name: "event-metrics-user-events"
+  value: "token_exchange,login,logout,code_to_token,client_login,refresh_token"
+# The openapi endpoints are available on the management interface.
+# To access, port forward to the port with the following command:
+#   kubectl port-forward svc/my-keycloak-stack-service 9000:9000 -n keycloak
+# From a browser, the following endpoints are available:
+#   OpenAPI Spec: http://localhost:9000/openapi
+#     OpenAPI UI: http://localhost:9000/openapi/ui
+- name: openapi-enabled
+  value: "true"
+- name: openapi-ui-enabled
+  value: "true"
+
+postgresql:
+  auth:
+    password: password

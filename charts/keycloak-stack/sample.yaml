@@ -1,0 +1,932 @@
+---
+# Source: keycloak-stack/charts/postgresql/templates/primary/networkpolicy.yaml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: example-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 18.6.0
+    helm.sh/chart: postgresql-18.8.9
+    app.kubernetes.io/component: primary
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: example
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+  policyTypes:
+    - Ingress
+    - Egress
+  egress:
+    - {}
+  ingress:
+    - ports:
+        - port: 5432
+---
+# Source: keycloak-stack/charts/postgresql/templates/primary/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: example-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 18.6.0
+    helm.sh/chart: postgresql-18.8.9
+    app.kubernetes.io/component: primary
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: example
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: example-operator
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+---
+# Source: keycloak-stack/charts/postgresql/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: example-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 18.6.0
+    helm.sh/chart: postgresql-18.8.9
+automountServiceAccountToken: false
+---
+# Source: keycloak-stack/charts/postgresql/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: example-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 18.6.0
+    helm.sh/chart: postgresql-18.8.9
+type: Opaque
+data:
+  postgres-password: "R2VmdDk0cXNORU9FR0xYVXpIM2ZhQzdV"
+  # We don't auto-generate metrics password when it's not provided as we do for other passwords
+  # We don't auto-generate LDAP password when it's not provided as we do for other passwords
+---
+# Source: keycloak-stack/templates/keycloak-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: example-keycloak-stack-secret
+  labels:
+    helm.sh/chart: keycloak-stack-0.1.0
+    app.kubernetes.io/name: keycloak-stack
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+type: Opaque
+data:
+  username: "YWRtaW4="
+  password: "YWRtaW4="
+  db-username: "cG9zdGdyZXM="
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-configmap.yaml
+apiVersion: v1
+data:
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKCONTROLLER_NAMESPACES: JOSDK_WATCH_CURRENT
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKOIDCCLIENTCONTROLLER_NAMESPACES: JOSDK_WATCH_CURRENT
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKREALMIMPORTCONTROLLER_NAMESPACES: JOSDK_WATCH_CURRENT
+  QUARKUS_OPERATOR_SDK_CONTROLLERS_KEYCLOAKSAMLCLIENTCONTROLLER_NAMESPACES: JOSDK_WATCH_CURRENT
+  RELATED_IMAGE_KEYCLOAK: quay.io/keycloak/keycloak:26.7.1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/version: 26.7.1
+    helm.sh/chart: keycloak-operator-0.1.1
+  name: example-operator-config
+  namespace: default
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-clusterrole
+rules:
+  - apiGroups:
+      - config.openshift.io
+    resources:
+      - ingresses
+    verbs:
+      - get
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloakcontroller-cluster-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-controller-cluster-role
+rules:
+  - apiGroups:
+      - k8s.keycloak.org
+    resources:
+      - keycloaks
+      - keycloaks/status
+      - keycloaks/finalizers
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+      - create
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - monitoring.coreos.com
+    resources:
+      - servicemonitors
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - networkpolicies
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - statefulsets
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - list
+  - apiGroups:
+      - ""
+    resources:
+      - pods/log
+    verbs:
+      - get
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloakoidcclientcontroller-cluster-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-oidcclientcontroller-cluster-role
+rules:
+  - apiGroups:
+      - k8s.keycloak.org
+    resources:
+      - keycloakoidcclients
+      - keycloakoidcclients/status
+      - keycloakoidcclients/finalizers
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+      - create
+      - delete
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloakrealmimportcontroller-cluster-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-realmimportcontroller-cluster-role
+rules:
+  - apiGroups:
+      - k8s.keycloak.org
+    resources:
+      - keycloakrealmimports
+      - keycloakrealmimports/status
+      - keycloakrealmimports/finalizers
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+      - create
+      - delete
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloaksamlclientcontroller-cluster-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-samlclientcontroller-cluster-role
+rules:
+  - apiGroups:
+      - k8s.keycloak.org
+    resources:
+      - keycloaksamlclients
+      - keycloaksamlclients/status
+      - keycloaksamlclients/finalizers
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+      - create
+      - delete
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-clusterrole-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-clusterrole-binding
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: example-operator-clusterrole
+subjects:
+  - kind: ServiceAccount
+    name: example-operator
+    namespace: default
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-view.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-view
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: example-operator
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloakcontroller-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-controller-role-binding
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: example-operator-controller-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: example-operator
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloakoidcclientcontroller-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-oidcclientcontroller-role-binding
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: example-operator-oidcclientcontroller-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: example-operator
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloakrealmimportcontroller-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-realmimportcontroller-role-binding
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: example-operator-realmimportcontroller-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: example-operator
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloaksamlclientcontroller-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  name: example-operator-samlclientcontroller-role-binding
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: example-operator-samlclientcontroller-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: example-operator
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-operator-svc
+  labels:
+    helm.sh/chart: keycloak-operator-0.1.1
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+spec:
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  ipFamilies: 
+    - IPv4
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http
+      appProtocol: http
+  selector:
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/instance: example
+---
+# Source: keycloak-stack/charts/postgresql/templates/primary/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-postgresql-hl
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 18.6.0
+    helm.sh/chart: postgresql-18.8.9
+    app.kubernetes.io/component: primary
+  annotations:
+spec:
+  type: ClusterIP
+  clusterIP: None
+  # We want all pods in the StatefulSet to have their addresses published for
+  # the sake of the other Postgresql pods even before they're ready, since they
+  # have to be able to talk to each other in order to become ready.
+  publishNotReadyAddresses: true
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/component: primary
+---
+# Source: keycloak-stack/charts/postgresql/templates/primary/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 18.6.0
+    helm.sh/chart: postgresql-18.8.9
+    app.kubernetes.io/component: primary
+spec:
+  type: ClusterIP
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+      nodePort: null
+  selector:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/component: primary
+---
+# Source: keycloak-stack/charts/keycloak-operator/templates/keycloak-operator-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    rollme: FuPMm
+  labels:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: operator
+    app.kubernetes.io/version: 26.7.1
+    helm.sh/chart: keycloak-operator-0.1.1
+  name: example-operator
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: example
+      app.kubernetes.io/name: operator
+  template:
+    metadata:
+      annotations:
+        checksum/config: cb9f1e992f5bbe5225572dd92e341e99ad84ed5ead38b4485a75e35f472a8470
+      labels:
+        app.kubernetes.io/instance: example
+        app.kubernetes.io/name: operator
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        envFrom:
+        - configMapRef:
+            name: example-operator-config
+        image: quay.io/keycloak/keycloak-operator:26.7.1
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/live
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        name: keycloak-operator
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/ready
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        resources:
+          limits:
+            cpu: 700m
+            memory: 450Mi
+          requests:
+            cpu: 300m
+            memory: 450Mi
+        startupProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/started
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+      nodeSelector:
+        kubernetes.io/os: linux
+      restartPolicy: Always
+      serviceAccountName: example-operator
+---
+# Source: keycloak-stack/charts/postgresql/templates/primary/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: example-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 18.6.0
+    helm.sh/chart: postgresql-18.8.9
+    app.kubernetes.io/component: primary
+spec:
+  replicas: 1
+  serviceName: example-postgresql-hl
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: example
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+  template:
+    metadata:
+      name: example-postgresql
+      labels:
+        app.kubernetes.io/instance: example
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: postgresql
+        app.kubernetes.io/version: 18.6.0
+        helm.sh/chart: postgresql-18.8.9
+        app.kubernetes.io/component: primary
+    spec:
+      serviceAccountName: example-postgresql
+      
+      automountServiceAccountToken: false
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/instance: example
+                    app.kubernetes.io/name: postgresql
+                    app.kubernetes.io/component: primary
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      hostNetwork: false
+      hostIPC: false
+      containers:
+        - name: postgresql
+          image: registry-1.docker.io/bitnami/postgresql:latest
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+            seLinuxOptions: {}
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: POSTGRESQL_PORT_NUMBER
+              value: "5432"
+            - name: POSTGRESQL_VOLUME_DIR
+              value: "/bitnami/postgresql"
+            - name: OPENSSL_FIPS
+              value: "yes"
+            - name: OPENSSL_FIPS_PROVIDER_PATH
+              value: "/etc/ssl/provider_fips.cnf"
+            - name: PGDATA
+              value: "/bitnami/postgresql/data"
+            # Authentication
+            - name: POSTGRES_PASSWORD_FILE
+              value: /opt/bitnami/postgresql/secrets/postgres-password
+            - name: POSTGRES_DATABASE
+              value: "keycloak"
+            # LDAP
+            - name: POSTGRESQL_ENABLE_LDAP
+              value: "no"
+            # TLS
+            - name: POSTGRESQL_ENABLE_TLS
+              value: "no"
+            # Audit
+            - name: POSTGRESQL_LOG_HOSTNAME
+              value: "false"
+            - name: POSTGRESQL_LOG_CONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_LOG_DISCONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+              value: "off"
+            # Others
+            - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+              value: "error"
+            - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+              value: "pgaudit"
+          ports:
+            - name: tcp-postgresql
+              containerPort: 5432
+          livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -ec
+                - |
+                  exec pg_isready -U "postgres" -d "dbname=keycloak" -h 127.0.0.1 -p 5432
+          readinessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -ec
+                - |
+                  exec pg_isready -U "postgres" -d "dbname=keycloak" -h 127.0.0.1 -p 5432
+                  [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+          resources:
+            limits:
+              cpu: 150m
+              ephemeral-storage: 2Gi
+              memory: 192Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: 50Mi
+              memory: 128Mi
+          volumeMounts:
+            - name: empty-dir
+              mountPath: /tmp
+              subPath: tmp-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/postgresql/conf
+              subPath: app-conf-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/postgresql/tmp
+              subPath: app-tmp-dir
+            - name: postgresql-password
+              mountPath: /opt/bitnami/postgresql/secrets/
+            - name: dshm
+              mountPath: /dev/shm
+            - name: data
+              mountPath: /bitnami/postgresql
+      volumes:
+        - name: empty-dir
+          emptyDir: {}
+        - name: postgresql-password
+          secret:
+            secretName: example-postgresql
+        - name: dshm
+          emptyDir:
+            medium: Memory
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: keycloak-stack/templates/keycloak.yaml
+apiVersion: k8s.keycloak.org/v2beta1
+kind: Keycloak
+metadata:
+  name: example-keycloak-stack
+  labels:
+    helm.sh/chart: keycloak-stack-0.1.0
+    app.kubernetes.io/name: keycloak-stack
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "26.7.1"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+spec:
+  instances: 1
+  startOptimized: false
+  bootstrapAdmin:
+    user:
+      secret: example-keycloak-stack-secret
+  db:
+    vendor: postgres
+    host: example-postgresql-hl.default.svc.cluster.local
+    database: keycloak
+    port: 5432
+    usernameSecret:
+      name: example-keycloak-stack-secret
+      key: db-username
+    passwordSecret:
+      name: example-postgresql
+      key: postgres-password
+    schema: public
+    poolInitialSize: 10
+    poolMinSize: 10
+    poolMaxSize: 100
+  transaction:
+    xaEnabled: false
+  http:
+    httpEnabled: false
+    httpPort: 8080
+    httpsPort: 8443
+  hostname:
+    hostname: keycloak.127.0.0.1.sslip.io
+    strict: true
+    backchannelDynamic: false
+  automountServiceAccountToken: true
+  ingress:
+    enabled: true
+  httpManagement:
+    port: 9000
+  update:
+    strategy: RecreateOnImageChange
+  networkPolicy:
+    enabled: true
+  serviceMonitor:
+    enabled: false
+    labels:
+      release: kube-prometheus-stack
+    interval: 30s
+    scrapeTimeout: 10s
+  tracing:
+    enabled: false
+    compression: none
+    endpoint: http://otel-collector:4317
+    protocol: grpc
+    samplerRatio: 0.1
+    samplerType: traceidratio
+  telemetry:
+    endpoint: http://otel-collector:4317
+    protocol: grpc
+    serviceName: ""
+  features:
+    enabled:
+      - client-admin-api:v2
+  additionalOptions:
+    - name: metrics-enabled
+      value: "false"
+    - name: http-metrics-histograms-enabled
+      value: "false"
+    - name: cache-metrics-histograms-enabled
+      value: "false"
+    - name: event-metrics-user-enabled
+      value: "false"
+    - name: telemetry-metrics-enabled
+      value: "false"

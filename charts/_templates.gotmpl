@@ -1,6 +1,6 @@
 {{- define "chart.centeredHeader" -}}
 <h1 align="center">{{ . }}</h1>
-{{- end }}
+{{- end -}}
 
 {{- define "chart.centeredBadgesSection" -}}
 <p align="center">
@@ -17,8 +17,41 @@
     src="https://img.shields.io/badge/AppVersion-{{ .AppVersion }}-informational?style=flat-square"
   />
 </p>
+{{- end -}}
+
+{{/*
+  Add word-break opportunities to long Helm property paths.
+  Breaks after common path separators. Can't use <wbr> as
+  GitHub doesn't support it. Anther alternative is &shy;.
+*/}}
+{{- define "chart.wrapPropertyName" -}}
+{{- $value := .value -}}
+{{- $limit := .limit -}}
+
+{{- if gt (len $value) $limit -}}
+{{- $value | replace "." ".&#8203;" | replace "-" "-&#8203;" | replace "_" "_&#8203;" -}}
+{{- else -}}
+{{- $value -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+  Render the values table with wrapped property names.
+*/}}
+{{- define "chart.valuesSectionWrap" -}}
+{{- $ctx := .context -}}
+{{- $limit := .limit -}}
+
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+{{- range $ctx.Sections.DefaultSection.SectionItems }}
+| {{ template "chart.wrapPropertyName" (dict "value" .Key "limit" $limit) }} | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
 {{- end }}
+
+{{- end -}}
 
 {{ define "footer.signature" -}}
 // Steven Jenkins De Haro ("StevenJDH" on GitHub)
-{{- end }}
+{{- end -}}

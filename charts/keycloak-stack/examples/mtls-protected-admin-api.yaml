@@ -1,0 +1,123 @@
+# This file is part of Keycloak Stack Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2026 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+bootstrapAdmin:
+  user:
+    username: admin
+    password: admin
+  # The Keycloak Operator expects a secret called <keycloak-cr-name>-admin
+  # with client-id and client-secret keys. This section just creates a
+  # temporary service account with an admin role to support creating and
+  # managing KeycloakOIDCClient and KeycloakSAMLClient clients in any realm.
+  # The admin section below will auto create the admin secret for the operator.
+  service:
+    clientId: operator
+    clientSecret: operator
+
+# Provides client certificates to the Keycloak Operator to establish mTLS.
+# The operator already knows how to trust the server certificate.
+# See README for how to create a client certificate to test with.
+# Reference: https://github.com/StevenJDH/helm-charts/tree/main/charts/keycloak-stack#creating-client-certificates-for-mtls
+admin:
+  # Leaving unset will make it use the values from the bootstrap admin service account,
+  # which auto creates the account, and this section auto creates the admin secret.
+  operatorSecret:
+    clientId: ""
+    clientSecret: ""
+  # Use this if you already have an existing tls secret for the Keycloak Operator.
+  tlsSecret: ""
+  tls:
+    certContent: ""
+    # certContent: |
+    #   -----BEGIN CERTIFICATE-----
+    #   ...client
+    #   -----END CERTIFICATE-----
+
+    keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
+
+# See README for how to create certificates to test with.
+# Reference: https://github.com/StevenJDH/helm-charts/tree/main/charts/keycloak-stack#creating-server-certificates-for-tls-scenarios
+http:
+  # Use this if you already have an existing tls secret for the below hostname.
+  tlsSecret: ""
+  tls:
+    certContent: ""
+    # certContent: |
+    #   -----BEGIN CERTIFICATE-----
+    #   ...server
+    #   -----END CERTIFICATE-----
+    #   -----BEGIN CERTIFICATE-----
+    #   ...CA
+    #   -----END CERTIFICATE-----
+
+    keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
+
+hostname:
+  host: "keycloak.127.0.0.1.sslip.io"
+
+devModeEnabled: false
+
+ingress:
+  # When using an ingress controller like traefik that doesn't support
+  # TLS passthrough via the ingress resource, set this to false. To test 
+  # with traefik, deploy the IngressRouteTCP CR with the following command:
+  #   kubectl create -f examples/resources/passthrough-tls-traefik.yaml
+  # Note: Update the namespace, service name, and hostname if using something 
+  # different. It may take a minute for changes to take effect.
+  #
+  # To check things on the traefik dashboard, use the below command:
+  #   kubectl port-forward deployment/traefik 9000:9000 -n kube-system
+  # And access the page here: http://localhost:9000/dashboard/#/tcp/routers
+  # Note: Always include the slash after dashboard or the main page
+  # won't load if going direct.
+  enabled: false
+  className: traefik
+
+truststores:
+  keycloak-client-ca:
+    configMap:
+      # Needs to pre-exist. Use a command like:
+      #   kubectl create configmap keycloak-client-ca-configmap --from-file=ca.crt -n keycloak
+      name: keycloak-client-ca-configmap
+
+features:
+  # In this chart, 'client-admin-api:v2' is enabled by default, so no need to add.
+  enabled: []
+
+additionalOptions:
+# Used for mTLS. Valid values are 'none', 'request', and 'required'.
+# Request allows the operator to use mTLS for admin api calls while 
+# other clients and browsers can just continue with current
+# credential flows. Setting to 'required' will block browser access.
+- name: https-client-auth
+  value: "request"
+# The management interface inherits from 'https-client-auth',
+# so overriding is needed if 'required' is used to not impact
+# health checks or the scraping of metrics.
+# Reference: https://www.keycloak.org/server/mutual-tls#_enabling_mtls
+- name: https-management-client-auth
+  value: "request" # Alternatively, use 'none'.
+
+postgresql:
+  auth:
+    password: password

@@ -1,0 +1,56 @@
+{{/*
+This file is part of Keycloak Stack Helm Chart <https://github.com/StevenJDH/helm-charts>.
+Copyright (C) 2026 Steven Jenkins De Haro.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+You have deployed the following release: {{ .Release.Name }}.
+
+To get further information, you can run the commands:
+  $ helm status {{ .Release.Name }} -n {{ .Release.Namespace }}
+  $ helm get all {{ .Release.Name }} -n {{ .Release.Namespace }}
+
+{{ if and ((.Values.ingress).enabled) (or .Values.hostname.host .Values.hostname.adminHost) -}}
+Ingress URL(s):
+  {{- with .Values.hostname.host }}
+  http{{ if not $.Values.devModeEnabled }}s{{ end }}://{{ . }}
+  {{- end }}
+  {{- with .Values.hostname.adminHost }}
+  http{{ if not $.Values.devModeEnabled }}s{{ end }}://{{ . }}
+  {{- end }}
+
+{{ if not .Values.devModeEnabled -}}
+TLS is enabled. Make sure one of the config sections below are configured for the needed TLS scenario. Otherwise, set 'devModeEnabled' to 'true' to disable TLS.
+
+# TLS Passthrough scenario:
+
+http:
+  tlsSecret: ""
+  tls:
+    certContent: ""
+    keyContent: ""
+
+# Ingress Termination/Edge scenario:
+
+http:
+  httpEnabled: true
+proxy:
+  headers: ""
+ingress:
+  tlsSecret: ""
+  tls:
+    certContent: ""
+    keyContent: ""
+{{- end }}
+{{- end -}}

@@ -1,0 +1,738 @@
+# This file is part of Keycloak Stack Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2026 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# -- instances is the number of Keycloak instances created to increase availability
+# when set to more than one.
+instances: 1
+
+# -- Override for chart name in helm common labels.
+nameOverride: ""
+# -- Override for generated resource names.
+fullnameOverride: ""
+
+# -- annotations to be added to the Keycloak resource.
+annotations: {}
+
+# -- image is used to specify a custom Keycloak image to be used (e.g., an optimized image).
+image: ""
+
+# -- imagePullSecrets is a list of secrets for pulling an image from a private
+# container registry.
+imagePullSecrets: []
+# - name "my-pullsecret"
+
+# -- Indicates whether or not to start Keycloak in optimized mode with the
+# `--optimized` flag when using custom pre-augmented images. Keep disabled when
+# using non-optimized images or the official Keycloak image. When using an
+# optimized custom image, `health-enabled`, `metrics-enabled` and
+# `telemetry-metrics-enabled` options need to be explicitly set in the Dockerfile.
+# Any build time options passed through first-class fields or `additionalOptions`
+# will be ignored if not moved to the Dockerfile.
+# See [Best practice](https://www.keycloak.org/operator/customizing-keycloak#_best_practice) for more information.
+startOptimized: false
+
+bootstrapAdmin:
+  user:
+    # -- username is the temporary username for the Keycloak bootstrap admin user.
+    # See [Accessing the Admin Console](https://www.keycloak.org/operator/basic-deployment#_accessing_the_admin_console) for more information.
+    username: admin
+    # -- password is the temporary password for the Keycloak bootstrap admin user.
+    password: admin
+  service:
+    # -- clientId is the temporary client ID for the Keycloak bootstrap admin service account
+    # with an admin role. This is used to support creating and managing `KeycloakOIDCClient`
+    # and `KeycloakSAMLClient` clients in any realm. Later, this value can be managed via the
+    # `admin.operatorSecret.clientId` property.
+    clientId: ""
+    # -- clientSecret is the temporary client secret for the Keycloak bootstrap admin service
+    # account with an admin role. This is used to support creating and managing
+    # `KeycloakOIDCClient` and `KeycloakSAMLClient` clients in any realm. Later, this value
+    # can be managed via the `admin.operatorSecret.clientSecret` property.
+    clientSecret: ""
+
+admin:
+  operatorSecret:
+    # -- clientId is the client ID for the main admin service account used by the Keycloak
+    # Operator for managing `KeycloakOIDCClient` and `KeycloakSAMLClient` resources in any
+    # realm. When unset, it uses `bootstrapAdmin.service.clientId` if set. For initial
+    # deployments, configure the fallback property instead as it will create the needed
+    # service account with `admin` role. After, a different service account can be created
+    # and configured here if desired, since this will create the required
+    # `<keycloak-cr-name>-admin` secret needed by the operator.
+    clientId: ""
+    # -- clientSecret is the client secret for the main admin service account used by the
+    # Keycloak Operator for managing `KeycloakOIDCClient` and `KeycloakSAMLClient` resources
+    # in any realm. When unset, it uses `bootstrapAdmin.service.clientSecret` if set. For
+    # initial deployments, configure the fallback property instead as it will create the
+    # needed service account with `admin` role. After, a different service account can be
+    # created and configured here if desired, since this will create the required
+    # `<keycloak-cr-name>-admin` secret needed by the operator.
+    clientSecret: ""
+  # -- tlsSecret specifies an existing TLS Secret containing the client certificate and private
+  # key used by the operator for mTLS connections to Keycloak. Requires setting `http.tlsSecret`
+  # or `http.tls.certContent` and `http.tls.keyContent` to enable TLS passthrough.
+  # See [Managing Keycloak Clients](https://www.keycloak.org/operator/managing-clients) for more information.
+  tlsSecret: ""
+  tls:
+    # -- certContent specifies PEM-encoded client certificate used to create a TLS Secret when
+    # `admin.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `admin.tlsSecret` is set.
+    certContent: ""
+    # certContent: |
+    #   -----BEGIN CERTIFICATE-----
+    #   ...client
+    #   -----END CERTIFICATE-----
+
+    # -- keyContent specifies PEM-encoded client private key used to create a TLS Secret when
+    # `admin.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `admin.tlsSecret` is set.
+    keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
+
+cache:
+  # -- configMapFile references a ConfigMap key containing a custom Infinispan cache
+  # configuration XML. When specified, Keycloak uses this file instead of the default
+  # cache configuration. See [Configuring caches](https://www.keycloak.org/server/caching#_configuring_caches) for more information.
+  configMapFile: {}
+    # key: cache-ispn.xml
+    # name: keycloak-cache-config
+    # optional: false
+
+db:
+  # -- vendor is the database vendor to use for Keycloak. Supported values are: postgres, mariadb,
+  # mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `false`.
+  # See [Supported databases](https://www.keycloak.org/server/db#_supported_databases) for more information.
+  vendor: postgres
+  # -- hostOverride is the hostname of the database server. If not set, it will be auto configured for
+  # the postgresql headless service of the managed database. This setting is ignored if
+  # `postgresql.enabled` is `false`.
+  hostOverride: ""
+  # -- port is the port number of the database server. This setting is ignored if `postgresql.enabled`
+  # is `false`.
+  port: 5432
+  # -- schema is the name of the database schema to use for Keycloak. This setting is ignored if
+  # `postgresql.enabled` is `false`.
+  schema: public
+  # -- poolInitialSize is the initial number of connections that are created when the pool is started.
+  # For production environments, Keycloak recommends that the initial, minimal, and maximum pool sizes
+  # be equal. See [Concepts for database connection pools](https://www.keycloak.org/high-availability/multi-cluster/concepts-database-connections#multi-cluster-db-concepts) for more information.
+  poolInitialSize: 10
+  # -- poolMinSize is the minimum number of connections that are maintained in the pool.
+  # For production environments, Keycloak recommends that the initial, minimal, and maximum pool sizes
+  # be equal. See [Concepts for database connection pools](https://www.keycloak.org/high-availability/multi-cluster/concepts-database-connections#multi-cluster-db-concepts) for more information.
+  poolMinSize: 10
+  # -- poolMaxSize is the maximum number of connections that can be allocated from the pool at a given time.
+  # For production environments, Keycloak recommends that the initial, minimal, and maximum pool sizes
+  # be equal. See [Concepts for database connection pools](https://www.keycloak.org/high-availability/multi-cluster/concepts-database-connections#multi-cluster-db-concepts) for more information.
+  poolMaxSize: 100
+  external:
+    # -- vendor is the external database vendor to use for Keycloak. Supported values are: postgres, mariadb,
+    # mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `true`.
+    # See [Supported databases](https://www.keycloak.org/server/db#_supported_databases)
+    # and [Preparing for PostgreSQL](https://www.keycloak.org/server/db#_preparing_for_postgresql) for
+    # more information.
+    vendor: postgres
+    # -- host is the hostname of the external database server. This setting is ignored if
+    # `postgresql.enabled` is `true`.
+    host: ""
+    # -- database is the name of the external database to use for Keycloak. This setting is ignored if
+    # `postgresql.enabled` is `true`.
+    database: "keycloak"
+    # -- port is the port number of the external database server. This setting is ignored if
+    # `postgresql.enabled` is `true`.
+    port: 5432
+    # -- schema is the name of the external database schema to use for Keycloak. This setting is ignored
+    # if `postgresql.enabled` is `true`.
+    schema: public
+    auth:
+      # -- username is the username for the external database user. This setting is ignored if
+      # `postgresql.enabled` is `true`.
+      username: ""
+      # -- password is the password for the external database user. This setting is ignored if
+      # `postgresql.enabled` is `true`.
+      password: ""
+
+transaction:
+  # -- Indicates whether or not Keycloak should use a non-XA datasource in case the database does not
+  # support XA transactions. If supported, then this option can be enabled.
+  # See [Using Database Vendors with XA transaction support](https://www.keycloak.org/server/db#_using_database_vendors_with_xa_transaction_support) for more information.
+  xaEnabled: false
+
+http:
+  # -- labels to be added to the Service resource.
+  labels: {}
+  # -- annotations to be added to the Service resource.
+  annotations: {}
+  # -- Indicates whether or not the HTTP listener is enabled, which is blocked by default. This
+  # setting is always `true` when `devModeEnabled` is `true`.
+  httpEnabled: false
+  # -- httpPort is the port used for HTTP connections.
+  httpPort: 8080
+  # -- httpsPort is the port used for HTTPS connections.
+  httpsPort: 8443
+  # -- serviceName is used to override the default Service resource name. When not set, the name
+  # defaults to the Keycloak CR name with a "-service" suffix.
+  serviceName: ""
+  # -- serviceHttpPort is the HTTP port exposed on the Kubernetes Service. When set, the Service
+  # will use this port while the pod still listens on `http.httpPort`. This setting is ignored when
+  # set to `0`.
+  serviceHttpPort: 0
+  # -- serviceHttpsPort is the HTTPS port exposed on the Kubernetes Service. When set, the Service
+  # will use this port while the pod still listens on `http.httpsPort`. This setting is ignored when
+  # set to `0`.
+  serviceHttpsPort: 0
+  # -- tlsSecret is an existing secret containing the TLS configuration for the Passthrough TLS scenario.
+  # This scenario requires `ingress.enabled` set to `true` and `ingress.tlsSecret`, `ingress.tls.certContent`,
+  # and `ingress.tls.keyContent` to be unset.
+  # See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information.
+  tlsSecret: ""
+  tls:
+    # -- certContent specifies PEM-encoded server certificate used to create a TLS Secret when
+    # `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set.
+    certContent: ""
+    # certContent: |
+    #   -----BEGIN CERTIFICATE-----
+    #   ...server
+    #   -----END CERTIFICATE-----
+    #   -----BEGIN CERTIFICATE-----
+    #   ...CA
+    #   -----END CERTIFICATE-----
+
+    # -- keyContent specifies PEM-encoded server private key used to create a TLS Secret when
+    # `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set.
+    keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
+
+hostname:
+  # -- host is the hostname for the Keycloak server. Applicable for Hostname v1 and v2.
+  host: "keycloak.127.0.0.1.sslip.io"
+  # -- adminHost is the hostname for the Admin Console and Admin REST API. If unset, the value
+  # of `hostname.host` is used. Applicable for Hostname v1 and v2.
+  # See [Exposing the Administration Console on a separate hostname](https://www.keycloak.org/server/hostname#administration-console-on-a-separate-hostname) for more information.
+  adminHost: ""
+  # -- strict indicates whether the hostname should be treated as strict. This dynamically
+  # resolves the hostname from request headers. Applicable for Hostname v1 and v2. Disabled when
+  # `devModeEnabled` is set to `true`
+  strict: true
+  # -- Indicates whether or not to enable dynamic backchannel URLs, allowing internal clients
+  # to access Keycloak through a different address than external clients. Applicable for Hostname v2.
+  # See [Utilizing an internal URL for communication among clients](https://www.keycloak.org/server/hostname#_utilizing_an_internal_url_for_communication_among_clients) for more information.
+  backchannelDynamic: false
+
+# -- Indicates whether or not Keycloak is running in development mode. This will disable features and
+# configurations that are not suitable for development environments.
+devModeEnabled: false
+
+# -- Indicates whether or not to automatically mount the Kubernetes ServiceAccount token into the
+# Keycloak pod. If set to `false`, this will also disable the Kubernetes CA truststore auto-discovery
+# logic. Keep this set to `true` if planning to use an external Infinispan cluster, the Kubernetes
+# ServiceAccount identity provider, or any custom provider logic that expects to implicitly use the
+# Kubernetes API.
+# See [Truststores](https://www.keycloak.org/operator/advanced-configuration#_truststores) for more information.
+automountServiceAccountToken: true
+
+proxy:
+  # -- headers are the proxy headers that should be accepted by the server. Misconfiguration might
+  # leave the server exposed to security vulnerabilities. Check the load balancer or reverse proxy
+  # configuration in use to determine whether it utilizes the Forwarded (RFC 7239) or X-Forwarded-*
+  # (e.g., X-Forwarded-For) mechanism for header propagation. Use with Edge and Re-encrypt scenarios,
+  # but not Passthrough. Valid values are `forwarded` and `xforwarded`.
+  # See [Configuring a reverse proxy](https://www.keycloak.org/server/reverseproxy) for more information.
+  headers: ""
+
+ingress:
+  # -- Indicates whether or not an Ingress resource is created to enable outside access. For Ingress
+  # Termination/Edge TLS scenario, make sure to set `http.httpEnabled` to `true`, and configure
+  # `proxy.headers` as needed.
+  # See [TLS Termination with default Ingress](https://www.keycloak.org/operator/basic-deployment#_tls_termination_with_default_ingress) for more information.
+  enabled: true
+  # -- labels to be added to the Ingress resource.
+  labels: {}
+  # -- annotations to be added to the Ingress resource.
+  annotations: {}
+  # -- className is the name of the Ingress class.
+  className: ""
+  # -- tlsSecret is an existing secret containing the TLS configuration for re-encrypt or TLS termination
+  # scenarios. See [TLS Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets)
+  # for more information.
+  tlsSecret: ""
+  tls:
+    # -- certContent specifies PEM-encoded server certificate used to create a TLS Secret when
+    # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
+    certContent: ""
+    # certContent: |
+    #   -----BEGIN CERTIFICATE-----
+    #   ...server
+    #   -----END CERTIFICATE-----
+    #   -----BEGIN CERTIFICATE-----
+    #   ...CA
+    #   -----END CERTIFICATE-----
+
+    # -- keyContent specifies PEM-encoded server private key used to create a TLS Secret when
+    # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
+    # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
+    keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
+
+# -- truststores is used to configure the Keycloak truststores using Secrets or ConfigMaps containing PEM encoded
+# files, or PKCS12 files with extension .p12, .pfx, or .pkcs12.
+# See [Truststores](https://www.keycloak.org/operator/advanced-configuration#_truststores) for more information.
+truststores: {}
+  # my-truststore:
+  #   secret:
+  #     name: my-secret
+  # my-truststore2:
+  #   configMap:
+  #     name: my-config
+
+# -- Additional environment variables to set for the Keycloak server. These should be expressed as key-value pairs that
+# can be either direct values or references to secrets. Use the `additionalOptions` section for first-class options
+# rather than KC_ values here.
+extraEnvs: []
+# - name: FOO
+#   value: bar
+# - name: FOO
+#   secret:
+#     key: FOO
+#     name: secret-resource
+#     optional: false
+
+# -- Optionally request and limit how much CPU and memory (RAM) the container needs. When using a
+# `KeycloakRealmImport` resource, if no resources are configured there, these values here, or their
+# defaults, will be used.
+# Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+resources: {}
+  # ## The memory requests and limits are the actual defaults.
+  # requests:
+  #   memory: 1700Mi
+  #   cpu: 1200m
+  # limits:
+  #   memory: 2Gi
+  #   cpu: 6000m
+  # claims:
+  # - name: example-keycloak-hsm-claim
+  #   request: example-hsm-device
+
+httpManagement:
+  # -- port is the port of the management interface.
+  port: 9000
+
+# -- startupProbe is used to override the default configuration of the startup probe. Only a
+# subset of features are supported by the CR.
+startupProbe: {}
+  # periodSeconds: 20
+  # failureThreshold: 5
+
+# -- livenessProbe is used to override the default configuration of the liveness probe. This
+# type of probe does not wait for the readiness probe to succeed. To make the the probe wait,
+# use the `startupProbe`. Only a subset of features are supported by the CR.
+livenessProbe: {}
+  # periodSeconds: 20
+  # failureThreshold: 5
+
+# -- readinessProbe is used to override the default configuration of the readiness probe. Only
+# a subset of features are supported by the CR.
+readinessProbe: {}
+  # periodSeconds: 20
+  # failureThreshold: 5
+
+import:
+  # -- scheduling is used to configure Kubernetes affinity, tolerations, topology spread
+  # constraints, and the priority class name to fine tune the scheduling and placement of Pods.
+  scheduling: {}
+    # priorityClassName: custom-high
+    # affinity:
+    #   podAffinity:
+    #     preferredDuringSchedulingIgnoredDuringExecution:
+    #     - podAffinityTerm:
+    #         labelSelector:
+    #           matchLabels:
+    #             app: keycloak
+    #             app.kubernetes.io/managed-by: keycloak-operator
+    #             app.kubernetes.io/component: server
+    #             topologyKey: topology.kubernetes.io/zone
+    #           weight: 10
+    # tolerations:
+    # - key: "key"
+    #   operator: "Equal|Exists"
+    #   value: "value"
+    #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+    # topologySpreadConstraints:
+    # - maxSkew: 1
+    #   topologyKey: kubernetes.io/hostname
+    #   whenUnsatisfiable: DoNotSchedule
+
+# -- scheduling is used to configure Kubernetes affinity, tolerations, topology spread
+# constraints, and the priority class name to fine tune the scheduling and placement of Pods.
+scheduling: {}
+  # priorityClassName: custom-high
+  # affinity:
+  #   podAffinity:
+  #     preferredDuringSchedulingIgnoredDuringExecution:
+  #     - podAffinityTerm:
+  #         labelSelector:
+  #           matchLabels:
+  #             app: keycloak
+  #             app.kubernetes.io/managed-by: keycloak-operator
+  #             app.kubernetes.io/component: server
+  #             topologyKey: topology.kubernetes.io/zone
+  #           weight: 10
+  # tolerations:
+  # - key: "key"
+  #   operator: "Equal|Exists"
+  #   value: "value"
+  #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+  # topologySpreadConstraints:
+  # - maxSkew: 1
+  #   topologyKey: kubernetes.io/hostname
+  #   whenUnsatisfiable: DoNotSchedule
+
+update:
+  # -- labels is for setting additional labels on the Job created for the update.
+  labels: {}
+  # -- strategy is the update strategy to use for updates. Valid values are `RecreateOnImageChange`,
+  # `Auto`, and `Explicit`. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
+  strategy: "RecreateOnImageChange"
+  # -- revision is used for when `update.strategy` is set to the `Explicit` strategy, and is
+  # ignored for other strategies. The Keycloak Operator checks this value, and if it matches
+  # the previous deployment, it performs a rolling update. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
+  revision: "example-v1"
+  # -- scheduling is used to configure Kubernetes affinity, tolerations, topology spread
+  # constraints, and the priority class name to fine tune the scheduling and placement of Pods.
+  scheduling: {}
+    # priorityClassName: custom-high
+    # affinity:
+    #   podAffinity:
+    #     preferredDuringSchedulingIgnoredDuringExecution:
+    #     - podAffinityTerm:
+    #         labelSelector:
+    #           matchLabels:
+    #             app: keycloak
+    #             app.kubernetes.io/managed-by: keycloak-operator
+    #             app.kubernetes.io/component: server
+    #             topologyKey: topology.kubernetes.io/zone
+    #           weight: 10
+    # tolerations:
+    # - key: "key"
+    #   operator: "Equal|Exists"
+    #   value: "value"
+    #   effect: "NoSchedule|PreferNoSchedule|NoExecute"
+    # topologySpreadConstraints:
+    # - maxSkew: 1
+    #   topologyKey: kubernetes.io/hostname
+    #   whenUnsatisfiable: DoNotSchedule
+
+networkPolicy:
+  # -- Specifies whether a network policy should be created. By default, the operator automatically creates a NetworkPolicy
+  # resource to deny access to the clustering port of the Keycloak Pods. The HTTP(S) endpoint is open to traffic from any
+  # namespace and the outside world.
+  # Note: This will have no effect unless the chosen CNI supports network policies like Calico, Weave, Cilium, Romana, etc.
+  enabled: true
+  # -- http is a list of source rules which should be able to access this endpoint (port 8080 by default). Items in this list
+  # are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not
+  # restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic
+  # matches at least one item in the list. Due to security reasons, the HTTP endpoint is disabled by default, unless
+  # `devModeEnabled` is set to `true`.
+  # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
+  http: []
+  # - ipBlock:
+  #     cidr: 172.17.0.0/16
+  #     except:
+  #     - 172.17.1.0/24
+  # - namespaceSelector:
+  #     matchLabels:
+  #       project: my-project
+  #   podSelector:
+  #     matchLabels:
+  #       role: client
+  # - podSelector: {}
+
+  # -- https is a list of source rules which should be able to access this endpoint (port 8443 by default). Items in this list
+  # are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not
+  # restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic
+  # matches at least one item in the list.
+  # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
+  https: []
+  # - ipBlock:
+  #     cidr: 172.17.0.0/16
+  #     except:
+  #     - 172.17.1.0/24
+  # - namespaceSelector:
+  #     matchLabels:
+  #       project: my-project
+  #   podSelector:
+  #     matchLabels:
+  #       role: client
+  # - podSelector: {}
+
+  # -- management is a list of source rules which should be able to access this endpoint (port 9000 by default). Items in this list
+  # are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not
+  # restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic
+  # matches at least one item in the list.
+  # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
+  management: []
+  # - namespaceSelector:
+  #     # Another less intuitive approach still matching based on labels since matching by namespace name is not supported directly.
+  #     matchExpressions:
+  #     - key: namespace
+  #       operator: In
+  #       values: ["frontend", "backend"]
+  # - namespaceSelector:
+  #     # Kubernetes 1.22+ sets an immutable label with the namespace name provided that the NamespaceDefaultLabelName feature gate is enabled.
+  #     matchLabels:
+  #       kubernetes.io/metadata.name: default
+
+metrics:
+  # -- Indicates whether or not Keycloak metrics should be enabled. This also enables the `http-metrics-histograms-enabled`,
+  # `cache-metrics-histograms-enabled`, and `event-metrics-user-enabled` options and the `user-event-metrics` feature.
+  enabled: false
+
+serviceMonitor:
+  # -- Indicates whether or not to create a ServiceMonitor for Keycloak. Requires that `metrics.enabled` be set to `true`.
+  enabled: false
+  # -- labels to be added to the ServiceMonitor resource. This is useful for the auto-discovery feature of
+  # the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used
+  # when installing. See [Monitoring with Prometheus and Grafana](#monitoring-with-prometheus-and-grafana) for more information.
+  labels:
+    release: kube-prometheus-stack
+
+  # -- annotations to be added to the ServiceMonitor resource.
+  annotations: {}
+  # -- interval is the frequency at which metrics should be scraped.
+  interval: 30s
+  # -- scrapeTimeout sets the scrape timeout for the ServiceMonitor.
+  scrapeTimeout: 10s
+
+dashboards:
+  # -- Indicates whether or not to deploy a set of Keycloak related Grafana dashboards that will be imported
+  # automatically. Requires `metrics.enabled` and `serviceMonitor.enabled` to be set as `true`.
+  enabled: false
+  # -- namespace is the namespace where the Grafana dashboards will be deployed. This should ideally be the
+  # same namespace as the Prometheus Operator and Grafana instance, but any namespace is supported when using
+  # the default settings of the kube-prometheus-stack helm chart.
+  namespace: monitoring
+
+tracing:
+  # -- Indicates whether or not to enable OpenTelemetry tracing. Requires `metrics.enabled` to be `true`.
+  enabled: false
+  # -- compression is the OpenTelemetry method used to compress payloads. Possible values are `gzip` and
+  # `none`.
+  compression: none
+  # -- endpoint is the OpenTelemetry endpoint to connect to.
+  endpoint: "http://otel-collector:4317"
+  # -- protocol is the OpenTelemetry protocol used for the transmitting the data.
+  protocol: grpc
+  # -- samplerRatio is the OpenTelemetry sampler ratio. It represents the probability that a span will be
+  # sampled using a double type value. For example, 1.0 is equal to 100%.
+  samplerRatio: 0.1
+  # -- samplerType is the OpenTelemetry sampler to use for tracing.
+  samplerType: "traceidratio"
+
+telemetry:
+  # -- Indicates whether or not to enable OpenTelemetry metrics. Requires `metrics.enabled` to be
+  # `true`.
+  enabled: false
+  # -- endpoint is the OpenTelemetry endpoint to connect to.
+  endpoint: "http://otel-collector:4317"
+  # -- protocol is the OpenTelemetry protocol used for the transmitting the data.
+  protocol: grpc
+  # -- serviceName is the OpenTelemetry service name. Takes precedence over 'service.name' defined in
+  # `telemetry.resourceAttributes`.
+  serviceName: ""
+  # -- resourceAttributes is the OpenTelemetry resource attributes present in the exported telemetry
+  # data to characterize the telemetry producer.
+  resourceAttributes: {}
+    # service.namespace: keycloak
+    # deployment.environment: test
+
+features:
+  # -- enabled is used to enable Keycloak features. Do not set `client-admin-api:v2` since this is enabled by default.
+  # Also, do not set `user-event-metrics` or `opentelemetry-metrics` as these will be enabled automatically when needed.
+  # See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
+  enabled: []
+  # - docker
+  # - authorization
+  # -- disabled is used to disable Keycloak features. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
+  disabled: []
+  # - admin
+  # - step-up-authentication
+
+# -- Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either
+# direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled`,
+# `http-metrics-histograms-enabled`, `cache-metrics-histograms-enabled`, `event-metrics-user-enabled`, or
+# `telemetry-metrics-enabled` as these will be added automatically when needed.
+# See [All configuration](https://www.keycloak.org/server/all-config) for details.
+additionalOptions: []
+# - name: http-relative-path
+#   value: "/"
+# - name: log-console-level
+#   secret:
+#     name: my-logging-config
+#     key: log-console-level
+# ## To break down by realm, client, and identity provider,
+# ## but not recommended for large number of clients or IDPs.
+# - name: event-metrics-user-tags
+#   value: "realm,idp,clientId"
+# ## Limits collected user events. Below are ones used by the capacity planning dashboard.
+# ## Reference: https://www.keycloak.org/docs/latest/server_admin/#event-types
+# - name: event-metrics-user-events
+#   value: "token_exchange,login,logout,code_to_token,client_login,refresh_token"
+# - name: http-metrics-slos
+#   value: "250,500,1000,2500"
+# ## Used for mTLS. Valid values are 'none', 'request', and 'required'.
+# ## Setting to 'required' will prevent access to the admin console
+# ## when using a browser.
+# - name: https-client-auth
+#   value: "request"
+# ## The management interface inherits from 'https-client-auth',
+# ## so overriding is needed if 'required' is used to not impact
+# ## health checks or the scraping of metrics.
+# ## Reference: https://www.keycloak.org/server/mutual-tls#_enabling_mtls
+# - name: https-management-client-auth
+#   value: "request"
+
+# -- podTemplate is a raw API representation that is used for the Deployment Template. This field is a temporary
+# workaround in case no supported field exists at the top level of the Keycloak CR for a use case. As such, no
+# guarantees exist that the Deployment will work as expected.
+podTemplate: {}
+  # metadata:
+  #   labels:
+  #     my-label: "keycloak"
+  # spec:
+  #   containers:
+  #     - volumeMounts:
+  #         - name: test-volume
+  #           mountPath: /mnt/test
+  #   volumes:
+  #     - name: test-volume
+  #       secret:
+  #         secretName: keycloak-additional-secret
+
+# -- secrets is used to store confidential data in key-value pairs. Can be used by other
+# properties such as `additionalOptions` that can reference keys without having to provide
+# a pre-existing secret resource.
+secrets: {}
+
+keycloakRealmImport:
+  # -- Indicates whether or not to create a job to import a realm backup or configuration.
+  # This is a one-time activity, and it can be safely disabled after a successful import.
+  create: false
+  # -- labels to be added to the Job created for the import.
+  labels: {}
+  # --  placeholders is used to replace ENV variable placeholders in the realm import.
+  # For example, if the 'realm' property has a ${REALM_NAME} placeholder, then
+  # 'REALM_NAME: production' will be used to perform a substitution.
+  placeholders: {}
+    # REALM_NAME: production
+    # APP_HOST: app.example.com
+
+  # -- Optionally request and limit how much CPU and memory (RAM) the import job needs.
+  # If no resources are configured, the values from the Keycloak resource, or their
+  # defaults, will be used. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+  resources: {}
+    # requests:
+    #   memory: 1700Mi
+    #   cpu: 1200m
+    # limits:
+    #   memory: 2Gi
+    #   cpu: 6000m
+    # claims:
+    # - name: example-keycloak-hsm-claim
+    #   request: example-hsm-device
+
+  # -- realmContentFormat specifies the format of the content provided via
+  # `keycloakRealmImport.realmContent`. Supported values are `json` and `yaml`.
+  # This setting is ignored unless `keycloakRealmImport.realmContent` is defined.
+  realmContentFormat: json
+  # -- realmContent contains a realm backup provided as raw `JSON` or `YAML` content.
+  # This is primarily intended for use with Helm's `--set-file` option, but supports
+  # inline when using a pipe. However, please use the dedicate inline property
+  # `keycloakRealmImport.realm` if inline is needed. The format must match
+  # `keycloakRealmImport.realmContentFormat`. This setting cannot be used when
+  # `keycloakRealmImport.realm` is defined.
+  realmContent: ""
+  # realmContent: |
+  #   id: myrealm
+  #   realm: myrealm
+  #   enabled: true
+  #   displayName: My Realm
+  #   clients:
+  #   - clientId: my-client
+  #     enabled: true
+  #     publicClient: true
+  #   roles:
+  #     realm:
+  #     - name: user
+  #     - name: admin
+
+  # -- realm allows for defining the realm configuration inline. The structure is
+  # the same as any realm backup converted to YAML. This setting cannot be used
+  # when `keycloakRealmImport.realmContent` is defined.
+  realm: {}
+    # id: myrealm
+    # realm: myrealm
+    # enabled: true
+    # displayName: My Realm
+    # clients:
+    # - clientId: my-client
+    #   enabled: true
+    #   publicClient: true
+    # roles:
+    #   realm:
+    #   - name: user
+    #   - name: admin
+
+keycloak-operator:
+  # -- Indicates whether or not the Keycloak Operator is installed.
+  enabled: true
+  # @ignored. Override for keycloak-operator chart name to consolidate stack name.
+  nameOverride: operator
+  watchAllNamespacesFor:
+    # -- keycloak is for indicating whether or not Keycloak resources will be watched
+    # in all namespaces.
+    keycloak: false
+    # -- keycloakRealmImport is for indicating whether or not `KeycloakRealmImport`
+    # resources will be watched in all namespaces.
+    keycloakRealmImport: false
+    # -- keycloakOIDCClient is for indicating whether or not `KeycloakOIDCClient`
+    # resources will be watched in all namespaces.
+    keycloakOIDCClient: false
+    # -- keycloakSAMLClient is for indicating whether or not `KeycloakSAMLClient`
+    # resources will be watched in all namespaces.
+    keycloakSAMLClient: false
+
+postgresql:
+  # -- Indicates whether or not a PostgreSQL database is created.
+  enabled: true
+  auth:
+    # -- username is the username for the database user.
+    username: postgres
+    # -- password is the password for the database user. If unset, a random password
+    # is generated and stored in a secret.
+    password: ""
+    # -- database is the name of the database to use for Keycloak.
+    database: keycloak
