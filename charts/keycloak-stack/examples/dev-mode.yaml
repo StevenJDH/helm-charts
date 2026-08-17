@@ -54,6 +54,12 @@ additionalOptions:
 # Events that are used by the capacity planning dashboard.
 - name: "event-metrics-user-events"
   value: "token_exchange,login,logout,code_to_token,client_login,refresh_token"
+# The openapi endpoints are available on the management interface.
+# To access, port forward to the port with the following command:
+#   kubectl port-forward svc/my-keycloak-stack-service 9000:9000 -n keycloak
+# From a browser, the following endpoints are available:
+#   OpenAPI Spec: http://localhost:9000/openapi
+#     OpenAPI UI: http://localhost:9000/openapi/ui
 - name: openapi-enabled
   value: "true"
 - name: openapi-ui-enabled
