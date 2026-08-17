@@ -37,7 +37,7 @@ serviceMonitor:
   enabled: false
 
 dashboards:
-  # Requires `metrics.enabled` and `serviceMonitor` to be set as `true`.
+  # Requires `metrics.enabled` and `serviceMonitor.enabled` to be set as `true`.
   enabled: false
 
 features: 
@@ -61,4 +61,4 @@ additionalOptions:
 
 postgresql:
   auth:
-    password: "password"
+    password: password

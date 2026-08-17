@@ -19,7 +19,7 @@ bootstrapAdmin:
     password: admin
 
 http:
-  # Need to be enabled to allow ingress controller to container traffic.
+  # Needs to be enabled to allow ingress controller to container traffic.
   httpEnabled: true
 
 hostname:
@@ -28,8 +28,8 @@ hostname:
 devModeEnabled: false
 
 proxy:
-  # Valid values are `forwarded` and `xforwarded`.
-  headers: "xforwarded"
+  # Valid values are 'forwarded' and 'xforwarded'.
+  headers: xforwarded
 
 # See README for how to create certificates to test with.
 # Reference: https://github.com/StevenJDH/helm-charts/tree/main/charts/keycloak-stack#creating-server-certificates-for-tls-scenarios
@@ -38,9 +38,6 @@ ingress:
   # Use this if you already have an existing tls secret for the above hostname.
   tlsSecret: ""
   tls:
-    # -- certContent specifies PEM-encoded server certificate used to create a TLS Secret when
-    # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
-    # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
     certContent: ""
     # certContent: |
     #   -----BEGIN CERTIFICATE-----
@@ -50,11 +47,12 @@ ingress:
     #   ...CA
     #   -----END CERTIFICATE-----
 
-    # -- keyContent specifies PEM-encoded server private key used to create a TLS Secret when
-    # `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's
-    # `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set.
     keyContent: ""
+    # keyContent: |
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
 
 postgresql:
   auth:
-    password: "password"
+    password: password

@@ -52,4 +52,4 @@ keycloakRealmImport:
 
 postgresql:
   auth:
-    password: "password"
+    password: password

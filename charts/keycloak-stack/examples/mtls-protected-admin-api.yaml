@@ -32,25 +32,19 @@ bootstrapAdmin:
 # Reference: https://github.com/StevenJDH/helm-charts/tree/main/charts/keycloak-stack#creating-client-certificates-for-mtls
 admin:
   # Leaving unset will make it use the values from the bootstrap admin service account,
-  # which auto creates the account, and this section creates the admin secret.
+  # which auto creates the account, and this section auto creates the admin secret.
   operatorSecret:
     clientId: ""
     clientSecret: ""
   # Use this if you already have an existing tls secret for the Keycloak Operator.
   tlsSecret: ""
   tls:
-    # -- certContent specifies PEM-encoded client certificate used to create a TLS Secret when
-    # `admin.tlsSecret` is not specified. This property is primarily intended for use with Helm's
-    # `--set-file` option, but supports inline when using a pipe. Ignored if `admin.tlsSecret` is set.
     certContent: ""
     # certContent: |
     #   -----BEGIN CERTIFICATE-----
     #   ...client
     #   -----END CERTIFICATE-----
 
-    # -- keyContent specifies PEM-encoded client private key used to create a TLS Secret when
-    # `admin.tlsSecret` is not specified. This property is primarily intended for use with Helm's
-    # `--set-file` option, but supports inline when using a pipe. Ignored if `admin.tlsSecret` is set.
     keyContent: ""
     # keyContent: |
     #   -----BEGIN PRIVATE KEY-----
@@ -63,9 +57,6 @@ http:
   # Use this if you already have an existing tls secret for the below hostname.
   tlsSecret: ""
   tls:
-    # -- certContent specifies PEM-encoded server certificate used to create a TLS Secret when
-    # `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's
-    # `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set.
     certContent: ""
     # certContent: |
     #   -----BEGIN CERTIFICATE-----
@@ -75,9 +66,6 @@ http:
     #   ...CA
     #   -----END CERTIFICATE-----
 
-    # -- keyContent specifies PEM-encoded server private key used to create a TLS Secret when
-    # `http.tlsSecret` is not specified. This property is primarily intended for use with Helm's
-    # `--set-file` option, but supports inline when using a pipe. Ignored if `http.tlsSecret` is set.
     keyContent: ""
     # keyContent: |
     #   -----BEGIN PRIVATE KEY-----
@@ -94,7 +82,7 @@ ingress:
   # TLS passthrough via the ingress resource, set this to false. To test 
   # with traefik, deploy the IngressRouteTCP CR with the following command:
   #   kubectl create -f examples/resources/passthrough-tls-traefik.yaml
-  # Note: Update the namespace, service name, hostname if using something 
+  # Note: Update the namespace, service name, and hostname if using something 
   # different. It may take a minute for changes to take effect.
   #
   # To check things on the traefik dashboard, use the below command:
@@ -117,7 +105,7 @@ features:
   enabled: []
 
 additionalOptions:
-# Used for mTLS. Valid values are none, request, and required.
+# Used for mTLS. Valid values are 'none', 'request', and 'required'.
 # Request allows the operator to use mTLS for admin api calls while 
 # other clients and browsers can just continue with current
 # credential flows. Setting to 'required' will block browser access.
@@ -132,4 +120,4 @@ additionalOptions:
 
 postgresql:
   auth:
-    password: "password"
+    password: password

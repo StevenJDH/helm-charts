@@ -22,7 +22,7 @@ db:
   external:
     vendor: postgres
     host: "db.example.com"
-    database: "keycloak-external"
+    database: keycloak-external
     port: 5432
     schema: public
     auth:
