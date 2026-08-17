@@ -22,10 +22,10 @@ nameOverride: ""
 # -- Override for generated resource names.
 fullnameOverride: ""
 
-# -- annotations to be added to the Deployment resource.
+# -- annotations to be added to the Keycloak resource.
 annotations: {}
 
-# -- image is used to specify a custom Keycloak image to be used.
+# -- image is used to specify a custom Keycloak image to be used (e.g., an optimized image).
 image: ""
 
 # -- imagePullSecrets is a list of secrets for pulling an image from a private
@@ -80,8 +80,8 @@ admin:
     # created and configured here if desired, since this will create the required
     # `<keycloak-cr-name>-admin` secret needed by the operator.
     clientSecret: ""
-  # -- tlsSecret specifies the TLS Secret containing the client certificate and private key
-  # used by the operator for mTLS connections to Keycloak. Requires setting `http.tlsSecret`
+  # -- tlsSecret specifies an existing TLS Secret containing the client certificate and private
+  # key used by the operator for mTLS connections to Keycloak. Requires setting `http.tlsSecret`
   # or `http.tls.certContent` and `http.tls.keyContent` to enable TLS passthrough. 
   # See [Managing Keycloak Clients](https://www.keycloak.org/operator/managing-clients) for more information.
   tlsSecret: ""
@@ -129,11 +129,17 @@ db:
   # `postgresql.enabled` is `false`.
   schema: public
   # -- poolInitialSize is the initial number of connections that are created when the pool is started.
-  poolInitialSize: 1
+  # For production environments, Keycloak recommends that the initial, minimal, and maximum pool sizes
+  # be equal. See [Concepts for database connection pools](https://www.keycloak.org/high-availability/multi-cluster/concepts-database-connections#multi-cluster-db-concepts) for more information.
+  poolInitialSize: 10
   # -- poolMinSize is the minimum number of connections that are maintained in the pool.
-  poolMinSize: 2
+  # For production environments, Keycloak recommends that the initial, minimal, and maximum pool sizes
+  # be equal. See [Concepts for database connection pools](https://www.keycloak.org/high-availability/multi-cluster/concepts-database-connections#multi-cluster-db-concepts) for more information.
+  poolMinSize: 10
   # -- poolMaxSize is the maximum number of connections that can be allocated from the pool at a given time.
-  poolMaxSize: 30
+  # For production environments, Keycloak recommends that the initial, minimal, and maximum pool sizes
+  # be equal. See [Concepts for database connection pools](https://www.keycloak.org/high-availability/multi-cluster/concepts-database-connections#multi-cluster-db-concepts) for more information.
+  poolMaxSize: 100
   external:
     # -- vendor is the external database vendor to use for Keycloak. Supported values are: postgres, mariadb,
     # mysql, oracle, mssql, etc. This setting is ignored if `postgresql.enabled` is `true`.
@@ -304,7 +310,7 @@ truststores: {}
   #     name: my-config
 
 # -- Additional environment variables to set for the Keycloak server. These should be expressed as key-value pairs that
-# can be either direct values or references to secrets.. Use the `additionalOptions` section for first-class options
+# can be either direct values or references to secrets. Use the `additionalOptions` section for first-class options
 # rather than KC_ values here.
 extraEnvs: []
 # - name: FOO
@@ -320,7 +326,7 @@ extraEnvs: []
 # defaults, will be used.
 # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
 resources: {}
-  # ## The memory requests and limits are the actual default.
+  # ## The memory requests and limits are the actual defaults.
   # requests:
   #   memory: 1700Mi
   #   cpu: 1200m
@@ -348,7 +354,7 @@ livenessProbe: {}
   # periodSeconds: 20
   # failureThreshold: 5
 
-# -- readinessProbeis used to override the default configuration of the readiness probe. Only
+# -- readinessProbe is used to override the default configuration of the readiness probe. Only
 # a subset of features are supported by the CR.
 readinessProbe: {}
   # periodSeconds: 20
@@ -408,9 +414,10 @@ scheduling: {}
 update:
   # -- labels is for setting additional labels on the Job created for the update.
   labels: {}
-  # -- strategy is the update strategy to use for updates. Valid values are `RecreateOnImageChange`, `Auto`, and `Explicit`. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
+  # -- strategy is the update strategy to use for updates. Valid values are `RecreateOnImageChange`,
+  # `Auto`, and `Explicit`. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
   strategy: "RecreateOnImageChange"
-  # -- revision is used for when `update.strategy` is set to `Explicit` strategy, and is
+  # -- revision is used for when `update.strategy` is set to the `Explicit` strategy, and is
   # ignored for other strategies. The Keycloak Operator checks this value, and if it matches
   # the previous deployment, it performs a rolling update. See [Configuring the Update Strategy](https://www.keycloak.org/operator/rolling-updates#_configuring_the_update_strategy) for more information.
   revision: "example-v1"
@@ -448,7 +455,7 @@ networkPolicy:
   # -- http is a list of source rules which should be able to access this endpoint (port 8080 by default). Items in this list
   # are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not
   # restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic
-  # matches at least one item in the from list. Due to security reasons, the HTTP endpoint is disabled by default, unless
+  # matches at least one item in the list. Due to security reasons, the HTTP endpoint is disabled by default, unless
   # `devModeEnabled` is set to `true`.
   # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
   http: []
@@ -467,7 +474,7 @@ networkPolicy:
   # -- https is a list of source rules which should be able to access this endpoint (port 8443 by default). Items in this list
   # are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not
   # restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic
-  # matches at least one item in the from list.
+  # matches at least one item in the list.
   # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
   https: []
   # - ipBlock:
@@ -485,7 +492,7 @@ networkPolicy:
   # -- management is a list of source rules which should be able to access this endpoint (port 9000 by default). Items in this list
   # are combined using a logical OR operation. If this field is empty or missing, this rule matches all sources (traffic not
   # restricted by source). If this field is present and contains at least one item, this rule allows traffic only if the traffic
-  # matches at least one item in the from list.
+  # matches at least one item in the list.
   # Reference [Behavior of to and from selectors](https://kubernetes.io/docs/concepts/services-networking/network-policies/#behavior-of-to-and-from-selectors).
   management: []
   # - namespaceSelector:
@@ -500,21 +507,20 @@ networkPolicy:
   #       kubernetes.io/metadata.name: default
 
 metrics:
-  # -- Indicates whether or not Keycloak metrics should be enabled. Before enabling this, make sure
-  # `serviceMonitor.enabled` is set `false`, otherwise, a ServiceMonitor resource will also be created.
-  # This will also enabled the `http-metrics-histograms-enabled` option.
+  # -- Indicates whether or not Keycloak metrics should be enabled. This also enables the `http-metrics-histograms-enabled`,
+  # `cache-metrics-histograms-enabled`, and `event-metrics-user-enabled` options and the `user-event-metrics` feature.
   enabled: false
 
 serviceMonitor:
   # -- Indicates whether or not to create a ServiceMonitor for Keycloak. Requires that `metrics.enabled` be set to `true`.
   enabled: false
-  # -- labels to be added to the ServiceMonitor resource. This is used by the auto-discovery feature of
-  # the prometheus operator, which by default uses the release name of the kube-prometheus-stack
-  # chart used when installing. See [Monitoring with Prometheus and Grafana](#monitoring-with-prometheus-and-grafana) for more information.
+  # -- labels to be added to the ServiceMonitor resource. This is useful for the auto-discovery feature of
+  # the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used
+  # when installing. See [Monitoring with Prometheus and Grafana](#monitoring-with-prometheus-and-grafana) for more information.
   labels:
     release: kube-prometheus-stack
 
-  # -- annotations specifies additional annotations for the ServiceMonitor.
+  # -- annotations to be added to the ServiceMonitor resource.
   annotations: {}
   # -- interval is the frequency at which metrics should be scraped.
   interval: 30s
@@ -523,23 +529,25 @@ serviceMonitor:
 
 dashboards:
   # -- Indicates whether or not to deploy a set of Keycloak related Grafana dashboards that will be imported
-  # automatically. Requires `metrics.enabled` and `serviceMonitor` to be set as `true`.
+  # automatically. Requires `metrics.enabled` and `serviceMonitor.enabled` to be set as `true`.
   enabled: false
-  # -- namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace
-  # as the Prometheus Operator and Grafana instance.
+  # -- namespace is the namespace where the Grafana dashboards will be deployed. This should ideally be the
+  # same namespace as the Prometheus Operator and Grafana instance, but any namespace is supported when using
+  # the default settings of the kube-prometheus-stack helm chart.
   namespace: monitoring
 
 tracing:
   # -- Indicates whether or not to enable OpenTelemetry tracing. Requires `metrics.enabled` to be `true`.
   enabled: false
-  # -- compression is the OpenTelemetry method used to compress payloads. Possible values are: gzip, none.
+  # -- compression is the OpenTelemetry method used to compress payloads. Possible values are `gzip` and
+  # `none`.
   compression: none
   # -- endpoint is the OpenTelemetry endpoint to connect to.
   endpoint: "http://otel-collector:4317"
   # -- protocol is the OpenTelemetry protocol used for the transmitting the data.
   protocol: grpc
-  # -- samplerRatio is the OpenTelemetry sampler ratio. Probability that a span will be sampled using a
-  # double type value. For example, 1.0 is equal to 100%.
+  # -- samplerRatio is the OpenTelemetry sampler ratio. It represents the probability that a span will be
+  # sampled using a double type value. For example, 1.0 is equal to 100%.
   samplerRatio: 0.1
   # -- samplerType is the OpenTelemetry sampler to use for tracing.
   samplerType: "traceidratio"
@@ -562,9 +570,9 @@ telemetry:
     # deployment.environment: test
 
 features:
-  # -- enabled is used to enable Keycloak features. Do not set `client-admin-api:v2` this is enabled by default. Also,
-  # do not set `user-event-metrics` or `opentelemetry-metrics` as these will be enabled automatically when needed.
-  # enabled by default. See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
+  # -- enabled is used to enable Keycloak features. Do not set `client-admin-api:v2` since this is enabled by default.
+  # Also, do not set `user-event-metrics` or `opentelemetry-metrics` as these will be enabled automatically when needed.
+  # See [Feature](https://www.keycloak.org/server/all-config#category-feature) for more information.
   enabled: []
   # - docker
   # - authorization
@@ -575,7 +583,7 @@ features:
 
 # -- Additional options to set for the Keycloak server. These should be expressed as key-value pairs that can be either
 # direct values or references to secrets. Use quotes for numbers and boolean values. Do not set `metrics-enabled`,
-# `http-metrics-histograms-enabled`, `cache-metrics-histograms-enabled`, `event-metrics-user-enabled`, and
+# `http-metrics-histograms-enabled`, `cache-metrics-histograms-enabled`, `event-metrics-user-enabled`, or
 # `telemetry-metrics-enabled` as these will be added automatically when needed.
 # See [All configuration](https://www.keycloak.org/server/all-config) for details.
 additionalOptions: []
@@ -595,7 +603,7 @@ additionalOptions: []
 #   value: "token_exchange,login,logout,code_to_token,client_login,refresh_token"
 # - name: http-metrics-slos
 #   value: "250,500,1000,2500"
-# ## Used for mTLS. Valid values are none, request, and required.
+# ## Used for mTLS. Valid values are 'none', 'request', and 'required'.
 # ## Setting to 'required' will prevent access to the admin console
 # ## when using a browser.
 # - name: https-client-auth
@@ -608,8 +616,8 @@ additionalOptions: []
 #   value: "request"
 
 # -- podTemplate is a raw API representation that is used for the Deployment Template. This field is a temporary
-# workaround in case no supported field exists at the top level of the CR for a use case. However, no guarantee
-# exists that the Deployment will work as expected.
+# workaround in case no supported field exists at the top level of the Keycloak CR for a use case. As such, no
+# guarantees exist that the Deployment will work as expected.
 podTemplate: {}
   # metadata:
   #   labels:
@@ -631,13 +639,13 @@ secrets: {}
 
 keycloakRealmImport:
   # -- Indicates whether or not to create a job to import a realm backup or configuration.
-  # This is a one-time activity, and it can be disabled safely after a successful import.
+  # This is a one-time activity, and it can be safely disabled after a successful import.
   create: false
   # -- labels to be added to the Job created for the import.
   labels: {}
-  # --  placeholders is used to replace ENV variable placeholders in the
-  # realm import. For example, if 'realm' property has ${REALM_NAME}, then
-  # 'REALM_NAME: production' will perform a substitution.
+  # --  placeholders is used to replace ENV variable placeholders in the realm import.
+  # For example, if the 'realm' property has a ${REALM_NAME} placeholder, then
+  # 'REALM_NAME: production' will be used to perform a substitution.
   placeholders: {}
     # REALM_NAME: production
     # APP_HOST: app.example.com

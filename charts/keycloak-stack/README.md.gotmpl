@@ -92,7 +92,7 @@ The below steps for creating self-signed certificates is meant for feature testi
     cat ca.crt >> tls.crt
     ```
 
-6. Finally, apply the `tls.crt` and `tls.key` key-pair to Keycloak using one of the TLS [example configurations](./examples). Accept the browser warning for the untrusted self-signed certificate to view the Keycloak Admin Console. Third-party client applications can optionally use the following command to create the needed truststore to trust the server certificate:
+6. Finally, apply the `tls.crt` and `tls.key` key-pair to Keycloak using one of the [TLS example configurations](./examples). Accept the browser warning for the untrusted self-signed certificate to view the Keycloak Admin Console. Third-party client applications can optionally use the following command to create the needed truststore to trust the server certificate:
 
     ```bash
     openssl pkcs12 -export -nokeys -in ca.crt -passout pass:changeit -out truststore.p12
@@ -171,7 +171,7 @@ This section shows how to create a client certificate for mTLS communication. Fo
         -copy_extensions copy
     ```
 
-3. Apply the `client.crt` and `client.key` key-pair to Keycloak using the [mTLS example configuration](./examples/mtls-protected-admin-api.yaml). This shows how to configure the Keycloak Operator with a client certificate to access the Admin API. Third-party client applications can optionally use the following command to create the needed keystore to properly authenticate themselves with the server:
+3. Apply the `client.crt` and `client.key` key-pair to Keycloak using the [mTLS example configuration](./examples/mtls-protected-admin-api.yaml). That example shows how to configure the Keycloak Operator with a client certificate to access the Admin API. Third-party client applications can optionally use the following command to create the needed keystore to properly authenticate themselves with the server:
 
     ```bash
     openssl pkcs12 -export -name client -in client.crt -inkey client.key -certfile ca.crt \
@@ -255,7 +255,7 @@ Shrouded Keybag: PBES2, PBKDF2, AES-256-CBC, Iteration 2048, PRF hmacWithSHA256
 ```
 
 ## Monitoring with Prometheus and Grafana
-This section shows how to enable monitoring of the cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
+This section shows how to enable monitoring of a Keycloak cluster via Prometheus and Grafana, which will also inject dashboards to represent the collected metrics. To get started, run the following commands with configuration from one of the options below.
 
 ```bash
 helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack --version 87.21.0
@@ -351,7 +351,7 @@ prometheus:
       
     # Namespaces matching labels to be selected for ServiceMonitor discovery. If {},
     # then it selects all namespaces. Useful for when wanting to keep resources
-    # together with app instead of grouped together in a monitoring namespace.
+    # together with the app instead of grouped together in a monitoring namespace.
     serviceMonitorNamespaceSelector: {}
       # matchLabels:
       #   monitoring: prometheus
@@ -417,6 +417,9 @@ crds:
     enabled: true
     forceConflicts: false
 ```
+
+> [!NOTE]  
+> The name of the job must be either `keycloak-metrics` or `keycloak-service` as this is hardcoded in the dashboards for some of the queries.
 
 After the kube-prometheus-stack chart has been deployed or updated with the config above, set `metrics.enabled` and `dashboards.enabled` to `true` in the keycloak-stack chart. Review what `additionalOptions` to set for the dashboards using the [dev-mode example](./examples/dev-mode.yaml) so that the correct metrics are exposed.
 
