@@ -82,7 +82,7 @@ admin:
     clientSecret: ""
   # -- tlsSecret specifies an existing TLS Secret containing the client certificate and private
   # key used by the operator for mTLS connections to Keycloak. Requires setting `http.tlsSecret`
-  # or `http.tls.certContent` and `http.tls.keyContent` to enable TLS passthrough. 
+  # or `http.tls.certContent` and `http.tls.keyContent` to enable TLS passthrough.
   # See [Managing Keycloak Clients](https://www.keycloak.org/operator/managing-clients) for more information.
   tlsSecret: ""
   tls:
@@ -649,7 +649,7 @@ keycloakRealmImport:
   placeholders: {}
     # REALM_NAME: production
     # APP_HOST: app.example.com
-  
+
   # -- Optionally request and limit how much CPU and memory (RAM) the import job needs.
   # If no resources are configured, the values from the Keycloak resource, or their
   # defaults, will be used. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
