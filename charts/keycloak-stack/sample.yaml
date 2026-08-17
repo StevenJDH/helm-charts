@@ -89,7 +89,7 @@ metadata:
     helm.sh/chart: postgresql-18.8.9
 type: Opaque
 data:
-  postgres-password: "eE9vS2F1NFhmbzB5SHNlZ3ZNallLdmZk"
+  postgres-password: "R2VmdDk0cXNORU9FR0xYVXpIM2ZhQzdV"
   # We don't auto-generate metrics password when it's not provided as we do for other passwords
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
@@ -577,7 +577,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    rollme: DVuNY
+    rollme: FuPMm
   labels:
     app.kubernetes.io/instance: example
     app.kubernetes.io/managed-by: Helm
@@ -877,9 +877,9 @@ spec:
       name: example-postgresql
       key: postgres-password
     schema: public
-    poolInitialSize: 1
-    poolMinSize: 2
-    poolMaxSize: 30
+    poolInitialSize: 10
+    poolMinSize: 10
+    poolMaxSize: 100
   transaction:
     xaEnabled: false
   http:
