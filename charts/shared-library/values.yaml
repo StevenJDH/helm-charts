@@ -653,9 +653,9 @@ crds:
     forceConflicts: false
     busybox:
       image:
-        # repository is the image repository for the init container used to decompress the `crds.tar.gz` archive.
+        # -- repository holding the init container image used to decompress the `crds.tar.gz` archive.
         repository: busybox
-        # tag is the image tag used for version pining. If unset, the `latest` tag is used.
+        # -- Overrides the image tag whose default is `latest`.
         tag: ""
         # -- pullPolicy is the strategy for pulling images from a registry.
         pullPolicy: IfNotPresent
@@ -664,9 +664,9 @@ crds:
       resources: {}
     kubectl:
       image:
-        # repository is the image repository for the main container used for applying changes to the CRDs.
+        # -- repository holding the container image used for applying changes to the CRDs.
         repository: registry.k8s.io/kubectl
-        # tag is the image tag used for version pining. If unset, it will default to the kubernetes version.
+        # -- Overrides the image tag whose default is the kubernetes version.
         tag: ""
         # -- pullPolicy is the strategy for pulling images from a registry.
         pullPolicy: IfNotPresent

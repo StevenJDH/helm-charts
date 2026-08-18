@@ -1,6 +1,6 @@
 # Shared Library Helm Chart
 
-![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
 
 A contract-based Helm library chart for Kubernetes.
 
@@ -16,7 +16,7 @@ A contract-based Helm library chart for Kubernetes.
 
 ## Requirements
 
-Kubernetes: `>= 1.19.0-0`
+Kubernetes: `>= 1.22.0-0`
 
 ## Usage example
 
@@ -32,7 +32,7 @@ In the `Chart.yaml` file of a helm chart project, add the following dependency:
 ```yaml
 dependencies:
   - name: shared-library
-    version: 0.1.3
+    version: 0.2.0
     repository: "https://StevenJDH.github.io/helm-charts"
 ```
 
@@ -62,6 +62,16 @@ helm dep update .
 | command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. |
 | containerPorts | object | `{}` | containerPort is the port or ports that the container listens on. |
+| crds.upgradeJob.busybox.image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the strategy for pulling images from a registry. |
+| crds.upgradeJob.busybox.image.repository | string | `"busybox"` | repository holding the init container image used to decompress the `crds.tar.gz` archive. |
+| crds.upgradeJob.busybox.image.tag | string | `""` | Overrides the image tag whose default is `latest`. |
+| crds.upgradeJob.busybox.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.upgradeJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that upgrades the CRDs using server-side apply. |
+| crds.upgradeJob.forceConflicts | bool | `false` | Indicates whether or not to force server-side apply to take ownership of conflicting fields. |
+| crds.upgradeJob.kubectl.image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the strategy for pulling images from a registry. |
+| crds.upgradeJob.kubectl.image.repository | string | `"registry.k8s.io/kubectl"` | repository holding the container image used for applying changes to the CRDs. |
+| crds.upgradeJob.kubectl.image.tag | string | `""` | Overrides the image tag whose default is the kubernetes version. |
+| crds.upgradeJob.kubectl.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | cronjob.annotations | object | `{}` | annotations to be added to the CronJob resource. |
 | cronjob.job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
