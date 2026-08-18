@@ -1,0 +1,107 @@
+{{/*
+This file is part of Shared Library Helm Chart <https://github.com/StevenJDH/helm-charts>.
+Copyright (C) 2023-2026 Steven Jenkins De Haro.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+{{/*
+Create a CRD upgrade Job.
+
+Expected input:
+
+  include "shared-library._crd-upgrade-job" (dict
+    "context" .
+    "config" .Values.crds
+  )
+*/}}
+{{- define "shared-library._crd-upgrade-job" -}}
+{{- $ctx    := .context -}}
+{{- $config := .config  -}}
+{{- if $config.upgradeJob.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "shared-library.fullname" $ctx }}-crd-upgrade
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback
+    "helm.sh/hook-weight": "-0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    {{- include "shared-library.labels" $ctx | nindent 4 }}
+  namespace: {{ $ctx.Release.Namespace }}
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        {{- include "shared-library.selectorLabels" $ctx | nindent 8 }}
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "shared-library.fullname" $ctx }}-crd-upgrade
+      initContainers:
+        - name: extract-crds
+          image: "{{ $config.upgradeJob.busybox.image.repository }}:{{ $config.upgradeJob.busybox.image.tag | default "latest" }}"
+          imagePullPolicy: {{ $config.upgradeJob.busybox.image.pullPolicy | default "IfNotPresent" }}
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              tar -xzf /input/crds.tar.gz -C /crds
+          volumeMounts:
+            - name: crd-archive
+              mountPath: /input
+              readOnly: true
+            - name: crds
+              mountPath: /crds
+          {{- with $config.upgradeJob.busybox.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      containers:
+        - name: kubectl
+          {{- $defaultKubernetesVersion := (ternary
+            (printf "%s.0" $ctx.Capabilities.KubeVersion.Version)
+            (regexFind "v\\d+\\.\\d+\\.\\d+" $ctx.Capabilities.KubeVersion.Version)
+            (regexMatch "^v\\d+\\.\\d+$" $ctx.Capabilities.KubeVersion.Version)
+          ) }}
+          image: "{{ $config.upgradeJob.kubectl.image.repository }}:{{ $config.upgradeJob.kubectl.image.tag | default $defaultKubernetesVersion }}"
+          imagePullPolicy: {{ $config.upgradeJob.kubectl.image.pullPolicy | default "IfNotPresent" }}
+          command:
+            - kubectl
+          args:
+            - apply
+            - --server-side
+            - --field-manager
+            - {{ include "shared-library.fullname" $ctx }}-crd-upgrade
+            {{- if $config.upgradeJob.forceConflicts }}
+            - --force-conflicts
+            {{- end }}
+            - -f
+            - /crds
+          {{- with $config.upgradeJob.kubectl.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: crds
+              mountPath: /crds
+              readOnly: true
+      volumes:
+        - name: crd-archive
+          configMap:
+            name: {{ include "shared-library.fullname" $ctx }}-crds
+        - name: crds
+          emptyDir: {}
+{{- end }}
+{{- end -}}

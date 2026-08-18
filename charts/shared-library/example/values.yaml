@@ -1,5 +1,5 @@
 # This file is part of Shared Library Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2023-2024 Steven Jenkins De Haro.
+# Copyright (C) 2023-2026 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -644,3 +644,32 @@ keda:
     #   - type: Pods
     #     value: 2
     #     periodSeconds: 60
+
+crds:
+  upgradeJob:
+    # -- Indicates whether or not to enable a Helm hook that upgrades the CRDs using server-side apply.
+    enabled: true
+    # -- Indicates whether or not to force server-side apply to take ownership of conflicting fields.
+    forceConflicts: false
+    busybox:
+      image:
+        # repository is the image repository for the init container used to decompress the `crds.tar.gz` archive.
+        repository: busybox
+        # tag is the image tag used for version pining. If unset, the `latest` tag is used.
+        tag: "1.38"
+        # -- pullPolicy is the strategy for pulling images from a registry.
+        pullPolicy: IfNotPresent
+      # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+      # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+      resources: {}
+    kubectl:
+      image:
+        # repository is the image repository for the main container used for applying changes to the CRDs.
+        repository: registry.k8s.io/kubectl
+        # tag is the image tag used for version pining. If unset, it will default to the kubernetes version.
+        tag: ""
+        # -- pullPolicy is the strategy for pulling images from a registry.
+        pullPolicy: IfNotPresent
+      # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+      # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+      resources: {}
