@@ -1,0 +1,73 @@
+{{/*
+This file is part of Shared Library Helm Chart <https://github.com/StevenJDH/helm-charts>.
+Copyright (C) 2023-2026 Steven Jenkins De Haro.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+{{/*
+Generates a ClusterRole for a CRD delete Job that is compatible with all supported
+Kubernetes API versions.
+
+Usage:
+include "shared-library._crd-delete-clusterrole" (dict
+  "context" .
+  "config" .Values.crds
+)
+
+The consuming chart must provide:
+- crds/*.yaml or crds/*.yml
+
+NOTE: This internal specialty template does not support overriding.
+
+Params:
+  - context - Dict - Required. The top-level context for the template evaluation.
+  - config - Dict - Required. The context for the 'crds' config section.
+*/}}
+
+{{- define "shared-library._crd-delete-clusterrole" -}}
+{{- $ctx    := .context -}}
+{{- $config := .config  -}}
+{{- if $config.deleteOnUninstall -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "shared-library.fullname" $ctx }}-crd-delete
+  annotations:
+    "helm.sh/hook": post-delete
+    "helm.sh/hook-weight": "-15"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    {{- include "shared-library.labels" $ctx | nindent 4 }}
+rules:
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - get
+      - delete
+    resourceNames:
+    {{- $patterns := list "crds/*.yaml" "crds/*.yml" }}
+    {{- $found := false }}
+    {{- range $pattern := $patterns }}
+      {{- range $path, $_ := $ctx.Files.Glob $pattern }}
+        {{- $found = true }}
+      - {{ ($ctx.Files.Get $path | fromYaml).metadata.name }}
+      {{- end }}
+    {{- end }}
+    {{- if not $found }}
+      {{- fail "No CRD files found under crds/*.yaml or crds/*.yml" }}
+    {{- end }}
+{{- end }}
+{{- end -}}

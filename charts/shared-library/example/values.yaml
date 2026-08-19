@@ -673,3 +673,5 @@ crds:
       # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
       # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
       resources: {}
+  # -- deleteOnUninstall deletes all chart CRDs when the Helm release is uninstalled.
+  deleteOnUninstall: true

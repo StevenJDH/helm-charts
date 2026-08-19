@@ -57,6 +57,7 @@ helm upgrade --install my-example . \
 | command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | configMap | object | `{"configExample":"test"}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. |
 | containerPorts | object | `{"actuator":8081,"http":8080}` | containerPort is the port or ports that the container listens on. |
+| crds.deleteOnUninstall | bool | `true` | deleteOnUninstall deletes all chart CRDs when the Helm release is uninstalled. |
 | crds.upgradeJob.busybox.image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the strategy for pulling images from a registry. |
 | crds.upgradeJob.busybox.image.repository | string | `"busybox"` | repository holding the init container image used to decompress the `crds.tar.gz` archive. |
 | crds.upgradeJob.busybox.image.tag | string | `"1.38"` | Overrides the image tag whose default is `latest`. |
