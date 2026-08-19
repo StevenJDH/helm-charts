@@ -16,11 +16,11 @@ limitations under the License.
 */}}
 
 {{/*
-Generates a ConfigMap for a CRD upgrade Job that is compatible with all supported
-Kubernetes API versions.
+Generates a ConfigMap for CRD upgrade and delete Jobs that are compatible with all
+supported Kubernetes API versions.
 
 Usage:
-include "shared-library._crd-upgrade-configmap" (dict
+include "shared-library._crd-configmap" (dict
   "context" .
   "config" .Values.crds
 )
@@ -35,16 +35,16 @@ Params:
   - config - Dict - Required. The context for the 'crds' config section.
 */}}
 
-{{- define "shared-library._crd-upgrade-configmap" -}}
+{{- define "shared-library._crd-configmap" -}}
 {{- $ctx    := .context -}}
 {{- $config := .config  -}}
-{{- if $config.upgradeJob.enabled -}}
+{{- if or $config.upgradeJob.enabled $config.deleteOnUninstall -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "shared-library.fullname" $ctx }}-crds
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback
+    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback,post-delete
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
