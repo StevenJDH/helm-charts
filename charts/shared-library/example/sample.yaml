@@ -128,7 +128,7 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "P9Zw6"
+    rollme: "zFRjl"
   labels:
     helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
@@ -174,10 +174,10 @@ spec:
               - ALL
             readOnlyRootFilesystem: false
           envFrom:
-          - configMapRef:
-              name: example-config
-          - secretRef:
-              name: example-secret
+            - configMapRef:
+                name: example-config
+            - secretRef:
+                name: example-secret
           livenessProbe:
             failureThreshold: 5
             httpGet:
@@ -235,10 +235,10 @@ spec:
           image: "busybox:latest"
           imagePullPolicy: Always
           envFrom:
-          - configMapRef:
-              name: example-config
-          - secretRef:
-              name: example-secret
+            - configMapRef:
+                name: example-config
+            - secretRef:
+                name: example-secret
       restartPolicy: Never
       nodeSelector:
         kubernetes.io/os: linux
@@ -285,10 +285,10 @@ spec:
             image: "busybox:latest"
             imagePullPolicy: Always
             envFrom:
-            - configMapRef:
-                name: example-config
-            - secretRef:
-                name: example-secret
+              - configMapRef:
+                  name: example-config
+              - secretRef:
+                  name: example-secret
           restartPolicy: Never
           nodeSelector:
             kubernetes.io/os: linux

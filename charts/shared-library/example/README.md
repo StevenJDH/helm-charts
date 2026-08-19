@@ -71,6 +71,7 @@ helm upgrade --install my-example . \
 | cronjob.annotations | object | `{}` | annotations to be added to the CronJob resource. |
 | cronjob.job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
+| cronjob.job.extraEnvFrom | list | `[]` | Additional environment variables to import from Secrets or ConfigMaps. |
 | cronjob.job.extraEnvs | list | `[]` | Additional environment variables to set. |
 | cronjob.job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
 | cronjob.job.extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
@@ -84,6 +85,7 @@ helm upgrade --install my-example . \
 | cronjob.job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | cronjob.schedule | string | `"0 8 * * *"` | The Cron schedule to run a support status check. Default is 08:00 every day. |
 | extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
+| extraEnvFrom | list | `[]` | Additional environment variables to import from Secrets or ConfigMaps. |
 | extraEnvs | list | `[]` | Additional environment variables to set. |
 | extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
 | extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
@@ -104,6 +106,7 @@ helm upgrade --install my-example . \
 | job.annotations | object | `{}` | annotations to be added to the Job resource. |
 | job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
+| job.extraEnvFrom | list | `[]` | Additional environment variables to import from Secrets or ConfigMaps. |
 | job.extraEnvs | list | `[]` | Additional environment variables to set. |
 | job.image.containerNameOverride | string | `""` | Overrides the container name whose default is the chart name. |
 | job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |

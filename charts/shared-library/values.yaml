@@ -106,6 +106,13 @@ extraEnvs: []
 #       key: FOO
 #       name: secret-resource
 
+# -- Additional environment variables to import from Secrets or ConfigMaps.
+extraEnvFrom: []
+# - configMapRef:
+#     name: existing-foo-config
+# - secretRef:
+#     name: existing-bar-secret
+
 # @ignored
 podSecurityContext: {}
   # runAsNonRoot: true
@@ -434,6 +441,13 @@ cronjob:
     #       key: FOO
     #       name: secret-resource
 
+    # -- Additional environment variables to import from Secrets or ConfigMaps.
+    extraEnvFrom: []
+    # - configMapRef:
+    #     name: existing-foo-config
+    # - secretRef:
+    #     name: existing-bar-secret
+
     # -- Additional volumeMounts for the main container.
     extraVolumeMounts: []
     # - name: example-volume
@@ -520,6 +534,13 @@ job:
   #     secretKeyRef:
   #       key: FOO
   #       name: secret-resource
+
+  # -- Additional environment variables to import from Secrets or ConfigMaps.
+  extraEnvFrom: []
+  # - configMapRef:
+  #     name: existing-foo-config
+  # - secretRef:
+  #     name: existing-bar-secret
 
 # -- configMap is used to store non-confidential data in key-value pairs.
 # Quoting is required if the value is 0.

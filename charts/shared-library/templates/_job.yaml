@@ -111,15 +111,18 @@ spec:
           env:            
             {{- toYaml . | nindent 12 }}
           {{- end }}
-        {{- if or .Values.configMap .Values.secrets }}
+        {{- if or .Values.configMap .Values.secrets .Values.job.extraEnvFrom }}
           envFrom:
           {{- if .Values.configMap }}
-          - configMapRef:
-              name: {{ template "shared-library.fullname" . }}-config
+            - configMapRef:
+                name: {{ template "shared-library.fullname" . }}-config
           {{- end }}
           {{- if .Values.secrets }}
-          - secretRef:
-              name: {{ template "shared-library.fullname" . }}-secret
+            - secretRef:
+                name: {{ template "shared-library.fullname" . }}-secret
+          {{- end }}
+          {{- with .Values.job.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
         {{- end }}
           {{- with .Values.job.resources }}
