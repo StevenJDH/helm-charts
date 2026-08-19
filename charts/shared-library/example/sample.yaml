@@ -128,7 +128,7 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "gmbbG"
+    rollme: "P9Zw6"
   labels:
     helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
@@ -345,7 +345,7 @@ kind: ServiceAccount
 metadata:
   name: example-crd-upgrade
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback
+    "helm.sh/hook": pre-upgrade,pre-rollback
     "helm.sh/hook-weight": "-20"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
@@ -362,7 +362,7 @@ kind: ConfigMap
 metadata:
   name: example-crds
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback,post-delete
+    "helm.sh/hook": pre-upgrade,pre-rollback,post-delete
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
@@ -396,7 +396,8 @@ rules:
     resources:
       - customresourcedefinitions
     verbs:
-      - get
+      - list
+      - watch
       - delete
     resourceNames:
       - testresources.example.com
@@ -407,7 +408,7 @@ kind: ClusterRole
 metadata:
   name: example-crd-upgrade
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback
+    "helm.sh/hook": pre-upgrade,pre-rollback
     "helm.sh/hook-weight": "-15"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
@@ -460,7 +461,7 @@ kind: ClusterRoleBinding
 metadata:
   name: example-crd-upgrade
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback
+    "helm.sh/hook": pre-upgrade,pre-rollback
     "helm.sh/hook-weight": "-10"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
@@ -570,7 +571,7 @@ kind: Job
 metadata:
   name: example-crd-upgrade
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback
+    "helm.sh/hook": pre-upgrade,pre-rollback
     "helm.sh/hook-weight": "-0"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
@@ -616,6 +617,8 @@ spec:
           args:
             - apply
             - --server-side
+            - --field-manager=example-crd-upgrade
+            - --force-conflicts
             - -f
             - /crds
           volumeMounts:

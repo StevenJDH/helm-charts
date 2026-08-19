@@ -650,7 +650,8 @@ crds:
     # -- Indicates whether or not to enable a Helm hook that upgrades the CRDs using server-side apply.
     enabled: false
     # -- Indicates whether or not to force server-side apply to take ownership of conflicting fields.
-    forceConflicts: false
+    # This option is recommended as it will avoid conflicts with Helm's initial install ownership.
+    forceConflicts: true
     busybox:
       image:
         # -- repository holding the init container image used to decompress the `crds.tar.gz` archive.

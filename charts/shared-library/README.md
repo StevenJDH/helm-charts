@@ -65,7 +65,7 @@ kubectl get customresourcedefinition.apiextensions.k8s.io/testresources.example.
     --show-managed-fields
 ```
 
-Use the output to verify that the CRD changes were applied. The optional `--show-managed-fields` flag is useful when troubleshooting Server-Side Apply ownership conflicts that can cause upgrades to fail. This isn't common, but if a field being changed is owned by a different field manager than the default kubectl field manager, then set `crds.upgradeJob.forceConflicts` to `true`. This will allow the upgrade to automatically assume ownership of the conflicting fields and complete the upgrade successfully.
+Use the output to verify that the CRD changes were applied. The optional `--show-managed-fields` flag is useful when troubleshooting Server-Side Apply ownership conflicts that can cause upgrades to fail. These conflicts occur when a field being modified is owned by a different field manager, for example, Helm's initial install ownership. To avoid this scenario, keep `crds.upgradeJob.forceConflicts` is set to `true`. This will allow the upgrade to automatically assume ownership of the conflicting fields and complete the upgrade successfully.
 
 Finally, when testing locally, it may be necessary to use Helm's `--kube-version` flag like in the following example:
 
@@ -98,7 +98,7 @@ This is because when deploying the chart, the templates will automatically selec
 | crds.upgradeJob.busybox.image.tag | string | `""` | Overrides the image tag whose default is `latest`. |
 | crds.upgradeJob.busybox.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | crds.upgradeJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that upgrades the CRDs using server-side apply. |
-| crds.upgradeJob.forceConflicts | bool | `false` | Indicates whether or not to force server-side apply to take ownership of conflicting fields. |
+| crds.upgradeJob.forceConflicts | bool | `true` | Indicates whether or not to force server-side apply to take ownership of conflicting fields. This option is recommended as it will avoid conflicts with Helm's initial install ownership. |
 | crds.upgradeJob.kubectl.image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the strategy for pulling images from a registry. |
 | crds.upgradeJob.kubectl.image.repository | string | `"registry.k8s.io/kubectl"` | repository holding the container image used for applying changes to the CRDs. |
 | crds.upgradeJob.kubectl.image.tag | string | `""` | Overrides the image tag whose default is the kubernetes version. |

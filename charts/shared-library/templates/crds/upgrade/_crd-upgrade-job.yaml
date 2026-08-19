@@ -92,6 +92,7 @@ spec:
           args:
             - apply
             - --server-side
+            - --field-manager={{ include "shared-library.fullname" $ctx }}-crd-upgrade
             {{- if $config.upgradeJob.forceConflicts }}
             - --force-conflicts
             {{- end }}
