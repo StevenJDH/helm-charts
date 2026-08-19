@@ -55,7 +55,8 @@ rules:
     resources:
       - customresourcedefinitions
     verbs:
-      - get
+      - list
+      - watch
       - delete
     resourceNames:
     {{- $patterns := list "crds/*.yaml" "crds/*.yml" }}
