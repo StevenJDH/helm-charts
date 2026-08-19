@@ -41,3 +41,6 @@ spec:
                   type: string
                 enabled:
                   type: boolean
+                # ## Uncomment to test upgrade.
+                # description:
+                #   type: string
