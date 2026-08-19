@@ -39,7 +39,7 @@ Params:
 {{- define "shared-library.crd-upgrade" -}}
 {{- $config := .config  -}}
 {{- if $config.upgradeJob.enabled -}}
-{{ include "shared-library._crd-upgrade-configmap" . }}
+{{ include "shared-library._crd-configmap" . }}
 ---
 {{ include "shared-library._crd-upgrade-serviceaccount" . }}
 ---
