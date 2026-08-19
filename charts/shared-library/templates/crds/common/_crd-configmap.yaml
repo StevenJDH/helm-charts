@@ -44,7 +44,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "shared-library.fullname" $ctx }}-crds
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback,post-delete
+    "helm.sh/hook": pre-upgrade,pre-rollback,post-delete
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
