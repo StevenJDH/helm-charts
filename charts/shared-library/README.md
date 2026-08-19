@@ -9,6 +9,7 @@ A contract-based Helm library chart for Kubernetes.
 * Common templates and tools.
 * Built-in support for AWS IAM Roles for Service Accounts (IRSA) and Azure Workload Identities (AZWI).
 * Override support to allow for template customization.
+* Support for CRD upgrading, deleting, and handling rollbacks during the normal chart lifecycle.
 
 ## Source Code
 
@@ -45,6 +46,35 @@ helm dep update .
 > [!NOTE]  
 > Current version doesn't support multiple contexts, so only one instance of each template can be used.
 
+## CRD management hooks
+The `crd-upgrade` and `crd-delete` templates have been provided to support optionally upgrading CRDs and or deleting them when removing a chart. There are two requirements for using them:
+
+* The consuming chart must have a `crds` folder with only `*.yaml` or `*.yml` files.
+* The consuming chart must also have a `files` folder containing a `crds.tar.gz` file.
+
+To create the required archive file, run the following command from the root of the chart:
+
+```bash
+tar -cvzf files/crds.tar.gz -C crds -- *
+```
+
+This command will work on both Windows and Unix-based systems. To inspect a CRD for changes, for instance, using the one available in the example project, run this command:
+
+```bash
+kubectl get customresourcedefinition.apiextensions.k8s.io/testresources.example.com -o yaml \
+    --show-managed-fields
+```
+
+Use the output to verify that the CRD changes were applied. The optional `--show-managed-fields` flag is useful when troubleshooting Server-Side Apply ownership conflicts that can cause upgrades to fail. This isn't common, but if a field being changed is owned by a different field manager than the default kubectl field manager, then set `crds.upgradeJob.forceConflicts` to `true`. This will allow the upgrade to automatically assume ownership of the conflicting fields and complete the upgrade successfully.
+
+Finally, when testing locally, it may be necessary to use Helm's `--kube-version` flag like in the following example:
+
+```bash
+helm template example . --kube-version 1.30.13
+```
+
+This is because when deploying the chart, the templates will automatically select the kubectl image version that matches the Kubernetes version of the cluster if crds.upgradeJob.kubectl.image.tag is not explicitly set. However, when rendering templates locally, Helm uses its default Kubernetes version if the flag is omitted. Therefore, this flag is useful for aligning the rendered kubectl version with the target cluster or for testing chart version constraints.
+
 ## Values
 
 | Key | Type | Default | Description |
@@ -62,6 +92,7 @@ helm dep update .
 | command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. |
 | containerPorts | object | `{}` | containerPort is the port or ports that the container listens on. |
+| crds.deleteOnUninstall | bool | `false` | deleteOnUninstall deletes all chart CRDs when the Helm release is uninstalled. |
 | crds.upgradeJob.busybox.image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the strategy for pulling images from a registry. |
 | crds.upgradeJob.busybox.image.repository | string | `"busybox"` | repository holding the init container image used to decompress the `crds.tar.gz` archive. |
 | crds.upgradeJob.busybox.image.tag | string | `""` | Overrides the image tag whose default is `latest`. |
