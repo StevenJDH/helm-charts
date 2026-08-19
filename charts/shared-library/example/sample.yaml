@@ -128,7 +128,7 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "DybzU"
+    rollme: "odVYG"
   labels:
     helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
@@ -463,10 +463,12 @@ spec:
           image: "busybox:1.38"
           imagePullPolicy: IfNotPresent
           command:
-            - /bin/sh
-            - -ec
-            - |
-              tar -xzf /input/crds.tar.gz -C /crds
+            - tar
+          args:
+            - -xzf
+            - /input/crds.tar.gz
+            - -C
+            - /crds
           volumeMounts:
             - name: crd-archive
               mountPath: /input

@@ -16,15 +16,21 @@ limitations under the License.
 */}}
 
 {{/*
-Create a CRD upgrade Job.
+Generates a CRD upgrade Job that is compatible with all supported Kubernetes API versions.
 
-Expected input:
+Usage:
+include "shared-library._crd-upgrade-job" (dict
+  "context" .
+  "config" .Values.crds
+)
 
-  include "shared-library._crd-upgrade-job" (dict
-    "context" .
-    "config" .Values.crds
-  )
+NOTE: This internal specialty template does not support overriding.
+
+Params:
+  - context - Dict - Required. The top-level context for the template evaluation.
+  - config - Dict - Required. The context for the 'crds' config section.
 */}}
+
 {{- define "shared-library._crd-upgrade-job" -}}
 {{- $ctx    := .context -}}
 {{- $config := .config  -}}
@@ -54,10 +60,12 @@ spec:
           image: "{{ $config.upgradeJob.busybox.image.repository }}:{{ $config.upgradeJob.busybox.image.tag | default "latest" }}"
           imagePullPolicy: {{ $config.upgradeJob.busybox.image.pullPolicy | default "IfNotPresent" }}
           command:
-            - /bin/sh
-            - -ec
-            - |
-              tar -xzf /input/crds.tar.gz -C /crds
+            - tar
+          args:
+            - -xzf
+            - /input/crds.tar.gz
+            - -C
+            - /crds
           volumeMounts:
             - name: crd-archive
               mountPath: /input

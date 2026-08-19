@@ -16,23 +16,28 @@ limitations under the License.
 */}}
 
 {{/*
-Create the compressed CRD archive ConfigMap.
+Generates a ConfigMap for a CRD upgrade Job that is compatible with all supported
+Kubernetes API versions.
 
-Expected input:
-
-  include "shared-library._crd-upgrade-configmap" (dict
-    "context" .
-    "config" .Values.crds
-  )
+Usage:
+include "shared-library._crd-upgrade-configmap" (dict
+  "context" .
+  "config" .Values.crds
+)
 
 The consuming chart must provide:
+- files/crds.tar.gz
 
-  files/crds.tar.gz
+NOTE: This internal specialty template does not support overriding.
+
+Params:
+  - context - Dict - Required. The top-level context for the template evaluation.
+  - config - Dict - Required. The context for the 'crds' config section.
 */}}
+
 {{- define "shared-library._crd-upgrade-configmap" -}}
 {{- $ctx    := .context -}}
 {{- $config := .config  -}}
-
 {{- if $config.upgradeJob.enabled -}}
 apiVersion: v1
 kind: ConfigMap

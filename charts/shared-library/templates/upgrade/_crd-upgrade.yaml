@@ -16,15 +16,26 @@ limitations under the License.
 */}}
 
 {{/*
-CRD upgrade orchestration.
+Generates a set of resources for upgrading CRDs that are compatible with all supported
+Kubernetes API versions.
 
-Expected input:
+Usage:
+include "shared-library.crd-upgrade" (dict
+  "context" .
+  "config" .Values.crds
+)
 
-  include "shared-library.crd-upgrade" (dict
-    "context" .
-    "config" .Values.crds
-  )
+The consuming chart must provide:
+- crds/*.yaml or crds/*.yml
+- files/crds.tar.gz
+
+NOTE: This specialty orchestration template does not support overriding.
+
+Params:
+  - context - Dict - Required. The top-level context for the template evaluation.
+  - config - Dict - Required. The context for the 'crds' config section.
 */}}
+
 {{- define "shared-library.crd-upgrade" -}}
 {{- $config := .config  -}}
 {{- if $config.upgradeJob.enabled -}}

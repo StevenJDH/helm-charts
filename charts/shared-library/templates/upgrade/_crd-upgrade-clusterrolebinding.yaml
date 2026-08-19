@@ -16,15 +16,22 @@ limitations under the License.
 */}}
 
 {{/*
-Generate ClusterRoleBinding for a CRD upgrade Job.
+Generates a ClusterRoleBinding for a CRD upgrade Job that is compatible with all supported
+Kubernetes API versions.
 
-Expected input:
+Usage:
+include "shared-library._crd-upgrade-clusterrolebinding" (dict
+  "context" .
+  "config" .Values.crds
+)
 
-  include "shared-library._crd-upgrade-clusterrolebinding" (dict
-    "context" .
-    "config" .Values.crds
-  )
+NOTE: This internal specialty template does not support overriding.
+
+Params:
+  - context - Dict - Required. The top-level context for the template evaluation.
+  - config - Dict - Required. The context for the 'crds' config section.
 */}}
+
 {{- define "shared-library._crd-upgrade-clusterrolebinding" -}}
 {{- $ctx    := .context -}}
 {{- $config := .config  -}}
