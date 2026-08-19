@@ -90,7 +90,7 @@ This is because when deploying the chart, the templates will automatically selec
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods. |
 | autoscaling.template | list | `[]` | template provides custom or additional autoscaling metrics that are not built in to Kubernetes or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics). |
 | command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
-| configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. |
+| configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE). |
 | containerPorts | object | `{}` | containerPort is the port or ports that the container listens on. |
 | crds.deleteOnUninstall | bool | `false` | deleteOnUninstall deletes all chart CRDs when the Helm release is uninstalled. |
 | crds.upgradeJob.busybox.image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the strategy for pulling images from a registry. |
@@ -173,7 +173,7 @@ This is because when deploying the chart, the templates will automatically selec
 | replicaCount | int | `1` | replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | restartPolicy | string | `"Always"` | restartPolicy defines how a pod will automatically repair itself when a problem arises. Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy). |
-| secrets | object | `{}` | secrets is used to store confidential data in key-value pairs. Quoting is required if the value is 0. |
+| secrets | object | `{}` | secrets is used to store confidential data in key-value pairs. Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE). |
 | service.annotations | object | `{}` | annotations to be added to the Service resource. |
 | service.appProtocol | bool | `true` | appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example, `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http`. See the following GitHub issue for more details [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions older than 1.20. |
 | service.clusterIP | string | `""` | clusterIP allows for customizing the cluster IP address of a service resource. |

@@ -48,7 +48,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   {{- range $key, $val := .Values.configMap }}
-  {{- if $val }}
+  {{- if and (ne $val nil) (ne (toString $val) "") }}
   {{ $key | snakecase | upper }}: {{ $val | quote }}
   {{- end }}
   {{- end }}

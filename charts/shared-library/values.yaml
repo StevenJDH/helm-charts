@@ -543,12 +543,12 @@ job:
   #     name: existing-bar-secret
 
 # -- configMap is used to store non-confidential data in key-value pairs.
-# Quoting is required if the value is 0.
+# Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE).
 configMap: {}
   # key: value
 
 # -- secrets is used to store confidential data in key-value pairs.
-# Quoting is required if the value is 0.
+# Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE).
 secrets: {}
   # key: value
 
