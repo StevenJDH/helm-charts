@@ -542,6 +542,22 @@ job:
   # - secretRef:
   #     name: existing-bar-secret
 
+  # -- Additional volumeMounts for the main container.
+  extraVolumeMounts: []
+  # - name: example-volume
+  #   mountPath: /share/example
+
+  # -- Additional volumes for the pod.
+  extraVolumes: []
+  # - name: example-volume
+  #   emptyDir: {}
+
+  # -- Containers, which are run before the app containers are started.
+  extraInitContainers: []
+  # - name: init-myservice
+  #   image: busybox
+  #   command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+
 # -- configMap is used to store non-confidential data in key-value pairs.
 # Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE).
 configMap:

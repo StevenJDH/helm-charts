@@ -108,6 +108,9 @@ helm upgrade --install my-example . \
 | job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | job.extraEnvFrom | list | `[]` | Additional environment variables to import from Secrets or ConfigMaps. |
 | job.extraEnvs | list | `[]` | Additional environment variables to set. |
+| job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
+| job.extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
+| job.extraVolumes | list | `[]` | Additional volumes for the pod. |
 | job.image.containerNameOverride | string | `""` | Overrides the container name whose default is the chart name. |
 | job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |
 | job.image.repositoryOverride | string | `"busybox"` | Overrides the repository holding the container image. |

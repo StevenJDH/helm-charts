@@ -65,7 +65,7 @@ kubectl get customresourcedefinition.apiextensions.k8s.io/testresources.example.
     --show-managed-fields
 ```
 
-Use the output to verify that the CRD changes were applied. The optional `--show-managed-fields` flag is useful when troubleshooting Server-Side Apply ownership conflicts that can cause upgrades to fail. These conflicts occur when a field being modified is owned by a different field manager, for example, Helm's initial install ownership. To avoid this scenario, keep `crds.upgradeJob.forceConflicts` is set to `true`. This will allow the upgrade to automatically assume ownership of the conflicting fields and complete the upgrade successfully.
+Use the output to verify that the CRD changes were applied. The optional `--show-managed-fields` flag is useful when troubleshooting Server-Side Apply ownership conflicts that can cause upgrades to fail. These conflicts occur when a field being modified is owned by a different field manager, for example, Helm's initial install ownership. To avoid this scenario, keep `crds.upgradeJob.forceConflicts` set to `true`. This will allow the upgrade to automatically assume ownership of the conflicting fields and complete the upgrade successfully.
 
 Finally, when testing locally, it may be necessary to use Helm's `--kube-version` flag like in the following example:
 
@@ -143,6 +143,9 @@ This is because when deploying the chart, the templates will automatically selec
 | job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | job.extraEnvFrom | list | `[]` | Additional environment variables to import from Secrets or ConfigMaps. |
 | job.extraEnvs | list | `[]` | Additional environment variables to set. |
+| job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
+| job.extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
+| job.extraVolumes | list | `[]` | Additional volumes for the pod. |
 | job.image.containerNameOverride | string | `""` | Overrides the container name whose default is the chart name. |
 | job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |
 | job.image.repositoryOverride | string | `""` | Overrides the repository holding the container image. |

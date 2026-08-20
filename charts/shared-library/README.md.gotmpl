@@ -61,7 +61,7 @@ kubectl get customresourcedefinition.apiextensions.k8s.io/testresources.example.
     --show-managed-fields
 ```
 
-Use the output to verify that the CRD changes were applied. The optional `--show-managed-fields` flag is useful when troubleshooting Server-Side Apply ownership conflicts that can cause upgrades to fail. These conflicts occur when a field being modified is owned by a different field manager, for example, Helm's initial install ownership. To avoid this scenario, keep `crds.upgradeJob.forceConflicts` is set to `true`. This will allow the upgrade to automatically assume ownership of the conflicting fields and complete the upgrade successfully.
+Use the output to verify that the CRD changes were applied. The optional `--show-managed-fields` flag is useful when troubleshooting Server-Side Apply ownership conflicts that can cause upgrades to fail. These conflicts occur when a field being modified is owned by a different field manager, for example, Helm's initial install ownership. To avoid this scenario, keep `crds.upgradeJob.forceConflicts` set to `true`. This will allow the upgrade to automatically assume ownership of the conflicting fields and complete the upgrade successfully.
 
 Finally, when testing locally, it may be necessary to use Helm's `--kube-version` flag like in the following example:
 
