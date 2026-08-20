@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.21.0
     platform.confluent.io/app-version: 3.3.0
     platform.confluent.io/chart-version: v0.1718.10
-  name: schemas.platform.confluent.io
+  name: cmfrestclasses.platform.confluent.io
 spec:
   group: platform.confluent.io
   names:
@@ -14,34 +14,18 @@ spec:
       - all
       - confluent-platform
       - confluent
-    kind: Schema
-    listKind: SchemaList
-    plural: schemas
+    kind: CMFRestClass
+    listKind: CMFRestClassList
+    plural: cmfrestclasses
     shortNames:
-      - schema
-    singular: schema
+      - cmfrestclass
+    singular: cmfrestclass
   scope: Namespaced
   versions:
     - additionalPrinterColumns:
-        - jsonPath: .status.format
-          name: Format
-          type: string
-        - jsonPath: .status.id
-          name: ID
-          type: string
-        - jsonPath: .status.version
-          name: Version
-          type: string
-        - jsonPath: .status.state
-          name: Status
-          type: string
         - jsonPath: .metadata.creationTimestamp
           name: Age
           type: date
-        - jsonPath: .status.schemaRegistryEndpoint
-          name: SchemaRegistryEndpoint
-          priority: 1
-          type: string
       name: v1beta1
       schema:
         openAPIV3Schema:
@@ -54,108 +38,7 @@ spec:
               type: object
             spec:
               properties:
-                compatibilityLevel:
-                  enum:
-                    - BACKWARD
-                    - BACKWARD_TRANSITIVE
-                    - FORWARD
-                    - FORWARD_TRANSITIVE
-                    - FULL
-                    - FULL_TRANSITIVE
-                    - NONE
-                  type: string
-                data:
-                  properties:
-                    configRef:
-                      minLength: 1
-                      type: string
-                    format:
-                      enum:
-                        - avro
-                        - json
-                        - protobuf
-                      minLength: 1
-                      type: string
-                  required:
-                    - configRef
-                    - format
-                  type: object
-                mode:
-                  enum:
-                    - IMPORT
-                    - READONLY
-                    - READWRITE
-                  type: string
-                name:
-                  maxLength: 255
-                  minLength: 1
-                  pattern: ^[^\\]*$
-                  type: string
-                normalize:
-                  type: boolean
-                schemaReferences:
-                  items:
-                    properties:
-                      avro:
-                        properties:
-                          avro:
-                            minLength: 1
-                            type: string
-                        required:
-                          - avro
-                        type: object
-                      format:
-                        enum:
-                          - avro
-                          - json
-                          - protobuf
-                        minLength: 1
-                        type: string
-                      json:
-                        properties:
-                          url:
-                            minLength: 1
-                            type: string
-                        required:
-                          - url
-                        type: object
-                      name:
-                        type: string
-                      protobuf:
-                        properties:
-                          file:
-                            minLength: 1
-                            type: string
-                        required:
-                          - file
-                        type: object
-                      subject:
-                        minLength: 1
-                        type: string
-                      version:
-                        anyOf:
-                          - type: integer
-                          - type: string
-                        x-kubernetes-int-or-string: true
-                        x-kubernetes-validations:
-                          - message: version must be 'latest' or a positive integer
-                            rule: self == 'latest' || self > 0
-                    required:
-                      - format
-                      - subject
-                      - version
-                    type: object
-                  type: array
-                schemaRegistryClusterRef:
-                  properties:
-                    name:
-                      type: string
-                    namespace:
-                      type: string
-                  required:
-                    - name
-                  type: object
-                schemaRegistryRest:
+                cmfRest:
                   properties:
                     authentication:
                       properties:
@@ -310,9 +193,6 @@ spec:
                       minLength: 1
                       pattern: ^https?://.*
                       type: string
-                    kafkaClusterID:
-                      minLength: 1
-                      type: string
                     tls:
                       properties:
                         directoryPathInContainer:
@@ -336,20 +216,10 @@ spec:
                       type: object
                   type: object
               required:
-                - data
+                - cmfRest
               type: object
             status:
               properties:
-                appState:
-                  default: Unknown
-                  enum:
-                    - Unknown
-                    - Created
-                    - Failed
-                    - Deleted
-                  type: string
-                compatibilityLevel:
-                  type: string
                 conditions:
                   items:
                     properties:
@@ -369,92 +239,14 @@ spec:
                         type: string
                     type: object
                   type: array
-                deletedVersions:
-                  items:
-                    format: int32
-                    type: integer
-                  type: array
-                format:
+                endpoint:
                   type: string
-                id:
-                  format: int32
-                  type: integer
-                mode:
-                  type: string
-                normalize:
-                  type: boolean
                 observedGeneration:
                   format: int64
                   type: integer
-                schemaReferences:
-                  items:
-                    properties:
-                      avro:
-                        properties:
-                          avro:
-                            minLength: 1
-                            type: string
-                        required:
-                          - avro
-                        type: object
-                      format:
-                        enum:
-                          - avro
-                          - json
-                          - protobuf
-                        minLength: 1
-                        type: string
-                      json:
-                        properties:
-                          url:
-                            minLength: 1
-                            type: string
-                        required:
-                          - url
-                        type: object
-                      name:
-                        type: string
-                      protobuf:
-                        properties:
-                          file:
-                            minLength: 1
-                            type: string
-                        required:
-                          - file
-                        type: object
-                      subject:
-                        minLength: 1
-                        type: string
-                      version:
-                        format: int32
-                        type: integer
-                    required:
-                      - format
-                      - subject
-                      - version
-                    type: object
-                  type: array
-                schemaRegistryAuthenticationType:
-                  type: string
-                schemaRegistryEndpoint:
-                  type: string
-                schemaRegistryTLS:
-                  type: boolean
-                softDeletedVersions:
-                  items:
-                    format: int32
-                    type: integer
-                  type: array
                 state:
                   type: string
-                subject:
-                  type: string
-                version:
-                  format: int32
-                  type: integer
               type: object
-          required:
-            - spec
           type: object
       served: true
       storage: true

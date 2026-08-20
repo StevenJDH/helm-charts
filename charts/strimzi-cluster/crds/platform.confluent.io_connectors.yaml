@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.21.0
     platform.confluent.io/app-version: 3.3.0
     platform.confluent.io/chart-version: v0.1718.10
-  name: schemas.platform.confluent.io
+  name: connectors.platform.confluent.io
 spec:
   group: platform.confluent.io
   names:
@@ -14,32 +14,46 @@ spec:
       - all
       - confluent-platform
       - confluent
-    kind: Schema
-    listKind: SchemaList
-    plural: schemas
+    kind: Connector
+    listKind: ConnectorList
+    plural: connectors
     shortNames:
-      - schema
-    singular: schema
+      - ctr
+      - connector
+    singular: connector
   scope: Namespaced
   versions:
     - additionalPrinterColumns:
-        - jsonPath: .status.format
-          name: Format
-          type: string
-        - jsonPath: .status.id
-          name: ID
-          type: string
-        - jsonPath: .status.version
-          name: Version
-          type: string
         - jsonPath: .status.state
           name: Status
+          type: string
+        - jsonPath: .status.connectorState
+          name: ConnectorStatus
+          type: string
+        - jsonPath: .status.tasksReady
+          name: Tasks-Ready
           type: string
         - jsonPath: .metadata.creationTimestamp
           name: Age
           type: date
-        - jsonPath: .status.schemaRegistryEndpoint
-          name: SchemaRegistryEndpoint
+        - jsonPath: .status.connectRestEndpoint
+          name: ConnectEndpoint
+          priority: 1
+          type: string
+        - jsonPath: .status.failedTasksCount
+          name: Tasks-Failed
+          priority: 1
+          type: string
+        - jsonPath: .status.workerID
+          name: WorkerID
+          priority: 1
+          type: string
+        - jsonPath: .status.restartPolicy.type
+          name: RestartPolicy
+          priority: 1
+          type: string
+        - jsonPath: .status.kafkaClusterID
+          name: KafkaClusterID
           priority: 1
           type: string
       name: v1beta1
@@ -54,99 +68,15 @@ spec:
               type: object
             spec:
               properties:
-                compatibilityLevel:
-                  enum:
-                    - BACKWARD
-                    - BACKWARD_TRANSITIVE
-                    - FORWARD
-                    - FORWARD_TRANSITIVE
-                    - FULL
-                    - FULL_TRANSITIVE
-                    - NONE
-                  type: string
-                data:
-                  properties:
-                    configRef:
-                      minLength: 1
-                      type: string
-                    format:
-                      enum:
-                        - avro
-                        - json
-                        - protobuf
-                      minLength: 1
-                      type: string
-                  required:
-                    - configRef
-                    - format
-                  type: object
-                mode:
-                  enum:
-                    - IMPORT
-                    - READONLY
-                    - READWRITE
-                  type: string
-                name:
-                  maxLength: 255
+                class:
                   minLength: 1
-                  pattern: ^[^\\]*$
                   type: string
-                normalize:
-                  type: boolean
-                schemaReferences:
-                  items:
-                    properties:
-                      avro:
-                        properties:
-                          avro:
-                            minLength: 1
-                            type: string
-                        required:
-                          - avro
-                        type: object
-                      format:
-                        enum:
-                          - avro
-                          - json
-                          - protobuf
-                        minLength: 1
-                        type: string
-                      json:
-                        properties:
-                          url:
-                            minLength: 1
-                            type: string
-                        required:
-                          - url
-                        type: object
-                      name:
-                        type: string
-                      protobuf:
-                        properties:
-                          file:
-                            minLength: 1
-                            type: string
-                        required:
-                          - file
-                        type: object
-                      subject:
-                        minLength: 1
-                        type: string
-                      version:
-                        anyOf:
-                          - type: integer
-                          - type: string
-                        x-kubernetes-int-or-string: true
-                        x-kubernetes-validations:
-                          - message: version must be 'latest' or a positive integer
-                            rule: self == 'latest' || self > 0
-                    required:
-                      - format
-                      - subject
-                      - version
-                    type: object
-                  type: array
-                schemaRegistryClusterRef:
+                configs:
+                  additionalProperties:
+                    type: string
+                  type: object
+                  x-kubernetes-map-type: granular
+                connectClusterRef:
                   properties:
                     name:
                       type: string
@@ -155,7 +85,7 @@ spec:
                   required:
                     - name
                   type: object
-                schemaRegistryRest:
+                connectRest:
                   properties:
                     authentication:
                       properties:
@@ -335,8 +265,32 @@ spec:
                           type: string
                       type: object
                   type: object
+                name:
+                  maxLength: 255
+                  minLength: 1
+                  pattern: ^[a-zA-Z0-9\._\-]*$
+                  type: string
+                restartPolicy:
+                  properties:
+                    maxRetry:
+                      format: int32
+                      minimum: 1
+                      type: integer
+                    type:
+                      enum:
+                        - OnFailure
+                        - Never
+                      type: string
+                  required:
+                    - type
+                  type: object
+                taskMax:
+                  format: int32
+                  minimum: 1
+                  type: integer
               required:
-                - data
+                - class
+                - taskMax
               type: object
             status:
               properties:
@@ -347,8 +301,6 @@ spec:
                     - Created
                     - Failed
                     - Deleted
-                  type: string
-                compatibilityLevel:
                   type: string
                 conditions:
                   items:
@@ -369,89 +321,58 @@ spec:
                         type: string
                     type: object
                   type: array
-                deletedVersions:
-                  items:
-                    format: int32
-                    type: integer
-                  type: array
-                format:
+                connectRestEndpoint:
                   type: string
-                id:
+                connectorState:
+                  type: string
+                failedTasks:
+                  additionalProperties:
+                    properties:
+                      id:
+                        format: int32
+                        type: integer
+                      retryCount:
+                        format: int32
+                        type: integer
+                      workerID:
+                        type: string
+                    required:
+                      - id
+                    type: object
+                  type: object
+                  x-kubernetes-map-type: granular
+                failedTasksCount:
                   format: int32
                   type: integer
-                mode:
+                kafkaClusterID:
                   type: string
-                normalize:
-                  type: boolean
+                lastConfigVersion:
+                  type: string
                 observedGeneration:
                   format: int64
                   type: integer
-                schemaReferences:
-                  items:
-                    properties:
-                      avro:
-                        properties:
-                          avro:
-                            minLength: 1
-                            type: string
-                        required:
-                          - avro
-                        type: object
-                      format:
-                        enum:
-                          - avro
-                          - json
-                          - protobuf
-                        minLength: 1
-                        type: string
-                      json:
-                        properties:
-                          url:
-                            minLength: 1
-                            type: string
-                        required:
-                          - url
-                        type: object
-                      name:
-                        type: string
-                      protobuf:
-                        properties:
-                          file:
-                            minLength: 1
-                            type: string
-                        required:
-                          - file
-                        type: object
-                      subject:
-                        minLength: 1
-                        type: string
-                      version:
-                        format: int32
-                        type: integer
-                    required:
-                      - format
-                      - subject
-                      - version
-                    type: object
-                  type: array
-                schemaRegistryAuthenticationType:
-                  type: string
-                schemaRegistryEndpoint:
-                  type: string
-                schemaRegistryTLS:
-                  type: boolean
-                softDeletedVersions:
-                  items:
-                    format: int32
-                    type: integer
-                  type: array
+                restartPolicy:
+                  properties:
+                    maxRetry:
+                      format: int32
+                      minimum: 1
+                      type: integer
+                    type:
+                      enum:
+                        - OnFailure
+                        - Never
+                      type: string
+                  required:
+                    - type
+                  type: object
                 state:
                   type: string
-                subject:
+                tasksReady:
                   type: string
-                version:
-                  format: int32
-                  type: integer
+                trace:
+                  type: string
+                workerID:
+                  type: string
               type: object
           required:
             - spec

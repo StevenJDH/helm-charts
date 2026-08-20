@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.21.0
     platform.confluent.io/app-version: 3.3.0
     platform.confluent.io/chart-version: v0.1718.10
-  name: schemas.platform.confluent.io
+  name: kafkatopics.platform.confluent.io
 spec:
   group: platform.confluent.io
   names:
@@ -14,32 +14,33 @@ spec:
       - all
       - confluent-platform
       - confluent
-    kind: Schema
-    listKind: SchemaList
-    plural: schemas
+    kind: KafkaTopic
+    listKind: KafkaTopicList
+    plural: kafkatopics
     shortNames:
-      - schema
-    singular: schema
+      - kt
+      - topic
+    singular: kafkatopic
   scope: Namespaced
   versions:
     - additionalPrinterColumns:
-        - jsonPath: .status.format
-          name: Format
+        - jsonPath: .status.replicas
+          name: Replicas
           type: string
-        - jsonPath: .status.id
-          name: ID
-          type: string
-        - jsonPath: .status.version
-          name: Version
+        - jsonPath: .status.partitionCount
+          name: Partition
           type: string
         - jsonPath: .status.state
           name: Status
           type: string
+        - jsonPath: .status.kafkaClusterID
+          name: ClusterID
+          type: string
         - jsonPath: .metadata.creationTimestamp
           name: Age
           type: date
-        - jsonPath: .status.schemaRegistryEndpoint
-          name: SchemaRegistryEndpoint
+        - jsonPath: .status.kafkaCluster
+          name: KafkaCluster
           priority: 1
           type: string
       name: v1beta1
@@ -54,99 +55,12 @@ spec:
               type: object
             spec:
               properties:
-                compatibilityLevel:
-                  enum:
-                    - BACKWARD
-                    - BACKWARD_TRANSITIVE
-                    - FORWARD
-                    - FORWARD_TRANSITIVE
-                    - FULL
-                    - FULL_TRANSITIVE
-                    - NONE
-                  type: string
-                data:
-                  properties:
-                    configRef:
-                      minLength: 1
-                      type: string
-                    format:
-                      enum:
-                        - avro
-                        - json
-                        - protobuf
-                      minLength: 1
-                      type: string
-                  required:
-                    - configRef
-                    - format
+                configs:
+                  additionalProperties:
+                    type: string
                   type: object
-                mode:
-                  enum:
-                    - IMPORT
-                    - READONLY
-                    - READWRITE
-                  type: string
-                name:
-                  maxLength: 255
-                  minLength: 1
-                  pattern: ^[^\\]*$
-                  type: string
-                normalize:
-                  type: boolean
-                schemaReferences:
-                  items:
-                    properties:
-                      avro:
-                        properties:
-                          avro:
-                            minLength: 1
-                            type: string
-                        required:
-                          - avro
-                        type: object
-                      format:
-                        enum:
-                          - avro
-                          - json
-                          - protobuf
-                        minLength: 1
-                        type: string
-                      json:
-                        properties:
-                          url:
-                            minLength: 1
-                            type: string
-                        required:
-                          - url
-                        type: object
-                      name:
-                        type: string
-                      protobuf:
-                        properties:
-                          file:
-                            minLength: 1
-                            type: string
-                        required:
-                          - file
-                        type: object
-                      subject:
-                        minLength: 1
-                        type: string
-                      version:
-                        anyOf:
-                          - type: integer
-                          - type: string
-                        x-kubernetes-int-or-string: true
-                        x-kubernetes-validations:
-                          - message: version must be 'latest' or a positive integer
-                            rule: self == 'latest' || self > 0
-                    required:
-                      - format
-                      - subject
-                      - version
-                    type: object
-                  type: array
-                schemaRegistryClusterRef:
+                  x-kubernetes-map-type: granular
+                kafkaClusterRef:
                   properties:
                     name:
                       type: string
@@ -155,7 +69,7 @@ spec:
                   required:
                     - name
                   type: object
-                schemaRegistryRest:
+                kafkaRest:
                   properties:
                     authentication:
                       properties:
@@ -335,8 +249,27 @@ spec:
                           type: string
                       type: object
                   type: object
-              required:
-                - data
+                kafkaRestClassRef:
+                  properties:
+                    name:
+                      minLength: 1
+                      type: string
+                    namespace:
+                      type: string
+                  required:
+                    - name
+                  type: object
+                name:
+                  maxLength: 255
+                  minLength: 1
+                  pattern: ^[a-zA-Z0-9\._\-]*$
+                  type: string
+                partitionCount:
+                  format: int32
+                  type: integer
+                replicas:
+                  format: int32
+                  type: integer
               type: object
             status:
               properties:
@@ -347,8 +280,6 @@ spec:
                     - Created
                     - Failed
                     - Deleted
-                  type: string
-                compatibilityLevel:
                   type: string
                 conditions:
                   items:
@@ -369,92 +300,24 @@ spec:
                         type: string
                     type: object
                   type: array
-                deletedVersions:
-                  items:
-                    format: int32
-                    type: integer
-                  type: array
-                format:
+                kafkaCluster:
                   type: string
-                id:
-                  format: int32
-                  type: integer
-                mode:
+                kafkaClusterID:
                   type: string
-                normalize:
-                  type: boolean
+                kafkaRestEndpoint:
+                  type: string
                 observedGeneration:
                   format: int64
                   type: integer
-                schemaReferences:
-                  items:
-                    properties:
-                      avro:
-                        properties:
-                          avro:
-                            minLength: 1
-                            type: string
-                        required:
-                          - avro
-                        type: object
-                      format:
-                        enum:
-                          - avro
-                          - json
-                          - protobuf
-                        minLength: 1
-                        type: string
-                      json:
-                        properties:
-                          url:
-                            minLength: 1
-                            type: string
-                        required:
-                          - url
-                        type: object
-                      name:
-                        type: string
-                      protobuf:
-                        properties:
-                          file:
-                            minLength: 1
-                            type: string
-                        required:
-                          - file
-                        type: object
-                      subject:
-                        minLength: 1
-                        type: string
-                      version:
-                        format: int32
-                        type: integer
-                    required:
-                      - format
-                      - subject
-                      - version
-                    type: object
-                  type: array
-                schemaRegistryAuthenticationType:
-                  type: string
-                schemaRegistryEndpoint:
-                  type: string
-                schemaRegistryTLS:
-                  type: boolean
-                softDeletedVersions:
-                  items:
-                    format: int32
-                    type: integer
-                  type: array
-                state:
-                  type: string
-                subject:
-                  type: string
-                version:
+                partitionCount:
                   format: int32
                   type: integer
+                replicas:
+                  format: int32
+                  type: integer
+                state:
+                  type: string
               type: object
-          required:
-            - spec
           type: object
       served: true
       storage: true

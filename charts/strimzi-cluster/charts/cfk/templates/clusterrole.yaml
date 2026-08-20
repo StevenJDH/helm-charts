@@ -70,8 +70,16 @@ rules:
   - apps
   resources:
   - deployments
+  - deployments/scale
+  - deployments/status
   verbs:
-  - get
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
 - apiGroups:
   - ""
   resources:
@@ -90,6 +98,30 @@ rules:
   - update
   - patch
   - delete
+# Hot-reload canary (Gateway): operator creates/observes Jobs to validate new
+# config before promoting it into the shared ConfigMap. See
+# pkg/workflow/hotreload.
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+# pods/log is a subresource and needs its own rule. Used by the canary
+# workflow to capture the last ~50 log lines from a failed canary pod into
+# the Gateway's HotReload status condition.
+- apiGroups:
+  - ""
+  resources:
+  - pods/log
+  verbs:
+  - get
 {{- if gt (int (.Values.replicas)) 1 }}
 - apiGroups:
   - coordination.k8s.io

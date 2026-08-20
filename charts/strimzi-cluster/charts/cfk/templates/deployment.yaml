@@ -68,7 +68,7 @@ spec:
         {{- range $i, $v := .Values.namespaceList }}
         {{- $ns =  printf "%s,%s" $ns (trim $v) }}
         {{- end }}
-        - --namespaces={{ substr 1 (len $ns) $ns }} 
+        - --namespaces={{ substr 1 (len $ns) $ns }}
         {{- end }}
         {{- end }}
         name: {{ .Values.name }}
@@ -103,6 +103,20 @@ spec:
             value: {{ .Values.name }}
           - name: CONFLUENT_SERVICE_ACCOUNT_NAME
             value: {{ template "confluent-operator.service-account" . }}
+          - name: CONFLUENT_VAP_CR_LOCK_ENABLED
+            value: {{ if and .Values.vapPolicies.enabled (.Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1/ValidatingAdmissionPolicy") }}"true"{{ else }}"false"{{ end }}
+        {{- if .Values.restrictCrossNamespaceKafkaRestClassUsage }}
+          - name: RESTRICT_CROSS_NAMESPACE_KAFKARESTCLASS_USAGE
+            value: "{{ .Values.restrictCrossNamespaceKafkaRestClassUsage }}"
+        {{- end }}
+        {{- if .Values.restrictCrossNamespaceCMFRestClassUsage }}
+          - name: RESTRICT_CROSS_NAMESPACE_CMFRESTCLASS_USAGE
+            value: "{{ .Values.restrictCrossNamespaceCMFRestClassUsage }}"
+        {{- end }}
+        {{- range .Values.customEnvVars }}
+          - name: {{ .name }}
+            value: {{ .value | quote }}
+        {{- end }}
         {{- if .Values.numDay2Worker }}
           - name: DEFAULT_DAY2_WORKER
             value: "{{ .Values.numDay2Worker }}"
@@ -110,13 +124,28 @@ spec:
         {{- if .Values.enableCMFDay2Ops }}
           - name: ENABLE_CMF_DAY2_OPS
             value: "{{ .Values.enableCMFDay2Ops }}"
-         {{- end }}
+        {{- end }}
+        {{- if eq (toString .Values.enableFlinkSQL) "true" }}
+          - name: CFK_FLINK_SQL_CONTROLLERS_ENABLED
+            value: "true"
+        {{- end }}
         {{- if .Values.managedCerts.enabled }}
           {{- if and (empty .Values.managedCerts.caCertificate.secretRef) (empty .Values.managedCerts.caCertificate.directoryPathInContainer) }}
-          {{- $_ := required "secretRef or directoryPathInContainer must be configured when managedCerts is enabled" .Values.managedCerts.secretRef }}
+          {{- $_ := required "caCertificate.secretRef or caCertificate.directoryPathInContainer must be configured when managedCerts is enabled" .Values.managedCerts.secretRef }}
           {{- end }}
           {{- if ge (.Values.managedCerts.renewBeforeInDays) (.Values.managedCerts.certDurationInDays) }}
           {{- $_ := required "managedCerts.certDurationInDays for managed certs should be greater than managedCerts.renewBeforeInDays" "" }}
+          {{- end }}
+          {{- if or (.Values.managedCerts.oldCaCertificate.secretRef) (.Values.managedCerts.oldCaCertificate.directoryPathInContainer) }}
+            {{- if and (empty .Values.managedCerts.caCertificate.secretRef) (empty .Values.managedCerts.caCertificate.directoryPathInContainer) }}
+            {{- $_ := required "oldCaCertificate can only be configured when caCertificate is also configured" "" }}
+            {{- end }}
+            {{- if and (.Values.managedCerts.oldCaCertificate.secretRef) (eq .Values.managedCerts.oldCaCertificate.secretRef .Values.managedCerts.caCertificate.secretRef) }}
+            {{- $_ := required "oldCaCertificate.secretRef cannot be the same as caCertificate.secretRef" "" }}
+            {{- end }}
+            {{- if and (.Values.managedCerts.oldCaCertificate.directoryPathInContainer) (eq .Values.managedCerts.oldCaCertificate.directoryPathInContainer .Values.managedCerts.caCertificate.directoryPathInContainer) }}
+            {{- $_ := required "oldCaCertificate.directoryPathInContainer cannot be the same as caCertificate.directoryPathInContainer" "" }}
+            {{- end }}
           {{- end }}
           {{- if .Values.managedCerts.certDurationInDays }}
           - name: CONFLUENT_MANAGED_CERTS_DURATION_DAYS
@@ -140,6 +169,14 @@ spec:
           {{- if .Values.managedCerts.caCertificate.directoryPathInContainer }}
           - name: CONFLUENT_MANAGED_CERTS_DIRECTORY_PATH
             value: {{ .Values.managedCerts.caCertificate.directoryPathInContainer }}
+          {{- end }}
+          {{- if .Values.managedCerts.oldCaCertificate.secretRef }}
+          - name: CONFLUENT_MANAGED_CERTS_OLD_SECRET_NAME
+            value: {{ .Values.managedCerts.oldCaCertificate.secretRef }}
+          {{- end }}
+          {{- if .Values.managedCerts.oldCaCertificate.directoryPathInContainer }}
+          - name: CONFLUENT_MANAGED_CERTS_OLD_DIRECTORY_PATH
+            value: {{ .Values.managedCerts.oldCaCertificate.directoryPathInContainer }}
           {{- end }}
         {{- end }}
           {{- if .Values.licenseSecretRef }}

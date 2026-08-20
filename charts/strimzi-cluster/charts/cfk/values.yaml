@@ -54,6 +54,25 @@ managedCerts:
     ##
     directoryPathInContainer: ""
   ##
+  ## Old CA certificate pair for CA rotation support. This is optional and only used
+  ## during CA rotation to maintain backward compatibility by including both old and new
+  ## CA certificates in the truststore.
+  ##
+  oldCaCertificate:
+    ##
+    ## Old CA pair secret reference name is injected through
+    ## CONFLUENT_MANAGED_CERTS_OLD_SECRET_NAME environment variable.
+    ## The expected keys are tls.crt and tls.key for old CA Certificate and old CA Certificate Key
+    ## respectively.
+    ##
+    secretRef: ""
+    ## The directoryPathInContainer value for old CA pair certificates are injected through
+    ## CONFLUENT_MANAGED_CERTS_OLD_DIRECTORY_PATH environment variable.
+    ## The expected files are tls.crt and tls.key for old CA Certificate and old CA Certificate Key
+    ## respectively.
+    ##
+    directoryPathInContainer: ""
+  ##
   ## Validity for Auto-generated certificates is injected through
   ## CONFLUENT_MANAGED_CERTS_DURATION_DAYS environment variable.
   ##
@@ -81,7 +100,7 @@ image:
   registry: docker.io
   repository: confluentinc/confluent-operator
   pullPolicy: IfNotPresent
-  tag: "0.1145.6"
+  tag: "0.1718.10"
 
 ###
 ## Priority class for Confluent Operator pod
@@ -115,12 +134,42 @@ debug: false
 ## Enable Fips Mode
 ##
 fipsmode: false
+## Restrict cross-namespace KafkaRestClass usage
+## When enabled, resources cannot reference KafkaRestClasses from other namespaces
+##
+restrictCrossNamespaceKafkaRestClassUsage: false
+## Restrict cross-namespace CMFRestClass usage
+## When enabled, resources cannot reference CMFRestClasses from other namespaces
+##
+restrictCrossNamespaceCMFRestClassUsage: false
 ## Set number of day2 workers
 ##
 numDay2Worker: ""
-## Enables CMF (Control Management for Flink)
-## This is a feature flag to enable CFK's Day2 Integration with CMF
-enableCMFDay2Ops: false
+## Enables CMF (Confluent Manager for Apache Flink) integration.
+##
+## When true (default), the operator registers the CFK 2.10 Flink controllers
+## (CMFRestClass, FlinkEnvironment, FlinkApplication) and — if enableFlinkSQL
+## is also true — the RFC 68 SQL controllers. Set to false to disable ALL
+## Flink-related controllers (legacy + SQL) for emergency disable, environments
+## without CMF, or debugging.
+##
+enableCMFDay2Ops: true
+## Enables the Flink SQL controllers (preview).
+##
+## When true, the operator registers the Flink SQL controllers introduced in
+## RFC 68 (FlinkComputePool, FlinkKafkaCatalog, FlinkKafkaDatabase,
+## FlinkStatement, FlinkSecret, FlinkEnvironmentSecretMapping) by setting
+## CFK_FLINK_SQL_CONTROLLERS_ENABLED=true on the operator pod. CRDs are always
+## installed by the chart, regardless of this flag.
+##
+## These controllers ship as preview in CFK 3.3.0 and default to off; opt in
+## explicitly to pick up the preview behavior. The CFK 2.10 controllers stay
+## auto-enabled via enableCMFDay2Ops and are not gated by this flag.
+##
+## enableCMFDay2Ops takes precedence: setting enableCMFDay2Ops=false disables
+## the SQL controllers regardless of enableFlinkSQL.
+##
+enableFlinkSQL: false
 ##
 ## Configure affinity,
 ## More information here https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -222,6 +271,13 @@ telemetry:
 kRaftEnabled: false
 
 ###
+### Validating Admission Policy (VAP) configuration
+## VAP enforces KRaft migration CR lock via CEL expressions evaluated by the API server.
+## Requires the ValidatingAdmissionPolicy API to be available in the cluster. No TLS certs or webhook server needed.
+vapPolicies:
+  enabled: true
+
+###
 ### Webhooks configuration
 ## To enable webhooks, it requires TLS certificates to set up webhook server,
 ## which used for secure communication between webhook server and kubernetes api server.
@@ -270,3 +326,11 @@ licenseSecretRef: ""
 mountedVolumes:
   volumes: []
   volumeMounts: []
+
+## Example
+## customEnvVars:
+##   - name: HTTP_PROXY
+##     value: "http://proxy.example.com:3128"
+##   - name: HTTPS_PROXY
+##     value: "http://proxy.example.com:3128"
+customEnvVars: []

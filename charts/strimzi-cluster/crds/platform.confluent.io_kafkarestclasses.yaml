@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.21.0
     platform.confluent.io/app-version: 3.3.0
     platform.confluent.io/chart-version: v0.1718.10
-  name: schemas.platform.confluent.io
+  name: kafkarestclasses.platform.confluent.io
 spec:
   group: platform.confluent.io
   names:
@@ -14,32 +14,27 @@ spec:
       - all
       - confluent-platform
       - confluent
-    kind: Schema
-    listKind: SchemaList
-    plural: schemas
+    kind: KafkaRestClass
+    listKind: KafkaRestClassList
+    plural: kafkarestclasses
     shortNames:
-      - schema
-    singular: schema
+      - krc
+      - kafkarestclass
+    singular: kafkarestclass
   scope: Namespaced
   versions:
     - additionalPrinterColumns:
-        - jsonPath: .status.format
-          name: Format
+        - jsonPath: .status.endpoint
+          name: Endpoint
           type: string
-        - jsonPath: .status.id
-          name: ID
-          type: string
-        - jsonPath: .status.version
-          name: Version
-          type: string
-        - jsonPath: .status.state
-          name: Status
+        - jsonPath: .status.kafkaClusterID
+          name: KafkaClusterID
           type: string
         - jsonPath: .metadata.creationTimestamp
           name: Age
           type: date
-        - jsonPath: .status.schemaRegistryEndpoint
-          name: SchemaRegistryEndpoint
+        - jsonPath: .spec.kafkaClusterRef.name
+          name: KafkaRef
           priority: 1
           type: string
       name: v1beta1
@@ -54,99 +49,7 @@ spec:
               type: object
             spec:
               properties:
-                compatibilityLevel:
-                  enum:
-                    - BACKWARD
-                    - BACKWARD_TRANSITIVE
-                    - FORWARD
-                    - FORWARD_TRANSITIVE
-                    - FULL
-                    - FULL_TRANSITIVE
-                    - NONE
-                  type: string
-                data:
-                  properties:
-                    configRef:
-                      minLength: 1
-                      type: string
-                    format:
-                      enum:
-                        - avro
-                        - json
-                        - protobuf
-                      minLength: 1
-                      type: string
-                  required:
-                    - configRef
-                    - format
-                  type: object
-                mode:
-                  enum:
-                    - IMPORT
-                    - READONLY
-                    - READWRITE
-                  type: string
-                name:
-                  maxLength: 255
-                  minLength: 1
-                  pattern: ^[^\\]*$
-                  type: string
-                normalize:
-                  type: boolean
-                schemaReferences:
-                  items:
-                    properties:
-                      avro:
-                        properties:
-                          avro:
-                            minLength: 1
-                            type: string
-                        required:
-                          - avro
-                        type: object
-                      format:
-                        enum:
-                          - avro
-                          - json
-                          - protobuf
-                        minLength: 1
-                        type: string
-                      json:
-                        properties:
-                          url:
-                            minLength: 1
-                            type: string
-                        required:
-                          - url
-                        type: object
-                      name:
-                        type: string
-                      protobuf:
-                        properties:
-                          file:
-                            minLength: 1
-                            type: string
-                        required:
-                          - file
-                        type: object
-                      subject:
-                        minLength: 1
-                        type: string
-                      version:
-                        anyOf:
-                          - type: integer
-                          - type: string
-                        x-kubernetes-int-or-string: true
-                        x-kubernetes-validations:
-                          - message: version must be 'latest' or a positive integer
-                            rule: self == 'latest' || self > 0
-                    required:
-                      - format
-                      - subject
-                      - version
-                    type: object
-                  type: array
-                schemaRegistryClusterRef:
+                kafkaClusterRef:
                   properties:
                     name:
                       type: string
@@ -155,7 +58,7 @@ spec:
                   required:
                     - name
                   type: object
-                schemaRegistryRest:
+                kafkaRest:
                   properties:
                     authentication:
                       properties:
@@ -335,21 +238,198 @@ spec:
                           type: string
                       type: object
                   type: object
-              required:
-                - data
+                secondaryKafkaClusterRef:
+                  properties:
+                    name:
+                      type: string
+                    namespace:
+                      type: string
+                  required:
+                    - name
+                  type: object
+                secondaryKafkaRest:
+                  properties:
+                    authentication:
+                      properties:
+                        basic:
+                          properties:
+                            debug:
+                              type: boolean
+                            directoryPathInContainer:
+                              minLength: 1
+                              type: string
+                            ignoreRoles:
+                              type: boolean
+                            restrictedRoles:
+                              items:
+                                type: string
+                              minItems: 1
+                              type: array
+                            roles:
+                              items:
+                                type: string
+                              type: array
+                            secretRef:
+                              maxLength: 30
+                              minLength: 1
+                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                              type: string
+                          type: object
+                        bearer:
+                          properties:
+                            directoryPathInContainer:
+                              minLength: 1
+                              type: string
+                            secretRef:
+                              maxLength: 30
+                              minLength: 1
+                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                              type: string
+                          type: object
+                        oauth:
+                          properties:
+                            configuration:
+                              properties:
+                                audience:
+                                  minLength: 1
+                                  type: string
+                                clientAssertion:
+                                  properties:
+                                    clientId:
+                                      minLength: 1
+                                      type: string
+                                    jwtTokenFile:
+                                      properties:
+                                        directoryPathInContainer:
+                                          minLength: 1
+                                          type: string
+                                        secretRef:
+                                          maxLength: 30
+                                          minLength: 1
+                                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                          type: string
+                                      type: object
+                                    localClientAssertion:
+                                      properties:
+                                        audience:
+                                          minLength: 1
+                                          type: string
+                                        includeJtiClaim:
+                                          type: boolean
+                                        includeNbfClaim:
+                                          type: boolean
+                                        issuer:
+                                          minLength: 1
+                                          type: string
+                                        privateKeyFile:
+                                          properties:
+                                            directoryPathInContainer:
+                                              minLength: 1
+                                              type: string
+                                            encryptedPrivateKey:
+                                              type: boolean
+                                            includeAssertionTemplate:
+                                              type: boolean
+                                            secretRef:
+                                              maxLength: 30
+                                              minLength: 1
+                                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                                              type: string
+                                          type: object
+                                        subject:
+                                          minLength: 1
+                                          type: string
+                                        tokenLifetime:
+                                          format: int32
+                                          type: integer
+                                      type: object
+                                  type: object
+                                expectedIssuer:
+                                  minLength: 1
+                                  type: string
+                                groupsClaimName:
+                                  minLength: 1
+                                  type: string
+                                jwksEndpointUri:
+                                  minLength: 1
+                                  type: string
+                                loginConnectTimeoutMs:
+                                  format: int32
+                                  type: integer
+                                loginReadTimeoutMs:
+                                  format: int32
+                                  type: integer
+                                loginRetryBackoffMaxMs:
+                                  format: int32
+                                  type: integer
+                                loginRetryBackoffMs:
+                                  format: int32
+                                  type: integer
+                                scope:
+                                  minLength: 1
+                                  type: string
+                                subClaimName:
+                                  minLength: 1
+                                  type: string
+                                tokenEndpointUri:
+                                  minLength: 1
+                                  type: string
+                              type: object
+                            directoryPathInContainer:
+                              minLength: 1
+                              type: string
+                            secretRef:
+                              maxLength: 30
+                              minLength: 1
+                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                              type: string
+                          required:
+                            - configuration
+                          type: object
+                        sslClientAuthentication:
+                          type: boolean
+                        type:
+                          enum:
+                            - basic
+                            - bearer
+                            - mtls
+                            - oauth
+                          type: string
+                      required:
+                        - type
+                      type: object
+                    endpoint:
+                      minLength: 1
+                      pattern: ^https?://.*
+                      type: string
+                    kafkaClusterID:
+                      minLength: 1
+                      type: string
+                    tls:
+                      properties:
+                        directoryPathInContainer:
+                          minLength: 1
+                          type: string
+                        jksPassword:
+                          properties:
+                            secretRef:
+                              maxLength: 30
+                              minLength: 1
+                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                              type: string
+                          required:
+                            - secretRef
+                          type: object
+                        secretRef:
+                          maxLength: 63
+                          minLength: 1
+                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                          type: string
+                      type: object
+                  type: object
               type: object
             status:
               properties:
-                appState:
-                  default: Unknown
-                  enum:
-                    - Unknown
-                    - Created
-                    - Failed
-                    - Deleted
-                  type: string
-                compatibilityLevel:
-                  type: string
                 conditions:
                   items:
                     properties:
@@ -369,88 +449,12 @@ spec:
                         type: string
                     type: object
                   type: array
-                deletedVersions:
-                  items:
-                    format: int32
-                    type: integer
-                  type: array
-                format:
+                endpoint:
                   type: string
-                id:
-                  format: int32
-                  type: integer
-                mode:
+                kafkaClusterID:
                   type: string
-                normalize:
-                  type: boolean
                 observedGeneration:
                   format: int64
-                  type: integer
-                schemaReferences:
-                  items:
-                    properties:
-                      avro:
-                        properties:
-                          avro:
-                            minLength: 1
-                            type: string
-                        required:
-                          - avro
-                        type: object
-                      format:
-                        enum:
-                          - avro
-                          - json
-                          - protobuf
-                        minLength: 1
-                        type: string
-                      json:
-                        properties:
-                          url:
-                            minLength: 1
-                            type: string
-                        required:
-                          - url
-                        type: object
-                      name:
-                        type: string
-                      protobuf:
-                        properties:
-                          file:
-                            minLength: 1
-                            type: string
-                        required:
-                          - file
-                        type: object
-                      subject:
-                        minLength: 1
-                        type: string
-                      version:
-                        format: int32
-                        type: integer
-                    required:
-                      - format
-                      - subject
-                      - version
-                    type: object
-                  type: array
-                schemaRegistryAuthenticationType:
-                  type: string
-                schemaRegistryEndpoint:
-                  type: string
-                schemaRegistryTLS:
-                  type: boolean
-                softDeletedVersions:
-                  items:
-                    format: int32
-                    type: integer
-                  type: array
-                state:
-                  type: string
-                subject:
-                  type: string
-                version:
-                  format: int32
                   type: integer
               type: object
           required:

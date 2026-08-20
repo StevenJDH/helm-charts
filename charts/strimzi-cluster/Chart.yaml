@@ -63,7 +63,7 @@ dependencies:
     condition: strimzi-drain-cleaner.enabled
   - name: confluent-for-kubernetes
     alias: schemaregistry_operator
-    version: "0.1145.6"
+    version: "0.1718.10"
     repository: "file://charts/cfk/"
     condition: schemaregistry_operator.enabled
   - name: shared-library

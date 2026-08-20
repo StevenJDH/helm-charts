@@ -6,41 +6,17 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.21.0
     platform.confluent.io/app-version: 3.3.0
     platform.confluent.io/chart-version: v0.1718.10
-  name: schemaregistries.platform.confluent.io
+  name: usmagents.platform.confluent.io
 spec:
   group: platform.confluent.io
   names:
-    categories:
-      - all
-      - confluent-platform
-      - confluent
-    kind: SchemaRegistry
-    listKind: SchemaRegistryList
-    plural: schemaregistries
-    shortNames:
-      - schemaregistry
-      - sr
-    singular: schemaregistry
+    kind: USMAgent
+    listKind: USMAgentList
+    plural: usmagents
+    singular: usmagent
   scope: Namespaced
   versions:
-    - additionalPrinterColumns:
-        - jsonPath: .status.replicas
-          name: Replicas
-          type: string
-        - jsonPath: .status.readyReplicas
-          name: Ready
-          type: string
-        - jsonPath: .status.phase
-          name: Status
-          type: string
-        - jsonPath: .metadata.creationTimestamp
-          name: Age
-          type: date
-        - jsonPath: .status.kafka.bootstrapEndpoint
-          name: Kafka
-          priority: 1
-          type: string
-      name: v1beta1
+    - name: v1beta1
       schema:
         openAPIV3Schema:
           properties:
@@ -56,557 +32,55 @@ spec:
                   properties:
                     basic:
                       properties:
-                        debug:
-                          type: boolean
-                        directoryPathInContainer:
-                          minLength: 1
-                          type: string
-                        ignoreRoles:
-                          type: boolean
-                        restrictedRoles:
-                          items:
-                            type: string
-                          minItems: 1
-                          type: array
-                        roles:
-                          items:
-                            type: string
-                          type: array
                         secretRef:
                           maxLength: 30
                           minLength: 1
                           pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                           type: string
-                      type: object
-                    mtls:
-                      properties:
-                        principalMappingRules:
-                          items:
-                            type: string
-                          type: array
-                        sslClientAuthentication:
-                          enum:
-                            - required
-                            - requested
-                          type: string
-                      type: object
-                    oauth:
-                      properties:
-                        configuration:
-                          properties:
-                            audience:
-                              minLength: 1
-                              type: string
-                            clientAssertion:
-                              properties:
-                                clientId:
-                                  minLength: 1
-                                  type: string
-                                jwtTokenFile:
-                                  properties:
-                                    directoryPathInContainer:
-                                      minLength: 1
-                                      type: string
-                                    secretRef:
-                                      maxLength: 30
-                                      minLength: 1
-                                      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                      type: string
-                                  type: object
-                                localClientAssertion:
-                                  properties:
-                                    audience:
-                                      minLength: 1
-                                      type: string
-                                    includeJtiClaim:
-                                      type: boolean
-                                    includeNbfClaim:
-                                      type: boolean
-                                    issuer:
-                                      minLength: 1
-                                      type: string
-                                    privateKeyFile:
-                                      properties:
-                                        directoryPathInContainer:
-                                          minLength: 1
-                                          type: string
-                                        encryptedPrivateKey:
-                                          type: boolean
-                                        includeAssertionTemplate:
-                                          type: boolean
-                                        secretRef:
-                                          maxLength: 30
-                                          minLength: 1
-                                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                          type: string
-                                      type: object
-                                    subject:
-                                      minLength: 1
-                                      type: string
-                                    tokenLifetime:
-                                      format: int32
-                                      type: integer
-                                  type: object
-                              type: object
-                            expectedIssuer:
-                              minLength: 1
-                              type: string
-                            groupsClaimName:
-                              minLength: 1
-                              type: string
-                            jwksEndpointUri:
-                              minLength: 1
-                              type: string
-                            loginConnectTimeoutMs:
-                              format: int32
-                              type: integer
-                            loginReadTimeoutMs:
-                              format: int32
-                              type: integer
-                            loginRetryBackoffMaxMs:
-                              format: int32
-                              type: integer
-                            loginRetryBackoffMs:
-                              format: int32
-                              type: integer
-                            scope:
-                              minLength: 1
-                              type: string
-                            subClaimName:
-                              minLength: 1
-                              type: string
-                            tokenEndpointUri:
-                              minLength: 1
-                              type: string
-                          type: object
-                        directoryPathInContainer:
-                          minLength: 1
-                          type: string
-                        secretRef:
-                          maxLength: 30
-                          minLength: 1
-                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                          type: string
-                      required:
-                        - configuration
                       type: object
                     type:
                       enum:
                         - basic
                         - mtls
-                        - oauth
-                      type: string
-                  required:
-                    - type
-                  type: object
-                authorization:
-                  properties:
-                    kafkaRestClassRef:
-                      properties:
-                        name:
-                          minLength: 1
-                          type: string
-                        namespace:
-                          type: string
-                      required:
-                        - name
-                      type: object
-                    type:
-                      enum:
-                        - rbac
                       type: string
                   required:
                     - type
                   type: object
                 configOverrides:
                   properties:
-                    jvm:
-                      items:
-                        type: string
-                      type: array
-                    log4j:
-                      items:
-                        type: string
-                      type: array
-                    log4j2:
-                      x-kubernetes-preserve-unknown-fields: true
                     server:
                       items:
                         type: string
                       type: array
                   type: object
-                dependencies:
+                confluentCloudClient:
                   properties:
-                    kafka:
+                    authentication:
                       properties:
-                        authentication:
+                        basic:
                           properties:
-                            jaasConfig:
-                              properties:
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              required:
-                                - secretRef
-                              type: object
-                            jaasConfigPassThrough:
-                              properties:
-                                directoryPathInContainer:
-                                  minLength: 1
-                                  type: string
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              type: object
-                            oauthSettings:
-                              properties:
-                                audience:
-                                  minLength: 1
-                                  type: string
-                                clientAssertion:
-                                  properties:
-                                    clientId:
-                                      minLength: 1
-                                      type: string
-                                    jwtTokenFile:
-                                      properties:
-                                        directoryPathInContainer:
-                                          minLength: 1
-                                          type: string
-                                        secretRef:
-                                          maxLength: 30
-                                          minLength: 1
-                                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                          type: string
-                                      type: object
-                                    localClientAssertion:
-                                      properties:
-                                        audience:
-                                          minLength: 1
-                                          type: string
-                                        includeJtiClaim:
-                                          type: boolean
-                                        includeNbfClaim:
-                                          type: boolean
-                                        issuer:
-                                          minLength: 1
-                                          type: string
-                                        privateKeyFile:
-                                          properties:
-                                            directoryPathInContainer:
-                                              minLength: 1
-                                              type: string
-                                            encryptedPrivateKey:
-                                              type: boolean
-                                            includeAssertionTemplate:
-                                              type: boolean
-                                            secretRef:
-                                              maxLength: 30
-                                              minLength: 1
-                                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                              type: string
-                                          type: object
-                                        subject:
-                                          minLength: 1
-                                          type: string
-                                        tokenLifetime:
-                                          format: int32
-                                          type: integer
-                                      type: object
-                                  type: object
-                                expectedIssuer:
-                                  minLength: 1
-                                  type: string
-                                groupsClaimName:
-                                  minLength: 1
-                                  type: string
-                                jwksEndpointUri:
-                                  minLength: 1
-                                  type: string
-                                loginConnectTimeoutMs:
-                                  format: int32
-                                  type: integer
-                                loginReadTimeoutMs:
-                                  format: int32
-                                  type: integer
-                                loginRetryBackoffMaxMs:
-                                  format: int32
-                                  type: integer
-                                loginRetryBackoffMs:
-                                  format: int32
-                                  type: integer
-                                scope:
-                                  minLength: 1
-                                  type: string
-                                subClaimName:
-                                  minLength: 1
-                                  type: string
-                                tokenEndpointUri:
-                                  minLength: 1
-                                  type: string
-                              type: object
-                            oauthbearer:
-                              properties:
-                                directoryPathInContainer:
-                                  minLength: 1
-                                  type: string
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              type: object
-                            sslClientAuthentication:
-                              type: boolean
-                            type:
-                              enum:
-                                - plain
-                                - oauthbearer
-                                - digest
-                                - mtls
-                                - oauth
-                                - none
-                              type: string
-                          required:
-                            - type
-                          type: object
-                        bootstrapEndpoint:
-                          minLength: 1
-                          pattern: .+:[0-9]+
-                          type: string
-                        discovery:
-                          properties:
-                            name:
-                              type: string
-                            namespace:
-                              type: string
                             secretRef:
                               maxLength: 30
                               minLength: 1
                               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                               type: string
-                          required:
-                            - name
                           type: object
-                        tls:
-                          properties:
-                            directoryPathInContainer:
-                              minLength: 1
-                              type: string
-                            enabled:
-                              type: boolean
-                            ignoreTrustStoreConfig:
-                              type: boolean
-                            jksPassword:
-                              properties:
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              required:
-                                - secretRef
-                              type: object
-                            secretRef:
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                            - enabled
-                          type: object
-                      type: object
-                    mds:
-                      properties:
-                        authentication:
-                          properties:
-                            bearer:
-                              properties:
-                                directoryPathInContainer:
-                                  minLength: 1
-                                  type: string
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              type: object
-                            oauth:
-                              properties:
-                                configuration:
-                                  properties:
-                                    audience:
-                                      minLength: 1
-                                      type: string
-                                    clientAssertion:
-                                      properties:
-                                        clientId:
-                                          minLength: 1
-                                          type: string
-                                        jwtTokenFile:
-                                          properties:
-                                            directoryPathInContainer:
-                                              minLength: 1
-                                              type: string
-                                            secretRef:
-                                              maxLength: 30
-                                              minLength: 1
-                                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                              type: string
-                                          type: object
-                                        localClientAssertion:
-                                          properties:
-                                            audience:
-                                              minLength: 1
-                                              type: string
-                                            includeJtiClaim:
-                                              type: boolean
-                                            includeNbfClaim:
-                                              type: boolean
-                                            issuer:
-                                              minLength: 1
-                                              type: string
-                                            privateKeyFile:
-                                              properties:
-                                                directoryPathInContainer:
-                                                  minLength: 1
-                                                  type: string
-                                                encryptedPrivateKey:
-                                                  type: boolean
-                                                includeAssertionTemplate:
-                                                  type: boolean
-                                                secretRef:
-                                                  maxLength: 30
-                                                  minLength: 1
-                                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                                  type: string
-                                              type: object
-                                            subject:
-                                              minLength: 1
-                                              type: string
-                                            tokenLifetime:
-                                              format: int32
-                                              type: integer
-                                          type: object
-                                      type: object
-                                    expectedIssuer:
-                                      minLength: 1
-                                      type: string
-                                    groupsClaimName:
-                                      minLength: 1
-                                      type: string
-                                    jwksEndpointUri:
-                                      minLength: 1
-                                      type: string
-                                    loginConnectTimeoutMs:
-                                      format: int32
-                                      type: integer
-                                    loginReadTimeoutMs:
-                                      format: int32
-                                      type: integer
-                                    loginRetryBackoffMaxMs:
-                                      format: int32
-                                      type: integer
-                                    loginRetryBackoffMs:
-                                      format: int32
-                                      type: integer
-                                    scope:
-                                      minLength: 1
-                                      type: string
-                                    subClaimName:
-                                      minLength: 1
-                                      type: string
-                                    tokenEndpointUri:
-                                      minLength: 1
-                                      type: string
-                                  type: object
-                                directoryPathInContainer:
-                                  minLength: 1
-                                  type: string
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              required:
-                                - configuration
-                              type: object
-                            sslClientAuthentication:
-                              type: boolean
-                            type:
-                              enum:
-                                - bearer
-                                - oauth
-                                - mtls
-                              type: string
-                          type: object
-                        endpoint:
-                          minLength: 1
-                          pattern: ^https?://.*
-                          type: string
-                        ssoProtocol:
+                        type:
                           enum:
-                            - ldap
-                            - oidc
+                            - basic
                           type: string
-                        tls:
-                          properties:
-                            directoryPathInContainer:
-                              minLength: 1
-                              type: string
-                            enabled:
-                              type: boolean
-                            ignoreTrustStoreConfig:
-                              type: boolean
-                            jksPassword:
-                              properties:
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              required:
-                                - secretRef
-                              type: object
-                            secretRef:
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                            - enabled
-                          type: object
-                        tokenKeyPair:
-                          properties:
-                            directoryPathInContainer:
-                              minLength: 1
-                              type: string
-                            encryptedTokenKey:
-                              type: boolean
-                            secretRef:
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          type: object
                       required:
-                        - authentication
-                        - endpoint
-                        - tokenKeyPair
+                        - type
                       type: object
+                    endpoint:
+                      type: string
+                    environmentId:
+                      type: string
+                  required:
+                    - authentication
+                    - endpoint
+                    - environmentId
                   type: object
-                enableDekRegistry:
-                  type: boolean
-                enableExternalInterInstance:
-                  type: boolean
-                enableSchemaExporter:
-                  type: boolean
-                enableSchemaImporter:
-                  type: boolean
                 externalAccess:
                   properties:
                     loadBalancer:
@@ -814,21 +288,6 @@ spec:
                   required:
                     - type
                   type: object
-                headlessService:
-                  properties:
-                    annotations:
-                      additionalProperties:
-                        type: string
-                      type: object
-                      x-kubernetes-map-type: granular
-                    labels:
-                      additionalProperties:
-                        type: string
-                      type: object
-                      x-kubernetes-map-type: granular
-                    publishNotReadyAddresses:
-                      type: boolean
-                  type: object
                 image:
                   properties:
                     application:
@@ -861,425 +320,8 @@ spec:
                     type: string
                   type: object
                   x-kubernetes-map-type: granular
-                internalTopicReplicatorFactor:
-                  format: int32
-                  minimum: 1
-                  type: integer
                 k8sClusterDomain:
                   type: string
-                license:
-                  properties:
-                    directoryPathInContainer:
-                      minLength: 1
-                      type: string
-                    globalLicense:
-                      type: boolean
-                    secretRef:
-                      maxLength: 30
-                      minLength: 1
-                      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                      type: string
-                  type: object
-                listeners:
-                  properties:
-                    external:
-                      properties:
-                        externalAccess:
-                          properties:
-                            loadBalancer:
-                              properties:
-                                advertisedURL:
-                                  properties:
-                                    enabled:
-                                      type: boolean
-                                    prefix:
-                                      minLength: 1
-                                      type: string
-                                  required:
-                                    - enabled
-                                  type: object
-                                annotations:
-                                  additionalProperties:
-                                    type: string
-                                  type: object
-                                  x-kubernetes-map-type: granular
-                                domain:
-                                  minLength: 1
-                                  type: string
-                                externalTrafficPolicy:
-                                  enum:
-                                    - Local
-                                    - Cluster
-                                  type: string
-                                labels:
-                                  additionalProperties:
-                                    type: string
-                                  type: object
-                                  x-kubernetes-map-type: granular
-                                loadBalancerSourceRanges:
-                                  items:
-                                    type: string
-                                  type: array
-                                port:
-                                  format: int32
-                                  type: integer
-                                prefix:
-                                  minLength: 1
-                                  type: string
-                                servicePorts:
-                                  items:
-                                    properties:
-                                      appProtocol:
-                                        type: string
-                                      name:
-                                        type: string
-                                      nodePort:
-                                        format: int32
-                                        type: integer
-                                      port:
-                                        format: int32
-                                        type: integer
-                                      protocol:
-                                        default: TCP
-                                        type: string
-                                      targetPort:
-                                        anyOf:
-                                          - type: integer
-                                          - type: string
-                                        x-kubernetes-int-or-string: true
-                                    required:
-                                      - port
-                                    type: object
-                                  type: array
-                                sessionAffinity:
-                                  enum:
-                                    - ClientIP
-                                    - None
-                                  type: string
-                                sessionAffinityConfig:
-                                  properties:
-                                    clientIP:
-                                      properties:
-                                        timeoutSeconds:
-                                          format: int32
-                                          type: integer
-                                      type: object
-                                  type: object
-                              required:
-                                - domain
-                              type: object
-                            nodePort:
-                              properties:
-                                advertisedURL:
-                                  properties:
-                                    enabled:
-                                      type: boolean
-                                    prefix:
-                                      minLength: 1
-                                      type: string
-                                  required:
-                                    - enabled
-                                  type: object
-                                annotations:
-                                  additionalProperties:
-                                    type: string
-                                  type: object
-                                  x-kubernetes-map-type: granular
-                                externalTrafficPolicy:
-                                  enum:
-                                    - Local
-                                    - Cluster
-                                  type: string
-                                host:
-                                  minLength: 1
-                                  type: string
-                                labels:
-                                  additionalProperties:
-                                    type: string
-                                  type: object
-                                  x-kubernetes-map-type: granular
-                                nodePortOffset:
-                                  format: int32
-                                  minimum: 0
-                                  type: integer
-                                servicePorts:
-                                  items:
-                                    properties:
-                                      appProtocol:
-                                        type: string
-                                      name:
-                                        type: string
-                                      nodePort:
-                                        format: int32
-                                        type: integer
-                                      port:
-                                        format: int32
-                                        type: integer
-                                      protocol:
-                                        default: TCP
-                                        type: string
-                                      targetPort:
-                                        anyOf:
-                                          - type: integer
-                                          - type: string
-                                        x-kubernetes-int-or-string: true
-                                    required:
-                                      - port
-                                    type: object
-                                  type: array
-                                sessionAffinity:
-                                  enum:
-                                    - ClientIP
-                                    - None
-                                  type: string
-                                sessionAffinityConfig:
-                                  properties:
-                                    clientIP:
-                                      properties:
-                                        timeoutSeconds:
-                                          format: int32
-                                          type: integer
-                                      type: object
-                                  type: object
-                              required:
-                                - host
-                                - nodePortOffset
-                              type: object
-                            route:
-                              properties:
-                                advertisedURL:
-                                  properties:
-                                    enabled:
-                                      type: boolean
-                                    prefix:
-                                      minLength: 1
-                                      type: string
-                                  required:
-                                    - enabled
-                                  type: object
-                                annotations:
-                                  additionalProperties:
-                                    type: string
-                                  type: object
-                                  x-kubernetes-map-type: granular
-                                domain:
-                                  minLength: 1
-                                  type: string
-                                labels:
-                                  additionalProperties:
-                                    type: string
-                                  type: object
-                                  x-kubernetes-map-type: granular
-                                prefix:
-                                  minLength: 1
-                                  type: string
-                                wildcardPolicy:
-                                  enum:
-                                    - Subdomain
-                                    - None
-                                  type: string
-                              required:
-                                - domain
-                              type: object
-                            type:
-                              enum:
-                                - loadBalancer
-                                - nodePort
-                                - route
-                              minLength: 1
-                              type: string
-                          required:
-                            - type
-                          type: object
-                        tls:
-                          properties:
-                            directoryPathInContainer:
-                              minLength: 1
-                              type: string
-                            enabled:
-                              type: boolean
-                            ignoreTrustStoreConfig:
-                              type: boolean
-                            jksPassword:
-                              properties:
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              required:
-                                - secretRef
-                              type: object
-                            secretRef:
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                            - enabled
-                          type: object
-                      type: object
-                    internal:
-                      properties:
-                        port:
-                          format: int32
-                          minimum: 9093
-                          type: integer
-                        tls:
-                          properties:
-                            directoryPathInContainer:
-                              minLength: 1
-                              type: string
-                            enabled:
-                              type: boolean
-                            ignoreTrustStoreConfig:
-                              type: boolean
-                            jksPassword:
-                              properties:
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              required:
-                                - secretRef
-                              type: object
-                            secretRef:
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                            - enabled
-                          type: object
-                      type: object
-                  type: object
-                metrics:
-                  properties:
-                    authentication:
-                      properties:
-                        type:
-                          enum:
-                            - mtls
-                          type: string
-                      required:
-                        - type
-                      type: object
-                    jmx:
-                      properties:
-                        accessControl:
-                          properties:
-                            directoryPathInContainer:
-                              type: string
-                            enabled:
-                              type: boolean
-                            secretRef:
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          type: object
-                        authentication:
-                          properties:
-                            directoryPathInContainer:
-                              type: string
-                            secretRef:
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          type: object
-                      type: object
-                    jolokia:
-                      properties:
-                        accessControl:
-                          properties:
-                            directoryPathInContainer:
-                              type: string
-                            enabled:
-                              type: boolean
-                            secretRef:
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          type: object
-                      type: object
-                    prometheus:
-                      properties:
-                        blacklist:
-                          items:
-                            type: string
-                          type: array
-                        rules:
-                          items:
-                            properties:
-                              attrNameSnakeCase:
-                                type: boolean
-                              cache:
-                                type: boolean
-                              help:
-                                minLength: 1
-                                type: string
-                              labels:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                                x-kubernetes-map-type: granular
-                              name:
-                                minLength: 1
-                                type: string
-                              pattern:
-                                minLength: 1
-                                type: string
-                              type:
-                                minLength: 1
-                                type: string
-                              value:
-                                minLength: 1
-                                type: string
-                              valueFactor:
-                                anyOf:
-                                  - type: integer
-                                  - type: string
-                                default: 1
-                                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
-                                x-kubernetes-int-or-string: true
-                            type: object
-                          type: array
-                        whitelist:
-                          items:
-                            type: string
-                          type: array
-                      type: object
-                    tls:
-                      properties:
-                        directoryPathInContainer:
-                          minLength: 1
-                          type: string
-                        enabled:
-                          type: boolean
-                        ignoreTrustStoreConfig:
-                          type: boolean
-                        jksPassword:
-                          properties:
-                            secretRef:
-                              maxLength: 30
-                              minLength: 1
-                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                              type: string
-                          required:
-                            - secretRef
-                          type: object
-                        secretRef:
-                          maxLength: 30
-                          minLength: 1
-                          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                          type: string
-                      required:
-                        - enabled
-                      type: object
-                  type: object
                 mountedSecrets:
                   items:
                     properties:
@@ -2115,28 +1157,6 @@ spec:
                   required:
                     - volumeMounts
                     - volumes
-                  type: object
-                oneReplicaPerNode:
-                  type: boolean
-                passwordEncoder:
-                  properties:
-                    directoryPathInContainer:
-                      type: string
-                    secretRef:
-                      maxLength: 30
-                      minLength: 1
-                      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                      type: string
-                  type: object
-                pdb:
-                  properties:
-                    enabled:
-                      type: boolean
-                    maxUnavailable:
-                      format: int32
-                      type: integer
-                  required:
-                    - enabled
                   type: object
                 podTemplate:
                   properties:
@@ -2995,11 +2015,6 @@ spec:
                 replicas:
                   format: int32
                   type: integer
-                telemetry:
-                  properties:
-                    global:
-                      type: boolean
-                  type: object
                 tls:
                   properties:
                     autoGeneratedCerts:
@@ -3037,166 +2052,20 @@ spec:
                       pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
                       type: string
                   type: object
-                unifiedStreamManager:
-                  properties:
-                    enabled:
-                      type: boolean
-                    remoteSchemaRegistry:
-                      properties:
-                        authentication:
-                          properties:
-                            basic:
-                              properties:
-                                debug:
-                                  type: boolean
-                                directoryPathInContainer:
-                                  minLength: 1
-                                  type: string
-                                ignoreRoles:
-                                  type: boolean
-                                restrictedRoles:
-                                  items:
-                                    type: string
-                                  minItems: 1
-                                  type: array
-                                roles:
-                                  items:
-                                    type: string
-                                  type: array
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              type: object
-                            oauth:
-                              properties:
-                                configuration:
-                                  properties:
-                                    audience:
-                                      minLength: 1
-                                      type: string
-                                    clientAssertion:
-                                      properties:
-                                        clientId:
-                                          minLength: 1
-                                          type: string
-                                        jwtTokenFile:
-                                          properties:
-                                            directoryPathInContainer:
-                                              minLength: 1
-                                              type: string
-                                            secretRef:
-                                              maxLength: 30
-                                              minLength: 1
-                                              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                              type: string
-                                          type: object
-                                        localClientAssertion:
-                                          properties:
-                                            audience:
-                                              minLength: 1
-                                              type: string
-                                            includeJtiClaim:
-                                              type: boolean
-                                            includeNbfClaim:
-                                              type: boolean
-                                            issuer:
-                                              minLength: 1
-                                              type: string
-                                            privateKeyFile:
-                                              properties:
-                                                directoryPathInContainer:
-                                                  minLength: 1
-                                                  type: string
-                                                encryptedPrivateKey:
-                                                  type: boolean
-                                                includeAssertionTemplate:
-                                                  type: boolean
-                                                secretRef:
-                                                  maxLength: 30
-                                                  minLength: 1
-                                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                                  type: string
-                                              type: object
-                                            subject:
-                                              minLength: 1
-                                              type: string
-                                            tokenLifetime:
-                                              format: int32
-                                              type: integer
-                                          type: object
-                                      type: object
-                                    expectedIssuer:
-                                      minLength: 1
-                                      type: string
-                                    groupsClaimName:
-                                      minLength: 1
-                                      type: string
-                                    jwksEndpointUri:
-                                      minLength: 1
-                                      type: string
-                                    loginConnectTimeoutMs:
-                                      format: int32
-                                      type: integer
-                                    loginReadTimeoutMs:
-                                      format: int32
-                                      type: integer
-                                    loginRetryBackoffMaxMs:
-                                      format: int32
-                                      type: integer
-                                    loginRetryBackoffMs:
-                                      format: int32
-                                      type: integer
-                                    scope:
-                                      minLength: 1
-                                      type: string
-                                    subClaimName:
-                                      minLength: 1
-                                      type: string
-                                    tokenEndpointUri:
-                                      minLength: 1
-                                      type: string
-                                  type: object
-                                directoryPathInContainer:
-                                  minLength: 1
-                                  type: string
-                                secretRef:
-                                  maxLength: 30
-                                  minLength: 1
-                                  pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-                                  type: string
-                              required:
-                                - configuration
-                              type: object
-                            sslClientAuthentication:
-                              type: boolean
-                            type:
-                              enum:
-                                - basic
-                                - mtls
-                                - oauth
-                              type: string
-                          required:
-                            - type
-                          type: object
-                        context:
-                          type: string
-                        endpoint:
-                          minLength: 1
-                          type: string
-                      required:
-                        - endpoint
-                      type: object
-                  type: object
               required:
+                - confluentCloudClient
                 - image
               type: object
             status:
               properties:
-                arbitraryData:
-                  x-kubernetes-preserve-unknown-fields: true
-                authorizationType:
+                advertisedExternalEndpoints:
+                  items:
+                    type: string
+                  type: array
+                availableReplicas:
+                  format: int32
+                  type: integer
+                ccloudEndpoint:
                   type: string
                 clusterName:
                   type: string
@@ -3221,49 +2090,11 @@ spec:
                         type: string
                     type: object
                   type: array
-                currentReplicas:
-                  format: int32
-                  type: integer
-                groupId:
+                externalAccessType:
                   type: string
-                internalSecrets:
-                  items:
-                    type: string
-                  type: array
-                internalTopicNames:
-                  items:
-                    type: string
-                  type: array
-                kafka:
-                  properties:
-                    authenticationType:
-                      type: string
-                    bootstrapEndpoint:
-                      type: string
-                    tls:
-                      type: boolean
-                  type: object
-                listeners:
-                  additionalProperties:
-                    properties:
-                      advertisedExternalEndpoints:
-                        items:
-                          type: string
-                        type: array
-                      authenticationType:
-                        type: string
-                      externalAccessType:
-                        type: string
-                      externalEndpoint:
-                        type: string
-                      internalEndpoint:
-                        type: string
-                      tls:
-                        type: boolean
-                    type: object
-                  type: object
-                  x-kubernetes-map-type: granular
-                metricPrefix:
+                externalEndpoint:
+                  type: string
+                internalEndpoint:
                   type: string
                 observedGeneration:
                   format: int64
@@ -3272,49 +2103,15 @@ spec:
                   type: string
                 phase:
                   type: string
-                rbac:
-                  properties:
-                    clusterID:
-                      type: string
-                    internalRolebindings:
-                      items:
-                        type: string
-                      type: array
-                  type: object
                 readyReplicas:
                   format: int32
                   type: integer
                 replicas:
                   format: int32
                   type: integer
-                restConfig:
-                  properties:
-                    advertisedExternalEndpoints:
-                      items:
-                        type: string
-                      type: array
-                    authenticationType:
-                      type: string
-                    externalAccessType:
-                      type: string
-                    externalEndpoint:
-                      type: string
-                    internalEndpoint:
-                      type: string
-                    tls:
-                      type: boolean
-                  type: object
-                selector:
-                  type: string
               type: object
-          required:
-            - spec
           type: object
       served: true
       storage: true
       subresources:
-        scale:
-          labelSelectorPath: .status.selector
-          specReplicasPath: .spec.replicas
-          statusReplicasPath: .status.replicas
         status: {}
