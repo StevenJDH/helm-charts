@@ -77,7 +77,9 @@ spec:
       - kafkastore.topic=_schemas_schemaregistry_{{ .Release.Namespace }}
       - kafkastore.topic.replication.factor={{ .Values.schemaregistry.replicationFactor | default 3 }}
       - listeners=https://0.0.0.0:{{ .Values.schemaregistry.serverPort  | default 8081 }}
-      - metrics.jmx.prefix=schemaregistry_{{ .Release.Namespace }}
+      - inter.instance.protocol=http
+      - sni.host.check.enabled=false
+      - metrics.jmx.prefix=kafka.schema.registry
       - schema.registry.group.id=id_schemaregistry_{{ .Release.Namespace }}
       {{- range $key, $val := .Values.schemaregistry.extraConfigOverrides }}
       {{- if $val }}
@@ -99,6 +101,9 @@ spec:
   image:
     application: {{ required (printf $requiredMsg "schemaregistry.image.application") .Values.schemaregistry.image.application }}
     init: {{ required (printf $requiredMsg "schemaregistry.image.init") .Values.schemaregistry.image.init }}
+  pdb:
+    enabled: true
+    maxUnavailable: {{ .Values.schemaregistry.pdb.maxUnavailable | default 1 }}
   podTemplate:
     {{- with .Values.schemaregistry.annotations }}
     annotations:

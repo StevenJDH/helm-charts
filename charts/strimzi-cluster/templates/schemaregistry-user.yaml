@@ -42,6 +42,13 @@ spec:
           - Read
         host: "*"
       - resource:
+          type: topic
+          name: "*"
+          patternType: literal
+        operations:
+          - Describe
+        host: "*"
+      - resource:
           type: group
           name: "id_schemaregistry_{{ .Release.Namespace }}"
           patternType: literal

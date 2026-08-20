@@ -45,6 +45,9 @@ metadata:
     {{- include "shared-library.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
+  compatibilityLevel: "BACKWARD"
+  # schemaRegistryRest:
+  #   endpoint: "http://schemaregistry.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.schemaregistry.serverPort  | default 8081 }}"
   data:
     format: avro
     configRef: test-schema-config
