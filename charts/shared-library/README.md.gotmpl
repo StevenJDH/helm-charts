@@ -43,10 +43,11 @@ helm dep update .
 > Current version doesn't support multiple contexts, so only one instance of each template can be used.
 
 ## CRD management hooks
-The `shared-library.crd-upgrade-orchestrator` and `shared-library.crd-delete-orchestrator` templates have been provided to support optionally upgrading CRDs and or deleting them when removing a chart. There are two requirements for using them:
+The `shared-library.crd-upgrade-orchestrator` and `shared-library.crd-delete-orchestrator` templates have been provided to support optionally upgrading CRDs and or deleting them when removing a chart. There are few requirements for using them:
 
 * The consuming chart must have either a `crds` folder with only `*.yaml` or `*.yml` files, or a static list of resource names configured.
 * The consuming chart must also have a `files` folder containing a `crds.tar.gz` file.
+* The `crds.tar.gz` file size must not exceed 1 MiB (1,048,576 bytes), a [ConfigMap limit](https://kubernetes.io/docs/concepts/configuration/configmap/#motivation).
 
 To create the required archive file, run the following command from the root of the chart:
 
