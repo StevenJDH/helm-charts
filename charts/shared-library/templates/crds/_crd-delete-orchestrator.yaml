@@ -16,17 +16,17 @@ limitations under the License.
 */}}
 
 {{/*
-Generates a set of resources for upgrading CRDs that are compatible with all supported
+Generates a set of resources for deleting CRDs that are compatible with all supported
 Kubernetes API versions.
 
 Usage:
-include "shared-library.crd-upgrade" (dict
+include "shared-library.crd-delete-orchestrator" (dict
   "context" .
   "config" .Values.crds
 )
 
 The consuming chart must provide:
-- crds/*.yaml or crds/*.yml, OR a static list of CRD resource names
+- crds/*.yaml or crds/*.yml, OR a static list of CRD resource names.
 - files/crds.tar.gz
 
 NOTE: This specialty orchestration template does not support overriding.
@@ -36,17 +36,19 @@ Params:
   - config - Dict - Required. The context for the 'crds' config section.
 */}}
 
-{{- define "shared-library.crd-upgrade" -}}
-{{- $config := .config  -}}
-{{- if $config.upgradeJob.enabled -}}
-{{ include "shared-library._crd-configmap" . }}
+{{- define "shared-library.crd-delete-orchestrator" -}}
+{{- $config := .config -}}
+{{- if $config.deleteJob.enabled -}}
+{{- if not $config.upgradeJob.enabled }}
+{{ include "shared-library.crd-configmap.tpl" . }}
 ---
-{{ include "shared-library._crd-upgrade-serviceaccount" . }}
+{{- end }}
+{{ include "shared-library.crd-delete-serviceaccount.tpl" . }}
 ---
-{{ include "shared-library._crd-upgrade-clusterrole" . }}
+{{ include "shared-library.crd-delete-clusterrole.tpl" . }}
 ---
-{{ include "shared-library._crd-upgrade-clusterrolebinding" . }}
+{{ include "shared-library.crd-delete-clusterrolebinding.tpl" . }}
 ---
-{{ include "shared-library._crd-upgrade-job" . }}
+{{ include "shared-library.crd-delete-job.tpl" . }}
 {{- end }}
 {{- end -}}

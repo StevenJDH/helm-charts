@@ -20,19 +20,38 @@ Generates a ClusterRoleBinding for a CRD delete Job that is compatible with all 
 Kubernetes API versions.
 
 Usage:
-include "shared-library._crd-delete-clusterrolebinding" (dict
+include "shared-library.crd-delete-clusterrolebinding" (dict
   "context" .
   "config" .Values.crds
 )
 
-NOTE: This internal specialty template does not support overriding.
+OR
+
+{{- include "shared-library.crd-delete-clusterrolebinding" (dict
+  "context" .
+  "config" .Values.crds
+  "override" "override.crd-delete-clusterrolebinding"
+) }}
+
+{{- define "override.crd-delete-clusterrolebinding" -}}
+{{- $ctx := .context -}}
+metadata:
+  labels:
+    foo: bar
+    {{- include "shared-library.labels" $ctx | nindent 4 }}
+{{- end -}}
+
+NOTE: This template is meant to be used by the 'shared-library.crd-delete-orchestrator'
+      template, which wraps the four needed templates into one. If customization is
+      needed, then do not use the orchestrator.
 
 Params:
   - context - Dict - Required. The top-level context for the template evaluation.
   - config - Dict - Required. The context for the 'crds' config section.
+  - override - String - Optional. Definition to merge into the included template.
 */}}
 
-{{- define "shared-library._crd-delete-clusterrolebinding" -}}
+{{- define "shared-library.crd-delete-clusterrolebinding.tpl" -}}
 {{- $ctx    := .context -}}
 {{- $config := .config  -}}
 {{- if $config.deleteJob.enabled -}}
@@ -54,5 +73,14 @@ subjects:
   - kind: ServiceAccount
     name: {{ include "shared-library.fullname" $ctx }}-crd-delete
     namespace: {{ $ctx.Release.Namespace }}
+{{- end }}
+{{- end -}}
+
+{{- define "shared-library.crd-delete-clusterrolebinding" -}}
+{{- if and (kindIs "map" .) (hasKey . "override") .override }}
+  {{- $ctx := omit . "override" -}}
+  {{- include "shared-library.util.merge" (list $ctx .override "shared-library.crd-delete-clusterrolebinding.tpl") }}
+{{- else -}}
+  {{- include "shared-library.crd-delete-clusterrolebinding.tpl" . }}
 {{- end }}
 {{- end -}}

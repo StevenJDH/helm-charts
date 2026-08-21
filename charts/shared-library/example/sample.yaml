@@ -128,7 +128,7 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "zFRjl"
+    rollme: "VCoVE"
   labels:
     helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
@@ -322,7 +322,7 @@ spec:
                 port:
                   number: 80
 ---
-# Source: example/templates/crds/crd-delete.yaml
+# Source: example/templates/crds/crd-delete-orch.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -339,7 +339,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   namespace: default
 ---
-# Source: example/templates/crds/crd-upgrade.yaml
+# Source: example/templates/crds/crd-upgrade-orch.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -356,7 +356,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   namespace: default
 ---
-# Source: example/templates/crds/crd-upgrade.yaml
+# Source: example/templates/crds/crd-upgrade-orch.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -375,7 +375,7 @@ metadata:
 binaryData:
   crds.tar.gz: H4sICN6ghGoEAHRlc3RyZXNvdXJjZXMuZXhhbXBsZS5jb20udGFyAO1UXW/aMBTlGYn/cNW+tBKEr7ZMbJrEoBPpKpgIbdVHk1wSr4nt2Q6Uf79rCLQFbXuZJk3jCOHE997jc4/tWDRWo5G5DtF4+MwylaIXysxbsSwt/RE0CJ1Oh8Y19sfWRadRal62LprNxmX7olVqNNudq0YJGqW/gNxYpgFK/ylOYZpwA3OeItComLYg5xAkTGMEt3ymmV7BENMM+okLfkisVaZbr8fcJvnMHZV6YHGB4mYwrCeUWAtdovnoVcqn0JdqpXmcWDjrn0Or0WrX6O8KNiVwg+KJCwMDhCHT0pXQj9YNURgSkIsINdgEoadYSEMRqcI9asOlgJbXgDOXcFKETs7fO4qVzCFjKxDSQm6QOLZt4nOIygIXQNpVypkIEZbUDeXsFliLfyw45MwySmdUoOht/joRmC1Er+HcIXOWy6XH1oo9qeN6usk19Vu/fz0Krmukuqi6EykaAxq/59xZPlsBU4oK2Iy0pmwJUgOLNVLMSqd6qbnlIq6CkXO7pH1yNBGne8xnud2Z9qLR7eybBEm9CDjpBeAHJ/CpF/hB1ZE8+NPh+G4KD73JpDea+tcBjCfQH48G/tQfj+jtM/RGj/DFHw2qgJyW0GSn0tSBk8mdnRitvQsQ30iYy40kozDkcx5SayLOWYwQywVqQR2BQp1x47bVkMDI0aQ845ZZN3XYFy1UKTPFi7PQBXrGZ0shl+89vTMel/VFs1KmQxZ1oU+XXWaT4nM3wDkX3FFXyhlaFjHLupUygGAZduGnX8ZK2fWwzoy1zFUXXgXdrKFjQgQjojF0BjDakhpXRFBprlm6t8QmZDi5kjL9NriJbZqY0vy2haImkdqOtvxr1MBq97zYOLMN1IreFs1tokG9wKhL6Tnu5qzUtDF7k3SWs7U/BahH0fvq37eDXWQHu3IGyNk3DO3reaWpSlteKH3B1lHC71kOmfZAThhqYBc5JCVryejDOAp37aJfVM6kTJGJ0hFHHHHEP44fdtIyOgAMAAA=
 ---
-# Source: example/templates/crds/crd-delete.yaml
+# Source: example/templates/crds/crd-delete-orch.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -402,7 +402,7 @@ rules:
     resourceNames:
       - testresources.example.com
 ---
-# Source: example/templates/crds/crd-upgrade.yaml
+# Source: example/templates/crds/crd-upgrade-orch.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -431,7 +431,7 @@ rules:
     resourceNames:
       - testresources.example.com
 ---
-# Source: example/templates/crds/crd-delete.yaml
+# Source: example/templates/crds/crd-delete-orch.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -455,7 +455,7 @@ subjects:
     name: example-crd-delete
     namespace: default
 ---
-# Source: example/templates/crds/crd-upgrade.yaml
+# Source: example/templates/crds/crd-upgrade-orch.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -500,7 +500,7 @@ spec:
       args: ['example-svc:80']
   restartPolicy: Never
 ---
-# Source: example/templates/crds/crd-delete.yaml
+# Source: example/templates/crds/crd-delete-orch.yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -565,7 +565,7 @@ spec:
         - name: crds
           emptyDir: {}
 ---
-# Source: example/templates/crds/crd-upgrade.yaml
+# Source: example/templates/crds/crd-upgrade-orch.yaml
 apiVersion: batch/v1
 kind: Job
 metadata:

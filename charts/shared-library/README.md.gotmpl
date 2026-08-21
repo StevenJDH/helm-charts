@@ -43,7 +43,7 @@ helm dep update .
 > Current version doesn't support multiple contexts, so only one instance of each template can be used.
 
 ## CRD management hooks
-The `crd-upgrade` and `crd-delete` templates have been provided to support optionally upgrading CRDs and or deleting them when removing a chart. There are two requirements for using them:
+The `shared-library.crd-upgrade-orchestrator` and `shared-library.crd-delete-orchestrator` templates have been provided to support optionally upgrading CRDs and or deleting them when removing a chart. There are two requirements for using them:
 
 * The consuming chart must have either a `crds` folder with only `*.yaml` or `*.yml` files, or a static list of resource names configured.
 * The consuming chart must also have a `files` folder containing a `crds.tar.gz` file.
@@ -69,7 +69,7 @@ Finally, when testing locally, it may be necessary to use Helm's `--kube-version
 helm template example . --kube-version 1.30.13
 ```
 
-This is because when deploying the chart, the templates will automatically select the kubectl image version that matches the Kubernetes version of the cluster if crds.upgradeJob.kubectl.image.tag is not explicitly set. However, when rendering templates locally, Helm uses its default Kubernetes version if the flag is omitted. Therefore, this flag is useful for aligning the rendered kubectl version with the target cluster or for testing chart version constraints.
+This is because when deploying the chart, the templates will automatically select the kubectl image version that matches the Kubernetes version of the cluster if `crds.images.container.repositoryOverride` is not explicitly set. However, when rendering templates locally, Helm uses its default Kubernetes version if the flag is omitted. Therefore, this flag is useful for aligning the rendered kubectl version with the target cluster or for testing chart version constraints.
 
 {{ template "chart.valuesSection" . }}
 

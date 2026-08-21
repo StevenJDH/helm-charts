@@ -20,25 +20,45 @@ Generates a ConfigMap for CRD upgrade and delete Jobs that are compatible with a
 supported Kubernetes API versions.
 
 Usage:
-include "shared-library._crd-configmap" (dict
+include "shared-library.crd-configmap" (dict
   "context" .
   "config" .Values.crds
 )
 
+OR
+
+{{- include "shared-library.crd-configmap" (dict
+  "context" .
+  "config" .Values.crds
+  "override" "override.crd-configmap"
+) }}
+
+{{- define "override.crd-configmap" -}}
+{{- $ctx := .context -}}
+metadata:
+  labels:
+    foo: bar
+    {{- include "shared-library.labels" $ctx | nindent 4 }}
+{{- end -}}
+
 The consuming chart must provide:
 - files/crds.tar.gz
 
-NOTE: This internal specialty template does not support overriding.
+NOTE: This template is meant to be used by the 'shared-library.crd-upgrade-orchestrator'
+      and 'shared-library.crd-delete-orchestrator' templates, which wrap the four needed
+      templates into one, respectively. If customization is needed, then do not use the
+      orchestrators.
 
 Params:
   - context - Dict - Required. The top-level context for the template evaluation.
   - config - Dict - Required. The context for the 'crds' config section.
+  - override - String - Optional. Definition to merge into the included template.
 */}}
 
-{{- define "shared-library._crd-configmap" -}}
+{{- define "shared-library.crd-configmap.tpl" -}}
 {{- $ctx    := .context -}}
 {{- $config := .config  -}}
-{{- if or $config.upgradeJob.enabled $config.deleteOnUninstall -}}
+{{- if or $config.upgradeJob.enabled $config.deleteJob.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -52,5 +72,14 @@ metadata:
   namespace: {{ $ctx.Release.Namespace }}
 binaryData:
   crds.tar.gz: {{ $ctx.Files.Get "files/crds.tar.gz" | b64enc }}
+{{- end }}
+{{- end -}}
+
+{{- define "shared-library.crd-configmap" -}}
+{{- if and (kindIs "map" .) (hasKey . "override") .override }}
+  {{- $ctx := omit . "override" -}}
+  {{- include "shared-library.util.merge" (list $ctx .override "shared-library.crd-configmap.tpl") }}
+{{- else -}}
+  {{- include "shared-library.crd-configmap.tpl" . }}
 {{- end }}
 {{- end -}}

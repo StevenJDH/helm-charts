@@ -19,19 +19,38 @@ limitations under the License.
 Generates a CRD upgrade Job that is compatible with all supported Kubernetes API versions.
 
 Usage:
-include "shared-library._crd-upgrade-job" (dict
+include "shared-library.crd-upgrade-job" (dict
   "context" .
   "config" .Values.crds
 )
 
-NOTE: This internal specialty template does not support overriding.
+OR
+
+{{- include "shared-library.crd-upgrade-job" (dict
+  "context" .
+  "config" .Values.crds
+  "override" "override.crd-upgrade-job"
+) }}
+
+{{- define "override.crd-upgrade-job" -}}
+{{- $ctx := .context -}}
+metadata:
+  labels:
+    foo: bar
+    {{- include "shared-library.labels" $ctx | nindent 4 }}
+{{- end -}}
+
+NOTE: This template is meant to be used by the 'shared-library.crd-upgrade-orchestrator'
+      template, which wraps the four needed templates into one. If customization is
+      needed, then do not use the orchestrator.
 
 Params:
   - context - Dict - Required. The top-level context for the template evaluation.
   - config - Dict - Required. The context for the 'crds' config section.
+  - override - String - Optional. Definition to merge into the included template.
 */}}
 
-{{- define "shared-library._crd-upgrade-job" -}}
+{{- define "shared-library.crd-upgrade-job.tpl" -}}
 {{- $ctx     := .context                         -}}
 {{- $config  := .config                          -}}
 {{- $busybox := (($config.images).initContainer) -}}
@@ -112,5 +131,14 @@ spec:
             name: {{ include "shared-library.fullname" $ctx }}-crds
         - name: crds
           emptyDir: {}
+{{- end }}
+{{- end -}}
+
+{{- define "shared-library.crd-upgrade-job" -}}
+{{- if and (kindIs "map" .) (hasKey . "override") .override }}
+  {{- $ctx := omit . "override" -}}
+  {{- include "shared-library.util.merge" (list $ctx .override "shared-library.crd-upgrade-job.tpl") }}
+{{- else -}}
+  {{- include "shared-library.crd-upgrade-job.tpl" . }}
 {{- end }}
 {{- end -}}
