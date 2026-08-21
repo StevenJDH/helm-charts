@@ -57,17 +57,18 @@ helm upgrade --install my-example . \
 | command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | configMap | object | `{"configExample":"test"}` | configMap is used to store non-confidential data in key-value pairs. Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE). |
 | containerPorts | object | `{"actuator":8081,"http":8080}` | containerPort is the port or ports that the container listens on. |
-| crds.deleteOnUninstall | bool | `true` | deleteOnUninstall deletes all chart CRDs when the Helm release is uninstalled. |
-| crds.upgradeJob.busybox.image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the strategy for pulling images from a registry. |
-| crds.upgradeJob.busybox.image.repository | string | `"busybox"` | repository holding the init container image used to decompress the `crds.tar.gz` archive. |
-| crds.upgradeJob.busybox.image.tag | string | `"1.38"` | Overrides the image tag whose default is `latest`. |
-| crds.upgradeJob.busybox.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
-| crds.upgradeJob.enabled | bool | `true` | Indicates whether or not to enable a Helm hook that upgrades the CRDs using server-side apply. |
+| crds.deleteJob.enabled | bool | `true` | Indicates whether or not to enable a Helm hook that deletes all chart CRDs when the Helm release is uninstalled. |
+| crds.images.container.pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.images.container.repositoryOverride | string | `""` | repositoryOverride overrides the default `registry.k8s.io/kubectl` container image used for applying changes to the CRDs. |
+| crds.images.container.tagOverride | string | `""` | tagOverride overrides the image tag whose default is the kubernetes version. |
+| crds.images.initContainer.pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.images.initContainer.repositoryOverride | string | `""` | repositoryOverride overrides the default `busybox` initContainer image used to decompress the `crds.tar.gz` archive. |
+| crds.images.initContainer.tagOverride | string | `"1.38"` | tagOverride overrides the default `latest` image tag. |
+| crds.resourceNamesOverride | list | `[]` | resourceNamesOverride is a static list that overrides the default automatic discovery of CRDs to support ones provided by third-party dependencies. The list is used by the Job's ClusterRole to limit access to just these CRD resources for least privilege access. When unset, the list will be generated from the consuming chart's `crds` folder for files using `*.yaml` and `*.yml` extensions. |
+| crds.resources.container | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.resources.initContainer | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.upgradeJob.enabled | bool | `true` | Indicates whether or not to enable a Helm hook that upgrades the chart CRDs using server-side apply. |
 | crds.upgradeJob.forceConflicts | bool | `true` | Indicates whether or not to force server-side apply to take ownership of conflicting fields. This option is recommended as it will avoid conflicts with Helm's initial install ownership. |
-| crds.upgradeJob.kubectl.image.pullPolicy | string | `"IfNotPresent"` | pullPolicy is the strategy for pulling images from a registry. |
-| crds.upgradeJob.kubectl.image.repository | string | `"registry.k8s.io/kubectl"` | repository holding the container image used for applying changes to the CRDs. |
-| crds.upgradeJob.kubectl.image.tag | string | `""` | Overrides the image tag whose default is the kubernetes version. |
-| crds.upgradeJob.kubectl.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | cronjob.annotations | object | `{}` | annotations to be added to the CronJob resource. |
 | cronjob.job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |

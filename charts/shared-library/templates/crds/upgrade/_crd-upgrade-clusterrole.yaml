@@ -26,7 +26,7 @@ include "shared-library._crd-upgrade-clusterrole" (dict
 )
 
 The consuming chart must provide:
-- crds/*.yaml or crds/*.yml
+- crds/*.yaml or crds/*.yml, OR a static list of CRD resource names
 
 NOTE: This internal specialty template does not support overriding.
 
@@ -61,6 +61,14 @@ rules:
       - update
       - patch
     resourceNames:
+  {{- if $config.resourceNamesOverride  }}
+    {{- range $name := $config.resourceNamesOverride }}
+      {{- if not (trim $name) }}
+        {{- fail "The 'crds.resourceNamesOverride' list cannot contain empty entries." }}
+      {{- end }}
+      - {{ $name | quote }}
+    {{- end }}
+  {{- else }}
     {{- $patterns := list "crds/*.yaml" "crds/*.yml" }}
     {{- $found := false }}
     {{- range $pattern := $patterns }}
@@ -70,7 +78,8 @@ rules:
       {{- end }}
     {{- end }}
     {{- if not $found }}
-      {{- fail "No CRD files found under crds/*.yaml or crds/*.yml" }}
+      {{- fail "No CRD files found under 'crds/*.yaml' or 'crds/*.yml'." }}
     {{- end }}
+  {{- end }}
 {{- end }}
 {{- end -}}

@@ -26,7 +26,7 @@ include "shared-library.crd-delete" (dict
 )
 
 The consuming chart must provide:
-- crds/*.yaml or crds/*.yml
+- crds/*.yaml or crds/*.yml, OR a static list of CRD resource names
 - files/crds.tar.gz
 
 NOTE: This specialty orchestration template does not support overriding.
@@ -38,7 +38,7 @@ Params:
 
 {{- define "shared-library.crd-delete" -}}
 {{- $config := .config -}}
-{{- if $config.deleteOnUninstall -}}
+{{- if $config.deleteJob.enabled -}}
 {{- if not $config.upgradeJob.enabled }}
 {{ include "shared-library._crd-configmap" . }}
 ---

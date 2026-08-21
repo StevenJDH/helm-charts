@@ -45,7 +45,7 @@ helm dep update .
 ## CRD management hooks
 The `crd-upgrade` and `crd-delete` templates have been provided to support optionally upgrading CRDs and or deleting them when removing a chart. There are two requirements for using them:
 
-* The consuming chart must have a `crds` folder with only `*.yaml` or `*.yml` files.
+* The consuming chart must have either a `crds` folder with only `*.yaml` or `*.yml` files, or a static list of resource names configured.
 * The consuming chart must also have a `files` folder containing a `crds.tar.gz` file.
 
 To create the required archive file, run the following command from the root of the chart:

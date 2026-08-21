@@ -32,11 +32,11 @@ Params:
 */}}
 
 {{- define "shared-library._crd-delete-job" -}}
-{{- $ctx     := .context                   -}}
-{{- $config  := .config                    -}}
-{{- $busybox := $config.upgradeJob.busybox -}}
-{{- $kubectl := $config.upgradeJob.kubectl -}}
-{{- if $config.deleteOnUninstall -}}
+{{- $ctx     := .context                     -}}
+{{- $config  := .config                      -}}
+{{- $busybox := $config.images.initContainer -}}
+{{- $kubectl := $config.images.container     -}}
+{{- if $config.deleteJob.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -59,8 +59,8 @@ spec:
       serviceAccountName: {{ include "shared-library.fullname" $ctx }}-crd-delete
       initContainers:
         - name: extract-crds
-          image: "{{ $busybox.image.repository }}:{{ $busybox.image.tag | default "latest" }}"
-          imagePullPolicy: {{ $busybox.image.pullPolicy | default "IfNotPresent" }}
+          image: "{{ $busybox.repositoryOverride | default "busybox" }}:{{ $busybox.tagOverride | default "latest" }}"
+          imagePullPolicy: {{ $busybox.pullPolicyOverride | default "IfNotPresent" }}
           command:
             - tar
           args:
@@ -74,7 +74,7 @@ spec:
               readOnly: true
             - name: crds
               mountPath: /crds
-          {{- with $busybox.resources }}
+          {{- with $config.resources.initContainer }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -85,8 +85,8 @@ spec:
             (regexFind "v\\d+\\.\\d+\\.\\d+" $ctx.Capabilities.KubeVersion.Version)
             (regexMatch "^v\\d+\\.\\d+$" $ctx.Capabilities.KubeVersion.Version)
           ) }}
-          image: "{{ $kubectl.image.repository }}:{{ $kubectl.image.tag | default $defaultKubernetesVersion }}"
-          imagePullPolicy: {{ $kubectl.image.pullPolicy | default "IfNotPresent" }}
+          image: "{{ $kubectl.repositoryOverride | default "registry.k8s.io/kubectl" }}:{{ $kubectl.tagOverride | default $defaultKubernetesVersion }}"
+          imagePullPolicy: {{ $kubectl.pullPolicyOverride | default "IfNotPresent" }}
           command:
             - kubectl
           args:
@@ -94,7 +94,7 @@ spec:
             - --ignore-not-found
             - -f
             - /crds
-          {{- with $kubectl.resources }}
+          {{- with $config.resources.container }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}

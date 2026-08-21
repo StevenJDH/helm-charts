@@ -35,7 +35,7 @@ Params:
 {{- define "shared-library._crd-delete-clusterrolebinding" -}}
 {{- $ctx    := .context -}}
 {{- $config := .config  -}}
-{{- if $config.deleteOnUninstall -}}
+{{- if $config.deleteJob.enabled -}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
