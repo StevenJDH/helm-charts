@@ -32,10 +32,10 @@ Params:
 */}}
 
 {{- define "shared-library._crd-upgrade-job" -}}
-{{- $ctx     := .context                     -}}
-{{- $config  := .config                      -}}
-{{- $busybox := $config.images.initContainer -}}
-{{- $kubectl := $config.images.container     -}}
+{{- $ctx     := .context                         -}}
+{{- $config  := .config                          -}}
+{{- $busybox := (($config.images).initContainer) -}}
+{{- $kubectl := (($config.images).container)     -}}
 {{- if $config.upgradeJob.enabled -}}
 apiVersion: batch/v1
 kind: Job
@@ -74,7 +74,7 @@ spec:
               readOnly: true
             - name: crds
               mountPath: /crds
-          {{- with $config.resources.initContainer }}
+          {{- with (($config.resources).initContainer) }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -98,7 +98,7 @@ spec:
             {{- end }}
             - -f
             - /crds
-          {{- with $config.resources.container }}
+          {{- with (($config.resources).container) }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
