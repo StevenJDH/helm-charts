@@ -1,5 +1,5 @@
 # This file is part of Shared Library Helm Chart <https://github.com/StevenJDH/helm-charts>.
-# Copyright (C) 2023-2024 Steven Jenkins De Haro.
+# Copyright (C) 2023-2026 Steven Jenkins De Haro.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -105,6 +105,13 @@ extraEnvs: []
 #     secretKeyRef:
 #       key: FOO
 #       name: secret-resource
+
+# -- Additional environment variables to import from Secrets or ConfigMaps.
+extraEnvFrom: []
+# - configMapRef:
+#     name: existing-foo-config
+# - secretRef:
+#     name: existing-bar-secret
 
 # @ignored
 podSecurityContext: {}
@@ -434,6 +441,13 @@ cronjob:
     #       key: FOO
     #       name: secret-resource
 
+    # -- Additional environment variables to import from Secrets or ConfigMaps.
+    extraEnvFrom: []
+    # - configMapRef:
+    #     name: existing-foo-config
+    # - secretRef:
+    #     name: existing-bar-secret
+
     # -- Additional volumeMounts for the main container.
     extraVolumeMounts: []
     # - name: example-volume
@@ -521,13 +535,36 @@ job:
   #       key: FOO
   #       name: secret-resource
 
+  # -- Additional environment variables to import from Secrets or ConfigMaps.
+  extraEnvFrom: []
+  # - configMapRef:
+  #     name: existing-foo-config
+  # - secretRef:
+  #     name: existing-bar-secret
+
+  # -- Additional volumeMounts for the main container.
+  extraVolumeMounts: []
+  # - name: example-volume
+  #   mountPath: /share/example
+
+  # -- Additional volumes for the pod.
+  extraVolumes: []
+  # - name: example-volume
+  #   emptyDir: {}
+
+  # -- Containers, which are run before the app containers are started.
+  extraInitContainers: []
+  # - name: init-myservice
+  #   image: busybox
+  #   command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+
 # -- configMap is used to store non-confidential data in key-value pairs.
-# Quoting is required if the value is 0.
+# Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE).
 configMap: {}
   # key: value
 
 # -- secrets is used to store confidential data in key-value pairs.
-# Quoting is required if the value is 0.
+# Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE).
 secrets: {}
   # key: value
 
@@ -644,3 +681,63 @@ keda:
     #   - type: Pods
     #     value: 2
     #     periodSeconds: 60
+
+crds:
+  upgradeJob:
+    # -- Indicates whether or not to enable a Helm hook that upgrades the chart CRDs using server-side
+    # apply.
+    enabled: false
+    # -- Indicates whether or not to force server-side apply to take ownership of conflicting fields.
+    # This option is recommended as it will avoid conflicts with Helm's initial install ownership.
+    forceConflicts: true
+  deleteJob:
+    # -- Indicates whether or not to enable a Helm hook that deletes all chart CRDs when the Helm
+    # release is uninstalled.
+    enabled: false
+  images:
+    initContainer:
+      # -- repositoryOverride overrides the default `busybox` initContainer image used to decompress
+      # the `crds.tar.gz` archive.
+      repositoryOverride: ""
+      # -- tagOverride overrides the default `latest` image tag.
+      tagOverride: ""
+      # -- pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a
+      # registry.
+      pullPolicyOverride: ""
+    container:
+      # -- repositoryOverride overrides the default `registry.k8s.io/kubectl` container image used for
+      # applying changes to the CRDs.
+      repositoryOverride: ""
+      # -- tagOverride overrides the image tag whose default is the kubernetes version.
+      tagOverride: ""
+      # -- pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a
+      # registry.
+      pullPolicyOverride: ""
+  resources:
+    # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+    # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+    initContainer: {}
+      # requests:
+      #   cpu: 10m
+      #   memory: 16Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 32Mi
+
+    # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+    # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+    container: {}
+      # requests:
+      #   cpu: 50m
+      #   memory: 64Mi
+      # limits:
+      #   cpu: 250m
+      #   memory: 256Mi
+
+  # -- resourceNamesOverride is a static list that overrides the default automatic discovery of
+  # CRDs to support ones provided by third-party dependencies. The list is used by the Job's
+  # ClusterRole to limit access to just these CRD resources for least privilege access. When
+  # unset, the list will be generated from the consuming chart's `crds` folder for files using
+  # `*.yaml` and `*.yml` extensions.
+  resourceNamesOverride: []
+  # - testresources.example.com

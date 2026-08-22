@@ -1,6 +1,6 @@
 {{/*
 This file is part of Shared Library Helm Chart <https://github.com/StevenJDH/helm-charts>.
-Copyright (C) 2023-2024 Steven Jenkins De Haro.
+Copyright (C) 2023-2026 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   {{- range $key, $val := .Values.configMap }}
-  {{- if $val }}
+  {{- if and (ne $val nil) (ne (toString $val) "") }}
   {{ $key | snakecase | upper }}: {{ $val | quote }}
   {{- end }}
   {{- end }}

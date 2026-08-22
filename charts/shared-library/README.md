@@ -1,6 +1,6 @@
 # Shared Library Helm Chart
 
-![Version: 0.1.3](https://img.shields.io/badge/Version-0.1.3-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: library](https://img.shields.io/badge/Type-library-informational?style=flat-square) 
 
 A contract-based Helm library chart for Kubernetes.
 
@@ -9,6 +9,7 @@ A contract-based Helm library chart for Kubernetes.
 * Common templates and tools.
 * Built-in support for AWS IAM Roles for Service Accounts (IRSA) and Azure Workload Identities (AZWI).
 * Override support to allow for template customization.
+* Support for CRD upgrading, deleting, and handling rollbacks during the normal chart lifecycle.
 
 ## Source Code
 
@@ -16,7 +17,7 @@ A contract-based Helm library chart for Kubernetes.
 
 ## Requirements
 
-Kubernetes: `>= 1.19.0-0`
+Kubernetes: `>= 1.22.0-0`
 
 ## Usage example
 
@@ -32,7 +33,7 @@ In the `Chart.yaml` file of a helm chart project, add the following dependency:
 ```yaml
 dependencies:
   - name: shared-library
-    version: 0.1.3
+    version: 0.2.0
     repository: "https://StevenJDH.github.io/helm-charts"
 ```
 
@@ -44,6 +45,36 @@ helm dep update .
 
 > [!NOTE]  
 > Current version doesn't support multiple contexts, so only one instance of each template can be used.
+
+## CRD management hooks
+The `shared-library.crd-upgrade-orch` and `shared-library.crd-delete-orch` templates have been provided to support optionally upgrading CRDs and or deleting them when removing a chart. There are few requirements for using them:
+
+* The consuming chart must have either a `crds` folder with only `*.yaml` or `*.yml` files, or a static list of resource names configured.
+* The consuming chart must also have a `files` folder containing a `crds.tar.gz` file.
+* The `crds.tar.gz` file size must not exceed 1 MiB (1,048,576 bytes), a [ConfigMap limit](https://kubernetes.io/docs/concepts/configuration/configmap/#motivation).
+
+To create the required archive file, run the following command from the root of the chart:
+
+```bash
+tar -cvzf files/crds.tar.gz -C crds -- *
+```
+
+This command will work on both Windows and Unix-based systems. To inspect a CRD for changes, for instance, using the one available in the example project, run this command:
+
+```bash
+kubectl get customresourcedefinition.apiextensions.k8s.io/testresources.example.com -o yaml \
+    --show-managed-fields
+```
+
+Use the output to verify that the CRD changes were applied. The optional `--show-managed-fields` flag is useful when troubleshooting Server-Side Apply ownership conflicts that can cause upgrades to fail. These conflicts occur when a field being modified is owned by a different field manager, for example, Helm's initial install ownership. To avoid this scenario, keep `crds.upgradeJob.forceConflicts` set to `true`. This will allow the upgrade to automatically assume ownership of the conflicting fields and complete the upgrade successfully.
+
+Finally, when testing locally, it may be necessary to use Helm's `--kube-version` flag like in the following example:
+
+```bash
+helm template example . --kube-version 1.30.13
+```
+
+This is because when deploying the chart, the templates will automatically select the kubectl image version that matches the Kubernetes version of the cluster if `crds.images.container.repositoryOverride` is not explicitly set. However, when rendering templates locally, Helm uses its default Kubernetes version if the flag is omitted. Therefore, this flag is useful for aligning the rendered kubectl version with the target cluster or for testing chart version constraints.
 
 ## Values
 
@@ -60,11 +91,24 @@ helm dep update .
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` | targetMemoryUtilizationPercentage represents the percentage of requested memory over all the pods. |
 | autoscaling.template | list | `[]` | template provides custom or additional autoscaling metrics that are not built in to Kubernetes or any Kubernetes component. Reference [Scaling on custom metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics). |
 | command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
-| configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. |
+| configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE). |
 | containerPorts | object | `{}` | containerPort is the port or ports that the container listens on. |
+| crds.deleteJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that deletes all chart CRDs when the Helm release is uninstalled. |
+| crds.images.container.pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.images.container.repositoryOverride | string | `""` | repositoryOverride overrides the default `registry.k8s.io/kubectl` container image used for applying changes to the CRDs. |
+| crds.images.container.tagOverride | string | `""` | tagOverride overrides the image tag whose default is the kubernetes version. |
+| crds.images.initContainer.pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.images.initContainer.repositoryOverride | string | `""` | repositoryOverride overrides the default `busybox` initContainer image used to decompress the `crds.tar.gz` archive. |
+| crds.images.initContainer.tagOverride | string | `""` | tagOverride overrides the default `latest` image tag. |
+| crds.resourceNamesOverride | list | `[]` | resourceNamesOverride is a static list that overrides the default automatic discovery of CRDs to support ones provided by third-party dependencies. The list is used by the Job's ClusterRole to limit access to just these CRD resources for least privilege access. When unset, the list will be generated from the consuming chart's `crds` folder for files using `*.yaml` and `*.yml` extensions. |
+| crds.resources.container | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.resources.initContainer | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.upgradeJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that upgrades the chart CRDs using server-side apply. |
+| crds.upgradeJob.forceConflicts | bool | `true` | Indicates whether or not to force server-side apply to take ownership of conflicting fields. This option is recommended as it will avoid conflicts with Helm's initial install ownership. |
 | cronjob.annotations | object | `{}` | annotations to be added to the CronJob resource. |
 | cronjob.job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | cronjob.job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
+| cronjob.job.extraEnvFrom | list | `[]` | Additional environment variables to import from Secrets or ConfigMaps. |
 | cronjob.job.extraEnvs | list | `[]` | Additional environment variables to set. |
 | cronjob.job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
 | cronjob.job.extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
@@ -78,6 +122,7 @@ helm dep update .
 | cronjob.job.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | cronjob.schedule | string | `"0 8 * * *"` | The Cron schedule to run a support status check. Default is 08:00 every day. |
 | extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
+| extraEnvFrom | list | `[]` | Additional environment variables to import from Secrets or ConfigMaps. |
 | extraEnvs | list | `[]` | Additional environment variables to set. |
 | extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
 | extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
@@ -98,7 +143,11 @@ helm dep update .
 | job.annotations | object | `{}` | annotations to be added to the Job resource. |
 | job.command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | job.extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
+| job.extraEnvFrom | list | `[]` | Additional environment variables to import from Secrets or ConfigMaps. |
 | job.extraEnvs | list | `[]` | Additional environment variables to set. |
+| job.extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
+| job.extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
+| job.extraVolumes | list | `[]` | Additional volumes for the pod. |
 | job.image.containerNameOverride | string | `""` | Overrides the container name whose default is the chart name. |
 | job.image.pullPolicyOverride | string | `""` | Overrides the strategy for pulling images from a registry. |
 | job.image.repositoryOverride | string | `""` | Overrides the repository holding the container image. |
@@ -129,7 +178,7 @@ helm dep update .
 | replicaCount | int | `1` | replicaCount is the number of pod instances created by the Deployment owned ReplicaSet to increase availability when set to more than one. |
 | resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | restartPolicy | string | `"Always"` | restartPolicy defines how a pod will automatically repair itself when a problem arises. Reference [Container restart policy](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy). |
-| secrets | object | `{}` | secrets is used to store confidential data in key-value pairs. Quoting is required if the value is 0. |
+| secrets | object | `{}` | secrets is used to store confidential data in key-value pairs. Keys will be converted to snake case in all-caps (e.g., SCREAMING_SNAKE_CASE). |
 | service.annotations | object | `{}` | annotations to be added to the Service resource. |
 | service.appProtocol | bool | `true` | appProtocol overrides annotations in a service resource that were used for setting a backend protocol. In AWS for example, `service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http`. See the following GitHub issue for more details [kubernetes/kubernetes#40244](https://github.com/kubernetes/kubernetes/issues/40244). Will be ignored for Kubernetes versions older than 1.20. |
 | service.clusterIP | string | `""` | clusterIP allows for customizing the cluster IP address of a service resource. |

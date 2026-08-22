@@ -5,7 +5,7 @@ kind: NetworkPolicy
 metadata:
   name: example
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -30,7 +30,7 @@ kind: PodDisruptionBudget
 metadata:
   name: example-pdb
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -56,7 +56,7 @@ metadata:
     azure.workload.identity/client-id: ""
     azure.workload.identity/service-account-token-expiration: "3600"
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -69,7 +69,7 @@ kind: Secret
 metadata:
   name: example-secret
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -85,7 +85,7 @@ kind: ConfigMap
 metadata:
   name: example-config
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -100,7 +100,7 @@ kind: Service
 metadata:
   name: example-svc
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -128,9 +128,9 @@ kind: Deployment
 metadata:
   name: example
   annotations:
-    rollme: "TmWtR"
+    rollme: "VCoVE"
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -174,10 +174,10 @@ spec:
               - ALL
             readOnlyRootFilesystem: false
           envFrom:
-          - configMapRef:
-              name: example-config
-          - secretRef:
-              name: example-secret
+            - configMapRef:
+                name: example-config
+            - secretRef:
+                name: example-secret
           livenessProbe:
             failureThreshold: 5
             httpGet:
@@ -208,7 +208,7 @@ kind: Job
 metadata:
   name: example-job
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -221,7 +221,7 @@ spec:
   template:
     metadata:
       labels:
-        helm.sh/chart: example-0.1.3
+        helm.sh/chart: example-0.2.0
         app.kubernetes.io/name: example
         app.kubernetes.io/instance: example
         app.kubernetes.io/version: "1.25.4"
@@ -235,10 +235,10 @@ spec:
           image: "busybox:latest"
           imagePullPolicy: Always
           envFrom:
-          - configMapRef:
-              name: example-config
-          - secretRef:
-              name: example-secret
+            - configMapRef:
+                name: example-config
+            - secretRef:
+                name: example-secret
       restartPolicy: Never
       nodeSelector:
         kubernetes.io/os: linux
@@ -249,7 +249,7 @@ kind: CronJob
 metadata:
   name: example-cj
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -259,7 +259,7 @@ spec:
   jobTemplate:
     metadata:
       labels:
-        helm.sh/chart: example-0.1.3
+        helm.sh/chart: example-0.2.0
         app.kubernetes.io/name: example
         app.kubernetes.io/instance: example
         app.kubernetes.io/version: "1.25.4"
@@ -271,7 +271,7 @@ spec:
       template:
         metadata:
           labels:
-            helm.sh/chart: example-0.1.3
+            helm.sh/chart: example-0.2.0
             app.kubernetes.io/name: example
             app.kubernetes.io/instance: example
             app.kubernetes.io/version: "1.25.4"
@@ -285,10 +285,10 @@ spec:
             image: "busybox:latest"
             imagePullPolicy: Always
             envFrom:
-            - configMapRef:
-                name: example-config
-            - secretRef:
-                name: example-secret
+              - configMapRef:
+                  name: example-config
+              - secretRef:
+                  name: example-secret
           restartPolicy: Never
           nodeSelector:
             kubernetes.io/os: linux
@@ -302,7 +302,7 @@ kind: Ingress
 metadata:
   name: example-ingress
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -322,6 +322,163 @@ spec:
                 port:
                   number: 80
 ---
+# Source: example/templates/crds/crd-delete-orch.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: example-crd-delete
+  annotations:
+    "helm.sh/hook": post-delete
+    "helm.sh/hook-weight": "-20"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: example-0.2.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.4"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+---
+# Source: example/templates/crds/crd-upgrade-orch.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: example-crd-upgrade
+  annotations:
+    "helm.sh/hook": pre-upgrade,pre-rollback
+    "helm.sh/hook-weight": "-20"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: example-0.2.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.4"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+---
+# Source: example/templates/crds/crd-upgrade-orch.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-crds
+  annotations:
+    "helm.sh/hook": pre-upgrade,pre-rollback,post-delete
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: example-0.2.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.4"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+binaryData:
+  crds.tar.gz: H4sICN6ghGoEAHRlc3RyZXNvdXJjZXMuZXhhbXBsZS5jb20udGFyAO1UXW/aMBTlGYn/cNW+tBKEr7ZMbJrEoBPpKpgIbdVHk1wSr4nt2Q6Uf79rCLQFbXuZJk3jCOHE997jc4/tWDRWo5G5DtF4+MwylaIXysxbsSwt/RE0CJ1Oh8Y19sfWRadRal62LprNxmX7olVqNNudq0YJGqW/gNxYpgFK/ylOYZpwA3OeItComLYg5xAkTGMEt3ymmV7BENMM+okLfkisVaZbr8fcJvnMHZV6YHGB4mYwrCeUWAtdovnoVcqn0JdqpXmcWDjrn0Or0WrX6O8KNiVwg+KJCwMDhCHT0pXQj9YNURgSkIsINdgEoadYSEMRqcI9asOlgJbXgDOXcFKETs7fO4qVzCFjKxDSQm6QOLZt4nOIygIXQNpVypkIEZbUDeXsFliLfyw45MwySmdUoOht/joRmC1Er+HcIXOWy6XH1oo9qeN6usk19Vu/fz0Krmukuqi6EykaAxq/59xZPlsBU4oK2Iy0pmwJUgOLNVLMSqd6qbnlIq6CkXO7pH1yNBGne8xnud2Z9qLR7eybBEm9CDjpBeAHJ/CpF/hB1ZE8+NPh+G4KD73JpDea+tcBjCfQH48G/tQfj+jtM/RGj/DFHw2qgJyW0GSn0tSBk8mdnRitvQsQ30iYy40kozDkcx5SayLOWYwQywVqQR2BQp1x47bVkMDI0aQ845ZZN3XYFy1UKTPFi7PQBXrGZ0shl+89vTMel/VFs1KmQxZ1oU+XXWaT4nM3wDkX3FFXyhlaFjHLupUygGAZduGnX8ZK2fWwzoy1zFUXXgXdrKFjQgQjojF0BjDakhpXRFBprlm6t8QmZDi5kjL9NriJbZqY0vy2haImkdqOtvxr1MBq97zYOLMN1IreFs1tokG9wKhL6Tnu5qzUtDF7k3SWs7U/BahH0fvq37eDXWQHu3IGyNk3DO3reaWpSlteKH3B1lHC71kOmfZAThhqYBc5JCVryejDOAp37aJfVM6kTJGJ0hFHHHHEP44fdtIyOgAMAAA=
+---
+# Source: example/templates/crds/crd-delete-orch.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: example-crd-delete
+  annotations:
+    "helm.sh/hook": post-delete
+    "helm.sh/hook-weight": "-15"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: example-0.2.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.4"
+    app.kubernetes.io/managed-by: Helm
+rules:
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - list
+      - watch
+      - delete
+    resourceNames:
+      - testresources.example.com
+---
+# Source: example/templates/crds/crd-upgrade-orch.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: example-crd-upgrade
+  annotations:
+    "helm.sh/hook": pre-upgrade,pre-rollback
+    "helm.sh/hook-weight": "-15"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: example-0.2.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.4"
+    app.kubernetes.io/managed-by: Helm
+rules:
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - get
+      - list
+      - create
+      - update
+      - patch
+    resourceNames:
+      - testresources.example.com
+---
+# Source: example/templates/crds/crd-delete-orch.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: example-crd-delete
+  annotations:
+    "helm.sh/hook": post-delete
+    "helm.sh/hook-weight": "-10"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: example-0.2.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.4"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: example-crd-delete
+subjects:
+  - kind: ServiceAccount
+    name: example-crd-delete
+    namespace: default
+---
+# Source: example/templates/crds/crd-upgrade-orch.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: example-crd-upgrade
+  annotations:
+    "helm.sh/hook": pre-upgrade,pre-rollback
+    "helm.sh/hook-weight": "-10"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: example-0.2.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.4"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: example-crd-upgrade
+subjects:
+  - kind: ServiceAccount
+    name: example-crd-upgrade
+    namespace: default
+---
 # Source: example/templates/tests/test-connection.yaml
 apiVersion: v1
 kind: Pod
@@ -330,7 +487,7 @@ metadata:
   annotations:
     "helm.sh/hook": test
   labels:
-    helm.sh/chart: example-0.1.3
+    helm.sh/chart: example-0.2.0
     app.kubernetes.io/name: example
     app.kubernetes.io/instance: example
     app.kubernetes.io/version: "1.25.4"
@@ -342,3 +499,135 @@ spec:
       command: ['wget']
       args: ['example-svc:80']
   restartPolicy: Never
+---
+# Source: example/templates/crds/crd-delete-orch.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: example-crd-delete
+  annotations:
+    "helm.sh/hook": post-delete
+    "helm.sh/hook-weight": "-0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: example-0.2.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.4"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: example
+        app.kubernetes.io/instance: example
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: example-crd-delete
+      initContainers:
+        - name: extract-crds
+          image: "busybox:1.38"
+          imagePullPolicy: IfNotPresent
+          command:
+            - tar
+          args:
+            - -xzf
+            - /input/crds.tar.gz
+            - -C
+            - /crds
+          volumeMounts:
+            - name: crd-archive
+              mountPath: /input
+              readOnly: true
+            - name: crds
+              mountPath: /crds
+      containers:
+        - name: kubectl
+          image: "registry.k8s.io/kubectl:v1.30.0"
+          imagePullPolicy: IfNotPresent
+          command:
+            - kubectl
+          args:
+            - delete
+            - --ignore-not-found
+            - -f
+            - /crds
+          volumeMounts:
+            - name: crds
+              mountPath: /crds
+              readOnly: true
+      volumes:
+        - name: crd-archive
+          configMap:
+            name: example-crds
+        - name: crds
+          emptyDir: {}
+---
+# Source: example/templates/crds/crd-upgrade-orch.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: example-crd-upgrade
+  annotations:
+    "helm.sh/hook": pre-upgrade,pre-rollback
+    "helm.sh/hook-weight": "-0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    helm.sh/chart: example-0.2.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.25.4"
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: example
+        app.kubernetes.io/instance: example
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: example-crd-upgrade
+      initContainers:
+        - name: extract-crds
+          image: "busybox:1.38"
+          imagePullPolicy: IfNotPresent
+          command:
+            - tar
+          args:
+            - -xzf
+            - /input/crds.tar.gz
+            - -C
+            - /crds
+          volumeMounts:
+            - name: crd-archive
+              mountPath: /input
+              readOnly: true
+            - name: crds
+              mountPath: /crds
+      containers:
+        - name: kubectl
+          image: "registry.k8s.io/kubectl:v1.30.0"
+          imagePullPolicy: IfNotPresent
+          command:
+            - kubectl
+          args:
+            - apply
+            - --server-side
+            - --field-manager=example-crd-upgrade
+            - --force-conflicts
+            - -f
+            - /crds
+          volumeMounts:
+            - name: crds
+              mountPath: /crds
+              readOnly: true
+      volumes:
+        - name: crd-archive
+          configMap:
+            name: example-crds
+        - name: crds
+          emptyDir: {}

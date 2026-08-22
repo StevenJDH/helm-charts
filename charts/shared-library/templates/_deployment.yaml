@@ -1,6 +1,6 @@
 {{/*
 This file is part of Shared Library Helm Chart <https://github.com/StevenJDH/helm-charts>.
-Copyright (C) 2023-2024 Steven Jenkins De Haro.
+Copyright (C) 2023-2026 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -120,15 +120,18 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-        {{- if or .Values.configMap .Values.secrets }}
+        {{- if or .Values.configMap .Values.secrets .Values.extraEnvFrom }}
           envFrom:
           {{- if .Values.configMap }}
-          - configMapRef:
-              name: {{ template "shared-library.fullname" . }}-config
+            - configMapRef:
+                name: {{ template "shared-library.fullname" . }}-config
           {{- end }}
           {{- if .Values.secrets }}
-          - secretRef:
-              name: {{ template "shared-library.fullname" . }}-secret
+            - secretRef:
+                name: {{ template "shared-library.fullname" . }}-secret
+          {{- end }}
+          {{- with .Values.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
         {{- end }}
           {{- with .Values.health.startupProbe }}
