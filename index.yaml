@@ -333,6 +333,23 @@ entries:
     version: 0.1.0
   shared-library:
   - apiVersion: v2
+    created: "2026-08-22T21:47:24.54384068Z"
+    description: A contract-based Helm library chart for Kubernetes.
+    digest: a93856870eca9080bfbc71a9f492efc63aac855446eeb24a60308eb446ea8a42
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.22.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: shared-library
+    sources:
+    - https://github.com/StevenJDH/helm-charts/tree/main/charts/shared-library
+    type: library
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/shared-library-0.2.0/shared-library-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2024-05-06T21:53:06.170762214Z"
     description: A contract-based Helm library chart for Kubernetes.
     digest: 96a2cf690d1575327a7cf8e04cbf6144e2af5213b0b68a6d1e4e814fd63b0f6e
@@ -461,4 +478,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/strimzi-cluster-0.1.0/strimzi-cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2026-08-17T21:09:54.912439327Z"
+generated: "2026-08-22T21:47:24.543918039Z"
