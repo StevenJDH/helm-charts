@@ -30,13 +30,13 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.1
+version: 0.2.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "26.7.1"
+appVersion: "26.7.2"
 
 # Includes pre-releases to support version schemes used like with AWS EKS as per https://github.com/helm/helm/issues/10375#issuecomment-974203557.
 kubeVersion: ">= 1.30.0-0"
@@ -55,5 +55,5 @@ icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-c
 
 dependencies:
   - name: shared-library
-    version: "^0.x"
+    version: "^0.2.x"
     repository: "https://StevenJDH.github.io/helm-charts"

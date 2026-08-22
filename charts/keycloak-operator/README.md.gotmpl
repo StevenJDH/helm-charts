@@ -15,6 +15,8 @@ helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
 helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "chart.name" . }} --version {{ template "chart.version" . }} \
     --namespace example \
+    --set crds.upgradeJob.enabled=true \
+    --set crds.deleteJob.enabled=true \
     --create-namespace \
     --atomic
 ```
