@@ -24,10 +24,10 @@ Usage:
 
 OR
 
-include "shared-library.crd-configmap" (dict
+{{- include "shared-library.crd-configmap" (dict
   "context" .
   "config" .Values.crds
-)
+) }}
 
 OR
 

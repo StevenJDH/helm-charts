@@ -24,10 +24,10 @@ Usage:
 
 OR
 
-include "shared-library.crd-delete-clusterrole" (dict
+{{- include "shared-library.crd-delete-clusterrole" (dict
   "context" .
   "config" .Values.crds
-)
+) }}
 
 OR
 

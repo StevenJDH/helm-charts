@@ -23,10 +23,10 @@ Usage:
 
 OR
 
-include "shared-library.crd-delete-job" (dict
+{{- include "shared-library.crd-delete-job" (dict
   "context" .
   "config" .Values.crds
-)
+) }}
 
 OR
 

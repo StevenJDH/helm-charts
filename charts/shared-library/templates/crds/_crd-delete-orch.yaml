@@ -24,10 +24,10 @@ Usage:
 
 OR
 
-include "shared-library.crd-delete-orch" (dict
+{{- include "shared-library.crd-delete-orch" (dict
   "context" .
   "config" .Values.crds
-)
+) }}
 
 The consuming chart must provide:
 - crds/*.yaml or crds/*.yml, OR a static list of CRD resource names.
@@ -41,7 +41,14 @@ Params:
 */}}
 
 {{- define "shared-library.crd-delete-orch" -}}
-{{- $config := (hasKey . "config") | ternary .config .Values.crds -}}
+{{- /* Can't use ternary because it eagerly evaluates both branches. */ -}}
+{{- $config := dict -}}
+{{- if hasKey . "config" -}}
+  {{- $config = .config -}}
+{{- else -}}
+  {{- $config = .Values.crds -}}
+{{- end -}}
+
 {{- if $config.deleteJob.enabled -}}
 {{- if not $config.upgradeJob.enabled }}
 {{ include "shared-library.crd-configmap" . }}
