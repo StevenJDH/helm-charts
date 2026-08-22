@@ -20,7 +20,7 @@ Generates a set of resources for upgrading CRDs that are compatible with all sup
 Kubernetes API versions.
 
 Usage:
-include "shared-library.crd-upgrade-orchestrator" (dict
+include "shared-library.crd-upgrade-orch" (dict
   "context" .
   "config" .Values.crds
 )
@@ -36,7 +36,7 @@ Params:
   - config - Dict - Required. The context for the 'crds' config section.
 */}}
 
-{{- define "shared-library.crd-upgrade-orchestrator" -}}
+{{- define "shared-library.crd-upgrade-orch" -}}
 {{- $config := .config  -}}
 {{- if $config.upgradeJob.enabled -}}
 {{ include "shared-library.crd-configmap.tpl" . }}

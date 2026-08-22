@@ -44,10 +44,10 @@ metadata:
 The consuming chart must provide:
 - files/crds.tar.gz
 
-NOTE: This template is meant to be used by the 'shared-library.crd-upgrade-orchestrator'
-      and 'shared-library.crd-delete-orchestrator' templates, which wrap the four needed
-      templates into one, respectively. If customization is needed, then do not use the
-      orchestrators.
+NOTE: This template is meant to be used by the 'shared-library.crd-upgrade-orch'
+      and 'shared-library.crd-delete-orch' templates, which wrap the five needed
+      templates into one, respectively. If customization is needed, then do not
+      use the orchestrators.
 
 Params:
   - context - Dict - Required. The top-level context for the template evaluation.

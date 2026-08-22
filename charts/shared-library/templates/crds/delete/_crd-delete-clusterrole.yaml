@@ -44,9 +44,9 @@ metadata:
 The consuming chart must provide:
 - crds/*.yaml or crds/*.yml, OR a static list of CRD resource names.
 
-NOTE: This template is meant to be used by the 'shared-library.crd-delete-orchestrator'
-      template, which wraps the four needed templates into one. If customization is
-      needed, then do not use the orchestrator.
+NOTE: This template is meant to be used by the 'shared-library.crd-delete-orch'
+      template, which wraps the five needed templates into one. If customization
+      is needed, then do not use the orchestrator.
 
 Params:
   - context - Dict - Required. The top-level context for the template evaluation.

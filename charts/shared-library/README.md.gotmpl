@@ -43,7 +43,7 @@ helm dep update .
 > Current version doesn't support multiple contexts, so only one instance of each template can be used.
 
 ## CRD management hooks
-The `shared-library.crd-upgrade-orchestrator` and `shared-library.crd-delete-orchestrator` templates have been provided to support optionally upgrading CRDs and or deleting them when removing a chart. There are few requirements for using them:
+The `shared-library.crd-upgrade-orch` and `shared-library.crd-delete-orch` templates have been provided to support optionally upgrading CRDs and or deleting them when removing a chart. There are few requirements for using them:
 
 * The consuming chart must have either a `crds` folder with only `*.yaml` or `*.yml` files, or a static list of resource names configured.
 * The consuming chart must also have a `files` folder containing a `crds.tar.gz` file.

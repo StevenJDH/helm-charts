@@ -20,7 +20,7 @@ Generates a set of resources for deleting CRDs that are compatible with all supp
 Kubernetes API versions.
 
 Usage:
-include "shared-library.crd-delete-orchestrator" (dict
+include "shared-library.crd-delete-orch" (dict
   "context" .
   "config" .Values.crds
 )
@@ -36,7 +36,7 @@ Params:
   - config - Dict - Required. The context for the 'crds' config section.
 */}}
 
-{{- define "shared-library.crd-delete-orchestrator" -}}
+{{- define "shared-library.crd-delete-orch" -}}
 {{- $config := .config -}}
 {{- if $config.deleteJob.enabled -}}
 {{- if not $config.upgradeJob.enabled }}
