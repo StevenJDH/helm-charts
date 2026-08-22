@@ -20,6 +20,10 @@ Generates a set of resources for upgrading CRDs that are compatible with all sup
 Kubernetes API versions.
 
 Usage:
+{{- include "shared-library.crd-upgrade-orch" . }}
+
+OR
+
 include "shared-library.crd-upgrade-orch" (dict
   "context" .
   "config" .Values.crds
@@ -37,16 +41,16 @@ Params:
 */}}
 
 {{- define "shared-library.crd-upgrade-orch" -}}
-{{- $config := .config  -}}
+{{- $config := (hasKey . "config") | ternary .config .Values.crds -}}
 {{- if $config.upgradeJob.enabled -}}
-{{ include "shared-library.crd-configmap.tpl" . }}
+{{ include "shared-library.crd-configmap" . }}
 ---
-{{ include "shared-library.crd-upgrade-serviceaccount.tpl" . }}
+{{ include "shared-library.crd-upgrade-serviceaccount" . }}
 ---
-{{ include "shared-library.crd-upgrade-clusterrole.tpl" . }}
+{{ include "shared-library.crd-upgrade-clusterrole" . }}
 ---
-{{ include "shared-library.crd-upgrade-clusterrolebinding.tpl" . }}
+{{ include "shared-library.crd-upgrade-clusterrolebinding" . }}
 ---
-{{ include "shared-library.crd-upgrade-job.tpl" . }}
+{{ include "shared-library.crd-upgrade-job" . }}
 {{- end }}
 {{- end -}}

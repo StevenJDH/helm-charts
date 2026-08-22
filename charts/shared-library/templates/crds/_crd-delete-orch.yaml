@@ -20,6 +20,10 @@ Generates a set of resources for deleting CRDs that are compatible with all supp
 Kubernetes API versions.
 
 Usage:
+{{- include "shared-library.crd-delete-orch" . }}
+
+OR
+
 include "shared-library.crd-delete-orch" (dict
   "context" .
   "config" .Values.crds
@@ -37,18 +41,18 @@ Params:
 */}}
 
 {{- define "shared-library.crd-delete-orch" -}}
-{{- $config := .config -}}
+{{- $config := (hasKey . "config") | ternary .config .Values.crds -}}
 {{- if $config.deleteJob.enabled -}}
 {{- if not $config.upgradeJob.enabled }}
-{{ include "shared-library.crd-configmap.tpl" . }}
+{{ include "shared-library.crd-configmap" . }}
 ---
 {{- end }}
-{{ include "shared-library.crd-delete-serviceaccount.tpl" . }}
+{{ include "shared-library.crd-delete-serviceaccount" . }}
 ---
-{{ include "shared-library.crd-delete-clusterrole.tpl" . }}
+{{ include "shared-library.crd-delete-clusterrole" . }}
 ---
-{{ include "shared-library.crd-delete-clusterrolebinding.tpl" . }}
+{{ include "shared-library.crd-delete-clusterrolebinding" . }}
 ---
-{{ include "shared-library.crd-delete-job.tpl" . }}
+{{ include "shared-library.crd-delete-job" . }}
 {{- end }}
 {{- end -}}

@@ -20,6 +20,10 @@ Generates a ConfigMap for CRD upgrade and delete Jobs that are compatible with a
 supported Kubernetes API versions.
 
 Usage:
+{{- include "shared-library.crd-configmap" . }}
+
+OR
+
 include "shared-library.crd-configmap" (dict
   "context" .
   "config" .Values.crds
@@ -76,10 +80,15 @@ binaryData:
 {{- end -}}
 
 {{- define "shared-library.crd-configmap" -}}
-{{- if and (kindIs "map" .) (hasKey . "override") .override }}
+{{- if and (kindIs "map" .) (eq (len .) 3) (hasKey . "override") .override }}
   {{- $ctx := omit . "override" -}}
   {{- include "shared-library.util.merge" (list $ctx .override "shared-library.crd-configmap.tpl") }}
-{{- else -}}
+{{- else if and (kindIs "map" .) (eq (len .) 2) (hasKey . "config") -}}
   {{- include "shared-library.crd-configmap.tpl" . }}
+{{- else -}}
+  {{- include "shared-library.crd-configmap.tpl" (dict
+    "context" .
+    "config" .Values.crds
+  ) }}
 {{- end }}
 {{- end -}}

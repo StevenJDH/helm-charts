@@ -19,6 +19,10 @@ limitations under the License.
 Generates a CRD upgrade Job that is compatible with all supported Kubernetes API versions.
 
 Usage:
+{{- include "shared-library.crd-upgrade-job" . }}
+
+OR
+
 include "shared-library.crd-upgrade-job" (dict
   "context" .
   "config" .Values.crds
@@ -135,10 +139,15 @@ spec:
 {{- end -}}
 
 {{- define "shared-library.crd-upgrade-job" -}}
-{{- if and (kindIs "map" .) (hasKey . "override") .override }}
+{{- if and (kindIs "map" .) (eq (len .) 3) (hasKey . "override") .override }}
   {{- $ctx := omit . "override" -}}
   {{- include "shared-library.util.merge" (list $ctx .override "shared-library.crd-upgrade-job.tpl") }}
-{{- else -}}
+{{- else if and (kindIs "map" .) (eq (len .) 2) (hasKey . "config") -}}
   {{- include "shared-library.crd-upgrade-job.tpl" . }}
+{{- else -}}
+  {{- include "shared-library.crd-upgrade-job.tpl" (dict
+    "context" .
+    "config" .Values.crds
+  ) }}
 {{- end }}
 {{- end -}}

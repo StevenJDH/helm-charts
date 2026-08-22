@@ -20,6 +20,10 @@ Generates a ClusterRoleBinding for a CRD delete Job that is compatible with all 
 Kubernetes API versions.
 
 Usage:
+{{- include "shared-library.crd-delete-clusterrolebinding" . }}
+
+OR
+
 include "shared-library.crd-delete-clusterrolebinding" (dict
   "context" .
   "config" .Values.crds
@@ -77,10 +81,15 @@ subjects:
 {{- end -}}
 
 {{- define "shared-library.crd-delete-clusterrolebinding" -}}
-{{- if and (kindIs "map" .) (hasKey . "override") .override }}
+{{- if and (kindIs "map" .) (eq (len .) 3) (hasKey . "override") .override }}
   {{- $ctx := omit . "override" -}}
   {{- include "shared-library.util.merge" (list $ctx .override "shared-library.crd-delete-clusterrolebinding.tpl") }}
-{{- else -}}
+{{- else if and (kindIs "map" .) (eq (len .) 2) (hasKey . "config") -}}
   {{- include "shared-library.crd-delete-clusterrolebinding.tpl" . }}
+{{- else -}}
+  {{- include "shared-library.crd-delete-clusterrolebinding.tpl" (dict
+    "context" .
+    "config" .Values.crds
+  ) }}
 {{- end }}
 {{- end -}}
