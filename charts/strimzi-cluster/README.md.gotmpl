@@ -46,11 +46,10 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
 > To test Drain Cleaner, run the command `kubectl drain <node-name> --delete-emptydir-data --ignore-daemonsets --timeout=6000s --force` against a node with a broker, which will fail the first time because the strimzi cluster operator will take over for relocating those workloads. Then, rerun the command again after a few minutes, and it will work this time. For more info, see [Using the Strimzi Drain Cleaner](https://github.com/strimzi/drain-cleaner?tab=readme-ov-file#see-it-in-action).
 
 ### Create Drain Cleaner certificate chain
-
 The following shows how to create the needed TLS certificates if Drain Cleaner will be installed with `strimzi-drain-cleaner.certManager.create` set to `false` as per above example. OpenSSL CLI v1.1.1 or newer is required.
 
 ```bash
-# 1. Set the namespace used by Drain Cleaner.
+# 1. Set the namespace used by Drain Cleaner. Use `set namespace` if using Windows.
 namespace=strimzi-drain-cleaner
 
 # 2. Create CA certificate and key.
@@ -60,13 +59,14 @@ openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 1168
     -addext "keyUsage=critical,keyCertSign,cRLSign" \
     -addext "subjectKeyIdentifier=hash"
 
-# 3. Create certificate signing request (*.csr) and private key.
+# 3. Create certificate signing request (*.csr) and private key. Change `$namespace` to `%namespace%` if using Windows.
 openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
     -subj "/CN=strimzi-drain-cleaner.$namespace.svc/O=StevenJDH" \
     -addext "basicConstraints=critical,CA:FALSE" \
     -addext "extendedKeyUsage=serverAuth" \
-    -addext "keyUsage=critical,digitalSignature,keyEncipherment,keyAgreement" \
+    -addext "keyUsage=critical,digitalSignature,keyEncipherment" \
     -addext "subjectAltName=DNS:strimzi-drain-cleaner.$namespace.svc" \
+    -addext "nsComment=Strimzi Drain Cleaner Server Certificate" \
     -addext "subjectKeyIdentifier=hash"
 
 # 4. Created CA signed server certificate from CSR.
@@ -139,7 +139,7 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 </table>
 
 ### Option 1 - Using PodMonitor (Recommended)
-This recommended approach will automatically detect and directly collect metrics from Strimzi related pods.
+This recommended approach will automatically detect and directly collect metrics from Strimzi related pods. In general, the below configurations are the defaults, which only requires that a PodMonitor in any namespace have the label `release: kube-prometheus-stack` to be detected.
 
 **prometheus-values.yaml**
 
@@ -153,20 +153,30 @@ grafana:
 prometheus:
   prometheusSpec:
     # Disabling this adds better support for third-party PodMonitor resource detection
-    # in its namespace without having to deal with label filtering or compromising the
-    # default discovery. Otherwise, the 'release: kube-prometheus-stack' label needs
-    # to be present in CRD resources like PodMonitor. To get the release name if
-    # the chart is already installed, use 'helm list -n monitoring'.
+    # across namespaces without having to deal with label filtering or compromising the
+    # default discovery. When enabled, an empty 'podMonitorSelector' is replaced with a
+    # label selector matching 'release: kube-prometheus-stack', which must be present on
+    # PodMonitor resources to be detected. To get the release name if the chart is already
+    # installed, use 'helm list -n monitoring' or the namespace used.
+    #
+    # DEPRECATED. Use 'matchLabels: null' in 'podMonitorSelector' for equivalent behavior
+    # when set to false.
+    #
+    # Reference:
+    # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/UPGRADE.md#from-62x-to-63x
     podMonitorSelectorNilUsesHelmValues: true
 
-    # PodMonitors to be selected for target discovery. If {}, select all PodMonitors.
+    # PodMonitors to be selected for target discovery. If {}, and above is 'false', select
+    # all PodMonitors. For the new approach, set 'matchLabels' to 'null' for equivalent
+    # behavior to the deprecated 'podMonitorSelectorNilUsesHelmValues' property when set
+    # to 'false' for all namespaces.
     podMonitorSelector: {}
       # matchLabels:
       #   prometheus: main
       
     # Namespaces matching labels to be selected for PodMonitor discovery. If {},
-    # select own namespace (e.g., monitoring). Useful for when wanting to keep
-    # resources together with app instead of grouped together in monitoring namespace.
+    # then it selects all namespaces. Useful for when wanting to keep resources
+    # together with the app instead of grouped together in a monitoring namespace.
     podMonitorNamespaceSelector: {}
       # matchLabels:
       #   monitoring: prometheus
@@ -174,7 +184,7 @@ prometheus:
 crds:
   upgradeJob:
     enabled: true
-    forceConflicts: false
+    forceConflicts: true
 ```
 
 After the kube-prometheus-stack chart has been deployed, or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
@@ -318,7 +328,7 @@ prometheus:
 crds:
   upgradeJob:
     enabled: true
-    forceConflicts: false
+    forceConflicts: true
 ```
 
 After the kube-prometheus-stack chart has been deployed or updated with the config above, set `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
@@ -377,7 +387,7 @@ prometheus:
 crds:
   upgradeJob:
     enabled: true
-    forceConflicts: false
+    forceConflicts: true
 ```
 
 > [!NOTE]  
