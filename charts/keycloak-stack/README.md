@@ -2,16 +2,16 @@
 
 <p align="center">
   <img
-    alt="Version: 0.1.0"
-    src="https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square"
+    alt="Version: 0.2.0"
+    src="https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square"
   />
   <img
     alt="Type: application"
     src="https://img.shields.io/badge/Type-application-informational?style=flat-square"
   />
   <img
-    alt="AppVersion: 26.7.1"
-    src="https://img.shields.io/badge/AppVersion-26.7.1-informational?style=flat-square"
+    alt="AppVersion: 26.7.2"
+    src="https://img.shields.io/badge/AppVersion-26.7.2-informational?style=flat-square"
   />
 </p>
 
@@ -39,22 +39,24 @@ Kubernetes: `>= 1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://StevenJDH.github.io/helm-charts | keycloak-operator | 0.1.1 |
-| https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
-| oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.9 |
+| https://StevenJDH.github.io/helm-charts | keycloak-operator | 0.2.0 |
+| https://StevenJDH.github.io/helm-charts | shared-library | ^0.2.x |
+| oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.13 |
 
 ## Usage example
 
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.1.0 \
+helm upgrade --install my-keycloak-stack stevenjdh/keycloak-stack --version 0.2.0 \
     --set devModeEnabled=true \
     --set hostname.host=keycloak.127.0.0.1.sslip.io \
     --set bootstrapAdmin.user.username=admin \
     --set bootstrapAdmin.user.password=admin \
     --set bootstrapAdmin.service.clientId=operator \
     --set bootstrapAdmin.service.clientSecret=operator \
+    --set keycloak-operator.crds.upgradeJob.enabled=true \
+    --set keycloak-operator.crds.deleteJob.enabled=true \
     --namespace example \
     --create-namespace \
     --atomic
@@ -511,6 +513,17 @@ After the kube-prometheus-stack chart has been deployed or updated with the conf
 | ingress.tls.keyContent | string | `""` | keyContent specifies PEM-encoded server private key used to create a TLS Secret when `ingress.tlsSecret` is not specified. This property is primarily intended for use with Helm's `--set-file` option, but supports inline when using a pipe. Ignored if `ingress.tlsSecret` is set. |
 | ingress.tlsSecret | string | `""` | tlsSecret is an existing secret containing the TLS configuration for re-encrypt or TLS termination scenarios. See [TLS Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets) for more information. |
 | instances | int | `1` | instances is the number of Keycloak instances created to increase availability when set to more than one. |
+| keycloak-operator.crds.deleteJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that deletes all chart CRDs when the Helm release is uninstalled. |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;images.&#8203;container.&#8203;pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;images.&#8203;container.&#8203;repositoryOverride | string | `""` | repositoryOverride overrides the default `registry.k8s.io/kubectl` container image used for applying changes to the CRDs. |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;images.&#8203;container.&#8203;tagOverride | string | `""` | tagOverride overrides the image tag whose default is the kubernetes version. |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;images.&#8203;initContainer.&#8203;pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;images.&#8203;initContainer.&#8203;repositoryOverride | string | `""` | repositoryOverride overrides the default `busybox` initContainer image used to decompress the `crds.tar.gz` archive. |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;images.&#8203;initContainer.&#8203;tagOverride | string | `""` | tagOverride overrides the default `latest` image tag. |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;resources.&#8203;container | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;resources.&#8203;initContainer | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;upgradeJob.&#8203;enabled | bool | `false` | Indicates whether or not to enable a Helm hook that upgrades the chart CRDs using server-side apply. |
+| keycloak-&#8203;operator.&#8203;crds.&#8203;upgradeJob.&#8203;forceConflicts | bool | `true` | Indicates whether or not to force server-side apply to take ownership of conflicting fields. This option is recommended as it will avoid conflicts with Helm's initial install ownership. |
 | keycloak-operator.enabled | bool | `true` | Indicates whether or not the Keycloak Operator is installed. |
 | keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloak | bool | `false` | keycloak is for indicating whether or not Keycloak resources will be watched in all namespaces. |
 | keycloak-&#8203;operator.&#8203;watchAllNamespacesFor.&#8203;keycloakOIDCClient | bool | `false` | keycloakOIDCClient is for indicating whether or not `KeycloakOIDCClient` resources will be watched in all namespaces. |
