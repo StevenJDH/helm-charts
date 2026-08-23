@@ -60,6 +60,12 @@ k6:
   dashboard:
     enabled: true
 
+crds:
+  upgradeJob:
+    enabled: true
+  deleteJob:
+    enabled: true
+
 strimzi-kafka-operator:
   dashboards:
     enabled: true
