@@ -1,19 +1,17 @@
-
-
 <h1 align="center">Strimzi Cluster Helm Chart</h1>
 
 <p align="center">
   <img
-    alt="Version: 0.2.0"
-    src="https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square"
+    alt="Version: 0.3.0"
+    src="https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square"
   />
   <img
     alt="Type: application"
     src="https://img.shields.io/badge/Type-application-informational?style=flat-square"
   />
   <img
-    alt="AppVersion: 0.51.0"
-    src="https://img.shields.io/badge/AppVersion-0.51.0-informational?style=flat-square"
+    alt="AppVersion: 1.2.0"
+    src="https://img.shields.io/badge/AppVersion-1.2.0-informational?style=flat-square"
   />
 </p>
 
@@ -42,14 +40,14 @@ Kubernetes: `>= 1.30.0-0`
 |------------|------|---------|
 | https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
 | oci://quay.io/strimzi-helm | strimzi-drain-cleaner | 1.6.0 |
-| oci://quay.io/strimzi-helm | strimzi-kafka-operator | 0.51.0 |
+| oci://quay.io/strimzi-helm | strimzi-kafka-operator | 1.2.0 |
 
 ## Usage example
 
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.2.0 \
+helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.3.0 \
     --set strimzi-kafka-operator.enabled=true \
     --set strimzi-drain-cleaner.enabled=true \
     --set strimzi-drain-cleaner.certManager.create=false \
@@ -57,6 +55,8 @@ helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.
     --set-file strimzi-drain-cleaner.secret.tls_key=tls.key.base64 \
     --set-file strimzi-drain-cleaner.secret.ca_bundle=ca.crt.base64 \
     --set kafka.rackTopology.enabled=false \
+    --set crds.upgradeJob.enabled=true \
+    --set crds.deleteJob.enabled=true \
     --namespace example \
     --create-namespace \
     --atomic
@@ -558,6 +558,17 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| crds.deleteJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that deletes all chart CRDs when the Helm release is uninstalled. |
+| crds.images.container.pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.images.container.repositoryOverride | string | `""` | repositoryOverride overrides the default `registry.k8s.io/kubectl` container image used for applying changes to the CRDs. |
+| crds.images.container.tagOverride | string | `""` | tagOverride overrides the image tag whose default is the kubernetes version. |
+| crds.images.initContainer.pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.images.initContainer.repositoryOverride | string | `""` | repositoryOverride overrides the default `busybox` initContainer image used to decompress the `crds.tar.gz` archive. |
+| crds.images.initContainer.tagOverride | string | `""` | tagOverride overrides the default `latest` image tag. |
+| crds.resources.container | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.resources.initContainer | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.upgradeJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that upgrades the chart CRDs using server-side apply. |
+| crds.upgradeJob.forceConflicts | bool | `true` | Indicates whether or not to force server-side apply to take ownership of conflicting fields. This option is recommended as it will avoid conflicts with Helm's initial install ownership. |
 | cruiseControlRebalance.annotations."strimzi.io/rebalance-auto-approval" | string | `"true"` | Triggers the rebalance directly without any further approval step (e.g., setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`). Use `strimzi.io/rebalance=refresh` to trigger a new analysis. |
 | cruiseControlRebalance.create | bool | `true` | Indicates whether or not to create a KafkaRebalance resource with an empty spec to use the default goals from the Cruise Control configuration for optimizing the cluster workloads. |
 | cruiseControlRebalance.goals | list | `[]` | goals is a list, ordered by decreasing priority, to use for generating and executing the rebalance proposal. If an empty goals list is provided, the default goals are used. Exclude `RackAwareGoal` if `kafka.rackTopology.enabled` is set to `true`, and the number of domains is less than 3. Also, set skipHardGoalCheck to `true`. Reference: [Default Goals](https://github.com/linkedin/cruise-control#goals). |
@@ -606,7 +617,7 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | kafka.rackTopology.customKey | string | `""` | customKey allows to override the standard `topology.kubernetes.io/zone` key used for the rack-aware feature. |
 | kafka.rackTopology.enabled | bool | `true` | Indicates whether or not to enable the rack-aware feature for the node pools to improve resiliency, availability, and reliability. Strimzi will automatically add the Kubernetes affinity rule to distribute the node pools across the different availability zones or actual racks in the data center, which is not guaranteed to be evenly done. As such, Cruise Control will make sure that replicas remain and get distributed properly if in use. When testing locally, set this to `false`. |
 | kafka.template | object | `{}` | template allows to customize the configuration of the Kafka cluster. Reference: [KafkaClusterTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaClusterTemplate-reference). |
-| kafka.version | string | `"4.2.0"` | version is the version of Kafka to use. |
+| kafka.version | string | `"4.3.1"` | version is the version of Kafka to use. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | nodePools.broker.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. It's recommended to set something like `strimzi.io/next-node-ids: "[0-10]"` to have more control over what node pool gets what IDs. |
 | nodePools.broker.enabled | bool | `true` | Indicates whether or not to deploy this broker node pool with the Kafka cluster. Should be set to `false` if using a dual-role broker pool. |

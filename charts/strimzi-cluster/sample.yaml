@@ -7,7 +7,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: service-account
     release: example
     heritage: Helm
@@ -20,7 +20,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: logging-config-map
     release: example
     heritage: Helm
@@ -52,10 +52,10 @@ apiVersion: v1
 metadata:
   name: example-strimzi-cluster-metrics-config
   labels:
-    helm.sh/chart: strimzi-cluster-0.2.0
+    helm.sh/chart: strimzi-cluster-0.3.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.51.0"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 data:
@@ -297,7 +297,7 @@ metadata:
   name: strimzi-cluster-operator-namespaced
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: role
     release: example
     heritage: Helm
@@ -356,6 +356,14 @@ rules:
   - delete
   - patch
   - update
+- apiGroups:
+    - ""
+  resources:
+    # For inplace resizing, we need access to pods/resize subresource
+    - pods/resize
+  verbs:
+    - patch
+    - update
 - apiGroups:
   - "apps"
   resources:
@@ -452,6 +460,19 @@ rules:
   - delete
   - patch
   - update
+- apiGroups:
+  - gateway.networking.k8s.io
+  resources:
+    # The cluster operator needs to access and manage TLSRoutes to expose Strimzi components for external access
+  - tlsroutes
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - delete
+  - patch
+  - update
 ---
 # Source: strimzi-cluster/charts/strimzi-kafka-operator/templates/021-ClusterRole-strimzi-cluster-operator-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -460,7 +481,7 @@ metadata:
   name: strimzi-cluster-operator-global
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: role
     release: example
     heritage: Helm
@@ -504,7 +525,7 @@ metadata:
   name: strimzi-cluster-operator-leader-election
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: role
     release: example
     heritage: Helm
@@ -541,7 +562,7 @@ metadata:
   name: strimzi-cluster-operator-watched
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: role
     release: example
     heritage: Helm
@@ -648,7 +669,7 @@ metadata:
   name: strimzi-kafka-broker
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: broker-role
     release: example
     heritage: Helm
@@ -669,7 +690,7 @@ metadata:
   name: strimzi-entity-operator
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: entity-operator-role
     release: example
     heritage: Helm
@@ -739,7 +760,7 @@ metadata:
   name: strimzi-kafka-client
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: client-role
     release: example
     heritage: Helm
@@ -761,7 +782,7 @@ metadata:
   name: strimzi-cluster-operator
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: role-binding
     release: example
     heritage: Helm
@@ -781,7 +802,7 @@ metadata:
   name: strimzi-cluster-operator-kafka-broker-delegation
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: broker-role-binding
     release: example
     heritage: Helm
@@ -803,7 +824,7 @@ metadata:
   name: strimzi-cluster-operator-kafka-client-delegation
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: client-role-binding
     release: example
     heritage: Helm
@@ -827,7 +848,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: role-binding
     release: example
     heritage: Helm
@@ -848,7 +869,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: role-binding
     release: example
     heritage: Helm
@@ -869,7 +890,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: role-binding
     release: example
     heritage: Helm
@@ -890,7 +911,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: entity-operator-role-binding
     release: example
     heritage: Helm
@@ -913,7 +934,7 @@ metadata:
   namespace: default
   labels:
     app: strimzi
-    chart: strimzi-kafka-operator-0.51.0
+    chart: strimzi-kafka-operator-1.2.0
     component: deployment
     release: example
     heritage: Helm
@@ -930,7 +951,25 @@ spec:
         strimzi.io/kind: cluster-operator
     spec:
       serviceAccountName: strimzi-cluster-operator
+      automountServiceAccountToken: false
       volumes:
+        - name: kube-api-access
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  path: token
+              - configMap:
+                  name: kube-root-ca.crt
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+              - downwardAPI:
+                  items:
+                    - path: namespace
+                      fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
         - name: strimzi-tmp
           emptyDir:
             medium: Memory
@@ -940,13 +979,16 @@ spec:
             name: strimzi-cluster-operator
       containers:
         - name: strimzi-cluster-operator
-          image: quay.io/strimzi/operator:0.51.0
+          image: quay.io/strimzi/operator:1.2.0
           ports:
             - containerPort: 8080
               name: http
           args:
             - /opt/strimzi/bin/cluster_operator_run.sh
           volumeMounts:
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access
+              readOnly: true
             - name: strimzi-tmp
               mountPath: /tmp
             - name: co-config-volume
@@ -961,38 +1003,41 @@ spec:
             - name: STRIMZI_OPERATION_TIMEOUT_MS
               value: "300000"
             - name: STRIMZI_DEFAULT_KAFKA_EXPORTER_IMAGE
-              value: quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
+              value: quay.io/strimzi/kafka:1.2.0-kafka-4.3.1
             - name: STRIMZI_DEFAULT_CRUISE_CONTROL_IMAGE
-              value: quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
+              value: quay.io/strimzi/kafka:1.2.0-kafka-4.3.1
             - name: STRIMZI_KAFKA_IMAGES
               value: |                 
-                4.1.0=quay.io/strimzi/kafka:0.51.0-kafka-4.1.0
-                4.1.1=quay.io/strimzi/kafka:0.51.0-kafka-4.1.1
-                4.2.0=quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
+                4.2.0=quay.io/strimzi/kafka:1.2.0-kafka-4.2.0
+                4.2.1=quay.io/strimzi/kafka:1.2.0-kafka-4.2.1
+                4.3.0=quay.io/strimzi/kafka:1.2.0-kafka-4.3.0
+                4.3.1=quay.io/strimzi/kafka:1.2.0-kafka-4.3.1
             - name: STRIMZI_KAFKA_CONNECT_IMAGES
               value: |                 
-                4.1.0=quay.io/strimzi/kafka:0.51.0-kafka-4.1.0
-                4.1.1=quay.io/strimzi/kafka:0.51.0-kafka-4.1.1
-                4.2.0=quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
+                4.2.0=quay.io/strimzi/kafka:1.2.0-kafka-4.2.0
+                4.2.1=quay.io/strimzi/kafka:1.2.0-kafka-4.2.1
+                4.3.0=quay.io/strimzi/kafka:1.2.0-kafka-4.3.0
+                4.3.1=quay.io/strimzi/kafka:1.2.0-kafka-4.3.1
             - name: STRIMZI_KAFKA_MIRROR_MAKER_2_IMAGES
               value: |                 
-                4.1.0=quay.io/strimzi/kafka:0.51.0-kafka-4.1.0
-                4.1.1=quay.io/strimzi/kafka:0.51.0-kafka-4.1.1
-                4.2.0=quay.io/strimzi/kafka:0.51.0-kafka-4.2.0
+                4.2.0=quay.io/strimzi/kafka:1.2.0-kafka-4.2.0
+                4.2.1=quay.io/strimzi/kafka:1.2.0-kafka-4.2.1
+                4.3.0=quay.io/strimzi/kafka:1.2.0-kafka-4.3.0
+                4.3.1=quay.io/strimzi/kafka:1.2.0-kafka-4.3.1
             - name: STRIMZI_DEFAULT_TOPIC_OPERATOR_IMAGE
-              value: quay.io/strimzi/operator:0.51.0
+              value: quay.io/strimzi/operator:1.2.0
             - name: STRIMZI_DEFAULT_USER_OPERATOR_IMAGE
-              value: quay.io/strimzi/operator:0.51.0
+              value: quay.io/strimzi/operator:1.2.0
             - name: STRIMZI_DEFAULT_KAFKA_INIT_IMAGE
-              value: quay.io/strimzi/operator:0.51.0
+              value: quay.io/strimzi/operator:1.2.0
             - name: STRIMZI_DEFAULT_KAFKA_BRIDGE_IMAGE
-              value: quay.io/strimzi/kafka-bridge:0.33.1
+              value: quay.io/strimzi/kafka-bridge:1.1.0
             - name: STRIMZI_DEFAULT_KANIKO_EXECUTOR_IMAGE
-              value: quay.io/strimzi/kaniko-executor:0.51.0
+              value: quay.io/strimzi/kaniko-executor:1.2.0
             - name: STRIMZI_DEFAULT_BUILDAH_IMAGE
-              value: quay.io/strimzi/buildah:0.51.0
+              value: quay.io/strimzi/buildah:1.2.0
             - name: STRIMZI_DEFAULT_MAVEN_BUILDER
-              value: quay.io/strimzi/maven-builder:0.51.0
+              value: quay.io/strimzi/maven-builder:1.2.0
             - name: STRIMZI_OPERATOR_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -1024,6 +1069,15 @@ spec:
               port: http
             initialDelaySeconds: 10
             periodSeconds: 30
+          securityContext: 
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
           resources:
             limits:
               cpu: 1000m
@@ -1040,15 +1094,15 @@ kind: Kafka
 metadata:
   name: example-strimzi-cluster
   labels:
-    helm.sh/chart: strimzi-cluster-0.2.0
+    helm.sh/chart: strimzi-cluster-0.3.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.51.0"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec:
   kafka:
-    version: 4.2.0
+    version: 4.3.1
     listeners:
       - name: plain
         port: 9092
@@ -1115,10 +1169,10 @@ metadata:
   name: broker
   labels:
     strimzi.io/cluster: example-strimzi-cluster
-    helm.sh/chart: strimzi-cluster-0.2.0
+    helm.sh/chart: strimzi-cluster-0.3.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.51.0"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec:
@@ -1142,10 +1196,10 @@ metadata:
   name: kraft-controller
   labels:
     strimzi.io/cluster: example-strimzi-cluster
-    helm.sh/chart: strimzi-cluster-0.2.0
+    helm.sh/chart: strimzi-cluster-0.3.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.51.0"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec:
@@ -1171,10 +1225,10 @@ metadata:
     strimzi.io/rebalance-auto-approval: "true"
   labels:
     strimzi.io/cluster: example-strimzi-cluster
-    helm.sh/chart: strimzi-cluster-0.2.0
+    helm.sh/chart: strimzi-cluster-0.3.0
     app.kubernetes.io/name: strimzi-cluster
     app.kubernetes.io/instance: example
-    app.kubernetes.io/version: "0.51.0"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
   namespace: default
 spec:
