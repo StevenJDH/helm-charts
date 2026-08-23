@@ -274,6 +274,37 @@ entries:
     version: 0.1.0
   keycloak-stack:
   - apiVersion: v2
+    appVersion: 26.7.2
+    created: "2026-08-23T16:10:26.087844046Z"
+    dependencies:
+    - condition: keycloak-operator.enabled
+      name: keycloak-operator
+      repository: https://StevenJDH.github.io/helm-charts
+      version: 0.2.0
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 18.8.13
+    - name: shared-library
+      repository: https://StevenJDH.github.io/helm-charts
+      version: ^0.x
+    description: Installs a fully managed Keycloak with its dependencies and support
+      for declarative resources.
+    digest: 9a50b46572dc38ffdddd8bdc797194ac231696b9ef7beda226b767c8c112d3f4
+    home: https://github.com/StevenJDH/helm-charts
+    icon: https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg
+    kubeVersion: '>= 1.30.0-0'
+    maintainers:
+    - name: Steven Jenkins De Haro
+      url: https://github.com/StevenJDH
+    name: keycloak-stack
+    sources:
+    - https://github.com/keycloak/keycloak
+    type: application
+    urls:
+    - https://github.com/StevenJDH/helm-charts/releases/download/keycloak-stack-0.2.0/keycloak-stack-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 26.7.1
     created: "2026-08-17T21:09:54.912395445Z"
     dependencies:
@@ -501,4 +532,4 @@ entries:
     urls:
     - https://github.com/StevenJDH/helm-charts/releases/download/strimzi-cluster-0.1.0/strimzi-cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2026-08-23T11:16:42.27555819Z"
+generated: "2026-08-23T16:10:26.087887391Z"
