@@ -724,6 +724,57 @@ keycloak-operator:
     # -- keycloakSAMLClient is for indicating whether or not `KeycloakSAMLClient`
     # resources will be watched in all namespaces.
     keycloakSAMLClient: false
+  crds:
+    upgradeJob:
+      # -- Indicates whether or not to enable a Helm hook that upgrades the chart CRDs using server-side
+      # apply.
+      enabled: false
+      # -- Indicates whether or not to force server-side apply to take ownership of conflicting fields.
+      # This option is recommended as it will avoid conflicts with Helm's initial install ownership.
+      forceConflicts: true
+    deleteJob:
+      # -- Indicates whether or not to enable a Helm hook that deletes all chart CRDs when the Helm
+      # release is uninstalled.
+      enabled: false
+    images:
+      initContainer:
+        # -- repositoryOverride overrides the default `busybox` initContainer image used to decompress
+        # the `crds.tar.gz` archive.
+        repositoryOverride: ""
+        # -- tagOverride overrides the default `latest` image tag.
+        tagOverride: ""
+        # -- pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a
+        # registry.
+        pullPolicyOverride: ""
+      container:
+        # -- repositoryOverride overrides the default `registry.k8s.io/kubectl` container image used for
+        # applying changes to the CRDs.
+        repositoryOverride: ""
+        # -- tagOverride overrides the image tag whose default is the kubernetes version.
+        tagOverride: ""
+        # -- pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a
+        # registry.
+        pullPolicyOverride: ""
+    resources:
+      # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+      # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+      initContainer: {}
+        # requests:
+        #   cpu: 10m
+        #   memory: 16Mi
+        # limits:
+        #   cpu: 100m
+        #   memory: 32Mi
+
+      # -- Optionally request and limit how much CPU and memory (RAM) the container needs.
+      # Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers).
+      container: {}
+        # requests:
+        #   cpu: 50m
+        #   memory: 64Mi
+        # limits:
+        #   cpu: 250m
+        #   memory: 256Mi
 
 postgresql:
   # -- Indicates whether or not a PostgreSQL database is created.

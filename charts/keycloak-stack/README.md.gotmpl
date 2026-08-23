@@ -32,6 +32,8 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
     --set bootstrapAdmin.user.password=admin \
     --set bootstrapAdmin.service.clientId=operator \
     --set bootstrapAdmin.service.clientSecret=operator \
+    --set keycloak-operator.crds.upgradeJob.enabled=true \
+    --set keycloak-operator.crds.deleteJob.enabled=true \
     --namespace example \
     --create-namespace \
     --atomic

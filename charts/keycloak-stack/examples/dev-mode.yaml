@@ -65,6 +65,13 @@ additionalOptions:
 - name: openapi-ui-enabled
   value: "true"
 
+keycloak-operator:
+  crds:
+    upgradeJob:
+      enabled: true
+    deleteJob:
+      enabled: true
+
 postgresql:
   auth:
     password: password

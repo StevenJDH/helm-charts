@@ -118,6 +118,13 @@ additionalOptions:
 - name: https-management-client-auth
   value: "request" # Alternatively, use 'none'.
 
+keycloak-operator:
+  crds:
+    upgradeJob:
+      enabled: true
+    deleteJob:
+      enabled: true
+
 postgresql:
   auth:
     password: password
