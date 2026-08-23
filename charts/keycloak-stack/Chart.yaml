@@ -62,5 +62,5 @@ dependencies:
     repository: "oci://registry-1.docker.io/bitnamicharts"
     condition: postgresql.enabled
   - name: shared-library
-    version: "^0.2.x"
+    version: "^0.x"
     repository: "https://StevenJDH.github.io/helm-charts"

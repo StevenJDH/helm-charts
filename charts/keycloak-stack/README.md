@@ -40,7 +40,7 @@ Kubernetes: `>= 1.30.0-0`
 | Repository | Name | Version |
 |------------|------|---------|
 | https://StevenJDH.github.io/helm-charts | keycloak-operator | 0.2.0 |
-| https://StevenJDH.github.io/helm-charts | shared-library | ^0.2.x |
+| https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
 | oci://registry-1.docker.io/bitnamicharts | postgresql | 18.8.13 |
 
 ## Usage example
