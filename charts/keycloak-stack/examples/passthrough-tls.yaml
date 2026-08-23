@@ -60,6 +60,13 @@ ingress:
   enabled: false
   className: traefik
 
+keycloak-operator:
+  crds:
+    upgradeJob:
+      enabled: true
+    deleteJob:
+      enabled: true
+
 postgresql:
   auth:
     password: password

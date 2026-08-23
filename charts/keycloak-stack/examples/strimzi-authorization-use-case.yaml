@@ -50,6 +50,13 @@ keycloakRealmImport:
   realmContent: |
     USE THE COMMAND ABOVE OR PASTE THE CONTENT OF kafka-authz-realm.json HERE
 
+keycloak-operator:
+  crds:
+    upgradeJob:
+      enabled: true
+    deleteJob:
+      enabled: true
+
 postgresql:
   auth:
     password: password

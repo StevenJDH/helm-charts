@@ -63,6 +63,13 @@ podTemplate:
       - name: providers
         emptyDir: {}
 
+keycloak-operator:
+  crds:
+    upgradeJob:
+      enabled: true
+    deleteJob:
+      enabled: true
+
 postgresql:
   auth:
     password: password

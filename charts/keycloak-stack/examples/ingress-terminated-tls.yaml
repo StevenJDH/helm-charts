@@ -53,6 +53,13 @@ ingress:
     #   ...
     #   -----END PRIVATE KEY-----
 
+keycloak-operator:
+  crds:
+    upgradeJob:
+      enabled: true
+    deleteJob:
+      enabled: true
+
 postgresql:
   auth:
     password: password

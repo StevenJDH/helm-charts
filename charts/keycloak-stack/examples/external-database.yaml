@@ -37,5 +37,12 @@ devModeEnabled: true
 ingress:
   className: traefik
 
+keycloak-operator:
+  crds:
+    upgradeJob:
+      enabled: true
+    deleteJob:
+      enabled: true
+
 postgresql:
   enabled: false
