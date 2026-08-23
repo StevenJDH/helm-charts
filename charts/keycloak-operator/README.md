@@ -1,6 +1,6 @@
 # Keycloak Operator Helm Chart
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.7.1](https://img.shields.io/badge/AppVersion-26.7.1-informational?style=flat-square) 
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.7.2](https://img.shields.io/badge/AppVersion-26.7.2-informational?style=flat-square) 
 
 Installs the Keycloak operator for managing Keycloak instances declaratively.
 
@@ -15,15 +15,17 @@ Kubernetes: `>= 1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
+| https://StevenJDH.github.io/helm-charts | shared-library | ^0.2.x |
 
 ## Usage example
 
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-keycloak-operator stevenjdh/keycloak-operator --version 0.1.1 \
+helm upgrade --install my-keycloak-operator stevenjdh/keycloak-operator --version 0.2.0 \
     --namespace example \
+    --set crds.upgradeJob.enabled=true \
+    --set crds.deleteJob.enabled=true \
     --create-namespace \
     --atomic
 ```
@@ -39,6 +41,17 @@ helm upgrade --install my-keycloak-operator stevenjdh/keycloak-operator --versio
 | annotations | object | `{}` | annotations to be added to the Deployment resource. |
 | command | list | `[]` | command corresponds to the entrypoint in some container images that can be overridden or used to run shell commands. |
 | configMap | object | `{}` | configMap is used to store non-confidential data in key-value pairs. Quoting is required if the value is 0. The `RELATED_IMAGE_KEYCLOAK` and `relatedImageKeycloak` values are reserved keys and should not be used. |
+| crds.deleteJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that deletes all chart CRDs when the Helm release is uninstalled. |
+| crds.images.container.pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.images.container.repositoryOverride | string | `""` | repositoryOverride overrides the default `registry.k8s.io/kubectl` container image used for applying changes to the CRDs. |
+| crds.images.container.tagOverride | string | `""` | tagOverride overrides the image tag whose default is the kubernetes version. |
+| crds.images.initContainer.pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.images.initContainer.repositoryOverride | string | `""` | repositoryOverride overrides the default `busybox` initContainer image used to decompress the `crds.tar.gz` archive. |
+| crds.images.initContainer.tagOverride | string | `""` | tagOverride overrides the default `latest` image tag. |
+| crds.resources.container | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.resources.initContainer | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.upgradeJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that upgrades the chart CRDs using server-side apply. |
+| crds.upgradeJob.forceConflicts | bool | `true` | Indicates whether or not to force server-side apply to take ownership of conflicting fields. This option is recommended as it will avoid conflicts with Helm's initial install ownership. |
 | extraArgs | list | `[]` | Additional command line arguments to pass to the container. |
 | extraInitContainers | list | `[]` | Containers, which are run before the app containers are started. |
 | extraVolumeMounts | list | `[]` | Additional volumeMounts for the main container. |
