@@ -113,7 +113,9 @@ spec:
       - {{ .Release.Namespace }}
   podMetricsEndpoints:
   - path: /metrics
-    port: "healthcheck"
+    port: "healthcheck-to"
+  - path: /metrics
+    port: "healthcheck-uo"
 ---
 {{- end }}
 {{- end -}}

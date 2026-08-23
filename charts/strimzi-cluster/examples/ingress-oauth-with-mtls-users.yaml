@@ -49,7 +49,7 @@ kafka:
       volumes: []
     #   - name: keycloak-certs-vol
     #     secret:
-    #       name: keycloak-certs
+    #       secretName: keycloak-certs
     kafkaContainer:
       volumeMounts: []
     #   - name: keycloak-certs-vol
