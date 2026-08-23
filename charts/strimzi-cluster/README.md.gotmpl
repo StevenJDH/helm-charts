@@ -342,6 +342,7 @@ This approach is more for compatibility reasons. For example, when using CRDs or
 grafana:
   defaultDashboardsEnabled: false
   # Change adminPassword as needed.
+  adminUser: admin  
   adminPassword: admin
 
 prometheus:
@@ -399,19 +400,29 @@ After the kube-prometheus-stack chart has been deployed or updated with the conf
 
 ![Strimzi Alerts](screenshots/Strimzi%20Alerts%20-%20Prometheus.png "Strimzi Alerts")
 
-To enable alerts, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart. If wanting to create alerts in a different namespace from where the kube-prometheus-stack chart is deployed, customize and consolidate the below with one of the options above, except Option 3. Otherwise, skip this configuration if not needed.
+To enable alerts, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart. In general, the below configurations are the defaults, which only requires that a PrometheusRule in any namespace have the label `release: kube-prometheus-stack` to be detected. If a different behavior is needed, customize and consolidate the below with one of the options above, except Option 3.
 
 ```yaml
 prometheus:
   prometheusSpec:
-    # Disabling this adds better support for third-party PrometheusRule resource
-    # detection in its namespace without having to deal with label filtering or
-    # compromising the default discovery. Otherwise, the 'release: kube-prometheus-stack'
-    # label needs to be present in CRD resources like PrometheusRule. To get the
-    # release name if the chart is already installed, use 'helm list -n monitoring'.
+    # Disabling this adds better support for third-party PrometheusRule resource detection
+    # across namespaces without having to deal with label filtering or compromising the
+    # default discovery. When enabled, an empty 'ruleSelector' is replaced with a
+    # label selector matching 'release: kube-prometheus-stack', which must be present on
+    # PrometheusRule resources to be detected. To get the release name if the chart is already
+    # installed, use 'helm list -n monitoring' or the namespace used.
+    #
+    # DEPRECATED. Use 'matchLabels: null' in 'ruleSelector' for equivalent behavior
+    # when set to false.
+    #
+    # Reference:
+    # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/UPGRADE.md#from-62x-to-63x
     ruleSelectorNilUsesHelmValues: true
 
-    # PrometheusRules to be selected for discovery. If {}, select all PrometheusRules.
+    # PrometheusRules to be selected for target discovery. If {}, and above is 'false', select
+    # all PrometheusRules. For the new approach, set 'matchLabels' to 'null' for equivalent
+    # behavior to the deprecated 'ruleSelectorNilUsesHelmValues' property when set
+    # to 'false' for all namespaces.
     ruleSelector: {}
       # matchLabels:
       #   prometheus: main
@@ -423,8 +434,8 @@ prometheus:
       #       - examples
       
     # Namespaces matching labels to be selected for PrometheusRule discovery. If {},
-    # select own namespace (e.g., monitoring). Useful for when wanting to keep
-    # resources together with app instead of grouped together in monitoring namespace.
+    # then it selects all namespaces. Useful for when wanting to keep resources
+    # together with the app instead of grouped together in a monitoring namespace.
     ruleNamespaceSelector: {}
       # matchLabels:
       #   monitoring: prometheus

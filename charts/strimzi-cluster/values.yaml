@@ -265,17 +265,15 @@ podMonitor:
   # more information.
   create: false
   # -- overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor
-  # resources will be deployed. If deploying to a namespace where the prometheus operator isn't
-  # located, some config changes will be required. See
-  # [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README
-  # for more information.
+  # resources will be deployed. This should ideally be the same namespace as the Prometheus Operator
+  # and Grafana instance, but any namespace is supported when using the default settings of the
+  # kube-prometheus-stack helm chart. See [Option 1](#option-1---using-podmonitor-recommended) under
+  # the Monitoring section of the README for more information.
   overrideNamespace: ""
   # -- labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of
   # the prometheus operator, which by default uses the release name of the kube-prometheus-stack
-  # chart used when installing. Adjustments may be needed if deploying to a different namespace
-  # other then where the prometheus operator is deployed. See
-  # [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README
-  # for more information.
+  # chart used when installing. See [Option 1](#option-1---using-podmonitor-recommended) under the
+  # Monitoring section of the README for more information.
   labels:
     release: kube-prometheus-stack
 
@@ -294,17 +292,15 @@ prometheusKafkaAlerts:
   # the Monitoring section of the README for more information.
   create: false
   # -- overrideNamespace allows to override the default `monitoring` namespace where the PrometheusRule
-  # resource will be deployed. If deploying to a namespace where the prometheus operator isn't
-  # located, some config changes will be required. See
-  # [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring
-  # section of the README for more information.
+  # resource will be deployed. This should ideally be the same namespace as the Prometheus Operator
+  # and Grafana instance, but any namespace is supported when using the default settings of the
+  # kube-prometheus-stack helm chart. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules)
+  # under the Monitoring section of the README for more information.
   overrideNamespace: ""
   # -- labels to be added to the PrometheusRule resource. This is used by the auto-discovery feature of
   # the prometheus operator, which by default uses the release name of the kube-prometheus-stack
-  # chart used when installing. Adjustments may be needed if deploying to a different namespace
-  # other then where the prometheus operator is deployed. See
-  # [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring
-  # section of the README for more information.
+  # chart used when installing. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules)
+  # under the Monitoring section of the README for more information.
   labels:
     release: kube-prometheus-stack
 
@@ -552,8 +548,9 @@ k6:
     # [Sending load testing results to Prometheus](#sending-load-testing-results-to-prometheus) for more
     # information.
     enabled: false
-    # -- overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard will be deployed. This should be the same
-    # namespace as the Prometheus Operator and Grafana instance.
+    # -- overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard
+    # will be deployed. This should ideally be the same namespace as the Prometheus Operator and Grafana instance,
+    # but any namespace is supported when using the default settings of the kube-prometheus-stack helm chart.
     overrideNamespace: ""
 
 crds:

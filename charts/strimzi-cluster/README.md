@@ -365,6 +365,7 @@ This approach is more for compatibility reasons. For example, when using CRDs or
 grafana:
   defaultDashboardsEnabled: false
   # Change adminPassword as needed.
+  adminUser: admin  
   adminPassword: admin
 
 prometheus:
@@ -422,19 +423,29 @@ After the kube-prometheus-stack chart has been deployed or updated with the conf
 
 ![Strimzi Alerts](screenshots/Strimzi%20Alerts%20-%20Prometheus.png "Strimzi Alerts")
 
-To enable alerts, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart. If wanting to create alerts in a different namespace from where the kube-prometheus-stack chart is deployed, customize and consolidate the below with one of the options above, except Option 3. Otherwise, skip this configuration if not needed.
+To enable alerts, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart. In general, the below configurations are the defaults, which only requires that a PrometheusRule in any namespace have the label `release: kube-prometheus-stack` to be detected. If a different behavior is needed, customize and consolidate the below with one of the options above, except Option 3.
 
 ```yaml
 prometheus:
   prometheusSpec:
-    # Disabling this adds better support for third-party PrometheusRule resource
-    # detection in its namespace without having to deal with label filtering or
-    # compromising the default discovery. Otherwise, the 'release: kube-prometheus-stack'
-    # label needs to be present in CRD resources like PrometheusRule. To get the
-    # release name if the chart is already installed, use 'helm list -n monitoring'.
+    # Disabling this adds better support for third-party PrometheusRule resource detection
+    # across namespaces without having to deal with label filtering or compromising the
+    # default discovery. When enabled, an empty 'ruleSelector' is replaced with a
+    # label selector matching 'release: kube-prometheus-stack', which must be present on
+    # PrometheusRule resources to be detected. To get the release name if the chart is already
+    # installed, use 'helm list -n monitoring' or the namespace used.
+    #
+    # DEPRECATED. Use 'matchLabels: null' in 'ruleSelector' for equivalent behavior
+    # when set to false.
+    #
+    # Reference:
+    # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/UPGRADE.md#from-62x-to-63x
     ruleSelectorNilUsesHelmValues: true
 
-    # PrometheusRules to be selected for discovery. If {}, select all PrometheusRules.
+    # PrometheusRules to be selected for target discovery. If {}, and above is 'false', select
+    # all PrometheusRules. For the new approach, set 'matchLabels' to 'null' for equivalent
+    # behavior to the deprecated 'ruleSelectorNilUsesHelmValues' property when set
+    # to 'false' for all namespaces.
     ruleSelector: {}
       # matchLabels:
       #   prometheus: main
@@ -446,8 +457,8 @@ prometheus:
       #       - examples
       
     # Namespaces matching labels to be selected for PrometheusRule discovery. If {},
-    # select own namespace (e.g., monitoring). Useful for when wanting to keep
-    # resources together with app instead of grouped together in monitoring namespace.
+    # then it selects all namespaces. Useful for when wanting to keep resources
+    # together with the app instead of grouped together in a monitoring namespace.
     ruleNamespaceSelector: {}
       # matchLabels:
       #   monitoring: prometheus
@@ -586,7 +597,7 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | cruiseControlRebalance.skipHardGoalCheck | bool | `false` | skipHardGoalCheck indicates whether or not to skip the check for hard goals. This can be useful when some of those hard goals are preventing a balance solution being found. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
 | k6.dashboard.enabled | bool | `false` | Indicates whether or not to deploy a k6 Grafana dashboard for Kafka load testing results that will be imported automatically. Requires enabling Remote Write Receiver in Prometheus. See [Sending load testing results to Prometheus](#sending-load-testing-results-to-prometheus) for more information. |
-| k6.dashboard.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
+| k6.dashboard.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard will be deployed. This should ideally be the same namespace as the Prometheus Operator and Grafana instance, but any namespace is supported when using the default settings of the kube-prometheus-stack helm chart. |
 | k6.loadTestScripts.create | bool | `false` | Indicates whether or not to create a ConfigMap with k6 scripts that can be mounted for load testing Kafka. See the [Load testing the cluster](#load-testing-the-cluster) section of the README for more information. |
 | kafka.annotations | object | `{}` | annotations to be added to the Kafka resource. |
 | kafka.authorization.superUsers | list | `[]` | superUsers is a list of users that are considered super users and can perform any operation regardless of any access restrictions configured because the ACL rules aren't queried. Reference: [Designating super users](https://strimzi.io/docs/operators/0.51.0/deploying#designating_super_users). |
@@ -678,11 +689,11 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | nodePools.kraft-controller.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
 | nodePools.kraft-controller.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
 | podMonitor.create | bool | `false` | Indicates whether or not to create PodMonitors to scrape Kafka related metrics. This approach is recommended over using `scrapeConfigHeadlessServices.create`. Ensure to set `kafka.metricsEnabled` to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
-| podMonitor.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. Adjustments may be needed if deploying to a different namespace other then where the prometheus operator is deployed. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
-| podMonitor.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor resources will be deployed. If deploying to a namespace where the prometheus operator isn't located, some config changes will be required. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
+| podMonitor.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
+| podMonitor.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor resources will be deployed. This should ideally be the same namespace as the Prometheus Operator and Grafana instance, but any namespace is supported when using the default settings of the kube-prometheus-stack helm chart. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
 | prometheusKafkaAlerts.create | bool | `false` | Indicates whether or not to create PrometheusRules to define Kafka related alerts. Ensure to set `kafka.metricsEnabled` to `true`, or define the `kafka.cruiseControl` or `kafka.kafkaExporter` properties. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
-| prometheusKafkaAlerts.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PrometheusRule resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. Adjustments may be needed if deploying to a different namespace other then where the prometheus operator is deployed. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
-| prometheusKafkaAlerts.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PrometheusRule resource will be deployed. If deploying to a namespace where the prometheus operator isn't located, some config changes will be required. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
+| prometheusKafkaAlerts.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PrometheusRule resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
+| prometheusKafkaAlerts.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PrometheusRule resource will be deployed. This should ideally be the same namespace as the Prometheus Operator and Grafana instance, but any namespace is supported when using the default settings of the kube-prometheus-stack helm chart. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
 | scrapeConfigHeadlessServices.create | bool | `false` | Indicates whether or not to create headless services to scrape Kafka related metrics. Setting is ignored if `podMonitor.create` is set to `true`. This is a compatibility feature that is meant only for custom setups and does not support Strimzi's official dashboards. See [Option 3](#option-3---using-headless-services) under the Monitoring section of the README for more information. |
 | strimzi-drain-cleaner.certManager.create | bool | `false` | Indicates whether or not to create the Certificate and Issuer custom resources used for the ValidatingWebhookConfiguration and ValidationWebhook when cert-manager is installed. |
 | strimzi-drain-cleaner.enabled | bool | `false` | Indicates whether or not to deploy Drain Cleaner with the Kafka cluster. |
