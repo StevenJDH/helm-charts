@@ -20,7 +20,7 @@ kafka:
     # The value should match the name of the kafka resource name.
     strimzi.authorization.kafka.cluster.name: my-strimzi-cluster
     strimzi.authorization.client.id: kafka
-    strimzi.authorization.token.endpoint.uri: http://my-keycloak-svc.keycloak.svc.cluster.local/realms/strimzi/protocol/openid-connect/token
+    strimzi.authorization.token.endpoint.uri: http://my-keycloak-stack-service.keycloak.svc.cluster.local:8080/realms/strimzi/protocol/openid-connect/token
     # Whether authorization decision should be delegated to the 'Simple' authorizer
     # if DENIED by Keycloak Authorization Services policies. Default value is false.
     # Set as true to support both OAuth and mTLS users.
@@ -78,7 +78,7 @@ kafka:
         useServiceDnsDomain: true
     - name: oauth
       port: 9198
-      type: ingress # Deprecated, but still works. Use 'cluster-ip' to provide own solution if needed.
+      type: ingress # Deprecated, but still works. Use 'cluster-ip' to provide own solution if needed, or use tlsroute.
       tls: true
       authentication:
         type: custom
@@ -93,21 +93,21 @@ kafka:
           #   oauth.ssl.truststore.type="PEM"
           # An additional check in jaas config that can be used to control who in the realm has access to Kafka.
           #   oauth.custom.claim.check="'kafka-user' in @.realm_access.roles"
-          # When empty, disables TLS hostname verification, otherwise, remove this property jaas config.
+          # When empty, disables TLS hostname verification, otherwise, remove this property from jaas config.
           #   oauth.ssl.endpoint.identification.algorithm=""
           oauthbearer.sasl.jaas.config: >-
             org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule
             required unsecuredLoginStringClaim_sub="unused"
-            oauth.valid.issuer.uri="http://my-keycloak-svc.keycloak.svc.cluster.local/realms/strimzi"
-            oauth.jwks.endpoint.uri="http://my-keycloak-svc.keycloak.svc.cluster.local/realms/strimzi/protocol/openid-connect/certs"
+            oauth.valid.issuer.uri="https://keycloak.127.0.0.1.sslip.io/realms/strimzi"
+            oauth.jwks.endpoint.uri="http://my-keycloak-stack-service.keycloak.svc.cluster.local:8080/realms/strimzi/protocol/openid-connect/certs"
             oauth.username.claim="preferred_username"
             oauth.enable.metrics="true" ;
           connections.max.reauth.ms: 3600000
       configuration:
-        class: traefik
-        hostTemplate: oauth-broker-{nodeId}.127.0.0.1.sslip.io
+        class: nginx
         bootstrap:
-          host: oauth-bootstrap.127.0.0.1.sslip.io
+          host: oauth-bootstrap.kafka.127.0.0.1.sslip.io
+        hostTemplate: oauth-broker-{nodeId}.kafka.127.0.0.1.sslip.io
         # Clients need to trust CA extracted with below command or specify a custom cert chain
         # as per below commented out section.
         # openssl s_client -connect oauth-broker-0.myingress.com:443 -servername oauth-broker-0.myingress.com -showcerts
