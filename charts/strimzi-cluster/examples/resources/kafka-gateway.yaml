@@ -1,0 +1,37 @@
+# This file is part of Strimzi Cluster Helm Chart <https://github.com/StevenJDH/helm-charts>.
+# Copyright (C) 2025-2026 Steven Jenkins De Haro.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: kafka-gateway
+  namespace: strimzi
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: kafka
+      protocol: TLS
+      port: 443
+      # Restricts this listener to SNI hostnames matching that wildcard, which
+      # covers both the bootstrap addresses and all per-broker addresses.
+      hostname: "*.kafka.127.0.0.1.sslip.io"
+      tls:
+        mode: Passthrough
+      allowedRoutes:
+        namespaces:
+          # Permits TLSRoute resources from any namespace to attach to this
+          # listener, which is needed because Strimzi will create the routes
+          # in the Kafka cluster’s namespace.
+          from: All
