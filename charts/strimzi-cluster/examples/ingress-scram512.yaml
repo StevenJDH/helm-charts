@@ -44,12 +44,12 @@ kafka:
         type: scram-sha-512
       configuration:
         class: nginx
-        hostTemplate: scram512-broker-{nodeId}.myingress.com
         bootstrap:
-          host: scram512-bootstrap.myingress.com
+          host: scram512-bootstrap.kafka.127.0.0.1.sslip.io
+        hostTemplate: scram512-broker-{nodeId}.kafka.127.0.0.1.sslip.io
         # Clients need to trust CA extracted with below command or specify a custom cert chain
         # as per below commented out section.
-        # openssl s_client -connect scram512-broker-0.myingress.com:443 -servername scram512-broker-0.myingress.com -showcerts
+        # openssl s_client -connect scram512-broker-0.kafka.127.0.0.1.sslip.io:443 -servername scram512-broker-0.kafka.127.0.0.1.sslip.io -showcerts
         # kubectl get secret <cluster-name>-cluster-ca-cert -o jsonpath='{.data.ca\.crt}' -n strimzi | base64 -d > ca.crt
         # brokerCertChainAndKey:
         #   # kubectl create secret tls my-tls-secret --cert=path/to/tls.crt --key=path/to/tls.key -n strimzi
