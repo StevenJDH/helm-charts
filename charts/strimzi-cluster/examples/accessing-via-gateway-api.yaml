@@ -55,14 +55,19 @@
 #
 # 3. Created a truststore for the Strimzi Cluster CA certificate. Also, include the CA used for Keycloak. Put the truststore.p12 in the same place as the config just copied.
 #
-# 4. Run the following commands to configure logging and to send some test messages. Use Ctrl+C when finished.
+# 4. Open a terminal inside the 'resources/kafka-cli-oauth-addon' folder, and run the below command:
+#       ./mvnw dependency:copy-dependencies -DoutputDirectory=oauth-deps -DoauthVersion="0.18.0"
+#
+# 5. The previous command creates a folder called 'oauth-deps' with jar files. Copy just these files, and paste them into the 'libs' folder found in the root of the Kafka CLI directory.
+#
+# 6. Run the following commands to configure logging and to send some test messages. Use Ctrl+C when finished.
 #       export KAFKA_LOG4J_OPTS='-Dlog4j2.configurationFile=config/tools-log4j2.yaml'
 #       bin/kafka-console-producer.sh --bootstrap-server oauth-bootstrap.kafka.127.0.0.1.sslip.io:443 \
-#           --producer.config kafka-oauth.config --topic test-topic
+#           --command-config kafka-oauth.config --topic test-topic
 #
-# 5. Finally, run this last command to consume the messages just created:
+# 7. Finally, run this last command to consume the messages just created:
 #       bin/kafka-console-consumer.sh --bootstrap-server oauth-bootstrap.kafka.127.0.0.1.sslip.io:443 \
-#           --consumer.config kafka-oauth.config --topic test-topic --from-beginning
+#           --command-config kafka-oauth.config --topic test-topic --from-beginning
 #
 ##########################
 ## Resources
