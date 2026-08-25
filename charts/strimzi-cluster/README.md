@@ -273,6 +273,10 @@ prometheus:
         target_label: kubernetes_pod_name
         replacement: $1
         action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
       - source_labels: [__meta_kubernetes_pod_node_name]
         separator: ;
         regex: (.*)
