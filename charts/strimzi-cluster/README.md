@@ -39,7 +39,7 @@ Kubernetes: `>= 1.30.0-0`
 | Repository | Name | Version |
 |------------|------|---------|
 | https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
-| oci://quay.io/strimzi-helm | strimzi-drain-cleaner | 1.6.0 |
+| oci://quay.io/strimzi-helm | strimzi-drain-cleaner | 1.6.1 |
 | oci://quay.io/strimzi-helm | strimzi-kafka-operator | 1.2.0 |
 
 ## Usage example
