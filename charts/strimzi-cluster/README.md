@@ -320,6 +320,12 @@ prometheus:
         regex: http
         replacement: $1
         action: keep
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
     - job_name: strimzi-entity-operator-metrics
       honor_timestamps: true
       scrape_interval: 30s
@@ -347,10 +353,16 @@ prometheus:
         replacement: $1
         action: keep
       - source_labels: [__meta_kubernetes_pod_container_port_name]
-        separator: ;
-        regex: healthcheck
-        replacement: $1
+        regex: healthcheck-(to|uo)
         action: keep
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        target_label: endpoint
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
 
 crds:
   upgradeJob:
