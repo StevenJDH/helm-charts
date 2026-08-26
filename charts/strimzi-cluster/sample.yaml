@@ -1133,6 +1133,7 @@ spec:
           name: example-strimzi-cluster-metrics-config
           key: kafka-metrics-config.yaml
     rack:
+      type: topology-label
       topologyKey: "topology.kubernetes.io/zone"
   clusterCa:
     generateCertificateAuthority: true
