@@ -59,10 +59,10 @@ spec:
       targetLabel: kubernetes_pod_name
       replacement: $1
       action: replace
-    - source_labels: [__meta_kubernetes_pod_name]
-      target_label: pod
-    - source_labels: [__meta_kubernetes_pod_container_name]
-      target_label: container
+    - sourceLabels: [__meta_kubernetes_pod_name]
+      targetLabel: pod
+    - sourceLabels: [__meta_kubernetes_pod_container_name]
+      targetLabel: container
     - sourceLabels: [__meta_kubernetes_pod_node_name]
       separator: ;
       regex: (.*)
