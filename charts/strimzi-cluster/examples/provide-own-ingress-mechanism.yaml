@@ -43,6 +43,7 @@ kafka:
       authentication:
         type: tls
       configuration:
+        useServiceDnsDomain: true
         # Route to bootstrap service should be configured separately via the chosen ingress mechanism.
         advertisedHostTemplate: mtls-broker-{nodeId}.kafka.127.0.0.1.sslip.io
         advertisedPortTemplate: "443"
