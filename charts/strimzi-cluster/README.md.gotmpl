@@ -568,7 +568,7 @@ prometheus:
 
 After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update the `command` field in the pod above to include `"-o", "experimental-prometheus-rw"` as in the comment above it. The next time load testing is done, data will appear in the dashboard.
 
-{{ template "chart.valuesSection" . }}
+{{ template "chart.valuesSectionWrap" (dict "context" . "limit" 40) }}
 
 
 {{ template "footer.signature" . }}
