@@ -46,6 +46,8 @@ providers:
   # or not ready to move to Gateway API or another solution,
   # then enable this. Make sure not to mix approaches when
   # defining a resource to point to the same endpoint.
+  # Also, create the IngressClass for nginx with the following:
+  #     kubectl create -f traefik-nginx-ingress-class.yaml
   # Reference: https://doc.traefik.io/traefik/master/reference/routing-configuration/kubernetes/ingress-nginx/
   kubernetesIngressNGINX:
     enabled: false
