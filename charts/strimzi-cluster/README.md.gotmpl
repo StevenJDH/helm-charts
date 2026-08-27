@@ -40,7 +40,7 @@ helm upgrade --install my-{{ template "chart.name" . }} stevenjdh/{{ template "c
 ```
 
 > [!IMPORTANT]  
-> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
+> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang. Also, if upgrading from Strimzi 0.51.0, see [API v1 Migration](./api-migration) first before attempting to upgrade CRDs with `crds.upgradeJob.enabled=true` or with another approach.
 
 > [!TIP]
 > To test Drain Cleaner, run the command `kubectl drain <node-name> --delete-emptydir-data --ignore-daemonsets --timeout=6000s --force` against a node with a broker, which will fail the first time because the strimzi cluster operator will take over for relocating those workloads. Then, rerun the command again after a few minutes, and it will work this time. For more info, see [Using the Strimzi Drain Cleaner](https://github.com/strimzi/drain-cleaner?tab=readme-ov-file#see-it-in-action).
