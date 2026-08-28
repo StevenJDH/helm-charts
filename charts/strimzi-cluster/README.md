@@ -1,19 +1,17 @@
-
-
 <h1 align="center">Strimzi Cluster Helm Chart</h1>
 
 <p align="center">
   <img
-    alt="Version: 0.2.0"
-    src="https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square"
+    alt="Version: 0.3.0"
+    src="https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square"
   />
   <img
     alt="Type: application"
     src="https://img.shields.io/badge/Type-application-informational?style=flat-square"
   />
   <img
-    alt="AppVersion: 0.51.0"
-    src="https://img.shields.io/badge/AppVersion-0.51.0-informational?style=flat-square"
+    alt="AppVersion: 1.2.0"
+    src="https://img.shields.io/badge/AppVersion-1.2.0-informational?style=flat-square"
   />
 </p>
 
@@ -41,15 +39,15 @@ Kubernetes: `>= 1.30.0-0`
 | Repository | Name | Version |
 |------------|------|---------|
 | https://StevenJDH.github.io/helm-charts | shared-library | ^0.x |
-| oci://quay.io/strimzi-helm | strimzi-drain-cleaner | 1.6.0 |
-| oci://quay.io/strimzi-helm | strimzi-kafka-operator | 0.51.0 |
+| oci://quay.io/strimzi-helm | strimzi-drain-cleaner | 1.6.1 |
+| oci://quay.io/strimzi-helm | strimzi-kafka-operator | 1.2.0 |
 
 ## Usage example
 
 ```bash
 helm repo add stevenjdh https://StevenJDH.github.io/helm-charts
 helm repo update
-helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.2.0 \
+helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.3.0 \
     --set strimzi-kafka-operator.enabled=true \
     --set strimzi-drain-cleaner.enabled=true \
     --set strimzi-drain-cleaner.certManager.create=false \
@@ -57,23 +55,24 @@ helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.
     --set-file strimzi-drain-cleaner.secret.tls_key=tls.key.base64 \
     --set-file strimzi-drain-cleaner.secret.ca_bundle=ca.crt.base64 \
     --set kafka.rackTopology.enabled=false \
+    --set crds.upgradeJob.enabled=true \
+    --set crds.deleteJob.enabled=true \
     --namespace example \
     --create-namespace \
     --atomic
 ```
 
 > [!IMPORTANT]  
-> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang.
+> Make sure to use the latest 3x version of the Helm CLI, and not 4x, or the installation/upgrade will hang. Also, if upgrading from Strimzi 0.51.0, see [API v1 Migration](./api-migration) first before attempting to upgrade CRDs with `crds.upgradeJob.enabled=true` or with another approach.
 
 > [!TIP]
 > To test Drain Cleaner, run the command `kubectl drain <node-name> --delete-emptydir-data --ignore-daemonsets --timeout=6000s --force` against a node with a broker, which will fail the first time because the strimzi cluster operator will take over for relocating those workloads. Then, rerun the command again after a few minutes, and it will work this time. For more info, see [Using the Strimzi Drain Cleaner](https://github.com/strimzi/drain-cleaner?tab=readme-ov-file#see-it-in-action).
 
 ### Create Drain Cleaner certificate chain
-
 The following shows how to create the needed TLS certificates if Drain Cleaner will be installed with `strimzi-drain-cleaner.certManager.create` set to `false` as per above example. OpenSSL CLI v1.1.1 or newer is required.
 
 ```bash
-# 1. Set the namespace used by Drain Cleaner.
+# 1. Set the namespace used by Drain Cleaner. Use `set namespace` if using Windows.
 namespace=strimzi-drain-cleaner
 
 # 2. Create CA certificate and key.
@@ -83,13 +82,14 @@ openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 1168
     -addext "keyUsage=critical,keyCertSign,cRLSign" \
     -addext "subjectKeyIdentifier=hash"
 
-# 3. Create certificate signing request (*.csr) and private key.
+# 3. Create certificate signing request (*.csr) and private key. Change `$namespace` to `%namespace%` if using Windows.
 openssl req -new -newkey rsa:4096 -keyout tls.key -out tls.csr -noenc \
     -subj "/CN=strimzi-drain-cleaner.$namespace.svc/O=StevenJDH" \
     -addext "basicConstraints=critical,CA:FALSE" \
     -addext "extendedKeyUsage=serverAuth" \
-    -addext "keyUsage=critical,digitalSignature,keyEncipherment,keyAgreement" \
+    -addext "keyUsage=critical,digitalSignature,keyEncipherment" \
     -addext "subjectAltName=DNS:strimzi-drain-cleaner.$namespace.svc" \
+    -addext "nsComment=Strimzi Drain Cleaner Server Certificate" \
     -addext "subjectKeyIdentifier=hash"
 
 # 4. Created CA signed server certificate from CSR.
@@ -162,7 +162,7 @@ helm upgrade --install kube-prometheus-stack oci://ghcr.io/prometheus-community/
 </table>
 
 ### Option 1 - Using PodMonitor (Recommended)
-This recommended approach will automatically detect and directly collect metrics from Strimzi related pods.
+This recommended approach will automatically detect and directly collect metrics from Strimzi related pods. In general, the below configurations are the defaults, which only requires that a PodMonitor in any namespace have the label `release: kube-prometheus-stack` to be detected.
 
 **prometheus-values.yaml**
 
@@ -176,20 +176,30 @@ grafana:
 prometheus:
   prometheusSpec:
     # Disabling this adds better support for third-party PodMonitor resource detection
-    # in its namespace without having to deal with label filtering or compromising the
-    # default discovery. Otherwise, the 'release: kube-prometheus-stack' label needs
-    # to be present in CRD resources like PodMonitor. To get the release name if
-    # the chart is already installed, use 'helm list -n monitoring'.
+    # across namespaces without having to deal with label filtering or compromising the
+    # default discovery. When enabled, an empty 'podMonitorSelector' is replaced with a
+    # label selector matching 'release: kube-prometheus-stack', which must be present on
+    # PodMonitor resources to be detected. To get the release name if the chart is already
+    # installed, use 'helm list -n monitoring' or the namespace used.
+    #
+    # DEPRECATED. Use 'matchLabels: null' in 'podMonitorSelector' for equivalent behavior
+    # when set to false.
+    #
+    # Reference:
+    # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/UPGRADE.md#from-62x-to-63x
     podMonitorSelectorNilUsesHelmValues: true
 
-    # PodMonitors to be selected for target discovery. If {}, select all PodMonitors.
+    # PodMonitors to be selected for target discovery. If {}, and above is 'false', select
+    # all PodMonitors. For the new approach, set 'matchLabels' to 'null' for equivalent
+    # behavior to the deprecated 'podMonitorSelectorNilUsesHelmValues' property when set
+    # to 'false' for all namespaces.
     podMonitorSelector: {}
       # matchLabels:
       #   prometheus: main
       
     # Namespaces matching labels to be selected for PodMonitor discovery. If {},
-    # select own namespace (e.g., monitoring). Useful for when wanting to keep
-    # resources together with app instead of grouped together in monitoring namespace.
+    # then it selects all namespaces. Useful for when wanting to keep resources
+    # together with the app instead of grouped together in a monitoring namespace.
     podMonitorNamespaceSelector: {}
       # matchLabels:
       #   monitoring: prometheus
@@ -197,7 +207,7 @@ prometheus:
 crds:
   upgradeJob:
     enabled: true
-    forceConflicts: false
+    forceConflicts: true
 ```
 
 After the kube-prometheus-stack chart has been deployed, or updated with the config above, set `podMonitor.create` and `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
@@ -210,8 +220,8 @@ This option replicates the behavior of Option 1 without relying on PodMonitor CR
 ```yaml
 grafana:
   defaultDashboardsEnabled: false
+  adminUser: admin
   # Change adminPassword as needed.
-  adminUser: admin  
   adminPassword: admin
 
 prometheus:
@@ -263,6 +273,10 @@ prometheus:
         target_label: kubernetes_pod_name
         replacement: $1
         action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
       - source_labels: [__meta_kubernetes_pod_node_name]
         separator: ;
         regex: (.*)
@@ -306,6 +320,12 @@ prometheus:
         regex: http
         replacement: $1
         action: keep
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
     - job_name: strimzi-entity-operator-metrics
       honor_timestamps: true
       scrape_interval: 30s
@@ -333,15 +353,21 @@ prometheus:
         replacement: $1
         action: keep
       - source_labels: [__meta_kubernetes_pod_container_port_name]
-        separator: ;
-        regex: healthcheck
-        replacement: $1
+        regex: healthcheck-(to|uo)
         action: keep
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        target_label: endpoint
+      - source_labels: [__meta_kubernetes_pod_container_name]
+        target_label: container
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
 
 crds:
   upgradeJob:
     enabled: true
-    forceConflicts: false
+    forceConflicts: true
 ```
 
 After the kube-prometheus-stack chart has been deployed or updated with the config above, set `strimzi-kafka-operator.dashboards.enabled` to `true` in the strimzi-cluster chart.
@@ -354,6 +380,7 @@ This approach is more for compatibility reasons. For example, when using CRDs or
 ```yaml
 grafana:
   defaultDashboardsEnabled: false
+  adminUser: admin
   # Change adminPassword as needed.
   adminPassword: admin
 
@@ -400,7 +427,7 @@ prometheus:
 crds:
   upgradeJob:
     enabled: true
-    forceConflicts: false
+    forceConflicts: true
 ```
 
 > [!NOTE]  
@@ -412,19 +439,29 @@ After the kube-prometheus-stack chart has been deployed or updated with the conf
 
 ![Strimzi Alerts](screenshots/Strimzi%20Alerts%20-%20Prometheus.png "Strimzi Alerts")
 
-To enable alerts, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart. If wanting to create alerts in a different namespace from where the kube-prometheus-stack chart is deployed, customize and consolidate the below with one of the options above, except Option 3. Otherwise, skip this configuration if not needed.
+To enable alerts, set `prometheusKafkaAlerts.create` to `true` in the strimzi-cluster chart. In general, the below configurations are the defaults, which only requires that a PrometheusRule in any namespace have the label `release: kube-prometheus-stack` to be detected. If a different behavior is needed, customize and consolidate the below with one of the options above, except Option 3.
 
 ```yaml
 prometheus:
   prometheusSpec:
-    # Disabling this adds better support for third-party PrometheusRule resource
-    # detection in its namespace without having to deal with label filtering or
-    # compromising the default discovery. Otherwise, the 'release: kube-prometheus-stack'
-    # label needs to be present in CRD resources like PrometheusRule. To get the
-    # release name if the chart is already installed, use 'helm list -n monitoring'.
+    # Disabling this adds better support for third-party PrometheusRule resource detection
+    # across namespaces without having to deal with label filtering or compromising the
+    # default discovery. When enabled, an empty 'ruleSelector' is replaced with a
+    # label selector matching 'release: kube-prometheus-stack', which must be present on
+    # PrometheusRule resources to be detected. To get the release name if the chart is already
+    # installed, use 'helm list -n monitoring' or the namespace used.
+    #
+    # DEPRECATED. Use 'matchLabels: null' in 'ruleSelector' for equivalent behavior
+    # when set to false.
+    #
+    # Reference:
+    # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/UPGRADE.md#from-62x-to-63x
     ruleSelectorNilUsesHelmValues: true
 
-    # PrometheusRules to be selected for discovery. If {}, select all PrometheusRules.
+    # PrometheusRules to be selected for target discovery. If {}, and above is 'false', select
+    # all PrometheusRules. For the new approach, set 'matchLabels' to 'null' for equivalent
+    # behavior to the deprecated 'ruleSelectorNilUsesHelmValues' property when set
+    # to 'false' for all namespaces.
     ruleSelector: {}
       # matchLabels:
       #   prometheus: main
@@ -436,8 +473,8 @@ prometheus:
       #       - examples
       
     # Namespaces matching labels to be selected for PrometheusRule discovery. If {},
-    # select own namespace (e.g., monitoring). Useful for when wanting to keep
-    # resources together with app instead of grouped together in monitoring namespace.
+    # then it selects all namespaces. Useful for when wanting to keep resources
+    # together with the app instead of grouped together in a monitoring namespace.
     ruleNamespaceSelector: {}
       # matchLabels:
       #   monitoring: prometheus
@@ -558,55 +595,67 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| cruiseControlRebalance.annotations."strimzi.io/rebalance-auto-approval" | string | `"true"` | Triggers the rebalance directly without any further approval step (e.g., setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`). Use `strimzi.io/rebalance=refresh` to trigger a new analysis. |
+| crds.deleteJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that deletes all chart CRDs when the Helm release is uninstalled. |
+| crds.images.container.pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.images.container.repositoryOverride | string | `""` | repositoryOverride overrides the default `registry.k8s.io/kubectl` container image used for applying changes to the CRDs. |
+| crds.images.container.tagOverride | string | `""` | tagOverride overrides the image tag whose default is the kubernetes version. |
+| crds.&#8203;images.&#8203;initContainer.&#8203;pullPolicyOverride | string | `""` | pullPolicyOverride overrides the default `IfNotPresent` strategy for pulling images from a registry. |
+| crds.&#8203;images.&#8203;initContainer.&#8203;repositoryOverride | string | `""` | repositoryOverride overrides the default `busybox` initContainer image used to decompress the `crds.tar.gz` archive. |
+| crds.images.initContainer.tagOverride | string | `""` | tagOverride overrides the default `latest` image tag. |
+| crds.resources.container | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.resources.initContainer | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
+| crds.upgradeJob.enabled | bool | `false` | Indicates whether or not to enable a Helm hook that upgrades the chart CRDs using server-side apply. |
+| crds.upgradeJob.forceConflicts | bool | `true` | Indicates whether or not to force server-side apply to take ownership of conflicting fields. This option is recommended as it will avoid conflicts with Helm's initial install ownership. |
+| cruiseControlRebalance.&#8203;annotations.&#8203;"strimzi.&#8203;io/rebalance-&#8203;auto-&#8203;approval" | string | `"true"` | Triggers the rebalance directly without any further approval step (e.g., setting `strimzi.io/rebalance=approve` when the `PROPOSALREADY` column is `TRUE`). Use `strimzi.io/rebalance=refresh` to trigger a new analysis. |
 | cruiseControlRebalance.create | bool | `true` | Indicates whether or not to create a KafkaRebalance resource with an empty spec to use the default goals from the Cruise Control configuration for optimizing the cluster workloads. |
 | cruiseControlRebalance.goals | list | `[]` | goals is a list, ordered by decreasing priority, to use for generating and executing the rebalance proposal. If an empty goals list is provided, the default goals are used. Exclude `RackAwareGoal` if `kafka.rackTopology.enabled` is set to `true`, and the number of domains is less than 3. Also, set skipHardGoalCheck to `true`. Reference: [Default Goals](https://github.com/linkedin/cruise-control#goals). |
 | cruiseControlRebalance.labels | object | `{}` | labels to be added to the Kafka Rebalance resource. |
 | cruiseControlRebalance.skipHardGoalCheck | bool | `false` | skipHardGoalCheck indicates whether or not to skip the check for hard goals. This can be useful when some of those hard goals are preventing a balance solution being found. |
 | fullnameOverride | string | `""` | Override for generated resource names. |
 | k6.dashboard.enabled | bool | `false` | Indicates whether or not to deploy a k6 Grafana dashboard for Kafka load testing results that will be imported automatically. Requires enabling Remote Write Receiver in Prometheus. See [Sending load testing results to Prometheus](#sending-load-testing-results-to-prometheus) for more information. |
-| k6.dashboard.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
+| k6.dashboard.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the k6 Grafana dashboard will be deployed. This should ideally be the same namespace as the Prometheus Operator and Grafana instance, but any namespace is supported when using the default settings of the kube-prometheus-stack helm chart. |
 | k6.loadTestScripts.create | bool | `false` | Indicates whether or not to create a ConfigMap with k6 scripts that can be mounted for load testing Kafka. See the [Load testing the cluster](#load-testing-the-cluster) section of the README for more information. |
 | kafka.annotations | object | `{}` | annotations to be added to the Kafka resource. |
-| kafka.authorization.superUsers | list | `[]` | superUsers is a list of users that are considered super users and can perform any operation regardless of any access restrictions configured because the ACL rules aren't queried. Reference: [Designating super users](https://strimzi.io/docs/operators/0.51.0/deploying#designating_super_users). |
-| kafka.authorization.type | string | `"simple"` | type is the type of authorization to use on the Kafka brokers. Supported values are [simple](https://strimzi.io/docs/operators/0.51.0/configuring#type-KafkaAuthorizationSimple-schema-reference) and [custom](https://strimzi.io/docs/operators/0.51.0/configuring#type-KafkaAuthorizationCustom-schema-reference). |
-| kafka.clientsCa.generateCertificateAuthority | bool | `true` | generateCertificateAuthority indicates whether or not to generate a Certificate Authority for clients. Setting this to `false` requires providing a Secret with the CA certificate, and there will be several steps to consider for manually managing custom certificates and renewals. Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.51.0/full/deploying.html#security-using-your-own-certificates-str). |
-| kafka.clientsCa.generateSecretOwnerReference | bool | `true` | generateSecretOwnerReference indicates whether or not to set the `ownerReference` on the Client CA to the Kafka resource. If `true`, and the Kafka resource is deleted, the generated CA Secret is also deleted. If `false`, the `ownerReference` is disabled, which will retain the CA Secret for reuse when the Kafka resource is deleted. |
+| kafka.authorization.superUsers | list | `[]` | superUsers is a list of users that are considered super users and can perform any operation regardless of any access restrictions configured because the ACL rules aren't queried. Reference: [Designating super users](https://strimzi.io/docs/operators/1.2.0/deploying#designating_super_users). |
+| kafka.authorization.type | string | `"simple"` | type is the type of authorization to use on the Kafka brokers. Supported values are [simple](https://strimzi.io/docs/operators/1.2.0/configuring#type-KafkaAuthorizationSimple-schema-reference) and [custom](https://strimzi.io/docs/operators/1.2.0/configuring#type-KafkaAuthorizationCustom-schema-reference). |
+| kafka.&#8203;clientsCa.&#8203;generateCertificateAuthority | bool | `true` | generateCertificateAuthority indicates whether or not to generate a Certificate Authority for clients. Setting this to `false` requires providing a Secret with the CA certificate, and there will be several steps to consider for manually managing custom certificates and renewals. Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/1.2.0/full/deploying.html#security-using-your-own-certificates-str). |
+| kafka.&#8203;clientsCa.&#8203;generateSecretOwnerReference | bool | `true` | generateSecretOwnerReference indicates whether or not to set the `ownerReference` on the Client CA to the Kafka resource. If `true`, and the Kafka resource is deleted, the generated CA Secret is also deleted. If `false`, the `ownerReference` is disabled, which will retain the CA Secret for reuse when the Kafka resource is deleted. |
 | kafka.clientsCa.renewalDays | int | `30` | renewalDays is the number of days in the certificate renewal period. This is the number of days before a certificate expires during which renewal actions may be performed. When generateCertificateAuthority is `true`, this will cause the generation of a new certificate, and this will cause extra logging at WARN level about the pending certificate expiry. |
 | kafka.clientsCa.validityDays | int | `365` | validityDays is the number of days generated certificates should be valid for. |
-| kafka.clusterCa.generateCertificateAuthority | bool | `true` | generateCertificateAuthority indicates whether or not to generate a Certificate Authority for the cluster. Setting this to `false` requires providing a Secret with the CA certificate, and there will be several steps to consider for manually managing custom certificates and renewals. Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/0.51.0/full/deploying.html#security-using-your-own-certificates-str). |
-| kafka.clusterCa.generateSecretOwnerReference | bool | `true` | generateSecretOwnerReference indicates whether or not to set the `ownerReference` on the Cluster CA to the Kafka resource. If `true`, and the Kafka resource is deleted, the generated CA Secret is also deleted. If `false`, the `ownerReference` is disabled, which will retain the CA Secret for reuse when the Kafka resource is deleted. |
+| kafka.&#8203;clusterCa.&#8203;generateCertificateAuthority | bool | `true` | generateCertificateAuthority indicates whether or not to generate a Certificate Authority for the cluster. Setting this to `false` requires providing a Secret with the CA certificate, and there will be several steps to consider for manually managing custom certificates and renewals. Reference: [Using your own CA certificates and private keys](https://strimzi.io/docs/operators/1.2.0/full/deploying.html#security-using-your-own-certificates-str). |
+| kafka.&#8203;clusterCa.&#8203;generateSecretOwnerReference | bool | `true` | generateSecretOwnerReference indicates whether or not to set the `ownerReference` on the Cluster CA to the Kafka resource. If `true`, and the Kafka resource is deleted, the generated CA Secret is also deleted. If `false`, the `ownerReference` is disabled, which will retain the CA Secret for reuse when the Kafka resource is deleted. |
 | kafka.clusterCa.renewalDays | int | `30` | renewalDays is the number of days in the certificate renewal period. This is the number of days before a certificate expires during which renewal actions may be performed. When generateCertificateAuthority is `true`, this will cause the generation of a new certificate, and this will cause extra logging at WARN level about the pending certificate expiry. |
 | kafka.clusterCa.validityDays | int | `365` | validityDays is the number of days generated certificates should be valid for. |
 | kafka.config."auto.create.topics.enable" | string | `"false"` | auto.create.topics.enable indicates whether or not to allow the Kafka broker to auto-create topics. It is recommended that this be set to `false` to avoid races between the operator and Kafka applications auto-creating topics. |
-| kafka.config."default.replication.factor" | int | `3` | default.replication.factor is the default replication factor for the Kafka topics. A replication factor of 1 will always affect availability when the brokers are restarted. |
+| kafka.&#8203;config.&#8203;"default.&#8203;replication.&#8203;factor" | int | `3` | default.replication.factor is the default replication factor for the Kafka topics. A replication factor of 1 will always affect availability when the brokers are restarted. |
 | kafka.config."min.insync.replicas" | int | `2` | min.insync.replicas is the minimum number of in-sync replicas for the Kafka topics. The in-sync replicas count should always be set to a number lower than the `*.replication.factor` or it will always affect availability when the brokers are restarted. |
-| kafka.config."offsets.topic.replication.factor" | int | `3` | offsets.topic.replication.factor is the replication factor for the offsets topic. A replication factor of 1 will always affect availability when the brokers are restarted. |
-| kafka.config."transaction.state.log.min.isr" | int | `2` | transaction.state.log.min.isr is the minimum number of in-sync replicas for the transaction state log topic. The in-sync replicas count should always be set to a number lower than the `transaction.state.log.replication.factor` or it will always affect availability when the brokers are restarted. |
-| kafka.config."transaction.state.log.replication.factor" | int | `3` | transaction.state.log.replication.factor is the replication factor for the transaction state log topic. A replication factor of 1 will always affect availability when the brokers are restarted. |
-| kafka.cruiseControl | object | `{}` | cruiseControl deploys the Cruise Control component to optimize Kafka when specified. Being present and not null is enough to enable it. It will also enable `kafka.metricsEnabled` by default and configure metrics for cruise control, so no need to configure here (e.g., `kafka.cruiseControl.metricsConfig`). Reference: [CruiseControlSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-CruiseControlSpec-reference). |
+| kafka.&#8203;config.&#8203;"offsets.&#8203;topic.&#8203;replication.&#8203;factor" | int | `3` | offsets.topic.replication.factor is the replication factor for the offsets topic. A replication factor of 1 will always affect availability when the brokers are restarted. |
+| kafka.&#8203;config.&#8203;"transaction.&#8203;state.&#8203;log.&#8203;min.&#8203;isr" | int | `2` | transaction.state.log.min.isr is the minimum number of in-sync replicas for the transaction state log topic. The in-sync replicas count should always be set to a number lower than the `transaction.state.log.replication.factor` or it will always affect availability when the brokers are restarted. |
+| kafka.&#8203;config.&#8203;"transaction.&#8203;state.&#8203;log.&#8203;replication.&#8203;factor" | int | `3` | transaction.state.log.replication.factor is the replication factor for the transaction state log topic. A replication factor of 1 will always affect availability when the brokers are restarted. |
+| kafka.cruiseControl | object | `{}` | cruiseControl deploys the Cruise Control component to optimize Kafka when specified. Being present and not null is enough to enable it. It will also enable `kafka.metricsEnabled` by default and configure metrics for cruise control, so no need to configure here (e.g., `kafka.cruiseControl.metricsConfig`). Reference: [CruiseControlSpec schema reference](https://strimzi.io/docs/operators/1.2.0/configuring.html#type-CruiseControlSpec-reference). |
 | kafka.entityOperator.template | object | `{}` | template allows to customize how the resources belonging to the Entity Operator are generated. NOTE: The environment variable `STRIMZI_IGNORED_USERS_PATTERN` is set in `entityOperator.template.userOperatorContainer.env` by default to ignore the ACL rules for the `*` and `ANONYMOUS` users. When overriding the `env` section, be sure to redefine the environment variable to maintain the default behavior if needed. |
-| kafka.entityOperator.topicOperator | object | `{}` | topicOperator allows to customize the configuration of the Topic Operator. By Default, the Topic Operator watches for KafkaTopic resources in the namespace of the Kafka cluster deployed by the Cluster Operator. Reference: [EntityTopicOperatorSpec schema properties](https://strimzi.io/docs/operators/0.51.0/configuring#type-EntityTopicOperatorSpec-schema-reference). |
-| kafka.entityOperator.userOperator | object | `{}` | userOperator allows to customize the configuration of the User Operator. By Default, the User Operator watches for KafkaUser resources in the namespace of the Kafka cluster deployed by the Cluster Operator. Reference: [EntityUserOperatorSpec schema properties](https://strimzi.io/docs/operators/0.51.0/configuring#type-EntityUserOperatorSpec-schema-reference). |
-| kafka.kafkaExporter | object | `{}` | kafkaExporter is an optional component for extracting additional metrics data from Kafka brokers related to offsets, consumer groups, consumer lag, and topics. For Kafka Exporter to be able to work properly, consumer groups needs to be in use. Being present and not null is enough to enable it. Reference: [KafkaExporterSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaExporterSpec-reference) |
+| kafka.entityOperator.topicOperator | object | `{}` | topicOperator allows to customize the configuration of the Topic Operator. By Default, the Topic Operator watches for KafkaTopic resources in the namespace of the Kafka cluster deployed by the Cluster Operator. Reference: [EntityTopicOperatorSpec schema properties](https://strimzi.io/docs/operators/1.2.0/configuring#type-EntityTopicOperatorSpec-schema-reference). |
+| kafka.entityOperator.userOperator | object | `{}` | userOperator allows to customize the configuration of the User Operator. By Default, the User Operator watches for KafkaUser resources in the namespace of the Kafka cluster deployed by the Cluster Operator. Reference: [EntityUserOperatorSpec schema properties](https://strimzi.io/docs/operators/1.2.0/configuring#type-EntityUserOperatorSpec-schema-reference). |
+| kafka.kafkaExporter | object | `{}` | kafkaExporter is an optional component for extracting additional metrics data from Kafka brokers related to offsets, consumer groups, consumer lag, and topics. For Kafka Exporter to be able to work properly, consumer groups needs to be in use. Being present and not null is enough to enable it. Reference: [KafkaExporterSpec schema reference](https://strimzi.io/docs/operators/1.2.0/configuring.html#type-KafkaExporterSpec-reference) |
 | kafka.labels | object | `{}` | labels to be added to the Kafka resource. |
 | kafka.listeners[0].name | string | `"plain"` | name is the unique name of the listener within given a Kafka cluster. It consists of lowercase characters and numbers and can be up to 11 characters long. |
 | kafka.listeners[0].port | int | `9092` | port is the port number for the listener. When configuring listeners for client access to brokers, use port 9092 or higher, but with a few exceptions. The listeners cannot be configured to use the ports reserved for interbroker communication (9090 and 9091), Prometheus metrics (9404), and JMX (Java Management Extensions) monitoring (9999). |
 | kafka.listeners[0].tls | bool | `false` | tls indicates whether or not to enable TLS for the listener. For `route` and `ingress` type listeners, TLS encryption must be always enabled. |
-| kafka.listeners[0].type | string | `"internal"` | type is the type of listener. Supported values are `ingress`, `internal`, `route` (OpenShift only), `loadbalancer`, `cluster-ip`, and `nodeport`. Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/0.51.0/deploying#configuration-points-listeners-str). |
+| kafka.listeners[0].type | string | `"internal"` | type is the type of listener. Supported values are `ingress`, `internal`, `route` (OpenShift only), `loadbalancer`, `cluster-ip`, and `nodeport`. Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/1.2.0/deploying#configuration-points-listeners-str). |
 | kafka.listeners[1].authentication.type | string | `"tls"` | type is the type of authentication to use on the Kafka brokers. Supported values are `tls`, `scram-sha-512`, `oauth`, and `custom`. |
-| kafka.listeners[1].configuration.useServiceDnsDomain | bool | `true` | useServiceDnsDomain indicates whether or not to use the service DNS domain for the listener. By default, `internal` and `cluster-ip` listeners and their service do not use the Kubernetes service DNS domain (typically `*.cluster.local`). This makes them only accessible from within the same namespace (e.g., `<cluster-name>-kafka-bootstrap:9092`). To enable cross-namespace communication, set this to `true`. Reference: [Using fully-qualified DNS names](https://strimzi.io/docs/operators/0.51.0/configuring#property-listener-config-dns-reference). |
+| kafka.&#8203;listeners[1].&#8203;configuration.&#8203;useServiceDnsDomain | bool | `true` | useServiceDnsDomain indicates whether or not to use the service DNS domain for the listener. By default, `internal` and `cluster-ip` listeners and their service do not use the Kubernetes service DNS domain (typically `*.cluster.local`). This makes them only accessible from within the same namespace (e.g., `<cluster-name>-kafka-bootstrap:9092`). To enable cross-namespace communication, set this to `true`. Reference: [Using fully-qualified DNS names](https://strimzi.io/docs/operators/1.2.0/configuring#property-listener-config-dns-reference). |
 | kafka.listeners[1].name | string | `"tls"` | name is the unique name of the listener within given a Kafka cluster. It consists of lowercase characters and numbers and can be up to 11 characters long. |
 | kafka.listeners[1].port | int | `9094` | port is the port number for the listener. When configuring listeners for client access to brokers, use port 9092 or higher, but with a few exceptions. The listeners cannot be configured to use the ports reserved for interbroker communication (9090 and 9091), Prometheus metrics (9404), and JMX (Java Management Extensions) monitoring (9999). |
 | kafka.listeners[1].tls | bool | `true` | tls indicates whether or not to enable TLS for the listener. For `route` and `ingress` type listeners, TLS encryption must be always enabled. |
-| kafka.listeners[1].type | string | `"internal"` | type is the type of listener. Supported values are `ingress`, `internal`, `route` (OpenShift only), `loadbalancer`, `cluster-ip`, and `nodeport`. Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/0.51.0/deploying#configuration-points-listeners-str). |
-| kafka.logging | object | `{}` | logging allows to customize the logging configuration of the Kafka cluster. Reference: [Kafka logging reference](https://strimzi.io/docs/operators/0.51.0/configuring#property-kafka-logging-reference). |
+| kafka.listeners[1].type | string | `"internal"` | type is the type of listener. Supported values are `ingress`, `internal`, `route` (OpenShift only), `loadbalancer`, `cluster-ip`, and `nodeport`. Reference: [Configuring listeners to connect to Kafka](https://strimzi.io/docs/operators/1.2.0/deploying#configuration-points-listeners-str). |
+| kafka.logging | object | `{}` | logging allows to customize the logging configuration of the Kafka cluster. Reference: [Kafka logging reference](https://strimzi.io/docs/operators/1.2.0/configuring#property-kafka-logging-reference). |
 | kafka.maintenanceTimeWindows | list | `[]` | maintenanceTimeWindows is a list of time windows for maintenance tasks (e.g., certificate renewals). Each time window is defined by a [cron expression](http://www.cronmaker.com). Reference: [Quartz Tutorials - CronTrigger](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html). |
 | kafka.metricsEnabled | bool | `true` | Indicates whether or not to enable the JMX Prometheus Exporter metrics for Kafka. This is enabled by default if `kafka.cruiseControl` is present. |
-| kafka.rackTopology.customKey | string | `""` | customKey allows to override the standard `topology.kubernetes.io/zone` key used for the rack-aware feature. |
+| kafka.rackTopology.customKey | string | `""` | customKey depends on the value of `kafka.rackTopology.type`. If type is `topology-label`, then this property allows to override the standard `topology.kubernetes.io/zone` topologyKey label used for the rack-aware feature. If type is `environment-variable`, then this property is used to set the envVarName label that identifies the environment variable that contains the name of the topology in its value. In both cases, Strimzi adds a node affinity rule to ensure Kafka nodes are scheduled on Kubernetes worker nodes that include the specified label. It does not configure additional rules to distribute nodes across racks or zones. Add additional `affinity` rules or configure `topologySpreadConstraints` for Kafka to make sure the nodes are properly distributed across as many racks as possible. See [Configuring pod scheduling](https://strimzi.io/docs/operators/1.2.0/deploying#assembly-scheduling-str) for more information. |
 | kafka.rackTopology.enabled | bool | `true` | Indicates whether or not to enable the rack-aware feature for the node pools to improve resiliency, availability, and reliability. Strimzi will automatically add the Kubernetes affinity rule to distribute the node pools across the different availability zones or actual racks in the data center, which is not guaranteed to be evenly done. As such, Cruise Control will make sure that replicas remain and get distributed properly if in use. When testing locally, set this to `false`. |
-| kafka.template | object | `{}` | template allows to customize the configuration of the Kafka cluster. Reference: [KafkaClusterTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaClusterTemplate-reference). |
-| kafka.version | string | `"4.2.0"` | version is the version of Kafka to use. |
+| kafka.rackTopology.type | string | `"topology-label"` | type is a discriminator that is used to distinguish between `topology-label` and `environment-variable` rack types. See [TopologyLabelRack](https://strimzi.io/docs/operators/1.2.0/configuring#type-TopologyLabelRack-reference) and [EnvironmentVariableRack](https://strimzi.io/docs/operators/1.2.0/configuring#type-EnvironmentVariableRack-reference) for more information. |
+| kafka.template | object | `{}` | template allows to customize the configuration of the Kafka cluster. Reference: [KafkaClusterTemplate schema reference](https://strimzi.io/docs/operators/1.2.0/configuring.html#type-KafkaClusterTemplate-reference). |
+| kafka.version | string | `"4.3.1"` | version is the version of Kafka to use. |
 | nameOverride | string | `""` | Override for chart name in helm common labels. |
 | nodePools.broker.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. It's recommended to set something like `strimzi.io/next-node-ids: "[0-10]"` to have more control over what node pool gets what IDs. |
 | nodePools.broker.enabled | bool | `true` | Indicates whether or not to deploy this broker node pool with the Kafka cluster. Should be set to `false` if using a dual-role broker pool. |
@@ -616,14 +665,14 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | nodePools.broker.replicas | int | `3` | replicas is the number of instances in the node pool. |
 | nodePools.broker.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | nodePools.broker.roles | list | `["broker"]` | roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`. |
-| nodePools.broker.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolSpec-reference). |
-| nodePools.broker.storage.volumes[0].class | string | `nil` | class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the default storage class. |
-| nodePools.broker.storage.volumes[0].deleteClaim | bool | `true` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
+| nodePools.broker.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/1.2.0/configuring.html#type-KafkaNodePoolSpec-reference). |
+| nodePools.&#8203;broker.&#8203;storage.&#8203;volumes[0].&#8203;class | string | `nil` | class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the default storage class. |
+| nodePools.&#8203;broker.&#8203;storage.&#8203;volumes[0].&#8203;deleteClaim | bool | `true` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
 | nodePools.broker.storage.volumes[0].id | int | `0` | id is the volume ID. |
-| nodePools.broker.storage.volumes[0].kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
+| nodePools.&#8203;broker.&#8203;storage.&#8203;volumes[0].&#8203;kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
 | nodePools.broker.storage.volumes[0].size | string | `"1Gi"` | size is the size of the volume. |
 | nodePools.broker.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
-| nodePools.broker.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
+| nodePools.broker.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/1.2.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
 | nodePools.dual-role-broker.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. |
 | nodePools.dual-role-broker.enabled | bool | `false` | Indicates whether or not to deploy this dual-role broker pool with the Kafka cluster. Should be set to `false` if using other broker and controller node pools. |
 | nodePools.dual-role-broker.jvmOptions | object | `{}` | jvmOptions allows to customize the JVM options for the node pool pods. |
@@ -632,14 +681,14 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | nodePools.dual-role-broker.replicas | int | `3` | replicas is the number of instances in the node pool. |
 | nodePools.dual-role-broker.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | nodePools.dual-role-broker.roles | list | `["controller", "broker"]` | roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`. |
-| nodePools.dual-role-broker.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolSpec-reference). |
-| nodePools.dual-role-broker.storage.volumes[0].class | string | `nil` | class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the default storage class. |
-| nodePools.dual-role-broker.storage.volumes[0].deleteClaim | bool | `true` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
-| nodePools.dual-role-broker.storage.volumes[0].id | int | `0` | id is the volume ID. |
-| nodePools.dual-role-broker.storage.volumes[0].kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
-| nodePools.dual-role-broker.storage.volumes[0].size | string | `"1Gi"` | size is the size of the volume. |
-| nodePools.dual-role-broker.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
-| nodePools.dual-role-broker.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
+| nodePools.dual-role-broker.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/1.2.0/configuring.html#type-KafkaNodePoolSpec-reference). |
+| nodePools.&#8203;dual-&#8203;role-&#8203;broker.&#8203;storage.&#8203;volumes[0].&#8203;class | string | `nil` | class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the default storage class. |
+| nodePools.&#8203;dual-&#8203;role-&#8203;broker.&#8203;storage.&#8203;volumes[0].&#8203;deleteClaim | bool | `true` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
+| nodePools.&#8203;dual-&#8203;role-&#8203;broker.&#8203;storage.&#8203;volumes[0].&#8203;id | int | `0` | id is the volume ID. |
+| nodePools.&#8203;dual-&#8203;role-&#8203;broker.&#8203;storage.&#8203;volumes[0].&#8203;kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
+| nodePools.&#8203;dual-&#8203;role-&#8203;broker.&#8203;storage.&#8203;volumes[0].&#8203;size | string | `"1Gi"` | size is the size of the volume. |
+| nodePools.&#8203;dual-&#8203;role-&#8203;broker.&#8203;storage.&#8203;volumes[0].&#8203;type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
+| nodePools.dual-role-broker.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/1.2.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
 | nodePools.kraft-controller.annotations | object | `{}` | annotations to be added to the KafkaNodePool resource. It's recommended to set something like `strimzi.io/next-node-ids: "[11-20]"` to have more control over what node pool gets what IDs. |
 | nodePools.kraft-controller.enabled | bool | `true` | Indicates whether or not to deploy this controller node pool with the Kafka cluster. Should be set to `false` if using a dual-role broker pool. |
 | nodePools.kraft-controller.jvmOptions | object | `{}` | jvmOptions allows to customize the JVM options for the node pool pods. |
@@ -648,20 +697,20 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | nodePools.kraft-controller.replicas | int | `3` | replicas is the number of instances in the node pool. |
 | nodePools.kraft-controller.resources | object | `{}` | Optionally request and limit how much CPU and memory (RAM) the container needs. Reference [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers). |
 | nodePools.kraft-controller.roles | list | `["controller"]` | roles is a list of roles that the node pool will have. Supported values are `broker` and `controller`. |
-| nodePools.kraft-controller.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolSpec-reference). |
-| nodePools.kraft-controller.storage.volumes[0].class | string | `nil` | class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the default storage class. |
-| nodePools.kraft-controller.storage.volumes[0].deleteClaim | bool | `true` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
-| nodePools.kraft-controller.storage.volumes[0].id | int | `0` | id is the volume ID. |
-| nodePools.kraft-controller.storage.volumes[0].kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
-| nodePools.kraft-controller.storage.volumes[0].size | string | `"1Gi"` | size is the size of the volume. |
-| nodePools.kraft-controller.storage.volumes[0].type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
-| nodePools.kraft-controller.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/0.51.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
+| nodePools.kraft-controller.storage.type | string | `"jbod"` | type is the type of storage to use. Supported values are `ephemeral` and `jbod`, or an older approach using `persistent-claim` directly. Reference: [KafkaNodePoolSpec schema reference](https://strimzi.io/docs/operators/1.2.0/configuring.html#type-KafkaNodePoolSpec-reference). |
+| nodePools.&#8203;kraft-&#8203;controller.&#8203;storage.&#8203;volumes[0].&#8203;class | string | `nil` | class is the storage class to use for the PersistentVolumeClaim. Omit or set to `null` to use the default storage class. |
+| nodePools.&#8203;kraft-&#8203;controller.&#8203;storage.&#8203;volumes[0].&#8203;deleteClaim | bool | `true` | deleteClaim indicates whether or not to delete the PersistentVolumeClaim when the Kafka cluster is deleted. |
+| nodePools.&#8203;kraft-&#8203;controller.&#8203;storage.&#8203;volumes[0].&#8203;id | int | `0` | id is the volume ID. |
+| nodePools.&#8203;kraft-&#8203;controller.&#8203;storage.&#8203;volumes[0].&#8203;kraftMetadata | string | `"shared"` | kraftMetadata indicates that this directory will be used to store and access the KRaft metadata log. |
+| nodePools.&#8203;kraft-&#8203;controller.&#8203;storage.&#8203;volumes[0].&#8203;size | string | `"1Gi"` | size is the size of the volume. |
+| nodePools.&#8203;kraft-&#8203;controller.&#8203;storage.&#8203;volumes[0].&#8203;type | string | `"persistent-claim"` | type is the type of volume to use. Supported values are `ephemeral` and `persistent-claim`. |
+| nodePools.kraft-controller.template | object | `{}` | template allows to customize how the resources belonging to this pool are generated. Reference: [KafkaNodePoolTemplate schema reference](https://strimzi.io/docs/operators/1.2.0/configuring.html#type-KafkaNodePoolTemplate-reference). |
 | podMonitor.create | bool | `false` | Indicates whether or not to create PodMonitors to scrape Kafka related metrics. This approach is recommended over using `scrapeConfigHeadlessServices.create`. Ensure to set `kafka.metricsEnabled` to `true`, or define `kafka.cruiseControl` or `kafka.kafkaExporter`. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
-| podMonitor.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. Adjustments may be needed if deploying to a different namespace other then where the prometheus operator is deployed. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
-| podMonitor.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor resources will be deployed. If deploying to a namespace where the prometheus operator isn't located, some config changes will be required. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
+| podMonitor.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PodMonitor resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
+| podMonitor.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PodMonitor resources will be deployed. This should ideally be the same namespace as the Prometheus Operator and Grafana instance, but any namespace is supported when using the default settings of the kube-prometheus-stack helm chart. See [Option 1](#option-1---using-podmonitor-recommended) under the Monitoring section of the README for more information. |
 | prometheusKafkaAlerts.create | bool | `false` | Indicates whether or not to create PrometheusRules to define Kafka related alerts. Ensure to set `kafka.metricsEnabled` to `true`, or define the `kafka.cruiseControl` or `kafka.kafkaExporter` properties. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
-| prometheusKafkaAlerts.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PrometheusRule resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. Adjustments may be needed if deploying to a different namespace other then where the prometheus operator is deployed. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
-| prometheusKafkaAlerts.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PrometheusRule resource will be deployed. If deploying to a namespace where the prometheus operator isn't located, some config changes will be required. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
+| prometheusKafkaAlerts.labels | object | `{"release":"kube-prometheus-stack"}` | labels to be added to the PrometheusRule resource. This is used by the auto-discovery feature of the prometheus operator, which by default uses the release name of the kube-prometheus-stack chart used when installing. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
+| prometheusKafkaAlerts.overrideNamespace | string | `""` | overrideNamespace allows to override the default `monitoring` namespace where the PrometheusRule resource will be deployed. This should ideally be the same namespace as the Prometheus Operator and Grafana instance, but any namespace is supported when using the default settings of the kube-prometheus-stack helm chart. See [Enabling Prometheus alert rules](#optional---enabling-prometheus-alert-rules) under the Monitoring section of the README for more information. |
 | scrapeConfigHeadlessServices.create | bool | `false` | Indicates whether or not to create headless services to scrape Kafka related metrics. Setting is ignored if `podMonitor.create` is set to `true`. This is a compatibility feature that is meant only for custom setups and does not support Strimzi's official dashboards. See [Option 3](#option-3---using-headless-services) under the Monitoring section of the README for more information. |
 | strimzi-drain-cleaner.certManager.create | bool | `false` | Indicates whether or not to create the Certificate and Issuer custom resources used for the ValidatingWebhookConfiguration and ValidationWebhook when cert-manager is installed. |
 | strimzi-drain-cleaner.enabled | bool | `false` | Indicates whether or not to deploy Drain Cleaner with the Kafka cluster. |
@@ -674,8 +723,8 @@ After, set `k6.dashboard.enabled` to `true` in this chart, and finally, update t
 | strimzi-drain-cleaner.secret.tls_crt | string | `""` | tls_crt is the TLS certificate in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
 | strimzi-drain-cleaner.secret.tls_key | string | `""` | tls_key is the TLS private key in PEM format used for the ValidationWebhook. Required when `strimzi-drain-cleaner.certManager.create` is `false`. |
 | strimzi-kafka-operator.affinity | object | `{}` | affinity for pod scheduling. Reference [Assign Pods to Nodes using Node Affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity). |
-| strimzi-kafka-operator.dashboards.enabled | bool | `false` | Indicates whether or not to deploy a set of Kafka related Grafana dashboards that will be imported automatically. |
-| strimzi-kafka-operator.dashboards.namespace | string | `"monitoring"` | namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
+| strimzi-&#8203;kafka-&#8203;operator.&#8203;dashboards.&#8203;enabled | bool | `false` | Indicates whether or not to deploy a set of Kafka related Grafana dashboards that will be imported automatically. |
+| strimzi-&#8203;kafka-&#8203;operator.&#8203;dashboards.&#8203;namespace | string | `"monitoring"` | namespace is the namespace where the Grafana dashboards will be deployed. This should be the same namespace as the Prometheus Operator and Grafana instance. |
 | strimzi-kafka-operator.enabled | bool | `true` | Indicates whether or not to deploy Strimzi with the Kafka cluster. |
 | strimzi-kafka-operator.nodeSelector | object | `{"kubernetes.io/os":"linux"}` | nodeSelector is the simplest way to constrain Pods to nodes with specific labels. Use affinity for more advance options. Reference [Assigning Pods to Nodes](https://kubernetes.io/docs/user-guide/node-selection). |
 | strimzi-kafka-operator.replicas | int | `1` | replicas is for the number of cluster operator instances. |

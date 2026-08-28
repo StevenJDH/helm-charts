@@ -1,5 +1,5 @@
 {{/*
-This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
+This file is part of Strimzi Cluster Helm Chart <https://github.com/StevenJDH/helm-charts>.
 Copyright (C) 2025-2026 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,6 +59,10 @@ spec:
       targetLabel: kubernetes_pod_name
       replacement: $1
       action: replace
+    - sourceLabels: [__meta_kubernetes_pod_name]
+      targetLabel: pod
+    - sourceLabels: [__meta_kubernetes_pod_container_name]
+      targetLabel: container
     - sourceLabels: [__meta_kubernetes_pod_node_name]
       separator: ;
       regex: (.*)
@@ -113,7 +117,9 @@ spec:
       - {{ .Release.Namespace }}
   podMetricsEndpoints:
   - path: /metrics
-    port: "healthcheck"
+    port: "healthcheck-to"
+  - path: /metrics
+    port: "healthcheck-uo"
 ---
 {{- end }}
 {{- end -}}

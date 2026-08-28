@@ -1,5 +1,5 @@
 {{/*
-This file is part of Strimzi Cluster <https://github.com/StevenJDH/helm-charts>.
+This file is part of Strimzi Cluster Helm Chart <https://github.com/StevenJDH/helm-charts>.
 Copyright (C) 2025-2026 Steven Jenkins De Haro.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -60,10 +60,18 @@ spec:
           name: {{ include "shared-library.fullname" . }}-metrics-config
           key: kafka-metrics-config.yaml
     {{- end }}
-    {{- if (((.Values.kafka).rackTopology).enabled) }}
+  {{- if (((.Values.kafka).rackTopology).enabled) }}
+    {{- $TopologyType := .Values.kafka.rackTopology.type | default "topology-label" }}
     rack:
+      type: {{ $TopologyType }}
+    {{- if eq $TopologyType "topology-label" }}
       topologyKey: {{ .Values.kafka.rackTopology.customKey | default "topology.kubernetes.io/zone" | quote }}
+    {{- else if eq $TopologyType "environment-variable" }}
+      envVarName: {{ required (printf $requiredMsg "kafka.rackTopology.customKey") .Values.kafka.rackTopology.customKey | quote }}
+    {{- else }}
+      {{- fail "The 'kafka.rackTopology.type' must be either 'topology-label' or 'environment-variable' when set." }}
     {{- end }}
+  {{- end }}
     {{- with .Values.kafka.logging }}
     logging:
       {{- toYaml . | nindent 6 }}

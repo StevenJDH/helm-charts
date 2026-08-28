@@ -15,21 +15,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */}}
 
-{{- if ((.Values.testResources).create) -}}
-apiVersion: kafka.strimzi.io/v1
-kind: KafkaTopic
-metadata:
-  name: test-topic
-  labels:
-    strimzi.io/cluster: {{ include "shared-library.fullname" . }}
-    {{- include "shared-library.labels" . | nindent 4 }}
-  namespace: {{ .Release.Namespace }}
-spec:
-  partitions: 1
-  replicas: 1
-  config:
-    # Retain messages for 1 day.
-    retention.ms: 86400000
-    # Segment size of 256 MB.
-    segment.bytes: 268435456
-{{- end -}}
+{{- include "shared-library.crd-upgrade-orch" . }}

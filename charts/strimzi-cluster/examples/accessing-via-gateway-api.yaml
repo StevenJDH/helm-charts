@@ -13,6 +13,68 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+##########################
+## REQUIREMENTS
+##########################
+# - A Gateway API implementation that supports gateway.networking.k8s.io/v1 TLSRoute resources is installed.
+# - A Gateway API Gateway is configured for Kafka traffic and accepts TLSRoutes from the Kafka namespace.
+# - DNS records for the bootstrap and per-broker hostnames resolve to the Gateway address.
+# - A running Cluster Operator.
+#
+##########################
+## SETUP
+##########################
+# 1. If using Rancher Desktop, make sure to disable traefik in the configuration since this one is a very old version that doesn't support the Gateway API v1 resources used by Strimzi.
+#
+# 2. Install the Gateway API CRDs from https://gateway-api.sigs.k8s.io/guides/getting-started/introduction/#installing-gateway-api using the following command or directly as per documentation. This requires kubernetes 1.31+ or the TLSRoute CRD will fail to install.
+#       kubectl apply --server-side -f resources/gateway-api-bundle-standard-install_v1.6.1.yaml
+#
+# 3. Install a more recent version of traefik, which will also install a GatewayClass. For example:
+#       helm upgrade --install traefik oci://ghcr.io/traefik/helm/traefik --version 41.3.0 \
+#           -f resources/traefik-values.yaml \
+#           --namespace traefik \
+#           --create-namespace \
+#           --atomic
+#
+# 4. Install a Kafka Gateway with the below command:
+#       kubectl apply -f resources/kafka-gateway.yaml
+#
+# 5. Finally, install Strimzi with this example config using the below. This config assumes Keycloak is installed for OAuth using Ingress Terminated TLS. If not, see example here for that https://github.com/StevenJDH/helm-charts/tree/main/charts/keycloak-stack.
+#       helm upgrade --install my-strimzi-cluster stevenjdh/strimzi-cluster --version 0.3.0 \
+#           -f accessing-via-gateway-api.yaml \
+#           --namespace strimzi \
+#           --create-namespace \
+#           --atomic
+#
+##########################
+## Testing
+##########################
+# 1. Download Kafka CLI using the 'Binary download' option from https://kafka.apache.org/community/downloads/#431, and extract the archive.
+#
+# 2. Copy over the 'kafka-oauth.config' file to the root of the extract Kafka CLI directory where you see the 'bin' folder. Edit any settings that needs updating.
+#
+# 3. Created a truststore for the Strimzi Cluster CA certificate. Also, include the CA used for Keycloak. Put the truststore.p12 in the same place as the config just copied.
+#
+# 4. Open a terminal inside the 'resources/kafka-cli-oauth-addon' folder, and run the below command:
+#       ./mvnw dependency:copy-dependencies -DoutputDirectory=oauth-deps -DoauthVersion="0.18.0"
+#
+# 5. The previous command creates a folder called 'oauth-deps' with jar files. Copy just these files, and paste them into the 'libs' folder found in the root of the Kafka CLI directory.
+#
+# 6. Run the following commands to configure logging and to send some test messages. Use Ctrl+C when finished.
+#       export KAFKA_LOG4J_OPTS='-Dlog4j2.configurationFile=config/tools-log4j2.yaml'
+#       bin/kafka-console-producer.sh --bootstrap-server oauth-bootstrap.kafka.127.0.0.1.sslip.io:443 \
+#           --command-config kafka-oauth.config --topic test-topic
+#
+# 7. Finally, run this last command to consume the messages just created:
+#       bin/kafka-console-consumer.sh --bootstrap-server oauth-bootstrap.kafka.127.0.0.1.sslip.io:443 \
+#           --command-config kafka-oauth.config --topic test-topic --from-beginning
+#
+##########################
+## Resources
+##########################
+# - https://strimzi.io/docs/operators/latest/deploying#proc-accessing-kafka-using-tlsroutes-str
+# - https://artifacthub.io/packages/helm/traefik/traefik
+
 kafka:
   config:
     principal.builder.class: io.strimzi.kafka.oauth.server.OAuthKafkaPrincipalBuilder
@@ -76,9 +138,26 @@ kafka:
         type: tls
       configuration:
         useServiceDnsDomain: true
-    - name: oauth
+    - name: externaltls
+      port: 9196
+      type: tlsroute
+      tls: true
+      authentication:
+        type: tls
+      configuration:
+        parentRefs:
+          - name: kafka-gateway
+            kind: Gateway
+            group: gateway.networking.k8s.io
+            namespace: strimzi
+            sectionName: kafka
+        bootstrap:
+          host: mtls-bootstrap.kafka.127.0.0.1.sslip.io
+        hostTemplate: mtls-broker-{nodeId}.kafka.127.0.0.1.sslip.io
+        advertisedPortTemplate: "443"
+    - name: externaloauth
       port: 9198
-      type: ingress # Deprecated, but still works. Use 'cluster-ip' to provide own solution if needed, or use tlsroute.
+      type: tlsroute
       tls: true
       authentication:
         type: custom
@@ -104,19 +183,16 @@ kafka:
             oauth.enable.metrics="true" ;
           connections.max.reauth.ms: 3600000
       configuration:
-        class: nginx
+        parentRefs:
+          - name: kafka-gateway
+            kind: Gateway
+            group: gateway.networking.k8s.io
+            namespace: strimzi
+            sectionName: kafka
         bootstrap:
           host: oauth-bootstrap.kafka.127.0.0.1.sslip.io
         hostTemplate: oauth-broker-{nodeId}.kafka.127.0.0.1.sslip.io
-        # Clients need to trust CA extracted with below command or specify a custom cert chain
-        # as per below commented out section.
-        # openssl s_client -connect oauth-broker-0.kafka.127.0.0.1.sslip.io:443 -servername oauth-broker-0.kafka.127.0.0.1.sslip.io -showcerts
-        # kubectl get secret <cluster-name>-cluster-ca-cert -o jsonpath='{.data.ca\.crt}' -n strimzi | base64 -d > ca.crt
-        # brokerCertChainAndKey:
-        #   # kubectl create secret tls my-tls-secret --cert=path/to/tls.crt --key=path/to/tls.key -n strimzi
-        #   secretName: my-tls-secret
-        #   certificate: tls.crt
-        #   key: tls.key
+        advertisedPortTemplate: "443"
   authorization:
     # For a complete authorization example, import the following into Keycloak and adjust as needed:
     # https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/refs/heads/main/examples/security/keycloak-authorization/kafka-authz-realm.json
