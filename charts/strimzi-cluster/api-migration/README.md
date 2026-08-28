@@ -90,7 +90,7 @@ The steps below show how to do the migration from inside the Kubernetes cluster,
     Updating KafkaNodePool CRD
     ```
 
-4. Recheck the state of the storage version for each CRD. Confirm that all CRDs return [v1] as the stored version.
+4. Recheck the state of the storage version for each CRD. Confirm that all CRDs return `["v1"]` as the stored version.
 
     ```bash
     kubectl get crd -o name | grep kafka.strimzi.io | while read crd; do
@@ -119,7 +119,7 @@ The steps below show how to do the migration from inside the Kubernetes cluster,
     kubectl delete -f https://raw.githubusercontent.com/StevenJDH/helm-charts/refs/heads/main/charts/strimzi-cluster/api-migration/strimzi-v1-api-conversion-job.yaml
     ```
 
-From this point on, it is now safe to upgrade to Strimzi 1.x.x using the built-in CRD upgrade feature of my strimzi-cluster helm chart, or by whatever means was previously used. As a side note, the migration job has a commented out command for upgrading the CR resources as well, but this is expected to fail because of manual changes being needed. Feel free to play around with it if needed.
+From this point on, it is safe to upgrade to Strimzi 1.x.x using the built-in CRD upgrade feature of my strimzi-cluster helm chart, or by whatever method was previously used. As a side note, the migration job has a commented out command for upgrading the CR resources as well, but this is expected to fail because of manual migration related changes being needed. Feel free to play around with it if there is interest.
 
 
 // Steven Jenkins De Haro ("StevenJDH" on GitHub)
